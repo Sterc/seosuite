@@ -1,0 +1,25 @@
+{
+    "name": "Buster404",
+    "lowCaseName": "buster404",
+    "description": "Fix 404 not-found links on your site.",
+    "author": "Joeke Kloosterman",
+    "version": "0.1.0",
+    "package":{
+        "menus": [{
+            "text": "buster404.menu.buster404"
+            ,"description": "buster404.menu.buster404_desc"
+            ,"action": "home"
+        }],
+        "elements": { 
+            "plugins": [],
+            "snippets": [],
+            "chunks": []
+        },
+        "systemSettings": []
+    }
+    
+    ,"database": {
+        "tables": ["Buster404Url","Buster404Source"]
+    }
+    
+}
