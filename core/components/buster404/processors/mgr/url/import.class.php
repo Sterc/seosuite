@@ -35,23 +35,30 @@ class Buster404UrlImportProcessor extends modObjectProcessor
         }
 
         foreach ($data as $key => $row) {
+            // If first column does not exist, continue to next
             if (!isset($row[0])) {
                 continue;
             }
             $url = $row[0];
+            // If not a valid url, continue to next
             if (substr($url, 0, 4) != 'http') {
                 continue;
             }
-            $this->modx->log(modX::LOG_LEVEL_INFO, $url);
-            continue;
-            $urlObject = $this->modx->getObject($this->classKey, array(
-                'url' => $url
-            ));
-            if (!$urlObject) {
-                $urlObject = $this->modx->newObject($this->classKey, array(
-                    'url' => $url
-                ));
-                $urlObject>save();
+
+            $q = $this->modx->newQuery($this->classKey);
+            $q->where(array('url' => $url));
+            $urlObject = $this->modx->query($q->toSql());
+            if (!is_object($urlObject)) {
+                // $urlObject = $this->modx->newObject($this->classKey, array(
+                //     'url' => $url
+                // ));
+                // $urlObject->save();
+
+                // todo
+
+                $this->modx->exec("INSERT INTO {$this->modx->getTableName($this->classKey)} SET {$this->modx->escape('url')} = {$this->modx->quote($url)}");
+
+
                 $this->created++;
             } else {
                 $this->updated++;
@@ -65,6 +72,12 @@ class Buster404UrlImportProcessor extends modObjectProcessor
         return $this->success('Updated: '.$this->updated.' - Created: '.$this->created, array('success' => true));
     }
 
+    /**
+     * Parse a csv file into an array
+     *
+     * @param string    $file   The file object
+     * @return array    $data   the contents from the csv as php array
+     */
     public function parseCsvFile($file)
     {
         ini_set('auto_detect_line_endings', true);
@@ -84,7 +97,6 @@ class Buster404UrlImportProcessor extends modObjectProcessor
      *
      * @param string    $filename       The path to the excel file
      * @param int       $sheetIndex     Index number of the sheet from the excel file; 0 = first sheet, 1 = second sheet etc.
-     *
      * @return array    $data           the contents from the sheet as php array
      */
     public function parseExcelFile($filename, $sheetIndex = 0)
