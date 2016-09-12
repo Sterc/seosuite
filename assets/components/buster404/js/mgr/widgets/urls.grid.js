@@ -23,12 +23,12 @@ Buster404.grid.Urls = function(config) {
        }]
         ,tbar: [{
             xtype: 'button',
-            text: _('buster404.import.upload'),
+            text: _('buster404.url.import'),
             handler: function(btn, e){
                 this.importUrls = MODx.load({
                     xtype: 'buster404-window-import',
                     hideUpload: false,
-                    title: _('buster404.import.upload'),
+                    title: _('buster404.url.import'),
                     listeners: {
                         'beforeSubmit': {fn:function() {
                             var topic = '/buster404import/';
@@ -149,18 +149,9 @@ Buster404.window.Url = function(config) {
             ,hidden: true
         },{
             xtype: 'textfield'
-            ,fieldLabel: _('name')
-            ,name: 'name'
+            ,fieldLabel: _('buster404.url')
+            ,name: 'url'
             ,anchor: '100%'
-        },{
-            xtype: 'textarea'
-            ,fieldLabel: _('description')
-            ,name: 'description'
-            ,anchor: '100%'
-        },{
-            xtype: 'textfield'
-            ,name: 'position'
-            ,hidden: true
         }]
     });
     Buster404.window.Url.superclass.constructor.call(this,config);
@@ -188,22 +179,9 @@ Buster404.window.Import = function(config) {
         fields: [{
             xtype: 'textfield',
             fieldLabel: 'File',
-            buttonText: _('buster404.import.choose'),
+            buttonText: _('buster404.url.import_choose'),
             name: 'file',
             inputType: 'file'
-        },{
-            xtype: 'modx-combo-context',
-            name: 'context',
-            fieldLabel: 'Context',
-            fields: ['key', 'name'],
-            displayField: 'name',
-            baseParams: {
-                action: 'context/getlist',
-                exclude: 'mgr',
-                sort: 'rank'
-            },
-            emptyText: 'Select context',
-            width: 300
         }]
     });
     Buster404.window.Import.superclass.constructor.call(this,config);

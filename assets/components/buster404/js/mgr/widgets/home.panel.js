@@ -15,9 +15,9 @@ Buster404.panel.Home = function(config) {
             ,activeTab: 0
             ,hideMode: 'offsets'
             ,items: [{
-                title: _('buster404.item.items')
+                title: _('buster404.url.urls')
                 ,items: [{
-                    html: '<p>'+_('buster404.item.intro_msg')+'</p>'
+                    html: '<p>'+_('buster404.url.intro_msg')+'</p>'
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
                 },{
