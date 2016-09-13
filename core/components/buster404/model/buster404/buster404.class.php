@@ -5,13 +5,15 @@
  *
  * @package buster404
  */
-class Buster404 {
+class Buster404
+{
     public $modx = null;
     public $namespace = 'buster404';
     public $cache = null;
     public $options = array();
 
-    public function __construct(modX &$modx, array $options = array()) {
+    public function __construct(modX &$modx, array $options = array())
+    {
         $this->modx =& $modx;
         $this->namespace = $this->getOption('namespace', $options, 'buster404');
 
@@ -47,7 +49,8 @@ class Buster404 {
      * namespaced system setting; by default this value is null.
      * @return mixed The option value or the default value specified.
      */
-    public function getOption($key, $options = array(), $default = null) {
+    public function getOption($key, $options = array(), $default = null)
+    {
         $option = $default;
         if (!empty($key) && is_string($key)) {
             if ($options != null && array_key_exists($key, $options)) {
@@ -59,5 +62,77 @@ class Buster404 {
             }
         }
         return $option;
+    }
+
+    /**
+     * Finds suggested resource(s) to redirect a 404 url to
+     * Uses the part after the last / in the url, without querystring
+     * Also strips off the extension
+     * Example: 'http://test.com/path/awesome-file.html?a=b' becomes 'awesome-file'
+     *
+     * @param string $url The 404 url
+     * @return array An array with modResource objects
+     */
+    public function findRedirectSuggestions($url)
+    {
+        $output = [];
+        $url = parse_url($url);
+        if (isset($url['path'])) {
+            $pathParts = explode('/', $url['path']);
+            $keys = array_keys($pathParts);
+            $searchString = $pathParts[end($keys)];
+            $extension = pathinfo($url['path'], PATHINFO_EXTENSION);
+            if (!empty($extension)) {
+                $searchString = str_replace('.'.$extension, '', $searchString);
+            }
+            // Try to find a resource with an exact matching alias
+            // or a resource with matching pagetitle, where non-alphanumer chars are replaced with space
+            $q = $this->modx->newQuery('modResource');
+            $q->where(array(
+                'alias:=' => $searchString,
+                'OR:pagetitle:=' => preg_replace('/[^A-Za-z0-9 ]/', ' ', $searchString)
+            ));
+            $q->prepare();
+            $results = $this->modx->query($q->toSql());
+            while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
+                $output[] = $row['modResource_id'];
+            }
+        }
+        return $output;
+    }
+
+    /**
+     * Adds a redirect to SEOTab for a given resource
+     *
+     * @param   int $url    The 404 url
+     * @param   int $id     The resource id
+     * @return  int The id of the seoUrl object, or false if seotab is not installed
+     */
+    public function addSeoTabRedirect($url, $id)
+    {
+        $redirect_id = false;
+        $url = urlencode($url);
+        $stercseo = $this->modx->getService('stercseo', 'StercSEO', $this->modx->getOption('stercseo.core_path', null, $this->modx->getOption('core_path').'components/stercseo/').'model/stercseo/', array());
+        if (!($stercseo instanceof StercSEO)) {
+            return false;
+        }
+        $redirect = $this->modx->getObject('seoUrl', array( 'url' => $url, 'resource' => $id));
+        if (!$redirect) {
+            $resource = $this->modx->getObject('modResource', $id);
+            if ($resource) {
+                $redirect = $this->modx->newObject('seoUrl');
+                $data = array(
+                    'url' => $url,
+                    'resource' => $id,
+                    'context_key' => $resource->get('context_key'),
+                );
+                $redirect->fromArray($data);
+                $redirect->save();
+
+                $redirect_id = $redirect->get('id');
+            }
+        }
+        return $redirect_id;
+
     }
 }

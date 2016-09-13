@@ -15,13 +15,14 @@ $_lang['buster404.global.search'] = 'Search';
 
 $_lang['buster404.url.urls'] = '404 Urls';
 $_lang['buster404.url.intro_msg'] = 'Manage your 404 urls here. Upload a csv, xls or  xlsx file with your 404 urls and automatically redirect urls to existing pages on your site.';
-$_lang['buster404.url.import'] = 'Import';
+$_lang['buster404.url.import'] = 'Import file';
 
-$_lang['buster404.url.url'] = 'URL';
+$_lang['buster404.url.url'] = '404 URL';
 $_lang['buster404.url.solved'] = 'Solved';
 $_lang['buster404.url.position'] = 'Position';
 $_lang['buster404.url.redirect_to'] = 'Redirect to';
 $_lang['buster404.url.suggestions'] = 'Redirect suggestions';
+$_lang['buster404.url.find_suggestions'] = 'Find suggestions';
 $_lang['buster404.url.update'] = 'Update url';
 $_lang['buster404.url.remove'] = 'Remove url';
 $_lang['buster404.url.remove_confirm'] = 'Are you sure you want to remove this url?';

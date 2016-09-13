@@ -16,13 +16,13 @@ Buster404.panel.Home = function(config) {
             ,hideMode: 'offsets'
             ,items: [{
                 title: _('buster404.url.urls')
+                ,layout: 'anchor'
                 ,items: [{
                     html: '<p>'+_('buster404.url.intro_msg')+'</p>'
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
                 },{
                     xtype: 'buster404-grid-urls'
-                    ,preventRender: true
                     ,cls: 'main-wrapper'
                 }]
             }]
