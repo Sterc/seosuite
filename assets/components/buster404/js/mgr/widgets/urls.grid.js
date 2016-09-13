@@ -9,7 +9,7 @@ Buster404.grid.Urls = function(config) {
         ,baseParams: {
             action: 'mgr/url/getlist'
         }
-        ,fields: ['id','url','solved','redirect_to_text','suggestions_text']
+        ,fields: ['id','url','solved','redirect_to','redirect_to_text','suggestions_text']
         ,autoHeight: true
         ,paging: true
         ,remoteSort: true
@@ -193,19 +193,20 @@ Ext.extend(Buster404.grid.Urls,MODx.grid.Grid,{
     ,findSuggestions: function(btn,e) {
         if (!this.menu.record) return false;
         
-        var updateUrl = MODx.load({
-            xtype: 'buster404-window-url'
-            ,title: _('buster404.url.update')
-            ,action: 'mgr/url/update'
-            ,record: this.menu.record
+        MODx.Ajax.request({
+            url: Buster404.config.connector_url
+            ,params: {
+                action: 'mgr/url/find_suggestions'
+                ,id: this.menu.record.id
+                ,url: this.menu.record.url
+            }
             ,listeners: {
-                'success': {fn:function() { this.refresh(); },scope:this}
+                'success': {fn:function(r) {
+                    Ext.Msg.alert(_('buster404.url.find_suggestions'), _('buster404.url.find_suggestions'));
+                    this.refresh();
+                }, scope: this }
             }
         });
-
-        updateUrl.fp.getForm().reset();
-        updateUrl.fp.getForm().setValues(this.menu.record);
-        updateUrl.show(e.target);
     }
 
     ,filter: function (tf, nv, ov) {

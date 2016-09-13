@@ -37,7 +37,7 @@ class Buster404UrlGetListProcessor extends modObjectGetListProcessor
             // also check if resource exists
             $resourceObj = $this->modx->getObject('modResource', $redirect_to);
             if ($resourceObj) {
-                $redirectText = $resourceObj->get('pagetitle').'<br><small>'.$this->modx->makeUrl($redirect_to, '', '', 'full').'</small>';
+                $redirectText = $resourceObj->get('pagetitle').' ('.$redirect_to.')<br><small>'.$this->modx->makeUrl($redirect_to, '', '', 'full').'</small>';
             }
         }
         $object->set('redirect_to_text', $redirectText);
