@@ -35,11 +35,13 @@ class Buster404UrlImportProcessor extends modObjectProcessor
         }
 
         foreach ($data as $key => $row) {
-            // If first column does not exist, continue to next
+            // If first column does not exist, continue to next row
             if (!isset($row[0])) {
                 continue;
             }
+
             $url = $row[0];
+
             // If not a valid url, continue to next
             if (substr($url, 0, 4) != 'http') {
                 continue;
@@ -49,15 +51,28 @@ class Buster404UrlImportProcessor extends modObjectProcessor
             $q->where(array('url' => $url));
             $urlObject = $this->modx->query($q->toSql());
             if (!is_object($urlObject)) {
-                // $urlObject = $this->modx->newObject($this->classKey, array(
-                //     'url' => $url
-                // ));
-                // $urlObject->save();
-
-                // todo
-
-                $this->modx->exec("INSERT INTO {$this->modx->getTableName($this->classKey)} SET {$this->modx->escape('url')} = {$this->modx->quote($url)}");
-
+                $suggestions = '';
+                $redirect_to = 0;
+                $solved = 0;
+                $findSuggestions = $this->modx->buster404->findRedirectSuggestions($url);
+                if (count($findSuggestions)) {
+                    if (count($findSuggestions) == 1) {
+                        // Try to add the redirect to Seotab
+                        $seotabRedirect = $this->modx->buster404->addSeoTabRedirect($url, $findSuggestions[0]);
+                        if ($seotabRedirect) {
+                            $redirect_to = $findSuggestions[0];
+                            $solved = 1;
+                        }
+                    }
+                    $suggestions = json_encode(array_values($findSuggestions));
+                }
+                $this->modx->exec(
+                    "INSERT INTO {$this->modx->getTableName($this->classKey)}
+                    SET {$this->modx->escape('url')} = {$this->modx->quote($url)},
+                        {$this->modx->escape('suggestions')} = {$this->modx->quote($suggestions)},
+                        {$this->modx->escape('redirect_to')} = {$this->modx->quote($redirect_to)},
+                        {$this->modx->escape('solved')} = {$this->modx->quote($solved)}"
+                );
 
                 $this->created++;
             } else {
