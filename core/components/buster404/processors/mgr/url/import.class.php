@@ -11,7 +11,7 @@ class Buster404UrlImportProcessor extends modObjectProcessor
     public $languageTopics = array('buster404:default');
     public $created = 0;
     public $updated = 0;
-    public $allowedExtensions = array('csv','xls','xlsx');
+    public $allowedExtensions = array('csv');
 
     public function process()
     {
