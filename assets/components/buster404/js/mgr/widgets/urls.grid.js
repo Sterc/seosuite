@@ -202,7 +202,12 @@ Ext.extend(Buster404.grid.Urls,MODx.grid.Grid,{
             }
             ,listeners: {
                 'success': {fn:function(r) {
-                    Ext.Msg.alert(_('buster404.url.find_suggestions'), _('buster404.url.find_suggestions'));
+                    var result = r.object.suggestions;
+                    if (result == ""){
+                        Ext.Msg.alert(_('buster404.url.find_suggestions'), _('buster404.url.notfound_suggestions'));
+                    } else {
+                        Ext.Msg.alert(_('buster404.url.find_suggestions'), _('buster404.url.found_suggestions'));
+                    }
                     this.refresh();
                 }, scope: this }
             }
