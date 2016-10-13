@@ -8,13 +8,15 @@
 class Buster404UrlImportProcessor extends modObjectProcessor
 {
     public $classKey = 'Buster404Url';
-    public $languageTopics = array('buster404:default');
+    public $languageTopics = ['buster404:default'];
     public $created = 0;
     public $updated = 0;
-    public $allowedExtensions = array('csv','xls','xlsx');
+    public $allowedExtensions = ['csv'];
 
     public function process()
     {
+        $this->modx->log(modX::LOG_LEVEL_INFO, $this->modx->lexicon('buster404.import.start'));
+        $this->modx->log(modX::LOG_LEVEL_INFO, '=====================');
         $this->modx->setLogLevel(modX::LOG_LEVEL_DEBUG);
         $file = $this->getProperty('file');
         
@@ -59,7 +61,14 @@ class Buster404UrlImportProcessor extends modObjectProcessor
                     if (count($findSuggestions) == 1) {
                         // Try to add the redirect to Seotab
                         $seotabRedirect = $this->modx->buster404->addSeoTabRedirect($url, $findSuggestions[0]);
-                        if ($seotabRedirect) {
+                        if (empty($seotabRedirect)) {
+                            $this->modx->log(
+                                modX::LOG_LEVEL_INFO,
+                                $this->modx->lexicon('buster404.import.seoUrl.error')
+                            );
+                            $redirect_to = 0;
+                            $solved = 0;
+                        } else {
                             $redirect_to = $findSuggestions[0];
                             $solved = 1;
                         }
