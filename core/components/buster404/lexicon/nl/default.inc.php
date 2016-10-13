@@ -12,8 +12,6 @@ $_lang['buster404.menu.buster404'] = '404 Buster';
 $_lang['buster404.menu.buster404_desc'] = 'Repareer 404 not-found URLs.';
 
 $_lang['buster404.global.search'] = 'Zoeken';
-$_lang['buster404.import.start'] = 'Begonnen met het importeren van de URLs, 
-dit kan een aantal minuten duren afhankelijk van de grootte van uw bestand.';
 
 $_lang['buster404.url.urls'] = '404 URLs';
 $_lang['buster404.url.intro_msg'] = 'Beheer uw 404 URL\'s hier. Upload een csv bestand met je 
@@ -41,3 +39,8 @@ $_lang['buster404.error.url_remove'] = 'Er is een fout opgetreden tijdens het ve
 $_lang['buster404.error.url_save'] = 'Er is een fout opgetreden tijdens het opslaan van de URL.';
 $_lang['buster404.error.emptyfile'] = 'Geen bestand opgegeven';
 $_lang['buster404.error.extension_notallowed'] = 'Bestandstype niet toegestaan. Alleen csv bestanden zijn toegestaan.';
+
+$_lang['buster404.import.seoUrl.error'] = 'We konden niet het voorstel koppelen aan de URL in SeoTab, 
+graag deze handmatig koppelen.';
+$_lang['buster404.seotab.notfound'] = 'De extra StercSEO is niet geinstalleerd. Om de voorstel pagina 
+automatisch te koppelen aan de URL moet u de StercSEO extra installeren.';

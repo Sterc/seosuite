@@ -42,3 +42,8 @@ $_lang['buster404.error.url_remove'] = 'An error occurred while trying to remove
 $_lang['buster404.error.url_save'] = 'An error occurred while trying to save the URL.';
 $_lang['buster404.error.emptyfile'] = 'No file specified';
 $_lang['buster404.error.extension_notallowed'] = 'Filetype not allowed. Only csv files are allowed.';
+
+$_lang['buster404.import.seoUrl.error'] = 'We could not connect the suggestion to the SeoTab URL, 
+please add this manually.';
+$_lang['buster404.seotab.notfound'] = 'The package StercSEO is not installed. To automatically connect 
+the suggestion page to a URL you should install this package.';
