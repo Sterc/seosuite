@@ -12,6 +12,8 @@ $_lang['buster404.menu.buster404'] = '404 Buster';
 $_lang['buster404.menu.buster404_desc'] = 'Repareer 404 not-found URLs.';
 
 $_lang['buster404.global.search'] = 'Zoeken';
+$_lang['buster404.import.start'] = 'Begonnen met het importeren van de URLs, 
+dit kan een aantal minuten duren afhankelijk van de grootte van uw bestand.';
 
 $_lang['buster404.url.urls'] = '404 URLs';
 $_lang['buster404.url.intro_msg'] = 'Beheer uw 404 URL\'s hier. Upload een csv bestand met je 

@@ -15,6 +15,7 @@ class Buster404UrlImportProcessor extends modObjectProcessor
 
     public function process()
     {
+        $this->modx->log(modX::LOG_LEVEL_INFO, $this->modx->lexicon('buster404.import.start'));
         $this->modx->setLogLevel(modX::LOG_LEVEL_DEBUG);
         $file = $this->getProperty('file');
         
