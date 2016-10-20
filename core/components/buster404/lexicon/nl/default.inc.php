@@ -6,16 +6,18 @@
  * @subpackage lexicon
  */
 
-$_lang['buster404'] = '404 Buster';
+$_lang['buster404'] = '404Buster';
 
-$_lang['buster404.menu.buster404'] = '404 Buster';
-$_lang['buster404.menu.buster404_desc'] = 'Repareer 404 not-found URLs.';
+$_lang['buster404.menu.buster404'] = '404Buster';
+$_lang['buster404.menu.buster404_desc'] = 'Beheer je 404 URL\'s';
 
 $_lang['buster404.global.search'] = 'Zoeken';
 
-$_lang['buster404.url.urls'] = '404 URLs';
-$_lang['buster404.url.intro_msg'] = 'Beheer uw 404 URL\'s hier. Upload een csv bestand met je 
-404 URL\'s en de URL\'s worden automatisch omgeleid naar bestaande pagina\'s op uw site.';
+$_lang['buster404.url.urls'] = '404 URL\'s';
+$_lang['buster404.url.intro_msg'] = 'Heb je een 404 URL gevonden? Upload hier simpelweg een .csv file en 
+de 404Buster zorgt ervoor dat ze herleid worden. De match vindt plaats door te kijken naar het laatste deel 
+van de URL, achter de laatste /. Is er één match, dan wordt deze automatisch in de 301 redirect gezet. Zijn 
+er meer, dan kan je kiezen en is er geen, dan kan je deze zelf invullen.';
 $_lang['buster404.url.import'] = 'Importeer bestand';
 
 $_lang['buster404.url.url'] = '404 URL';

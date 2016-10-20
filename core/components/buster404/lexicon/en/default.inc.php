@@ -6,16 +6,18 @@
  * @subpackage lexicon
  */
 
-$_lang['buster404'] = '404 Buster';
+$_lang['buster404'] = '404Buster';
 
-$_lang['buster404.menu.buster404'] = '404 Buster';
-$_lang['buster404.menu.buster404_desc'] = 'Fix your 404 not-found URLs.';
+$_lang['buster404.menu.buster404'] = '404Buster';
+$_lang['buster404.menu.buster404_desc'] = 'Manage 404 URLs';
 
 $_lang['buster404.global.search'] = 'Search';
 
 $_lang['buster404.url.urls'] = '404 URLs';
-$_lang['buster404.url.intro_msg'] = 'Manage your 404 URLs here. Upload a csv file with 
-your 404 URLs and automatically redirect URLs to existing pages on your site.';
+$_lang['buster404.url.intro_msg'] = 'Found a 404 URL? Manage them here. Simply upload a .csv file and the 
+404Buster will make sure the URLs are redirected on your website. It will be matched looking at the part 
+after the last / in the URL. When there’s one match, it will be an automatic 301. If there’s several matches, 
+you can choose the desired redirect. If there’s none, you can enter a URL yourself.';
 $_lang['buster404.url.import'] = 'Import file';
 
 $_lang['buster404.import.start'] = 'Starting with importing the URLs, this could take some time 
