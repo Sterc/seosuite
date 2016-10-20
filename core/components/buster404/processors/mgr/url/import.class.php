@@ -11,10 +11,11 @@ class Buster404UrlImportProcessor extends modObjectProcessor
     public $languageTopics = array('buster404:default');
     public $created = 0;
     public $updated = 0;
-    public $allowedExtensions = array('csv','xls','xlsx');
+    public $allowedExtensions = array('csv');
 
     public function process()
     {
+        $this->modx->log(modX::LOG_LEVEL_INFO, $this->modx->lexicon('buster404.import.start'));
         $this->modx->setLogLevel(modX::LOG_LEVEL_DEBUG);
         $file = $this->getProperty('file');
         
