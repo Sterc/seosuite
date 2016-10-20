@@ -118,27 +118,32 @@ class Buster404
     {
         $redirect_id = false;
         $url = urlencode($url);
-        $stercseo = $this->modx->getService('stercseo', 'StercSEO', $this->modx->getOption('stercseo.core_path', null, $this->modx->getOption('core_path').'components/stercseo/').'model/stercseo/', array());
-        if (!($stercseo instanceof StercSEO)) {
+        if (file_exists($this->modx->getOption('core_path').'components/stercseo/')) {
+            $stercseo = $this->modx->getService('stercseo', 'StercSEO', $this->modx->getOption('stercseo.core_path', null, $this->modx->getOption('core_path') . 'components/stercseo/') . 'model/stercseo/', []);
+            if (!($stercseo instanceof StercSEO)) {
+                $this->modx->log(modX::LOG_LEVEL_ERROR, $this->modx->getOption('core_path') . 'components/stercseo/');
+            }
+
+            $redirect = $this->modx->getObject('seoUrl', ['url' => $url, 'resource' => $id]);
+
+            if (!$redirect) {
+                $resource = $this->modx->getObject('modResource', $id);
+                if ($resource) {
+                    $redirect = $this->modx->newObject('seoUrl');
+                    $data     = [
+                        'url' => $url, 'resource' => $id, 'context_key' => $resource->get('context_key'),
+                    ];
+                    $redirect->fromArray($data);
+                    $redirect->save();
+
+                    $redirect_id = $redirect->get('id');
+                }
+            }
+        } else {
+            $this->modx->log(modX::LOG_LEVEL_ERROR, $this->modx->lexicon('buster404.seotab.notfound'));
             return false;
         }
-        $redirect = $this->modx->getObject('seoUrl', array( 'url' => $url, 'resource' => $id));
-        if (!$redirect) {
-            $resource = $this->modx->getObject('modResource', $id);
-            if ($resource) {
-                $redirect = $this->modx->newObject('seoUrl');
-                $data = array(
-                    'url' => $url,
-                    'resource' => $id,
-                    'context_key' => $resource->get('context_key'),
-                );
-                $redirect->fromArray($data);
-                $redirect->save();
 
-                $redirect_id = $redirect->get('id');
-            }
-        }
         return $redirect_id;
-
     }
 }
