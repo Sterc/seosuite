@@ -88,10 +88,16 @@ class Buster404
             // Try to find a resource with an exact matching alias
             // or a resource with matching pagetitle, where non-alphanumer chars are replaced with space
             $q = $this->modx->newQuery('modResource');
-            $q->where(array(
-                'alias:=' => $searchString,
-                'OR:pagetitle:=' => preg_replace('/[^A-Za-z0-9 ]/', ' ', $searchString)
-            ));
+            $q->where([
+                          [
+                              'alias:=' => $searchString,
+                              'OR:pagetitle:=' => preg_replace('/[^A-Za-z0-9 ]/', ' ', $searchString)
+                          ],
+                          [
+                              'AND:published:=' => true,
+                              'AND:deleted:=' => false
+                          ]
+                      ]);
             $q->prepare();
             $results = $this->modx->query($q->toSql());
             while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
