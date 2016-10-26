@@ -19,9 +19,11 @@ $_lang['buster404.url.intro_msg'] = 'Found a 404 URL? Manage them here. Simply u
 after the last / in the URL. When there’s one match, it will be an automatic 301. If there’s several matches, 
 you can choose the desired redirect. If there’s none, you can enter a URL yourself.';
 $_lang['buster404.url.import'] = 'Import file';
-
+$_lang['buster404.url.file'] = 'File';
 $_lang['buster404.import.start'] = 'Starting with importing the URLs, this could take some time 
 depending on the size of your file.';
+$_lang['buster404.import.instructions'] = 'Use a .csv file. Make sure you’ve used the full URLs, including 
+the domain.';
 
 $_lang['buster404.url.url'] = '404 URL';
 $_lang['buster404.url.solved'] = 'Solved';

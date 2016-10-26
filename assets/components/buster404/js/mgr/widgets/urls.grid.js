@@ -303,8 +303,12 @@ Buster404.window.Import = function(config) {
         },
         fileUpload: true,
         fields: [{
+            html: '<p>'+_('buster404.import.instructions')+'</p>',
+            style: 'paddingTop: 20px'
+        },
+        {
             xtype: 'textfield',
-            fieldLabel: 'File',
+            fieldLabel: _('buster404.url.file'),
             buttonText: _('buster404.url.import_choose'),
             name: 'file',
             inputType: 'file'
