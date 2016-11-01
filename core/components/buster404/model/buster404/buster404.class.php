@@ -69,6 +69,7 @@ class Buster404
      * Uses the part after the last / in the url, without querystring
      * Also strips off the extension
      * Example: 'http://test.com/path/awesome-file.html?a=b' becomes 'awesome-file'
+     * Makes use of common stopwords libraries from https://github.com/digitalmethodsinitiative/dmi-tcat/tree/master/analysis/common/stopwords
      *
      * @param string $url The 404 url
      * @return array An array with modResource objects
@@ -119,9 +120,46 @@ class Buster404
         $redirect_id = false;
         $url = urlencode($url);
         if (file_exists($this->modx->getOption('core_path').'components/stercseo/')) {
-            $stercseo = $this->modx->getService('stercseo', 'StercSEO', $this->modx->getOption('stercseo.core_path', null, $this->modx->getOption('core_path') . 'components/stercseo/') . 'model/stercseo/', []);
+            $stercseo = $this->modx->getService(
+                'stercseo',
+                'StercSEO',
+                $this->modx->getOption(
+                    'stercseo.core_path',
+                    null,
+                    $this->modx->getOption('core_path') . 'components/stercseo/'
+                ) . 'model/stercseo/',
+                []
+            );
             if (!($stercseo instanceof StercSEO)) {
-                $this->modx->log(modX::LOG_LEVEL_ERROR, $this->modx->getOption('core_path') . 'components/stercseo/');
+                $this->modx->log(
+                    modX::LOG_LEVEL_ERROR,
+                    'SEOTab is not installed. Please install SEOTab for managing the 301 redirects.'
+                );
+            }
+
+            $c = $this->modx->newQuery('transport.modTransportPackage');
+            $c->where(array(
+                'workspace' => 1,
+                "(SELECT
+                    `signature`
+                  FROM {$this->modx->getTableName('modTransportPackage')} AS `latestPackage`
+                  WHERE `latestPackage`.`package_name` = `modTransportPackage`.`package_name`
+                  ORDER BY
+                     `latestPackage`.`version_major` DESC,
+                     `latestPackage`.`version_minor` DESC,
+                     `latestPackage`.`version_patch` DESC,
+                     IF(`release` = '' OR `release` = 'ga' OR `release` = 'pl','z',`release`) DESC,
+                     `latestPackage`.`release_index` DESC
+                  LIMIT 1,1) = `modTransportPackage`.`signature`",
+            ));
+            $c->where(array(
+                'modTransportPackage.package_name' => 'stercseo',
+                'installed:IS NOT' => null
+            ));
+            $stPackage = $this->modx->getObject('transport.modTransportPackage', $c);
+            if ($stPackage && $stPackage->compareVersion('2.2.2-pl', '>')) {
+                $this->modx->log(modX::LOG_LEVEL_ERROR, $this->modx->lexicon('buster404.seotab.notfound'));
+                return false;
             }
 
             $redirect = $this->modx->getObject('seoUrl', ['url' => $url, 'resource' => $id]);
