@@ -1,5 +1,9 @@
 Buster404.panel.Home = function(config) {
     config = config || {};
+    var seoTabNotice = '';
+    if (Buster404.config.seoTabNotice) {
+        seoTabNotice = '<p><i><small><br>'+Buster404.config.seoTabNotice+'</small></i></p>';
+    }
     Ext.apply(config,{
         border: false
         ,baseCls: 'modx-formpanel'
@@ -18,7 +22,7 @@ Buster404.panel.Home = function(config) {
                 title: _('buster404.url.urls')
                 ,layout: 'anchor'
                 ,items: [{
-                    html: '<p>'+_('buster404.url.intro_msg')+'</p>'
+                    html: '<p>'+_('buster404.url.intro_msg')+'</p>'+seoTabNotice
                     ,border: false
                     ,bodyCssClass: 'panel-desc'
                 },{

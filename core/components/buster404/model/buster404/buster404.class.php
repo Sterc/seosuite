@@ -33,6 +33,21 @@ class Buster404
             $this->modx->getOption('assets_url', null, MODX_ASSETS_URL) . 'components/buster404/'
         );
 
+        $this->modx->lexicon->load('buster404:default');
+
+        /* Check for valid version of SeoTab on load */
+        $seoTabNotice = '';
+        if ($this->getSeoTabVersion()) {
+            $seoTabVersion = $this->getSeoTabVersion()->get('version_major')
+                . '.'
+                . $this->getSeoTabVersion()->get('version_minor')
+                . '.'
+                . $this->getSeoTabVersion()->get('version_patch');
+            $seoTabNotice = $this->modx->lexicon('buster404.seotab.versioninvalid');
+        } else {
+            $seoTabNotice = $this->modx->lexicon('buster404.seotab.notfound');
+        }
+
         /* loads some default paths for easier management */
         $this->options = array_merge(array(
             'namespace' => $this->namespace,
@@ -45,11 +60,11 @@ class Buster404
             'assetsUrl' => $assetsUrl,
             'jsUrl' => $assetsUrl . 'js/',
             'cssUrl' => $assetsUrl . 'css/',
-            'connectorUrl' => $assetsUrl . 'connector.php'
+            'connectorUrl' => $assetsUrl . 'connector.php',
+            'seoTabNotice' => $seoTabNotice
         ), $options);
 
         $this->modx->addPackage('buster404', $this->getOption('modelPath'));
-        $this->modx->lexicon->load('buster404:default');
     }
 
     /**
@@ -227,6 +242,21 @@ class Buster404
             return false;
         }
 
+        if ($this->getSeoTabVersion()) {
+            $version_major = (int) $this->getSeoTabVersion()->get('version_major');
+            if ($version_major < 2) {
+                $this->modx->log(
+                    modX::LOG_LEVEL_ERROR,
+                    '[404Buster]' . $this->modx->lexicon('buster404.seotab.versioninvalid')
+                );
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function getSeoTabVersion()
+    {
         $c = $this->modx->newQuery('transport.modTransportPackage');
         $c->where(array(
             'workspace' => 1,
@@ -248,15 +278,8 @@ class Buster404
         ));
         $stPackage = $this->modx->getObject('transport.modTransportPackage', $c);
         if ($stPackage) {
-            $version_major = (int) $stPackage->get('version_major');
-            if ($version_major < 2) {
-                $this->modx->log(
-                    modX::LOG_LEVEL_ERROR,
-                    '[404Buster]' . $this->modx->lexicon('buster404.seotab.versioninvalid')
-                );
-                return false;
-            }
+            return $stPackage;
         }
-        return true;
+        return false;
     }
 }

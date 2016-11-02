@@ -21,7 +21,6 @@ if ($object->xpdo) {
             $manager = $modx->getManager();
 
             $manager->createObjectContainer('Buster404Url');
-            $manager->createObjectContainer('Buster404Source');
 
             break;
     }
