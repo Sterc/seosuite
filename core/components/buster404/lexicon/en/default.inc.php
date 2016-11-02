@@ -49,5 +49,7 @@ $_lang['buster404.error.extension_notallowed'] = 'Filetype not allowed. Only csv
 
 $_lang['buster404.import.seoUrl.error'] = 'We could not connect the suggestion to the SeoTab URL, 
 please add this manually.';
-$_lang['buster404.seotab.notfound'] = 'The package StercSEO is not installed. To automatically connect 
-the suggestion page to a URL you should install this package.';
+$_lang['buster404.seotab.notfound'] = 'MODX Extra SeoTab is not installed. To automatically connect 
+the suggestion page to a URL you should install SeoTab (minimum version 2).';
+$_lang['buster404.seotab.versioninvalid'] = 'Your version of SeoTab is outdated. 
+Please install SeoTab version 2.0 (or higher) for the redirects to work properly.';

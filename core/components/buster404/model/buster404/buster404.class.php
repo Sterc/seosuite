@@ -17,9 +17,21 @@ class Buster404
         $this->modx =& $modx;
         $this->namespace = $this->getOption('namespace', $options, 'buster404');
 
-        $corePath = $this->getOption('core_path', $options, $this->modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/buster404/');
-        $assetsPath = $this->getOption('assets_path', $options, $this->modx->getOption('assets_path', null, MODX_ASSETS_PATH) . 'components/buster404/');
-        $assetsUrl = $this->getOption('assets_url', $options, $this->modx->getOption('assets_url', null, MODX_ASSETS_URL) . 'components/buster404/');
+        $corePath = $this->getOption(
+            'core_path',
+            $options,
+            $this->modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/buster404/'
+        );
+        $assetsPath = $this->getOption(
+            'assets_path',
+            $options,
+            $this->modx->getOption('assets_path', null, MODX_ASSETS_PATH) . 'components/buster404/'
+        );
+        $assetsUrl = $this->getOption(
+            'assets_url',
+            $options,
+            $this->modx->getOption('assets_url', null, MODX_ASSETS_URL) . 'components/buster404/'
+        );
 
         /* loads some default paths for easier management */
         $this->options = array_merge(array(
@@ -89,16 +101,16 @@ class Buster404
             // Try to find a resource with an exact matching alias
             // or a resource with matching pagetitle, where non-alphanumer chars are replaced with space
             $q = $this->modx->newQuery('modResource');
-            $q->where([
-                          [
-                              'alias:=' => $searchString,
-                              'OR:pagetitle:=' => preg_replace('/[^A-Za-z0-9 ]/', ' ', $searchString)
-                          ],
-                          [
-                              'AND:published:=' => true,
-                              'AND:deleted:=' => false
-                          ]
-                      ]);
+            $q->where(array(
+                  array(
+                      'alias:=' => $searchString,
+                      'OR:pagetitle:=' => preg_replace('/[^A-Za-z0-9 ]/', ' ', $searchString)
+                  ),
+                  array(
+                      'AND:published:=' => true,
+                      'AND:deleted:=' => false
+                  )
+            ));
             $q->prepare();
             $results = $this->modx->query($q->toSql());
             while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
@@ -119,69 +131,73 @@ class Buster404
     {
         $redirect_id = false;
         $url = urlencode($url);
-        if (file_exists($this->modx->getOption('core_path').'components/stercseo/')) {
-            $stercseo = $this->modx->getService(
-                'stercseo',
-                'StercSEO',
-                $this->modx->getOption(
-                    'stercseo.core_path',
-                    null,
-                    $this->modx->getOption('core_path') . 'components/stercseo/'
-                ) . 'model/stercseo/',
-                []
-            );
-            if (!($stercseo instanceof StercSEO)) {
-                $this->modx->log(
-                    modX::LOG_LEVEL_ERROR,
-                    'SEOTab is not installed. Please install SEOTab for managing the 301 redirects.'
+        /* First check for valid version of SeoTab */
+        $this->checkSeoTab();
+        $redirect = $this->modx->getObject('seoUrl', ['url' => $url, 'resource' => $id]);
+        if (!$redirect) {
+            $resource = $this->modx->getObject('modResource', $id);
+            if ($resource) {
+                $redirect = $this->modx->newObject('seoUrl');
+                $data     = array(
+                    'url' => $url, 'resource' => $id, 'context_key' => $resource->get('context_key'),
                 );
+                $redirect->fromArray($data);
+                $redirect->save();
+                $redirect_id = $redirect->get('id');
             }
+        }
+        return $redirect_id;
+    }
 
-            $c = $this->modx->newQuery('transport.modTransportPackage');
-            $c->where(array(
-                'workspace' => 1,
-                "(SELECT
-                    `signature`
-                  FROM {$this->modx->getTableName('modTransportPackage')} AS `latestPackage`
-                  WHERE `latestPackage`.`package_name` = `modTransportPackage`.`package_name`
-                  ORDER BY
-                     `latestPackage`.`version_major` DESC,
-                     `latestPackage`.`version_minor` DESC,
-                     `latestPackage`.`version_patch` DESC,
-                     IF(`release` = '' OR `release` = 'ga' OR `release` = 'pl','z',`release`) DESC,
-                     `latestPackage`.`release_index` DESC
-                  LIMIT 1,1) = `modTransportPackage`.`signature`",
-            ));
-            $c->where(array(
-                'modTransportPackage.package_name' => 'stercseo',
-                'installed:IS NOT' => null
-            ));
-            $stPackage = $this->modx->getObject('transport.modTransportPackage', $c);
-            if ($stPackage && $stPackage->compareVersion('2.2.2-pl', '>')) {
-                $this->modx->log(modX::LOG_LEVEL_ERROR, $this->modx->lexicon('buster404.seotab.notfound'));
-                return false;
-            }
-
-            $redirect = $this->modx->getObject('seoUrl', ['url' => $url, 'resource' => $id]);
-
-            if (!$redirect) {
-                $resource = $this->modx->getObject('modResource', $id);
-                if ($resource) {
-                    $redirect = $this->modx->newObject('seoUrl');
-                    $data     = [
-                        'url' => $url, 'resource' => $id, 'context_key' => $resource->get('context_key'),
-                    ];
-                    $redirect->fromArray($data);
-                    $redirect->save();
-
-                    $redirect_id = $redirect->get('id');
-                }
-            }
-        } else {
+    /**
+     * Check if SeoTab is installed and is the minimum correct version
+     * @return  boolean
+     */
+    public function checkSeoTab()
+    {
+        $stercseo = $this->modx->getService(
+            'stercseo',
+            'StercSEO',
+            $this->modx->getOption(
+                'stercseo.core_path',
+                null,
+                $this->modx->getOption('core_path') . 'components/stercseo/'
+            ) . 'model/stercseo/',
+            []
+        );
+        if (!($stercseo instanceof StercSEO)) {
+            /* SeoTab is not installed */
             $this->modx->log(modX::LOG_LEVEL_ERROR, $this->modx->lexicon('buster404.seotab.notfound'));
             return false;
         }
 
-        return $redirect_id;
+        $c = $this->modx->newQuery('transport.modTransportPackage');
+        $c->where(array(
+            'workspace' => 1,
+            "(SELECT
+                `signature`
+              FROM {$this->modx->getTableName('modTransportPackage')} AS `latestPackage`
+              WHERE `latestPackage`.`package_name` = `modTransportPackage`.`package_name`
+              ORDER BY
+                 `latestPackage`.`version_major` DESC,
+                 `latestPackage`.`version_minor` DESC,
+                 `latestPackage`.`version_patch` DESC,
+                 IF(`release` = '' OR `release` = 'ga' OR `release` = 'pl','z',`release`) DESC,
+                 `latestPackage`.`release_index` DESC
+              LIMIT 1,1) = `modTransportPackage`.`signature`",
+        ));
+        $c->where(array(
+            'modTransportPackage.package_name' => 'SEO Tab',
+            'installed:IS NOT' => null
+        ));
+        $stPackage = $this->modx->getObject('transport.modTransportPackage', $c);
+        if ($stPackage) {
+            $version_major = (int) $stPackage->get('version_major');
+            if ($version_major < 2) {
+                $this->modx->log(modX::LOG_LEVEL_ERROR, $this->modx->lexicon('buster404.seotab.versioninvalid'));
+                return false;
+            }
+        }
+        return true;
     }
 }

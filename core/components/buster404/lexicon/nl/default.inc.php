@@ -49,5 +49,7 @@ $_lang['buster404.error.extension_notallowed'] = 'Bestandstype niet toegestaan. 
 
 $_lang['buster404.import.seoUrl.error'] = 'We konden niet het voorstel koppelen aan de URL in SeoTab, 
 graag deze handmatig koppelen.';
-$_lang['buster404.seotab.notfound'] = 'De extra StercSEO is niet geinstalleerd. Om de voorstel pagina 
-automatisch te koppelen aan de URL moet u de StercSEO extra installeren.';
+$_lang['buster404.seotab.notfound'] = 'MODX Extra SeoTab is niet geinstalleerd. Om de voorgestelde pagina 
+automatisch te koppelen aan de URL dient SeoTab (minimaal versie 2) geinstalleerd te worden.';
+$_lang['buster404.seotab.versioninvalid'] = 'De geinstalleerde versie van SeoTab is verouderd. 
+Installeer SeoTab versie 2 (of hoger) om een redirect te kunnen toevoegen.';
