@@ -81,7 +81,6 @@ class Buster404
      * Uses the part after the last / in the url, without querystring
      * Also strips off the extension
      * Example: 'http://test.com/path/awesome-file.html?a=b' becomes 'awesome-file'
-     * Makes use of common stopwords libraries from https://github.com/digitalmethodsinitiative/dmi-tcat/tree/master/analysis/common/stopwords
      *
      * @param string $url The 404 url
      * @return array An array with modResource objects
@@ -98,26 +97,77 @@ class Buster404
             if (!empty($extension)) {
                 $searchString = str_replace('.'.$extension, '', $searchString);
             }
-            // Try to find a resource with an exact matching alias
-            // or a resource with matching pagetitle, where non-alphanumer chars are replaced with space
-            $q = $this->modx->newQuery('modResource');
-            $q->where(array(
-                  array(
-                      'alias:=' => $searchString,
-                      'OR:pagetitle:=' => preg_replace('/[^A-Za-z0-9 ]/', ' ', $searchString)
-                  ),
-                  array(
-                      'AND:published:=' => true,
-                      'AND:deleted:=' => false
-                  )
-            ));
-            $q->prepare();
-            $results = $this->modx->query($q->toSql());
-            while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
-                $output[] = $row['modResource_id'];
+            $searchWords = $this->splitUrl($searchString);
+            $searchWords = $this->filterStopWords($searchWords);
+            foreach ($searchWords as $word) {
+                // Try to find a resource with an exact matching alias
+                // or a resource with matching pagetitle, where non-alphanumeric chars are replaced with space
+                $q = $this->modx->newQuery('modResource');
+                $q->where(array(
+                    array(
+                        'alias:LIKE' => '%'.$word.'%',
+                        'OR:pagetitle:LIKE' => '%'.$word.'%'
+                    ),
+                    array(
+                        'AND:published:=' => true,
+                        'AND:deleted:=' => false
+                    )
+                ));
+                $q->prepare();
+                $results = $this->modx->query($q->toSql());
+                while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
+                    $output[] = $row['modResource_id'];
+                }
             }
         }
         return $output;
+    }
+
+    /**
+     * Split an url string into an array with separate words
+     * @param   string $input
+     * @return  array An array with all the separate words
+     */
+    public function splitUrl($input)
+    {
+        return str_word_count(str_replace('-', '_', $input), 1, '1234567890');
+    }
+
+    /**
+     * Get an array of stopwords from the stopword txt files
+     * Uses stopwords from https://github.com/digitalmethodsinitiative/dmi-tcat/tree/master/analysis/common/stopwords
+     * @return  array An array with stopwords
+     */
+    public function getStopWords()
+    {
+        $stopwords = array();
+        $stopwordsDir = $this->options['corePath'].'elements/stopwords/';
+        if (file_exists($stopwordsDir)) {
+            $files = glob($stopwordsDir.'/*.txt');
+            foreach ($files as $file) {
+                $content = file_get_contents($file);
+                if (is_array(explode(PHP_EOL, $content)) && count(explode(PHP_EOL, $content))) {
+                    $stopwords = array_merge($stopwords, explode(PHP_EOL, $content));
+                }
+            }
+        }
+        return $stopwords;
+    }
+
+    /**
+     * @param   array $input The input array
+     * @return  array $filtered An array with only allowed words from input string
+     */
+    public function filterStopWords($input)
+    {
+        $stopwords = $this->getStopWords();
+        $filtered = array();
+        foreach ($input as $word) {
+            if (!in_array($word, $stopwords)) {
+                $filtered[] = $word;
+            }
+        }
+        return $filtered;
     }
 
     /**
@@ -132,7 +182,13 @@ class Buster404
         $redirect_id = false;
         $url = urlencode($url);
         /* First check for valid version of SeoTab */
-        $this->checkSeoTab();
+        if (!$this->checkSeoTab()) {
+            $this->modx->log(
+                modX::LOG_LEVEL_ERROR,
+                '[404Buster]' . $this->modx->lexicon('buster404.seotab.versioninvalid')
+            );
+            return false;
+        }
         $redirect = $this->modx->getObject('seoUrl', ['url' => $url, 'resource' => $id]);
         if (!$redirect) {
             $resource = $this->modx->getObject('modResource', $id);
@@ -167,7 +223,7 @@ class Buster404
         );
         if (!($stercseo instanceof StercSEO)) {
             /* SeoTab is not installed */
-            $this->modx->log(modX::LOG_LEVEL_ERROR, $this->modx->lexicon('buster404.seotab.notfound'));
+            $this->modx->log(modX::LOG_LEVEL_ERROR, '[404Buster]' . $this->modx->lexicon('buster404.seotab.notfound'));
             return false;
         }
 
@@ -194,7 +250,10 @@ class Buster404
         if ($stPackage) {
             $version_major = (int) $stPackage->get('version_major');
             if ($version_major < 2) {
-                $this->modx->log(modX::LOG_LEVEL_ERROR, $this->modx->lexicon('buster404.seotab.versioninvalid'));
+                $this->modx->log(
+                    modX::LOG_LEVEL_ERROR,
+                    '[404Buster]' . $this->modx->lexicon('buster404.seotab.versioninvalid')
+                );
                 return false;
             }
         }
