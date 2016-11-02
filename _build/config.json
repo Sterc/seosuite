@@ -3,7 +3,7 @@
     "lowCaseName": "buster404",
     "description": "Fix 404 not-found links on your site.",
     "author": "Joeke Kloosterman",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "package":{
         "menus": [{
             "text": "buster404.menu.buster404"
@@ -19,7 +19,7 @@
     }
     
     ,"database": {
-        "tables": ["Buster404Url","Buster404Source"]
+        "tables": ["Buster404Url"]
     }
     
 }
