@@ -250,6 +250,7 @@ Buster404.window.Url = function(config) {
         ,closeAction: 'close'
         ,url: Buster404.config.connectorUrl
         ,action: 'mgr/url/create'
+        ,height: 300
         ,fields: [{
             xtype: 'textfield'
             ,name: 'id'
@@ -261,11 +262,18 @@ Buster404.window.Url = function(config) {
             ,anchor: '100%'
         },{
             xtype: 'modx-combo'
+            ,id: 'cmb_redirect_to'
             ,fieldLabel: _('buster404.url.redirect_to')
             ,name: "redirect_to"
             ,hiddenName: "redirect_to"
             ,url: Buster404.config.connectorUrl
-            ,fields: ['id', 'pagetitle']
+            ,fields: [{
+                name: 'id',
+                type: 'string'
+            }, {
+                name: 'pagetitle',
+                type: 'string'
+            }]
             ,displayField: 'pagetitle'
             ,baseParams: {
                 action: 'mgr/resource/getlist'
@@ -273,14 +281,24 @@ Buster404.window.Url = function(config) {
                 ,sort: 'pagetitle'
                 ,dir: 'asc'
             }
+            ,typeAhead: true
+            ,editable: true
+            ,forceSelection: true
             ,emptyText: _('resource')
             ,anchor: '100%'
-            ,allowBlank: false
+            ,allowBlank: true
             ,paging: true
             ,pageSize: 20
         }]
     });
     Buster404.window.Url.superclass.constructor.call(this,config);
+
+    /* Dirty fix to set the combobox value to empty, when value from request = 0 */
+    var cmb_redirect = Ext.getCmp('cmb_redirect_to');
+    var redirect_to = cmb_redirect.getValue();
+    if (!redirect_to) {
+        cmb_redirect.setValue('');
+    }
 };
 Ext.extend(Buster404.window.Url,MODx.Window);
 Ext.reg('buster404-window-url',Buster404.window.Url);

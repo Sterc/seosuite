@@ -38,11 +38,6 @@ class Buster404
         /* Check for valid version of SeoTab on load */
         $seoTabNotice = '';
         if ($this->getSeoTabVersion()) {
-            $seoTabVersion = $this->getSeoTabVersion()->get('version_major')
-                . '.'
-                . $this->getSeoTabVersion()->get('version_minor')
-                . '.'
-                . $this->getSeoTabVersion()->get('version_patch');
             $seoTabNotice = $this->modx->lexicon('buster404.seotab.versioninvalid');
         } else {
             $seoTabNotice = $this->modx->lexicon('buster404.seotab.notfound');

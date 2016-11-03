@@ -16,18 +16,38 @@ class Buster404UrlUpdateProcessor extends modObjectUpdateProcessor
         $url = $this->getProperty('url');
         if (empty($url)) {
             $this->addFieldError('url', $this->modx->lexicon('buster404.err.item_name_ns'));
-        } else if ($this->modx->getCount($this->classKey, array('url' => $url)) && ($this->object->url != $url)) {
+        } elseif ($this->modx->getCount($this->classKey, array('url' => $url)) && ($this->object->url != $url)) {
             $this->addFieldError('url', $this->modx->lexicon('buster404.err.item_name_ae'));
         }
 
-        $redirect_to = $this->getProperty('redirect_to');
-        if ((int)$redirect_to > 0) {
-            $seotabRedirect = $this->modx->buster404->addSeoTabRedirect($url, $redirect_to);
+        $redirectTo = $this->getProperty('redirect_to');
+
+        /* Getting the old object for deleting old seotab redirects if needed */
+        $oldObject = $this->modx->getObject($this->classKey, $this->getProperty('id'));
+        if ($oldObject) {
+            $oldRedirectTo = $oldObject->get('redirect_to');
+            if ((int)$oldRedirectTo != 0
+                && ((int)$oldRedirectTo != (int)$redirectTo) && $this->modx->buster404->checkSeoTab()
+            ) {
+                $redirect = $this->modx->getObject('seoUrl', array('resource' => $oldRedirectTo));
+                if ($redirect) {
+                    $redirect->remove();
+                }
+            }
+        }
+
+        if ((int)$redirectTo > 0) {
+            if (!$this->modx->buster404->checkSeoTab()) {
+                $this->addFieldError('redirect_to', $this->modx->lexicon('buster404.seotab.versioninvalid'));
+            }
+            $seotabRedirect = $this->modx->buster404->addSeoTabRedirect($url, $redirectTo);
             if (!$seotabRedirect) {
                 $this->setProperty('redirect_to', 0);
             } else {
                 $this->setProperty('solved', 1);
             }
+        } elseif ((int)$redirectTo == 0) {
+            $this->setProperty('solved', 0);
         }
 
         return parent::beforeSet();
