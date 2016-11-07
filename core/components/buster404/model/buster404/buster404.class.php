@@ -193,10 +193,6 @@ class Buster404
         $url = urlencode($url);
         /* First check for valid version of SeoTab */
         if (!$this->checkSeoTab()) {
-            $this->modx->log(
-                modX::LOG_LEVEL_ERROR,
-                '[404Buster]' . $this->modx->lexicon('buster404.seotab.versioninvalid')
-            );
             return false;
         }
         $redirect = $this->modx->getObject('seoUrl', ['url' => $url, 'resource' => $id]);
@@ -233,17 +229,13 @@ class Buster404
         );
         if (!($stercseo instanceof StercSEO)) {
             /* SeoTab is not installed */
-            $this->modx->log(modX::LOG_LEVEL_ERROR, '[404Buster]' . $this->modx->lexicon('buster404.seotab.notfound'));
             return false;
         }
 
         if ($this->getSeoTabVersion()) {
             $version_major = (int) $this->getSeoTabVersion()->get('version_major');
             if ($version_major < 2) {
-                $this->modx->log(
-                    modX::LOG_LEVEL_ERROR,
-                    '[404Buster]' . $this->modx->lexicon('buster404.seotab.versioninvalid')
-                );
+                /* SeoTab version is too old */
                 return false;
             }
         }

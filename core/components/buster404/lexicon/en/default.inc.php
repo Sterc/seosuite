@@ -47,8 +47,10 @@ $_lang['buster404.error.url_save'] = 'An error occurred while trying to save the
 $_lang['buster404.error.emptyfile'] = 'No file specified';
 $_lang['buster404.error.extension_notallowed'] = 'Filetype not allowed. Only csv files are allowed.';
 
+$_lang['buster404.import.seoUrl.error'] = 'The found suggestion could not be automatically saved as redirect. 
+Please add it manually.';
 $_lang['buster404.import.seoUrl.error'] = 'We could not connect the suggestion to the SeoTab URL, 
-please add this manually.';
+please add it manually.';
 $_lang['buster404.seotab.notfound'] = 'SeoTab is not installed or invalid version. 
 To be able to (automatically) add redirects for 404 URLs you should install SeoTab (version 2+).';
 $_lang['buster404.seotab.versioninvalid'] = 'Your version of SeoTab is outdated. 

@@ -3,15 +3,22 @@
     "lowCaseName": "buster404",
     "description": "Fix 404 not-found links on your site.",
     "author": "Joeke Kloosterman",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "package":{
         "menus": [{
             "text": "buster404.menu.buster404"
             ,"description": "buster404.menu.buster404_desc"
             ,"action": "home"
         }],
-        "elements": { 
-            "plugins": [],
+        "elements": {
+            "plugins": [{
+                "name": "404Buster",
+                "description": "Plugin to handle the 404Buster redirects.",
+                "file": "404buster.plugin.php",
+                "events": [
+                    "OnPageNotFound"
+                ]
+            }],
             "snippets": [],
             "chunks": []
         },

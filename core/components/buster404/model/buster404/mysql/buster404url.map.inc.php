@@ -12,6 +12,7 @@ $xpdo_meta_map['Buster404Url']= array (
     'url' => '',
     'solved' => 0,
     'redirect_to' => NULL,
+    'redirect_handler' => NULL,
     'suggestions' => NULL,
   ),
   'fieldMeta' => 
@@ -36,6 +37,13 @@ $xpdo_meta_map['Buster404Url']= array (
     array (
       'dbtype' => 'int',
       'precision' => '10',
+      'phptype' => 'integer',
+      'null' => false,
+    ),
+    'redirect_handler' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '2',
       'phptype' => 'integer',
       'null' => false,
     ),

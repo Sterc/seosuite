@@ -56,21 +56,21 @@ class Buster404UrlImportProcessor extends modObjectProcessor
                 $suggestions = '';
                 $redirect_to = 0;
                 $solved = 0;
+                $redirect_handler = 0;
                 $findSuggestions = $this->modx->buster404->findRedirectSuggestions($url);
                 if (count($findSuggestions)) {
                     if (count($findSuggestions) == 1) {
-                        // Try to add the redirect to Seotab
-                        $seotabRedirect = $this->modx->buster404->addSeoTabRedirect($url, $findSuggestions[0]);
-                        if (empty($seotabRedirect)) {
-                            $this->modx->log(
-                                modX::LOG_LEVEL_INFO,
-                                $this->modx->lexicon('buster404.import.seoUrl.error')
-                            );
-                            $redirect_to = 0;
-                            $solved = 0;
+                        $redirect_to = $findSuggestions[0];
+                        $solved = 1;
+                        /* First check for SeoTab. If not found, use 404Buster for handling redirect */
+                        if (!$this->modx->buster404->checkSeoTab()) {
+                            $redirect_handler = 1;
                         } else {
-                            $redirect_to = $findSuggestions[0];
-                            $solved = 1;
+                            /* Try to add the redirect to Seotab */
+                            $seotabRedirect = $this->modx->buster404->addSeoTabRedirect($url, $findSuggestions[0]);
+                            if (empty($seotabRedirect)) {
+                                /* Redirect could not be added to SeoTab, or already exists. */
+                            }
                         }
                     }
                     $suggestions = json_encode(array_values($findSuggestions));
@@ -80,6 +80,7 @@ class Buster404UrlImportProcessor extends modObjectProcessor
                     SET {$this->modx->escape('url')} = {$this->modx->quote($url)},
                         {$this->modx->escape('suggestions')} = {$this->modx->quote($suggestions)},
                         {$this->modx->escape('redirect_to')} = {$this->modx->quote($redirect_to)},
+                        {$this->modx->escape('redirect_handler')} = {$this->modx->quote($redirect_handler)},
                         {$this->modx->escape('solved')} = {$this->modx->quote($solved)}"
                 );
 

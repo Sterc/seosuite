@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model package="buster404" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" phpdoc-package="buster404" version="0.1">
-
     <object class="Buster404Url" table="buster404_urls" extends="xPDOSimpleObject">
         <field key="url" dbtype="text" phptype="string" null="false" default="" />
         <field key="solved" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
         <field key="redirect_to" dbtype="int" precision="10" phptype="integer" null="false"/>
+        <field key="redirect_handler" dbtype="int" precision="2" phptype="integer" null="false"/>
         <field key="suggestions" dbtype="text" phptype="json" null="true" />
     </object>
-
-    <object class="Buster404Source" table="buster404_sources" extends="xPDOSimpleObject">
-        <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
-        <field key="url_column_position" dbtype="int" precision="10" phptype="integer" null="false" default="1" />
-    </object>
-
 </model>

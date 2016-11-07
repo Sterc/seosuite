@@ -47,6 +47,8 @@ $_lang['buster404.error.url_save'] = 'Er is een fout opgetreden tijdens het opsl
 $_lang['buster404.error.emptyfile'] = 'Geen bestand opgegeven';
 $_lang['buster404.error.extension_notallowed'] = 'Bestandstype niet toegestaan. Alleen csv bestanden zijn toegestaan.';
 
+$_lang['buster404.import.seoUrl.error'] = 'De gevonden suggestie kon niet automatisch als redirect toegevoegd worden. 
+Graag deze handmatig aanmaken.';
 $_lang['buster404.import.seoUrl.error'] = 'We konden niet het voorstel koppelen aan de URL in SeoTab, 
 graag deze handmatig koppelen.';
 $_lang['buster404.seotab.notfound'] = 'SeoTab is niet geinstalleerd of is niet de juiste versie. 
