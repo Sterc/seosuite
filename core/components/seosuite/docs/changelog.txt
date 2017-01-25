@@ -1,0 +1,5 @@
+Changelog for SeoSuite.
+
+SeoSuite 0.0.1
+==============
+- Initial release.

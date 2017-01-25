@@ -3,11 +3,11 @@ require_once dirname(__FILE__).'/config.core.php';
 require_once MODX_CORE_PATH . 'config/' . MODX_CONFIG_KEY . '.inc.php';
 require_once MODX_CONNECTORS_PATH . 'index.php';
 
-$corePath = $modx->getOption('seosuite.core_path', null, $modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/buster404/');
+$corePath = $modx->getOption('seosuite.core_path', null, $modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/seosuite/');
 $seoSuite = $modx->getService(
-    'buster404',
-    'Buster404',
-    $corePath . 'model/buster404/',
+    'seosuite',
+    'SeoSuite',
+    $corePath . 'model/seosuite/',
     array(
         'core_path' => $corePath
     )
