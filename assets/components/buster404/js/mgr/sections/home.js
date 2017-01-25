@@ -1,16 +1,16 @@
 Ext.onReady(function() {
-    MODx.load({ xtype: 'buster404-page-home'});
+    MODx.load({ xtype: 'seosuite-page-home'});
 });
 
-Buster404.page.Home = function(config) {
+SeoSuite.page.Home = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         components: [{
-            xtype: 'buster404-panel-home'
-            ,renderTo: 'buster404-panel-home-div'
+            xtype: 'seosuite-panel-home'
+            ,renderTo: 'seosuite-panel-home-div'
         }]
     });
-    Buster404.page.Home.superclass.constructor.call(this,config);
+    SeoSuite.page.Home.superclass.constructor.call(this,config);
 };
-Ext.extend(Buster404.page.Home,MODx.Component);
-Ext.reg('buster404-page-home',Buster404.page.Home);
+Ext.extend(SeoSuite.page.Home,MODx.Component);
+Ext.reg('seosuite-page-home',SeoSuite.page.Home);

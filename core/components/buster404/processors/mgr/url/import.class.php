@@ -15,19 +15,19 @@ class Buster404UrlImportProcessor extends modObjectProcessor
 
     public function process()
     {
-        $this->modx->log(modX::LOG_LEVEL_INFO, $this->modx->lexicon('buster404.import.start'));
+        $this->modx->log(modX::LOG_LEVEL_INFO, $this->modx->lexicon('seosuite.import.start'));
         $this->modx->log(modX::LOG_LEVEL_INFO, '=====================');
         $this->modx->setLogLevel(modX::LOG_LEVEL_DEBUG);
         $file = $this->getProperty('file');
         
         // Check if file field is set
         if (empty($file)) {
-            return $this->failure($this->modx->lexicon('buster404.error.emptyfile'));
+            return $this->failure($this->modx->lexicon('seosuite.error.emptyfile'));
         }
         // Check for file extension
         $extension = pathinfo($_FILES['file']['name'])['extension'];
         if (!in_array($extension, $this->allowedExtensions)) {
-            return $this->failure($this->modx->lexicon('buster404.error.extension_notallowed'));
+            return $this->failure($this->modx->lexicon('seosuite.error.extension_notallowed'));
         }
 
         if ($extension == 'csv') {
@@ -62,7 +62,7 @@ class Buster404UrlImportProcessor extends modObjectProcessor
                     if (count($findSuggestions) == 1) {
                         $redirect_to = $findSuggestions[0];
                         $solved = 1;
-                        /* First check for SeoTab. If not found, use 404Buster for handling redirect */
+                        /* First check for SeoTab. If not found, use SEO Suite for handling redirect */
                         if (!$this->modx->buster404->checkSeoTab()) {
                             $redirect_handler = 1;
                         } else {

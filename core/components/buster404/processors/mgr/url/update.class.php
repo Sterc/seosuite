@@ -15,9 +15,9 @@ class Buster404UrlUpdateProcessor extends modObjectUpdateProcessor
     {
         $url = $this->getProperty('url');
         if (empty($url)) {
-            $this->addFieldError('url', $this->modx->lexicon('buster404.err.item_name_ns'));
+            $this->addFieldError('url', $this->modx->lexicon('seosuite.err.item_name_ns'));
         } elseif ($this->modx->getCount($this->classKey, array('url' => $url)) && ($this->object->url != $url)) {
-            $this->addFieldError('url', $this->modx->lexicon('buster404.err.item_name_ae'));
+            $this->addFieldError('url', $this->modx->lexicon('seosuite.err.item_name_ae'));
         }
 
         $redirectTo = $this->getProperty('redirect_to');
@@ -38,7 +38,7 @@ class Buster404UrlUpdateProcessor extends modObjectUpdateProcessor
 
         if ((int)$redirectTo > 0) {
             if (!$this->modx->buster404->checkSeoTab()) {
-                $this->addFieldError('redirect_to', $this->modx->lexicon('buster404.seotab.versioninvalid'));
+                $this->addFieldError('redirect_to', $this->modx->lexicon('seosuite.seotab.versioninvalid'));
             }
             $seotabRedirect = $this->modx->buster404->addSeoTabRedirect($url, $redirectTo);
             if (!$seotabRedirect) {

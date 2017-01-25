@@ -1,11 +1,11 @@
-Buster404.grid.Urls = function(config) {
+SeoSuite.grid.Urls = function(config) {
     config = config || {};
     if (!config.id) {
-        config.id = 'buster404-grid-urls';
+        config.id = 'seosuite-grid-urls';
     }
     Ext.applyIf(config,{
         id: config.id
-        ,url: Buster404.config.connectorUrl
+        ,url: SeoSuite.config.connectorUrl
         ,baseParams: {
             action: 'mgr/url/getlist'
         }
@@ -17,42 +17,42 @@ Buster404.grid.Urls = function(config) {
             forceFit: true,
             getRowClass: function (record, index, rowParams, store)
             {
-                var clsName = 'buster404-row';
+                var clsName = 'seosuite-row';
                 if (record.json.solved) {
-                    clsName += ' buster404-solved';
+                    clsName += ' seosuite-solved';
                 }
                 return clsName;
             }
         }
         ,columns: [{
-            header: _('buster404.url.url')
+            header: _('seosuite.url.url')
             ,dataIndex: 'url'
             ,width: 320
         },{
-            header: _('buster404.url.solved')
+            header: _('seosuite.url.solved')
             ,dataIndex: 'solved'
             ,renderer: this.renderBoolean
             ,width: 40
         },{
-            header: _('buster404.url.redirect_to')
+            header: _('seosuite.url.redirect_to')
             ,dataIndex: 'redirect_to_text'
             ,width: 160
         },{
-            header: _('buster404.url.suggestions')
+            header: _('seosuite.url.suggestions')
             ,dataIndex: 'suggestions_text'
             ,width: 180
         }]
         ,tbar: [{
             xtype: 'button',
-            text: '<i class="icon icon-upload"></i>&nbsp;&nbsp;' + _('buster404.url.import'),
+            text: '<i class="icon icon-upload"></i>&nbsp;&nbsp;' + _('seosuite.url.import'),
             handler: function(btn, e){
                 this.importUrls = MODx.load({
-                    xtype: 'buster404-window-import',
+                    xtype: 'seosuite-window-import',
                     hideUpload: false,
-                    title: _('buster404.url.import'),
+                    title: _('seosuite.url.import'),
                     listeners: {
                         'beforeSubmit': {fn:function() {
-                            var topic = '/buster404import/';
+                            var topic = '/seosuiteimport/';
                             var register = 'mgr';
                             
                                 this.console = MODx.load({
@@ -95,7 +95,7 @@ Buster404.grid.Urls = function(config) {
             ,triggerAction: "all"
             ,editable: true
             ,mode: "local"
-            ,emptyText: _('buster404.url.solved')
+            ,emptyText: _('seosuite.url.solved')
             ,listeners: {
                 'select': {
                     fn:this.filter,scope: this
@@ -132,24 +132,24 @@ Buster404.grid.Urls = function(config) {
             }  
         }]
     });
-    Buster404.grid.Urls.superclass.constructor.call(this,config);
+    SeoSuite.grid.Urls.superclass.constructor.call(this,config);
 };
-Ext.extend(Buster404.grid.Urls,MODx.grid.Grid,{
+Ext.extend(SeoSuite.grid.Urls,MODx.grid.Grid,{
     windows: {}
 
     ,getMenu: function() {
         var m = [];
         m.push({
-            text: _('buster404.url.update')
+            text: _('seosuite.url.update')
             ,handler: this.updateUrl
         });
         m.push({
-            text: _('buster404.url.find_suggestions')
+            text: _('seosuite.url.find_suggestions')
             ,handler: this.findSuggestions
         });
         m.push('-');
         m.push({
-            text: _('buster404.url.remove')
+            text: _('seosuite.url.remove')
             ,handler: this.removeUrl
         });
         this.addContextMenuItem(m);
@@ -159,8 +159,8 @@ Ext.extend(Buster404.grid.Urls,MODx.grid.Grid,{
         if (!this.menu.record || !this.menu.record.id) return false;
 
         var updateUrl = MODx.load({
-            xtype: 'buster404-window-url'
-            ,title: _('buster404.url.update')
+            xtype: 'seosuite-window-url'
+            ,title: _('seosuite.url.update')
             ,action: 'mgr/url/update'
             ,record: this.menu.record
             ,listeners: {
@@ -177,8 +177,8 @@ Ext.extend(Buster404.grid.Urls,MODx.grid.Grid,{
         if (!this.menu.record) return false;
         
         MODx.msg.confirm({
-            title: _('buster404.url.remove')
-            ,text: _('buster404.url.remove_confirm')
+            title: _('seosuite.url.remove')
+            ,text: _('seosuite.url.remove_confirm')
             ,url: this.config.url
             ,params: {
                 action: 'mgr/url/remove'
@@ -194,7 +194,7 @@ Ext.extend(Buster404.grid.Urls,MODx.grid.Grid,{
         if (!this.menu.record) return false;
         
         MODx.Ajax.request({
-            url: Buster404.config.connector_url
+            url: SeoSuite.config.connector_url
             ,params: {
                 action: 'mgr/url/find_suggestions'
                 ,id: this.menu.record.id
@@ -204,9 +204,9 @@ Ext.extend(Buster404.grid.Urls,MODx.grid.Grid,{
                 'success': {fn:function(r) {
                     var result = r.object.suggestions;
                     if (result == ""){
-                        Ext.Msg.alert(_('buster404.url.find_suggestions'), _('buster404.url.notfound_suggestions'));
+                        Ext.Msg.alert(_('seosuite.url.find_suggestions'), _('seosuite.url.notfound_suggestions'));
                     } else {
-                        Ext.Msg.alert(_('buster404.url.find_suggestions'), _('buster404.url.found_suggestions'));
+                        Ext.Msg.alert(_('seosuite.url.find_suggestions'), _('seosuite.url.found_suggestions'));
                     }
                     this.refresh();
                 }, scope: this }
@@ -241,14 +241,14 @@ Ext.extend(Buster404.grid.Urls,MODx.grid.Grid,{
     }
     
 });
-Ext.reg('buster404-grid-urls',Buster404.grid.Urls);
+Ext.reg('seosuite-grid-urls',SeoSuite.grid.Urls);
 
-Buster404.window.Url = function(config) {
+SeoSuite.window.Url = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('buster404.url.create')
+        title: _('seosuite.url.create')
         ,closeAction: 'close'
-        ,url: Buster404.config.connectorUrl
+        ,url: SeoSuite.config.connectorUrl
         ,action: 'mgr/url/create'
         ,height: 300
         ,fields: [{
@@ -257,16 +257,16 @@ Buster404.window.Url = function(config) {
             ,hidden: true
         },{
             xtype: 'textfield'
-            ,fieldLabel: _('buster404.url.url')
+            ,fieldLabel: _('seosuite.url.url')
             ,name: 'url'
             ,anchor: '100%'
         },{
             xtype: 'modx-combo'
             ,id: 'cmb_redirect_to'
-            ,fieldLabel: _('buster404.url.redirect_to')
+            ,fieldLabel: _('seosuite.url.redirect_to')
             ,name: "redirect_to"
             ,hiddenName: "redirect_to"
-            ,url: Buster404.config.connectorUrl
+            ,url: SeoSuite.config.connectorUrl
             ,fields: [{
                 name: 'id',
                 type: 'string'
@@ -291,7 +291,7 @@ Buster404.window.Url = function(config) {
             ,pageSize: 20
         }]
     });
-    Buster404.window.Url.superclass.constructor.call(this,config);
+    SeoSuite.window.Url.superclass.constructor.call(this,config);
 
     /* Dirty fix to set the combobox value to empty, when value from request = 0 */
     var cmb_redirect = Ext.getCmp('cmb_redirect_to');
@@ -300,10 +300,10 @@ Buster404.window.Url = function(config) {
         cmb_redirect.setValue('');
     }
 };
-Ext.extend(Buster404.window.Url,MODx.Window);
-Ext.reg('buster404-window-url',Buster404.window.Url);
+Ext.extend(SeoSuite.window.Url,MODx.Window);
+Ext.reg('seosuite-window-url',SeoSuite.window.Url);
 
-Buster404.window.Import = function(config) {
+SeoSuite.window.Import = function(config) {
     config = config || {};
     var fieldWidth = 450;
     this.ident = config.ident || 'site-mecitem'+Ext.id();
@@ -313,27 +313,27 @@ Buster404.window.Import = function(config) {
         width: fieldWidth+30,
         modal: true,
         closeAction: 'close',
-        url: Buster404.config.connector_url,
+        url: SeoSuite.config.connector_url,
         baseParams: {
             action: 'mgr/url/import',
             register: 'mgr',
-            topic: '/buster404import/'
+            topic: '/seosuiteimport/'
         },
         fileUpload: true,
         fields: [{
-            html: '<p>'+_('buster404.import.instructions')+'</p>',
+            html: '<p>'+_('seosuite.import.instructions')+'</p>',
             style: 'paddingTop: 20px'
         },
         {
             xtype: 'textfield',
-            fieldLabel: _('buster404.url.file'),
-            buttonText: _('buster404.url.import_choose'),
+            fieldLabel: _('seosuite.url.file'),
+            buttonText: _('seosuite.url.import_choose'),
             name: 'file',
             inputType: 'file'
         }]
     });
-    Buster404.window.Import.superclass.constructor.call(this,config);
+    SeoSuite.window.Import.superclass.constructor.call(this,config);
 };
-Ext.extend(Buster404.window.Import,MODx.Window);
-Ext.reg('buster404-window-import',Buster404.window.Import);
+Ext.extend(SeoSuite.window.Import,MODx.Window);
+Ext.reg('seosuite-window-import',SeoSuite.window.Import);
 
