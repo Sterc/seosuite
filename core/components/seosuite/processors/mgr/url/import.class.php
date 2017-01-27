@@ -31,7 +31,7 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
         if (!in_array($extension, $this->allowedExtensions)) {
             return $this->failure($this->modx->lexicon('seosuite.error.extension_notallowed'));
         }
-        $this->modx->log(modX::LOG_LEVEL_INFO, 'ext: ' . $extension);
+
         if ($extension === 'csv') {
             $data = $this->parseCsvFile($file);
         } else {
