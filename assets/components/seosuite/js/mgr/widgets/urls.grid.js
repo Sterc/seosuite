@@ -27,12 +27,12 @@ SeoSuite.grid.Urls = function(config) {
         ,columns: [{
             header: _('seosuite.url.url')
             ,dataIndex: 'url'
-            ,width: 320
+            ,width: 300
         },{
             header: _('seosuite.url.solved')
             ,dataIndex: 'solved'
             ,renderer: this.renderBoolean
-            ,width: 40
+            ,width: 60
         },{
             header: _('seosuite.url.redirect_to')
             ,dataIndex: 'redirect_to_text'

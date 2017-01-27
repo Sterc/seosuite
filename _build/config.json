@@ -2,7 +2,7 @@
     "name": "SEO Suite",
     "lowCaseName": "seosuite",
     "description": "Fix 404 not-found links on your site.",
-    "author": "Joeke Kloosterman",
+    "author": "Sterc",
     "version": "0.1.3",
     "package":{
         "menus": [{
@@ -23,10 +23,8 @@
             "chunks": []
         },
         "systemSettings": []
-    }
-    
-    ,"database": {
+    },
+    "database": {
         "tables": ["SeoSuiteUrl"]
     }
-    
 }

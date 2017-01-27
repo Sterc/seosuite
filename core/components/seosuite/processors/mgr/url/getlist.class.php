@@ -14,18 +14,23 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
 
     public function prepareQueryBeforeCount(xPDOQuery $c)
     {
-        $query = $this->getProperty('query');
-        if (!empty($query)) {
-            $c->where(array(
-                    'url:LIKE' => '%'.$query.'%'
-                ));
-        }
+        $query  = $this->getProperty('query');
         $solved = $this->getProperty('solved');
-        if (!empty($solved)) {
+
+        if ($query !== null) {
             $c->where(array(
-                    'solved' => $solved
-                ));
+                'url:LIKE' => '%' . $query . '%'
+            ));
         }
+
+        if ($solved !== null) {
+            $c->where(array(
+                'solved' => $solved
+            ));
+        }
+
+        $c->sortby('id', 'DESC');
+
         return $c;
     }
 
