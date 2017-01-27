@@ -8,7 +8,7 @@
 class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
 {
     public $classKey = 'SeoSuiteUrl';
-    public $languageTopics = array('seosuite:default');
+    public $languageTopics = ['seosuite:default'];
     public $defaultSortField = 'url';
     public $defaultSortDirection = 'ASC';
 
@@ -18,15 +18,15 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
         $solved = $this->getProperty('solved');
 
         if ($query !== null) {
-            $c->where(array(
+            $c->where([
                 'url:LIKE' => '%' . $query . '%'
-            ));
+            ]);
         }
 
         if ($solved !== null) {
-            $c->where(array(
+            $c->where([
                 'solved' => $solved
-            ));
+            ]);
         }
 
         $c->sortby('id', 'DESC');
@@ -36,30 +36,38 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
 
     public function prepareRow(xPDOObject $object)
     {
-        $redirect_to = $object->get('redirect_to');
+        $redirect_to  = $object->get('redirect_to');
         $redirectText = '-';
+
         if (intval($redirect_to) > 0) {
             // also check if resource exists
             $resourceObj = $this->modx->getObject('modResource', $redirect_to);
             if ($resourceObj) {
-                $redirectText = $resourceObj->get('pagetitle').' ('.$redirect_to.')<br><small>'.$this->modx->makeUrl($redirect_to, '', '', 'full').'</small>';
+                $redirectText = $resourceObj->get('pagetitle') . ' (' . $redirect_to . ')<br><small>' . $this->modx->makeUrl($redirect_to, '', '', 'full') . '</small>';
             }
         }
         $object->set('redirect_to_text', $redirectText);
 
         $suggestions = $object->get('suggestions');
+
+        if (!is_array($suggestions)) {
+            $suggestions = [];
+        }
+
         $suggestionsText = '-';
         $suggestionsArray = [];
         foreach ($suggestions as $id) {
             // also check if resource exists
             $resourceObj = $this->modx->getObject('modResource', $id);
             if ($resourceObj) {
-                $suggestionsArray[] = $resourceObj->get('pagetitle').' ('.$resourceObj->get('id').')';
+                $suggestionsArray[] = $resourceObj->get('pagetitle') . ' (' . $resourceObj->get('id') . ')';
             }
         }
+
         if (count($suggestionsArray)) {
-            $suggestionsText = implode('<br>', $suggestionsArray);
+            $suggestionsText = implode('<br />', $suggestionsArray);
         }
+
         $object->set('suggestions_text', $suggestionsText);
 
         return parent::prepareRow($object);

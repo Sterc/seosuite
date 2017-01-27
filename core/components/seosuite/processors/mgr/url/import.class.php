@@ -11,29 +11,31 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
     public $languageTopics = ['seosuite:default'];
     public $created = 0;
     public $updated = 0;
-    public $allowedExtensions = ['csv'];
+    public $allowedExtensions = ['csv', 'xls'];
 
     public function process()
     {
         $this->modx->log(modX::LOG_LEVEL_INFO, $this->modx->lexicon('seosuite.import.start'));
         $this->modx->log(modX::LOG_LEVEL_INFO, '=====================');
         $this->modx->setLogLevel(modX::LOG_LEVEL_DEBUG);
+
         $file = $this->getProperty('file');
-        
+
         // Check if file field is set
         if (empty($file)) {
             return $this->failure($this->modx->lexicon('seosuite.error.emptyfile'));
         }
+
         // Check for file extension
         $extension = pathinfo($_FILES['file']['name'])['extension'];
         if (!in_array($extension, $this->allowedExtensions)) {
             return $this->failure($this->modx->lexicon('seosuite.error.extension_notallowed'));
         }
-
-        if ($extension == 'csv') {
+        $this->modx->log(modX::LOG_LEVEL_INFO, 'ext: ' . $extension);
+        if ($extension === 'csv') {
             $data = $this->parseCsvFile($file);
         } else {
-            $data = $this->parseExcelFile($file['tmp_name']);
+            $data = $this->parseExcelFile($file);
         }
 
         foreach ($data as $key => $row) {
@@ -45,7 +47,7 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
             $url = $row[0];
 
             // If not a valid url, continue to next
-            if (substr($url, 0, 4) != 'http') {
+            if (substr($url, 0, 4) !== 'http') {
                 continue;
             }
 
@@ -59,7 +61,7 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
                 $redirect_handler = 0;
                 $findSuggestions = $this->modx->seosuite->findRedirectSuggestions($url);
                 if (count($findSuggestions)) {
-                    if (count($findSuggestions) == 1) {
+                    if (count($findSuggestions) === 1) {
                         $redirect_to = $findSuggestions[0];
                         $solved = 1;
                         /* First check for SeoTab. If not found, use SEO Suite for handling redirect */
@@ -94,13 +96,14 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
         $this->modx->log(modX::LOG_LEVEL_INFO, $this->created.' Urls added.');
         $this->modx->log(modX::LOG_LEVEL_INFO, $this->updated.' Urls skipped (existing urls).');
         $this->modx->log(modX::LOG_LEVEL_INFO, 'COMPLETED');
+
         return $this->success('Updated: '.$this->updated.' - Created: '.$this->created, array('success' => true));
     }
 
     /**
      * Parse a csv file into an array
      *
-     * @param string    $file   The file object
+     * @param array     $file   The file object
      * @return array    $data   the contents from the csv as php array
      */
     public function parseCsvFile($file)
@@ -120,20 +123,25 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
      * Read an excel file with the PHPExcel library
      * https://github.com/PHPOffice/PHPExcel
      *
-     * @param string    $filename       The path to the excel file
+     * @param array     $file           The file object
      * @param int       $sheetIndex     Index number of the sheet from the excel file; 0 = first sheet, 1 = second sheet etc.
      * @return array    $data           the contents from the sheet as php array
      */
-    public function parseExcelFile($filename, $sheetIndex = 0)
+    public function parseExcelFile($file, $sheetIndex = 0)
     {
         require_once $this->modx->seosuite->options['corePath'] . 'PHPExcel/Classes/PHPExcel/IOFactory.php';
+
         $data = [];
+
         try {
-            $filetype = PHPExcel_IOFactory::identify($filename);
+            $filetype = PHPExcel_IOFactory::identify($file['tmp_name']);
             $objReader = PHPExcel_IOFactory::createReader($filetype);
-            $objPHPExcel = $objReader->load($filename);
+            $objPHPExcel = $objReader->load($file['tmp_name']);
         } catch (Exception $e) {
-            die('Error loading file "' . pathinfo($filename, PATHINFO_BASENAME) . '": ' . $e->getMessage());
+            $message = 'Error loading file "' . pathinfo($file['tmp_name'], PATHINFO_BASENAME) . '": ' . $e->getMessage();
+            $this->modx->log(modX::LOG_LEVEL_INFO, $message);
+
+            return $this->failure($message);
         }
 
         $sheet = $objPHPExcel->getSheet($sheetIndex);
@@ -152,4 +160,5 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
         return $this->success('Updated: '.$this->updated.' - Created: '.$this->created, array('success' => true));
     }
 }
+
 return 'SeoSuiteUrlImportProcessor';
