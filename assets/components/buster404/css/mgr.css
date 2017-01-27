@@ -1,8 +1,0 @@
-.required:before {
-    content: "* ";
-    color: red;
-}
-
-.buster404-row.buster404-solved {
-    background: #d6efd6;
-}

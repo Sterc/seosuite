@@ -1,0 +1,8 @@
+.required:before {
+    content: "* ";
+    color: red;
+}
+
+.seosuite-row.seosuite-solved {
+    background: #d6efd6;
+}

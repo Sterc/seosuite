@@ -4,7 +4,7 @@
  *
  * THIS RESOLVER IS AUTOMATICALLY GENERATED, NO CHANGES WILL APPLY
  *
- * @package buster404
+ * @package seosuite
  * @subpackage build
  */
 
@@ -13,14 +13,14 @@ if ($object->xpdo) {
     switch ($options[xPDOTransport::PACKAGE_ACTION]) {
         case xPDOTransport::ACTION_INSTALL:
         case xPDOTransport::ACTION_UPGRADE:
-            $modelPath = $modx->getOption('buster404.core_path', null, $modx->getOption('core_path') . 'components/buster404/') . 'model/';
+            $modelPath = $modx->getOption('seosuite.core_path', null, $modx->getOption('core_path') . 'components/seosuite/') . 'model/';
             
-            $modx->addPackage('buster404', $modelPath, null);
+            $modx->addPackage('seosuite', $modelPath, null);
 
 
             $manager = $modx->getManager();
 
-            $manager->createObjectContainer('Buster404Url');
+            $manager->createObjectContainer('SeoSuiteUrl');
 
             break;
     }
