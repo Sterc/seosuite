@@ -255,29 +255,16 @@ class SeoSuite
 
     public function getSeoTabVersion()
     {
-        /**
-         * Check in transport packages table
-         */
         $c = $this->modx->newQuery('transport.modTransportPackage');
-        $c->where(
-            [
-            'workspace' => 1, "(SELECT
-            `signature`
-            FROM {$this->modx->getTableName('modTransportPackage')} AS `latestPackage`
-            WHERE `latestPackage`.`package_name` = `modTransportPackage`.`package_name`
-            ORDER BY
-                `latestPackage`.`version_major` DESC,
-                `latestPackage`.`version_minor` DESC,
-                `latestPackage`.`version_patch` DESC,
-                IF(`release` = '' OR `release` = 'ga' OR `release` = 'pl','z',`release`) DESC,
-                `latestPackage`.`release_index` DESC
-                LIMIT 1,1) = `modTransportPackage`.`signature`",
-            ]
-        );
         $c->where([
-            'modTransportPackage.package_name' => 'stercseo',
+            'package_name'     => 'stercseo',
             'installed:IS NOT' => null
         ]);
+        $c->sortby('version_major', 'DESC');
+        $c->sortby('version_minor', 'DESC');
+        $c->sortby('version_patch', 'DESC');
+        $c->limit(1);
+
         $stPackage = $this->modx->getObject('transport.modTransportPackage', $c);
         if ($stPackage) {
             return $stPackage->get('version_major') . '.' . $stPackage->get('version_minor') . '.' . $stPackage->get('version_patch') . '-' . $stPackage->get('release');
@@ -288,9 +275,6 @@ class SeoSuite
             return false;
         }
 
-        /**
-         * Check in git package management table
-         */
         $c = $this->modx->newQuery('GitPackage');
         $c->where([
             'name' => 'StercSEO'
