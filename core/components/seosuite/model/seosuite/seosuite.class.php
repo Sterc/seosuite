@@ -46,19 +46,19 @@ class SeoSuite
 
         /* loads some default paths for easier management */
         $this->options = array_merge(array(
-                                         'namespace' => $this->namespace,
-                                         'corePath' => $corePath,
-                                         'modelPath' => $corePath . 'model/',
-                                         'chunksPath' => $corePath . 'elements/chunks/',
-                                         'snippetsPath' => $corePath . 'elements/snippets/',
-                                         'templatesPath' => $corePath . 'templates/',
-                                         'assetsPath' => $assetsPath,
-                                         'assetsUrl' => $assetsUrl,
-                                         'jsUrl' => $assetsUrl . 'js/',
-                                         'cssUrl' => $assetsUrl . 'css/',
-                                         'connectorUrl' => $assetsUrl . 'connector.php',
-                                         'seoTabNotice' => $seoTabNotice
-                                     ), $options);
+            'namespace' => $this->namespace,
+            'corePath' => $corePath,
+            'modelPath' => $corePath . 'model/',
+            'chunksPath' => $corePath . 'elements/chunks/',
+            'snippetsPath' => $corePath . 'elements/snippets/',
+            'templatesPath' => $corePath . 'templates/',
+            'assetsPath' => $assetsPath,
+            'assetsUrl' => $assetsUrl,
+            'jsUrl' => $assetsUrl . 'js/',
+            'cssUrl' => $assetsUrl . 'css/',
+            'connectorUrl' => $assetsUrl . 'connector.php',
+            'seoTabNotice' => $seoTabNotice
+        ), $options);
 
         $this->modx->addPackage('seosuite', $this->getOption('modelPath'));
     }
@@ -115,15 +115,15 @@ class SeoSuite
                 // or a resource with matching pagetitle, where non-alphanumeric chars are replaced with space
                 $q = $this->modx->newQuery('modResource');
                 $q->where(array(
-                              array(
-                                  'alias:LIKE' => '%'.$word.'%',
-                                  'OR:pagetitle:LIKE' => '%'.$word.'%'
-                              ),
-                              array(
-                                  'AND:published:=' => true,
-                                  'AND:deleted:=' => false
-                              )
-                          ));
+                    array(
+                        'alias:LIKE' => '%'.$word.'%',
+                        'OR:pagetitle:LIKE' => '%'.$word.'%'
+                    ),
+                    array(
+                        'AND:published:=' => true,
+                        'AND:deleted:=' => false
+                    )
+                ));
                 $q->prepare();
                 $results = $this->modx->query($q->toSql());
                 while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
@@ -247,24 +247,25 @@ class SeoSuite
          * Check in transport packages table
          */
         $c = $this->modx->newQuery('transport.modTransportPackage');
-        $c->where(array(
-                      'workspace' => 1,
-                      "(SELECT
-                `signature`
-              FROM {$this->modx->getTableName('modTransportPackage')} AS `latestPackage`
-              WHERE `latestPackage`.`package_name` = `modTransportPackage`.`package_name`
-              ORDER BY
-                 `latestPackage`.`version_major` DESC,
-                 `latestPackage`.`version_minor` DESC,
-                 `latestPackage`.`version_patch` DESC,
-                 IF(`release` = '' OR `release` = 'ga' OR `release` = 'pl','z',`release`) DESC,
-                 `latestPackage`.`release_index` DESC
-              LIMIT 1,1) = `modTransportPackage`.`signature`",
-                  ));
-        $c->where(array(
-                      'modTransportPackage.package_name' => 'stercseo',
-                      'installed:IS NOT' => null
-                  ));
+        $c->where(
+            [
+            'workspace' => 1, "(SELECT
+            `signature`
+            FROM {$this->modx->getTableName('modTransportPackage')} AS `latestPackage`
+            WHERE `latestPackage`.`package_name` = `modTransportPackage`.`package_name`
+            ORDER BY
+                `latestPackage`.`version_major` DESC,
+                `latestPackage`.`version_minor` DESC,
+                `latestPackage`.`version_patch` DESC,
+                IF(`release` = '' OR `release` = 'ga' OR `release` = 'pl','z',`release`) DESC,
+                `latestPackage`.`release_index` DESC
+                LIMIT 1,1) = `modTransportPackage`.`signature`",
+            ]
+        );
+        $c->where([
+            'modTransportPackage.package_name' => 'stercseo',
+            'installed:IS NOT' => null
+        ]);
         $stPackage = $this->modx->getObject('transport.modTransportPackage', $c);
         if ($stPackage) {
             return $stPackage->get('version_major') . '.' . $stPackage->get('version_minor') . '.' . $stPackage->get('version_patch') . '-' . $stPackage->get('release');
@@ -279,9 +280,9 @@ class SeoSuite
          * Check in git package management table
          */
         $c = $this->modx->newQuery('GitPackage');
-        $c->where(array(
-                      'name' => 'StercSEO'
-                  ));
+        $c->where([
+            'name' => 'StercSEO'
+        ]);
 
         $gitStPackage = $this->modx->getObject('GitPackage', $c);
         if ($gitStPackage) {
