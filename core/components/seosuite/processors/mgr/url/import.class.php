@@ -16,7 +16,6 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
     public function process()
     {
         $this->modx->log(modX::LOG_LEVEL_INFO, $this->modx->lexicon('seosuite.import.start'));
-        $this->modx->log(modX::LOG_LEVEL_INFO, '=====================');
         $this->modx->setLogLevel(modX::LOG_LEVEL_DEBUG);
 
         $file = $this->getProperty('file');
@@ -52,52 +51,59 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
             }
 
             $q = $this->modx->newQuery($this->classKey);
-            $q->where(array('url' => $url));
-            $urlObject = $this->modx->query($q->toSql());
-            if (!is_object($urlObject)) {
-                $suggestions = '';
-                $redirect_to = 0;
-                $solved = 0;
-                $redirect_handler = 0;
-                $findSuggestions = $this->modx->seosuite->findRedirectSuggestions($url);
-                if (count($findSuggestions)) {
-                    if (count($findSuggestions) === 1) {
-                        $redirect_to = $findSuggestions[0];
-                        $solved = 1;
-                        /* First check for SeoTab. If not found, use SEO Suite for handling redirect */
-                        if (!$this->modx->seosuite->checkSeoTab()) {
-                            $redirect_handler = 1;
-                        } else {
-                            /* Try to add the redirect to Seotab */
-                            $seotabRedirect = $this->modx->seosuite->addSeoTabRedirect($url, $findSuggestions[0]);
-                            if (empty($seotabRedirect)) {
-                                /* Redirect could not be added to SeoTab, or already exists. */
-                            }
-                        }
-                    }
-                    $suggestions = json_encode(array_values($findSuggestions));
-                }
-                $this->modx->exec(
-                    "INSERT INTO {$this->modx->getTableName($this->classKey)}
-                    SET {$this->modx->escape('url')} = {$this->modx->quote($url)},
-                        {$this->modx->escape('suggestions')} = {$this->modx->quote($suggestions)},
-                        {$this->modx->escape('redirect_to')} = {$this->modx->quote($redirect_to)},
-                        {$this->modx->escape('redirect_handler')} = {$this->modx->quote($redirect_handler)},
-                        {$this->modx->escape('solved')} = {$this->modx->quote($solved)}"
-                );
+            $q->where(['url' => $url]);
+            $q->prepare();
 
-                $this->created++;
-            } else {
+            $urlResult = $this->modx->query($q->toSql());
+            $urlObject = $urlResult->fetch(PDO::FETCH_ASSOC);
+
+            if ($urlObject !== false) {
+                $this->modx->log(modX::LOG_LEVEL_INFO, 'Skip: ' . $url);
                 $this->updated++;
+
+                continue;
             }
+
+            $suggestions      = '';
+            $redirect_to      = 0;
+            $solved           = 0;
+            $redirect_handler = 0;
+            $findSuggestions  = $this->modx->seosuite->findRedirectSuggestions($url);
+
+            if (count($findSuggestions)) {
+                if (count($findSuggestions) === 1) {
+                    $redirect_to = $findSuggestions[0];
+                    $solved = 1;
+
+                    if (!$this->modx->seosuite->checkSeoTab()) {
+                        $redirect_handler = 1;
+                    } else {
+                        $this->modx->seosuite->addSeoTabRedirect($url, $findSuggestions[0]);
+                    }
+                }
+
+                $suggestions = json_encode(array_values($findSuggestions));
+            }
+
+            $this->modx->exec(
+                "INSERT INTO {$this->modx->getTableName($this->classKey)}
+                SET {$this->modx->escape('url')} = {$this->modx->quote($url)},
+                    {$this->modx->escape('suggestions')} = {$this->modx->quote($suggestions)},
+                    {$this->modx->escape('redirect_to')} = {$this->modx->quote($redirect_to)},
+                    {$this->modx->escape('redirect_handler')} = {$this->modx->quote($redirect_handler)},
+                    {$this->modx->escape('solved')} = {$this->modx->quote($solved)}"
+            );
+
+            $this->modx->log(modX::LOG_LEVEL_INFO, 'Add: ' . $url);
+            $this->created++;
         }
-        $this->modx->log(modX::LOG_LEVEL_INFO, '=====================');
+
         $this->modx->log(modX::LOG_LEVEL_INFO, 'Import successfully completed.');
         $this->modx->log(modX::LOG_LEVEL_INFO, $this->created.' Urls added.');
         $this->modx->log(modX::LOG_LEVEL_INFO, $this->updated.' Urls skipped (existing urls).');
         $this->modx->log(modX::LOG_LEVEL_INFO, 'COMPLETED');
 
-        return $this->success('Updated: '.$this->updated.' - Created: '.$this->created, array('success' => true));
+        return $this->success('Updated: ' . $this->updated . ' - Created: ' . $this->created, ['success' => true]);
     }
 
     /**

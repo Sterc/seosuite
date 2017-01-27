@@ -98,25 +98,29 @@ class SeoSuite
     public function findRedirectSuggestions($url)
     {
         $output = [];
-        $url = parse_url($url);
+        $url    = parse_url($url);
+
         if (isset($url['path'])) {
-            $pathParts = explode('/', $url['path']);
-            $keys = array_keys($pathParts);
+            $pathParts    = explode('/', trim($url['path'], '/'));
+            $keys         = array_keys($pathParts);
             $searchString = $pathParts[end($keys)];
-            $extension = pathinfo($url['path'], PATHINFO_EXTENSION);
+            $extension    = pathinfo($url['path'], PATHINFO_EXTENSION);
+
             if (!empty($extension)) {
-                $searchString = str_replace('.'.$extension, '', $searchString);
+                $searchString = str_replace('.' . $extension, '', $searchString);
             }
+
             $searchWords = $this->splitUrl($searchString);
             $searchWords = $this->filterStopWords($searchWords);
+
             foreach ($searchWords as $word) {
                 // Try to find a resource with an exact matching alias
                 // or a resource with matching pagetitle, where non-alphanumeric chars are replaced with space
                 $q = $this->modx->newQuery('modResource');
                 $q->where(array(
                     array(
-                        'alias:LIKE' => '%'.$word.'%',
-                        'OR:pagetitle:LIKE' => '%'.$word.'%'
+                        'alias:LIKE' => '%' . $word . '%',
+                        'OR:pagetitle:LIKE' => '%' . $word . '%'
                     ),
                     array(
                         'AND:published:=' => true,
@@ -124,19 +128,24 @@ class SeoSuite
                     )
                 ));
                 $q->prepare();
+
                 $results = $this->modx->query($q->toSql());
                 while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
                     $output[] = $row['modResource_id'];
                 }
             }
         }
+
+        $output = array_unique($output);
+
         return $output;
     }
 
     /**
-     * Split an url string into an array with separate words
+     * Split an url string into an array with separate words.
+     *
      * @param   string $input
-     * @return  array An array with all the separate words
+     * @return  array  An array with all the separate words
      */
     public function splitUrl($input)
     {
@@ -146,6 +155,7 @@ class SeoSuite
     /**
      * Get an array of stopwords from the stopword txt files
      * Uses stopwords from https://github.com/digitalmethodsinitiative/dmi-tcat/tree/master/analysis/common/stopwords
+     *
      * @return  array An array with stopwords
      */
     public function getStopWords()
@@ -165,6 +175,8 @@ class SeoSuite
     }
 
     /**
+     * Remove stop words from url.
+     *
      * @param   array $input The input array
      * @return  array $filtered An array with only allowed words from input string
      */
