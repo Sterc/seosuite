@@ -36,11 +36,12 @@ class SeoSuite
         $this->modx->lexicon->load('seosuite:default');
 
         /* Check for valid version of SeoTab on load */
-        $seoTabNotice = '';
-        if ($this->getSeoTabVersion()) {
+        if ($this->getSeoTabVersion() === false) {
+            $seoTabNotice = $this->modx->lexicon('seosuite.seotab.notfound');
+        } else if ($this->getSeoTabVersion() < '2.0.0-pl') {
             $seoTabNotice = $this->modx->lexicon('seosuite.seotab.versioninvalid');
         } else {
-            $seoTabNotice = $this->modx->lexicon('seosuite.seotab.notfound');
+            $seoTabNotice = '';
         }
 
         /* loads some default paths for easier management */
@@ -239,45 +240,65 @@ class SeoSuite
             ) . 'model/stercseo/',
             []
         );
+
         if (!($stercseo instanceof StercSEO)) {
-            /* SeoTab is not installed */
             return false;
         }
 
-        if ($this->getSeoTabVersion()) {
-            $version_major = (int) $this->getSeoTabVersion()->get('version_major');
-            if ($version_major < 2) {
-                /* SeoTab version is too old */
-                return false;
-            }
+        $version = $this->getSeoTabVersion();
+        if ($version < '2.0.0-pl') {
+            return false;
         }
+
         return true;
     }
 
     public function getSeoTabVersion()
     {
+        /**
+         * Check in transport packages table
+         */
         $c = $this->modx->newQuery('transport.modTransportPackage');
-        $c->where(array(
-            'workspace' => 1,
-            "(SELECT
-                `signature`
-              FROM {$this->modx->getTableName('modTransportPackage')} AS `latestPackage`
-              WHERE `latestPackage`.`package_name` = `modTransportPackage`.`package_name`
-              ORDER BY
-                 `latestPackage`.`version_major` DESC,
-                 `latestPackage`.`version_minor` DESC,
-                 `latestPackage`.`version_patch` DESC,
-                 IF(`release` = '' OR `release` = 'ga' OR `release` = 'pl','z',`release`) DESC,
-                 `latestPackage`.`release_index` DESC
-              LIMIT 1,1) = `modTransportPackage`.`signature`",
-        ));
-        $c->where(array(
-            'modTransportPackage.package_name' => 'SEO Tab',
+        $c->where(
+            [
+            'workspace' => 1, "(SELECT
+            `signature`
+            FROM {$this->modx->getTableName('modTransportPackage')} AS `latestPackage`
+            WHERE `latestPackage`.`package_name` = `modTransportPackage`.`package_name`
+            ORDER BY
+                `latestPackage`.`version_major` DESC,
+                `latestPackage`.`version_minor` DESC,
+                `latestPackage`.`version_patch` DESC,
+                IF(`release` = '' OR `release` = 'ga' OR `release` = 'pl','z',`release`) DESC,
+                `latestPackage`.`release_index` DESC
+                LIMIT 1,1) = `modTransportPackage`.`signature`",
+            ]
+        );
+        $c->where([
+            'modTransportPackage.package_name' => 'stercseo',
             'installed:IS NOT' => null
-        ));
+        ]);
         $stPackage = $this->modx->getObject('transport.modTransportPackage', $c);
         if ($stPackage) {
-            return $stPackage;
+            return $stPackage->get('version_major') . '.' . $stPackage->get('version_minor') . '.' . $stPackage->get('version_patch') . '-' . $stPackage->get('release');
+        }
+
+        $gitpackagemanagement = $this->modx->getService('gitpackagemanagement', 'GitPackageManagement', $this->modx->getOption('gitpackagemanagement.core_path', null, $this->modx->getOption('core_path') . 'components/gitpackagemanagement/') . 'model/gitpackagemanagement/');
+        if (!($gitpackagemanagement instanceof GitPackageManagement)) {
+            return false;
+        }
+
+        /**
+         * Check in git package management table
+         */
+        $c = $this->modx->newQuery('GitPackage');
+        $c->where([
+            'name' => 'StercSEO'
+        ]);
+
+        $gitStPackage = $this->modx->getObject('GitPackage', $c);
+        if ($gitStPackage) {
+            return $gitStPackage->get('version');
         }
         return false;
     }
