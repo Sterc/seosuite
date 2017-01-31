@@ -11,7 +11,7 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
     public $languageTopics = ['seosuite:default'];
     public $created = 0;
     public $updated = 0;
-    public $allowedExtensions = ['csv', 'xls'];
+    public $allowedExtensions = ['csv', 'xls', 'xlsx'];
 
     public function process()
     {
@@ -28,6 +28,8 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
         // Check for file extension
         $extension = pathinfo($_FILES['file']['name'])['extension'];
         if (!in_array($extension, $this->allowedExtensions)) {
+            $this->modx->log(modX::LOG_LEVEL_INFO, $this->modx->lexicon('seosuite.error.extension_notallowed'));
+            $this->modx->log(modX::LOG_LEVEL_INFO, 'COMPLETED');
             return $this->failure($this->modx->lexicon('seosuite.error.extension_notallowed'));
         }
 
@@ -135,6 +137,12 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
      */
     public function parseExcelFile($file, $sheetIndex = 0)
     {
+        // Check if the ZipArchive extension is installed (needed for PHPExcel)
+        if (!class_exists('ZipArchive')) {
+            $this->modx->log(modX::LOG_LEVEL_ERROR, $this->modx->lexicon('seosuite.error.ziparchive_notinstalled'));
+            $this->modx->log(modX::LOG_LEVEL_INFO, 'COMPLETED');
+            return $this->failure($this->modx->lexicon('seosuite.error.ziparchive_notinstalled'));
+        }
         require_once $this->modx->seosuite->options['corePath'] . 'PHPExcel/Classes/PHPExcel/IOFactory.php';
 
         $data = [];

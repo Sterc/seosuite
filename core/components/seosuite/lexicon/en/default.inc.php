@@ -22,8 +22,8 @@ $_lang['seosuite.url.import'] = 'Import file';
 $_lang['seosuite.url.file'] = 'File';
 $_lang['seosuite.import.start'] = 'Starting with importing the URLs, this could take some time 
 depending on the size of your file.';
-$_lang['seosuite.import.instructions'] = 'Use a .csv file. Make sure you’ve used the full URLs, including 
-the domain.';
+$_lang['seosuite.import.instructions'] = 'Use a .csv, .xls or .xlsx file. Make sure you’ve used the full URLs, 
+including the domain.';
 
 $_lang['seosuite.url.url'] = '404 URL';
 $_lang['seosuite.url.solved'] = 'Solved';
@@ -46,6 +46,8 @@ $_lang['seosuite.error.url_remove'] = 'An error occurred while trying to remove 
 $_lang['seosuite.error.url_save'] = 'An error occurred while trying to save the URL.';
 $_lang['seosuite.error.emptyfile'] = 'No file specified';
 $_lang['seosuite.error.extension_notallowed'] = 'Filetype not allowed. Only csv files are allowed.';
+$_lang['seosuite.error.ziparchive_notinstalled'] = 'PHP extension ZipArchive is not installed, 
+which is needed to be able to import xls(x) files. Please install the ZipArchive extension, or use a .csv file.';
 
 $_lang['seosuite.import.seoUrl.error'] = 'The found suggestion could not be automatically saved as redirect. 
 Please add it manually.';

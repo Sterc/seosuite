@@ -22,7 +22,7 @@ $_lang['seosuite.url.import'] = 'Importeer bestand';
 $_lang['seosuite.url.file'] = 'Bestand';
 $_lang['seosuite.import.start'] = 'Starten met importeren van de URL\'s, dit kan even duren afhankelijk van 
 de grootte van je bestand.';
-$_lang['seosuite.import.instructions'] = 'Gebruik een .csv-bestand. Zorg ervoor dat je de complete URL’s 
+$_lang['seosuite.import.instructions'] = 'Gebruik een .csv, .xls of .xlsx bestand. Zorg ervoor dat je de complete URL’s 
 hebt ingevuld, inclusief de domeinnaam.';
 
 $_lang['seosuite.url.url'] = '404 URL';
@@ -46,6 +46,8 @@ $_lang['seosuite.error.url_remove'] = 'Er is een fout opgetreden tijdens het ver
 $_lang['seosuite.error.url_save'] = 'Er is een fout opgetreden tijdens het opslaan van de URL.';
 $_lang['seosuite.error.emptyfile'] = 'Geen bestand opgegeven';
 $_lang['seosuite.error.extension_notallowed'] = 'Bestandstype niet toegestaan. Alleen csv bestanden zijn toegestaan.';
+$_lang['seosuite.error.ziparchive_notinstalled'] = 'PHP extension ZipArchive is niet geinstalleerd, 
+welke nodig is om xls(x) bestanden te importeren. Installeer de ZipArchive extension, of gebruik een .csv bestand.';
 
 $_lang['seosuite.import.seoUrl.error'] = 'De gevonden suggestie kon niet automatisch als redirect toegevoegd worden. 
 Graag deze handmatig aanmaken.';
