@@ -1,9 +1,9 @@
 {
     "name": "SEO Suite",
     "lowCaseName": "seosuite",
-    "description": "Fix 404 not-found links on your site.",
+    "description": "Fix 404 pages on your site.",
     "author": "Sterc",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "package":{
         "menus": [{
             "text": "seosuite.menu.seosuite"
