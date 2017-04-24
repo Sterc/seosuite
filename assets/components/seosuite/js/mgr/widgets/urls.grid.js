@@ -83,8 +83,8 @@ SeoSuite.grid.Urls = function(config) {
             ,hiddenName: "solved"
             ,store: new Ext.data.SimpleStore({
                 data: [
-                    ['1', 'Yes'],
-                    ['0', 'No']
+                    ['1', 'да'],
+                    ['0', 'Нет']
                 ],
                 id: 0,
                 fields: ["value", "text"]
