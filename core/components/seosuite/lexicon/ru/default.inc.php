@@ -29,6 +29,8 @@ $_lang['seosuite.url.redirect_to'] = 'Перенаправлять на';
 $_lang['seosuite.url.suggestions'] = 'Соответствия для перенаправления';
 $_lang['seosuite.url.find_suggestions'] = 'Найти соответствия';
 $_lang['seosuite.url.found_suggestions'] = 'Мы нашли соответствие! Оно теперь связано с этой ссылкой.';
+$_lang['seosuite.url.found_suggestions_multiple'] = 'Найдено более одного переадресованного совпадения.
+  Пожалуйста, добавьте переадресацию вручную';
 $_lang['seosuite.url.notfound_suggestions'] = 'Мы не можем найти каких-либо соответствий для этой ссылки.';
 $_lang['seosuite.url.update'] = 'Обновить ссылку';
 $_lang['seosuite.url.remove'] = 'Удалить ссылку';

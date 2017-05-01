@@ -30,6 +30,8 @@ $_lang['seosuite.url.redirect_to'] = 'Redirect to';
 $_lang['seosuite.url.suggestions'] = 'Redirect suggestions';
 $_lang['seosuite.url.find_suggestions'] = 'Find suggestions';
 $_lang['seosuite.url.found_suggestions'] = 'We found a match! It is now linked to this URL.';
+$_lang['seosuite.url.found_suggestions_multiple'] = 'Found more than one redirect match.
+ Please add a redirect manually';
 $_lang['seosuite.url.notfound_suggestions'] = 'We could not find any matches for this URL.';
 $_lang['seosuite.url.update'] = 'Update URL';
 $_lang['seosuite.url.remove'] = 'Remove URL';

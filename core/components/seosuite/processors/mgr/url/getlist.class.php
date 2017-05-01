@@ -54,13 +54,23 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
             $suggestions = [];
         }
 
+        /* Render text for all the redirect suggestions */
+        /* Only show 10 first suggestions to keep grid listing fast */
         $suggestionsText = '-';
         $suggestionsArray = [];
+        $limit = 10;
+        $count = count($suggestions);
+        $i = 0;
         foreach ($suggestions as $id) {
             // also check if resource exists
             $resourceObj = $this->modx->getObject('modResource', $id);
             if ($resourceObj) {
                 $suggestionsArray[] = $resourceObj->get('pagetitle') . ' (' . $resourceObj->get('id') . ')';
+            }
+            $i++;
+            if ($i >= $limit) {
+                $suggestionsArray[] = '<i><b>- '.$count.' '.$this->modx->lexicon('seosuite.url.suggestions').' -</b></i>';
+                break;
             }
         }
 

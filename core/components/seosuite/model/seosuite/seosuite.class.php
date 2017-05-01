@@ -256,13 +256,18 @@ class SeoSuite
     public function getSeoTabVersion()
     {
         $c = $this->modx->newQuery('transport.modTransportPackage');
+        // Using double where clause to group the OR
         $c->where([
-            'package_name'     => 'stercseo',
+            ['package_name' => 'SEO Tab'],
+            ['OR:package_name:=' => 'stercseo']
+        ]);
+        $c->where([
             'installed:IS NOT' => null
         ]);
         $c->sortby('version_major', 'DESC');
         $c->sortby('version_minor', 'DESC');
         $c->sortby('version_patch', 'DESC');
+
         $c->limit(1);
 
         $stPackage = $this->modx->getObject('transport.modTransportPackage', $c);

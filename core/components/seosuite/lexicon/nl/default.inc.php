@@ -30,6 +30,8 @@ $_lang['seosuite.url.redirect_to'] = 'Redirect naar';
 $_lang['seosuite.url.suggestions'] = 'Redirect suggesties';
 $_lang['seosuite.url.find_suggestions'] = 'Vind suggesties';
 $_lang['seosuite.url.found_suggestions'] = 'Er is een suggestie gevonden! De suggestie is nu verbonden met deze URL.';
+$_lang['seosuite.url.found_suggestions_multiple'] = 'Er is meer dan 1 suggestie gevonden.
+ Voeg a.u.b. handmatig een redirect toe.';
 $_lang['seosuite.url.notfound_suggestions'] = 'Er zijn geen suggesties gevonden voor deze URL.';
 $_lang['seosuite.url.update'] = 'Update URL';
 $_lang['seosuite.url.remove'] = 'Verwijder URL';
@@ -47,9 +49,12 @@ $_lang['seosuite.error.extension_notallowed'] = 'Bestandstype niet toegestaan. A
 $_lang['seosuite.error.ziparchive_notinstalled'] = 'PHP extensie ZipArchive is niet geïnstalleerd, 
 deze is nodig om xls(x) bestanden te importeren. Installeer de ZipArchive extensie of gebruik een .csv bestand.';
 
-$_lang['seosuite.import.seoUrl.error'] = 'De gevonden suggestie kon niet automatisch worden toegevoegd als redirect. Voeg deze a.u.b. handmatig toe.';
-$_lang['seosuite.import.seoUrl.error'] = 'De suggestie kon niet worden verbonden met de SEO Tab URL. Verbind deze a.u.b. handmatig.';
+$_lang['seosuite.import.seoUrl.error'] = 'De gevonden suggestie kon niet automatisch worden toegevoegd als redirect.
+ Voeg deze a.u.b. handmatig toe.';
+$_lang['seosuite.import.seoUrl.error'] = 'De suggestie kon niet worden verbonden met de SEO Tab URL.
+ Verbind deze a.u.b. handmatig.';
 $_lang['seosuite.seotab.notfound'] = 'SEO Tab is niet geïnstalleerd of de versie is ongeldig. 
-Installeer a.u.b. SEO Tab (versie 2.0 of hoger) om SEO Suite in staat te stellen om redirects automatisch te koppelen aan 404 URL\'s.;
+Installeer a.u.b. SEO Tab (versie 2.0 of hoger) om SEO Suite in staat te stellen
+ om redirects automatisch te koppelen aan 404 URL\'s.';
 $_lang['seosuite.seotab.versioninvalid'] = 'De geinstalleerde versie van Seo Tab is verouderd. 
 Installeer Seo Tab versie 2 (of hoger) om een redirect te kunnen toevoegen.';

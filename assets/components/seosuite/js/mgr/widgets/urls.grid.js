@@ -203,10 +203,13 @@ Ext.extend(SeoSuite.grid.Urls,MODx.grid.Grid,{
             ,listeners: {
                 'success': {fn:function(r) {
                     var result = r.object.suggestions;
-                    if (result == ""){
+                    var count = Object.keys(result).length;
+                    if (count == 0) {
                         Ext.Msg.alert(_('seosuite.url.find_suggestions'), _('seosuite.url.notfound_suggestions'));
-                    } else {
+                    } else if (count == 1) {
                         Ext.Msg.alert(_('seosuite.url.find_suggestions'), _('seosuite.url.found_suggestions'));
+                    } else {
+                        Ext.Msg.alert(_('seosuite.url.find_suggestions'), _('seosuite.url.found_suggestions_multiple'));
                     }
                     this.refresh();
                 }, scope: this }

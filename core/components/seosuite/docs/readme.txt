@@ -1,10 +1,9 @@
 ---------------------------------------
 SEO Suite
 ---------------------------------------
-Version: 0.1.1
-Author: Joeke Kloosterman <joeke@sterc.nl>
+Version: 1.0.1
+Author: Sterc <modx@sterc.nl>
 ---------------------------------------
-
 
 What’s SEO Suite?
 No-one wants a 404-alert, which tells you the webpage you’re looking for, can’t be found. However, this is a fairly common issue for anyone who’s getting a new website. To work around this problem, there’s the SEO Suite. A tool that makes sure the visitors are redirected to a relevant page, when they’re looking for an old URL.

@@ -36,19 +36,19 @@ class SeoSuiteUrlUpdateProcessor extends modObjectUpdateProcessor
             }
         }
 
+        $redirect_handler = 0;
+        $solved = 0;
         if ((int)$redirectTo > 0) {
+            $solved = 1;
+            // If SEO Tab is not installed, use SeoSuite as redirect handler
             if (!$this->modx->seosuite->checkSeoTab()) {
-                $this->addFieldError('redirect_to', $this->modx->lexicon('seosuite.seotab.versioninvalid'));
-            }
-            $seotabRedirect = $this->modx->seosuite->addSeoTabRedirect($url, $redirectTo);
-            if (!$seotabRedirect) {
-                $this->setProperty('redirect_to', 0);
+                $redirect_handler = 1;
             } else {
-                $this->setProperty('solved', 1);
+                $this->modx->seosuite->addSeoTabRedirect($url, $redirectTo);
             }
-        } elseif ((int)$redirectTo == 0) {
-            $this->setProperty('solved', 0);
         }
+        $this->setProperty('redirect_handler', $redirect_handler);
+        $this->setProperty('solved', $solved);
 
         return parent::beforeSet();
     }

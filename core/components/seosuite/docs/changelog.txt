@@ -1,5 +1,12 @@
 Changelog for SeoSuite.
 
-SeoSuite 0.0.1
+SeoSuite 1.0.1
+==============
+- Fix find-suggestions response message to notify if more than one redirect match
+- Fix getSeoTabVersion function to check for correct package_name
+- Fix grid getlist to show only first 10 redirect suggestions to prevent processor timeouts
+- Fix url update processor to not break when not using SEO Tab as redirect handler
+
+SeoSuite 1.0.0
 ==============
 - Initial release.
