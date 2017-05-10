@@ -15,8 +15,9 @@ $_lang['seosuite.global.search'] = 'Zoeken';
 
 $_lang['seosuite.url.urls'] = '404 URL\'s';
 $_lang['seosuite.url.intro_msg'] = 'Heb je meerdere 404 URL\'s gevonden? Upload hier simpelweg een .csv file en 
-SEO Suite zorgt ervoor dat ze herleid worden op je website. Deze worden gematcht met bestaande pagina\'s op je website, gebaseerd op het laatste deel van de URL (het gedeelte achter de laatste slash). Is er één match, dan wordt deze automatisch geconverteerd naar een 301 redirect in SEO Tab. Zijn 
-er meerdere matches, dan kun je de gewenste redirect handmatig kiezen. Zijn er geen matches, dan kun je zelf een URL invoeren.';
+SEO Suite zorgt ervoor dat ze herleid worden op je website. Deze worden gematcht met bestaande pagina\'s op je website, gebaseerd op het laatste deel van de URL (het gedeelte achter de laatste slash).
+ Is er één match, dan wordt deze automatisch geconverteerd naar een 301 redirect in SEO Tab, of, als SEO Tab niet geinstalleerd is, zorgt SEO Suite voor de redirect.
+  Zijn er meerdere matches, dan kun je de gewenste redirect handmatig kiezen. Zijn er geen matches, dan kun je zelf een URL invoeren.';
 $_lang['seosuite.url.import'] = 'Importeer bestand';
 $_lang['seosuite.url.file'] = 'Bestand';
 $_lang['seosuite.import.start'] = 'Starten met importeren van de URL\'s, dit kan even duren afhankelijk van 

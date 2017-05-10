@@ -22,20 +22,17 @@ if (!($seoSuite instanceof SeoSuite)) {
 
 switch ($modx->event->name) {
     case 'OnPageNotFound':
+        $redirectUrl = false;
         $url = $modx->getOption('server_protocol').'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-        $redirectObject = $modx->getObject(
-            'SeoSuiteUrl',
-            array(
-                'url' => $url,
-                'redirect_to:!=' => 0,
-                'redirect_handler' => 1
-            )
-        );
+        $redirectObject = $modx->getObject('SeoSuiteUrl', array('url' => $url));
         if ($redirectObject) {
-            $redirectUrl = $modx->makeUrl($redirectObject->get('redirect_to'), '', '', 'full');
-            $modx->sendRedirect($redirectUrl, 0, 'REDIRECT_HEADER', 'HTTP/1.1 301 Moved Permanently');
+            /* Only create redirectUrl when handler is 1 (SeoSuite) */
+            if ($redirectObject->get('redirect_to') !== 0 && $redirectObject->get('redirect_handler') === 1) {
+                $redirectUrl = $modx->makeUrl($redirectObject->get('redirect_to'), '', '', 'full');
+            }
         } else {
             /* Create new SeoSuiteUrl object, and try to find matches */
+            /* When one redirect match is found, redirect to that page */
             $suggestions      = '';
             $redirect_to      = 0;
             $solved           = 0;
@@ -62,6 +59,13 @@ switch ($modx->event->name) {
                     {$modx->escape('redirect_handler')} = {$modx->quote($redirect_handler)},
                     {$modx->escape('solved')} = {$modx->quote($solved)}"
             );
+            if ($redirect_to) {
+                $redirectUrl = $url;
+            }
+        }
+
+        if ($redirectUrl) {
+            $modx->sendRedirect($redirectUrl, 0, 'REDIRECT_HEADER', 'HTTP/1.1 301 Moved Permanently');
         }
         break;
 }

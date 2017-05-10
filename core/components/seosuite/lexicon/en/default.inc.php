@@ -14,8 +14,13 @@ $_lang['seosuite.menu.seosuite_desc'] = 'Manage bulk 404 URLs.';
 $_lang['seosuite.global.search'] = 'Search';
 
 $_lang['seosuite.url.urls'] = '404 URLs';
-$_lang['seosuite.url.intro_msg'] = 'Fixing your 404 URLs is easy. Simply upload a one-column CSV-file. SEO Suite will make sure the URLs are redirected to a proper page on your website. They will be matched with existing pages on your website, based on the bold part of the example URL: https://example.tld/folder1/folder1/<strong>page-alias</strong>. SEO Suite will perform one of these actions:<br /><br />1. When there’s one match, it will be automatically converted to a 301 redirect in SEO Tab;<br />2. When there are several matches, 
-you can choose the desired redirect manually;<br />3. When there are no matches, you can enter a URL to redirect to yourself.';
+$_lang['seosuite.url.intro_msg'] = 'Fixing your 404 URLs is easy. Simply upload a one-column CSV-file.
+ SEO Suite will make sure the URLs are redirected to a proper page on your website.
+  They will be matched with existing pages on your website, based on the bold part of the example URL: https://example.tld/folder1/folder1/<strong>page-alias</strong>.
+   SEO Suite will perform one of these actions:<br /><br />
+   1. When there’s exactly one match, it will be automatically converted to a 301 redirect in SEO Tab, or, when SEO Tab is not installed, SEO Suite will handle the redirect;<br />
+   2. When there are several matches, you can choose the desired redirect manually;<br />
+   3. When there are no matches, you can enter a URL to redirect to yourself.';
 $_lang['seosuite.url.import'] = 'Import file';
 $_lang['seosuite.url.file'] = 'File';
 $_lang['seosuite.import.start'] = 'Starting with importing the URLs, this could take some time 
