@@ -20,7 +20,15 @@
                 ]
             }],
             "snippets": [],
-            "chunks": []
+            "chunks": [],
+            "widgets": [{
+                "name": "seosuite",
+                "description": "SEO Suite dashboard widget",
+                "type": "file",
+                "content": "seosuite.widget.php",
+                "lexicon": "seosuite:default",
+                "size": "half"
+            }]
         },
         "systemSettings": []
     },
