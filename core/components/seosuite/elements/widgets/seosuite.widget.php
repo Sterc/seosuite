@@ -27,12 +27,14 @@ class modDashboardWidgetSeoSuiteUrls extends modDashboardWidgetInterface {
         if (!($seoSuite instanceof SeoSuite)) {
             return;
         }
+        $langs = $seoSuite->getLangs();
 
         $jsUrl = $seoSuite->options['jsUrl'];
         $this->modx->regClientStartupHTMLBlock(
             '<script type="text/javascript" src="'.$jsUrl.'mgr/seosuite.js" ></script>
             <script type="text/javascript" src="'.$jsUrl.'mgr/widgets/dashboardwidget.grid.js" ></script>
             <script type="text/javascript">Ext.onReady(function() {
+                ' .$langs. '
                 SeoSuite.config = '.$this->modx->toJSON($seoSuite->options).';
                 SeoSuite.config.connector_url = "'.$seoSuite->getOption('connectorUrl').'";
                 MODx.load({
@@ -41,7 +43,10 @@ class modDashboardWidgetSeoSuiteUrls extends modDashboardWidgetInterface {
                 });
             });</script>'
         );
-        return '<div id="seosuite-grid-urls"></div>';
+        return '
+            <p>[[%seosuite.widget_desc]]</p><br />
+            <div id="seosuite-grid-urls"></div>
+        ';
     }
 }
 return 'modDashboardWidgetSeoSuiteUrls';

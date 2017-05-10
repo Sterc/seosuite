@@ -56,3 +56,6 @@ $_lang['seosuite.seotab.notfound'] = 'Дополнение SEO Tab не уста
 Чтобы иметь возможность добавлять (автоматически) перенаправления для битых (404) ссылок, установите пожалуйста SEO Tab (версии 2.0 или выше).';
 $_lang['seosuite.seotab.versioninvalid'] = 'Ваша версия SEO Tab устарела. 
 Пожалуйста, установите SEO Tab версии 2.0 (или выше) для того, чтобы перенаправления работали правильно.';
+
+$_lang['seosuite.widget_desc'] = 'Here you can view the 10 most recently added 404 urls.
+ To view and manage all your 404 urls, please visit the <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager page.</a>';

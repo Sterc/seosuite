@@ -62,3 +62,6 @@ $_lang['seosuite.seotab.notfound'] = 'SEO Tab is not installed or the version is
 To be able to (automatically) add redirects for 404 URLs, please install SEO Tab (version 2.0 or newer).';
 $_lang['seosuite.seotab.versioninvalid'] = 'Your version of SEO Tab is outdated. 
 Please install SEO Tab version 2.0 (or newer) for the redirects to work properly.';
+
+$_lang['seosuite.widget_desc'] = 'Here you can view the 10 most recently added 404 urls.
+ To view and manage all your 404 urls, please visit the <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager page.</a>';

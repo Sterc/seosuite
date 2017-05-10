@@ -59,3 +59,6 @@ Installeer a.u.b. SEO Tab (versie 2.0 of hoger) om SEO Suite in staat te stellen
  om redirects automatisch te koppelen aan 404 URL\'s.';
 $_lang['seosuite.seotab.versioninvalid'] = 'De geinstalleerde versie van Seo Tab is verouderd. 
 Installeer Seo Tab versie 2 (of hoger) om een redirect te kunnen toevoegen.';
+
+$_lang['seosuite.widget_desc'] = 'Hier zie je de meest recent toegevoegde 404 urls.
+ Om alle 404 urls te bekijken en beheren, ga naar de <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager pagina.</a>';

@@ -291,4 +291,14 @@ class SeoSuite
         }
         return false;
     }
+
+    /**
+     * Gets language strings for use on non-SeoSuite controllers.
+     * @return string
+     */
+    public function getLangs() {
+        $entries = $this->modx->lexicon->loadCache('seosuite');
+        $langs = 'Ext.applyIf(MODx.lang,' . $this->modx->toJSON($entries) . ');';
+        return $langs;
+    }
 }
