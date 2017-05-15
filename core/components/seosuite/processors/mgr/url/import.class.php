@@ -117,9 +117,10 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
     public function parseCsvFile($file)
     {
         ini_set('auto_detect_line_endings', true);
+        $delimiter = $this->getCsvFileDelimiter($file['tmp_name']);
         $data = [];
         if (($handle = fopen($file['tmp_name'], "r")) !== false) {
-            while (($row = fgetcsv($handle)) !== false) {
+            while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
                 $data[] = $row;
             }
             fclose($handle);
@@ -167,6 +168,38 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
         }
 
         return $data;
+    }
+
+
+    private function getCsvFileDelimiter($file, $checkLines = 2)
+    {
+        $file = new SplFileObject($file);
+        $delimiters = array(
+            ',',
+            '\t',
+            ';',
+            '|',
+            ':'
+        );
+        $results = array();
+        $i = 0;
+        while ($file->valid() && $i <= $checkLines) {
+            $line = $file->fgets();
+            foreach ($delimiters as $delimiter) {
+                $regExp = '/['.$delimiter.']/';
+                $fields = preg_split($regExp, $line);
+                if (count($fields) > 1) {
+                    if (!empty($results[$delimiter])) {
+                        $results[$delimiter]++;
+                    } else {
+                        $results[$delimiter] = 1;
+                    }
+                }
+            }
+            $i++;
+        }
+        $results = array_keys($results, max($results));
+        return $results[0];
     }
 
     public function cleanup()
