@@ -37,7 +37,7 @@ class SeoSuiteFindSuggestionProcessor extends modObjectUpdateProcessor
         $this->setProperty('redirect_to', $redirect_to);
         $this->setProperty('solved', $solved);
         $this->setProperty('redirect_handler', $redirect_handler);
-        $this->setProperty('suggestions', $this->modx->seosuite->findRedirectSuggestions($url, $siteUrls));
+        $this->setProperty('suggestions', $findSuggestions);
 
         return parent::beforeSet();
     }

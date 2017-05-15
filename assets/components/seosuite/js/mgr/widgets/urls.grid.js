@@ -54,12 +54,12 @@ SeoSuite.grid.Urls = function(config) {
                         'beforeSubmit': {fn:function() {
                             var topic = '/seosuiteimport/';
                             var register = 'mgr';
-                                this.console = MODx.load({
-                                    xtype: 'modx-console',
-                                    register: register,
-                                    topic: topic,
-                                    show_filename: 0
-                                });
+                            this.console = MODx.load({
+                                xtype: 'modx-console',
+                                register: register,
+                                topic: topic,
+                                show_filename: 0
+                            });
                             this.console.show(Ext.getBody());
                         },scope:this},
                         'success': {fn:function(data) {
@@ -127,7 +127,7 @@ SeoSuite.grid.Urls = function(config) {
                 click: {
                     fn: this.clearFilter, scope: this
                 }
-            }  
+            }
         }]
     });
     SeoSuite.grid.Urls.superclass.constructor.call(this,config);
@@ -170,10 +170,10 @@ Ext.extend(SeoSuite.grid.Urls,MODx.grid.Grid,{
         updateUrl.fp.getForm().setValues(this.menu.record);
         updateUrl.show(e.target);
     }
-    
+
     ,removeUrl: function(btn,e) {
         if (!this.menu.record) return false;
-        
+
         MODx.msg.confirm({
             title: _('seosuite.url.remove')
             ,text: _('seosuite.url.remove_confirm')
@@ -245,7 +245,7 @@ Ext.extend(SeoSuite.grid.Urls,MODx.grid.Grid,{
             ? String.format('<span class="green"><i class="icon icon-check"></i>&nbsp;&nbsp;{0}</span>', _('yes'))
             : String.format('<span class="red"><i class="icon icon-ban"></i>&nbsp;&nbsp;{0}</span>', _('no'));
     }
-    
+
 });
 Ext.reg('seosuite-grid-urls',SeoSuite.grid.Urls);
 
@@ -295,6 +295,7 @@ SeoSuite.window.Url = function(config) {
                 ,dir: 'asc'
             }
             ,typeAhead: true
+            ,typeAheadDelay: 250
             ,editable: true
             ,forceSelection: true
             ,emptyText: _('resource')
@@ -368,6 +369,8 @@ SeoSuite.window.Suggestions = function(config) {
         width: fieldWidth+30,
         modal: true,
         closeAction: 'close',
+        saveBtnText: _('seosuite.url.find_suggestions'),
+        cancelBtnText: _('cancel'),
         url: SeoSuite.config.connector_url,
         fields: [{
             xtype: 'textfield'
