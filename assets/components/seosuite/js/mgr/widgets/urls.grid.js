@@ -54,17 +54,15 @@ SeoSuite.grid.Urls = function(config) {
                         'beforeSubmit': {fn:function() {
                             var topic = '/seosuiteimport/';
                             var register = 'mgr';
-                            
                                 this.console = MODx.load({
                                     xtype: 'modx-console',
                                     register: register,
                                     topic: topic,
                                     show_filename: 0
                                 });
-                            
                             this.console.show(Ext.getBody());
                         },scope:this},
-                        'success': {fn:function(data) { 
+                        'success': {fn:function(data) {
                             this.refresh();
                         },scope:this}
 
@@ -192,18 +190,19 @@ Ext.extend(SeoSuite.grid.Urls,MODx.grid.Grid,{
 
     ,findSuggestions: function(btn,e) {
         if (!this.menu.record) return false;
-        
-        MODx.Ajax.request({
-            url: SeoSuite.config.connector_url
-            ,params: {
-                action: 'mgr/url/find_suggestions'
-                ,id: this.menu.record.id
-                ,url: this.menu.record.url
-            }
+
+        var suggestionsWindow = MODx.load({
+            xtype: 'seosuite-window-suggestions'
+            ,title: _('seosuite.url.find_suggestions')
+            ,action: 'mgr/url/find_suggestions'
+            ,record: this.menu.record
             ,listeners: {
                 'success': {fn:function(r) {
-                    var result = r.object.suggestions;
-                    var count = Object.keys(result).length;
+                    var count = 0;
+                    if (r.a.result.object.suggestions) {
+                        var result = r.a.result.object.suggestions;
+                        count = Object.keys(result).length;
+                    }
                     if (count == 0) {
                         Ext.Msg.alert(_('seosuite.url.find_suggestions'), _('seosuite.url.notfound_suggestions'));
                     } else if (count == 1) {
@@ -215,6 +214,10 @@ Ext.extend(SeoSuite.grid.Urls,MODx.grid.Grid,{
                 }, scope: this }
             }
         });
+
+        suggestionsWindow.fp.getForm().reset();
+        suggestionsWindow.fp.getForm().setValues(this.menu.record);
+        suggestionsWindow.show(e.target);
     }
 
     ,filter: function (tf, nv, ov) {
@@ -267,17 +270,24 @@ SeoSuite.window.Url = function(config) {
             xtype: 'modx-combo'
             ,id: 'cmb_redirect_to'
             ,fieldLabel: _('seosuite.url.redirect_to')
+            ,tpl: '<tpl for="."><div class="x-combo-list-item" >{pagetitle_id} ({context_key})<br><small>{resource_url}</small></div></tpl>'
             ,name: "redirect_to"
             ,hiddenName: "redirect_to"
             ,url: SeoSuite.config.connectorUrl
             ,fields: [{
                 name: 'id',
                 type: 'string'
-            }, {
-                name: 'pagetitle',
+            },{
+                name: 'pagetitle_id',
+                type: 'string'
+            },{
+                name: 'context_key',
+                type: 'string'
+            },{
+                name: 'resource_url',
                 type: 'string'
             }]
-            ,displayField: 'pagetitle'
+            ,displayField: 'pagetitle_id'
             ,baseParams: {
                 action: 'mgr/resource/getlist'
                 ,limit: 20
@@ -326,17 +336,60 @@ SeoSuite.window.Import = function(config) {
         fields: [{
             html: '<p>'+_('seosuite.import.instructions')+'</p>',
             style: 'paddingTop: 20px'
-        },
-        {
+        },{
             xtype: 'textfield',
             fieldLabel: _('seosuite.url.file'),
             buttonText: _('seosuite.url.import_choose'),
             name: 'file',
             inputType: 'file'
+        },{
+            xtype: 'checkbox',
+            name: 'match_site_url',
+            boxLabel: _('seosuite.match_site_url'),
+            inputValue: 1
+        },{
+            xtype: 'label'
+            ,text: _('seosuite.match_site_url_desc')
+            ,cls: 'desc-under'
         }]
     });
     SeoSuite.window.Import.superclass.constructor.call(this,config);
 };
 Ext.extend(SeoSuite.window.Import,MODx.Window);
 Ext.reg('seosuite-window-import',SeoSuite.window.Import);
+
+SeoSuite.window.Suggestions = function(config) {
+    config = config || {};
+    var fieldWidth = 450;
+    this.ident = config.ident || 'site-mecitem'+Ext.id();
+    Ext.applyIf(config,{
+        id: this.ident,
+        autoHeight: true,
+        width: fieldWidth+30,
+        modal: true,
+        closeAction: 'close',
+        url: SeoSuite.config.connector_url,
+        fields: [{
+            xtype: 'textfield'
+            ,name: 'id'
+            ,hidden: true
+        },{
+            xtype: 'textfield'
+            ,name: 'url'
+            ,hidden: true
+        },{
+            xtype: 'checkbox',
+            name: 'match_site_url',
+            boxLabel: _('seosuite.match_site_url'),
+            inputValue: 1
+        },{
+            xtype: 'label'
+            ,text: _('seosuite.match_site_url_desc')
+            ,cls: 'desc-under'
+        }]
+    });
+    SeoSuite.window.Suggestions.superclass.constructor.call(this,config);
+};
+Ext.extend(SeoSuite.window.Suggestions,MODx.Window);
+Ext.reg('seosuite-window-suggestions',SeoSuite.window.Suggestions);
 

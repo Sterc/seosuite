@@ -14,7 +14,11 @@ class SeoSuiteFindSuggestionProcessor extends modObjectUpdateProcessor
     public function beforeSet()
     {
         $url = $this->getProperty('url');
-        $this->setProperty('suggestions', $this->modx->seosuite->findRedirectSuggestions($url));
+        $siteUrls = false;
+        if ($this->getProperty('match_site_url')) {
+            $siteUrls = $this->modx->seosuite->getSiteUrls();
+        }
+        $this->setProperty('suggestions', $this->modx->seosuite->findRedirectSuggestions($url, $siteUrls));
 
         return parent::beforeSet();
     }

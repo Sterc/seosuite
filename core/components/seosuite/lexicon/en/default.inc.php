@@ -65,3 +65,7 @@ Please install SEO Tab version 2.0 (or newer) for the redirects to work properly
 
 $_lang['seosuite.widget_desc'] = 'Here you can view the 10 most recently added 404 urls.
  To view and manage all your 404 urls, please visit the <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager page.</a>';
+
+$_lang['seosuite.match_site_url'] = 'Match context site url';
+$_lang['seosuite.match_site_url_desc'] = 'Should the matching system only match pages within the same context.
+ Useful for when you have a multi-language website in multiple contexts with a lot of the same pages.';

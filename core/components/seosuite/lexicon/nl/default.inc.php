@@ -62,3 +62,7 @@ Installeer Seo Tab versie 2 (of hoger) om een redirect te kunnen toevoegen.';
 
 $_lang['seosuite.widget_desc'] = 'Hier zie je de meest recent toegevoegde 404 urls.
  Om alle 404 urls te bekijken en beheren, ga naar de <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager pagina.</a>';
+
+$_lang['seosuite.match_site_url'] = 'Match context site url';
+$_lang['seosuite.match_site_url_desc'] = 'Should the matching system only match pages within the same context.
+ Useful for when you have a multi-language website in multiple contexts with a lot of the same pages.';

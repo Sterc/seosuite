@@ -19,6 +19,10 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
         $this->modx->setLogLevel(modX::LOG_LEVEL_DEBUG);
 
         $file = $this->getProperty('file');
+        $siteUrls = false;
+        if ($this->getProperty('match_site_url')) {
+            $siteUrls = $this->modx->seosuite->getSiteUrls();
+        }
 
         // Check if file field is set
         if (empty($file)) {
@@ -70,7 +74,7 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
             $redirect_to      = 0;
             $solved           = 0;
             $redirect_handler = 0;
-            $findSuggestions  = $this->modx->seosuite->findRedirectSuggestions($url);
+            $findSuggestions  = $this->modx->seosuite->findRedirectSuggestions($url, $siteUrls);
 
             if (count($findSuggestions)) {
                 if (count($findSuggestions) === 1) {
@@ -133,7 +137,7 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
      * https://github.com/PHPOffice/PHPExcel
      *
      * @param array     $file           The file object
-     * @param int       $sheetIndex     Index number of the sheet from the excel file; 0 = first sheet, 1 = second sheet etc.
+     * @param int       $sheetIndex     Index number of the sheet from the excel file; 0 = 1st sheet, 1 = 2nd sheet etc.
      * @return array    $data           the contents from the sheet as php array
      */
     public function parseExcelFile($file, $sheetIndex = 0)

@@ -94,18 +94,28 @@ class SeoSuite
      * Example: 'http://test.com/path/awesome-file.html?a=b' becomes 'awesome-file'
      *
      * @param string $url The 404 url
+     * @param array $contextSiteUrls An array with site_url => context combinations. If not empty, limits to context
      * @return array An array with modResource objects
      */
-    public function findRedirectSuggestions($url)
+    public function findRedirectSuggestions($url, $contextSiteUrls = array())
     {
         $output = [];
-        $url    = parse_url($url);
+        $parsedUrl = parse_url($url);
 
-        if (isset($url['path'])) {
-            $pathParts    = explode('/', trim($url['path'], '/'));
+        if (isset($parsedUrl['path'])) {
+            $pathParts    = explode('/', trim($parsedUrl['path'], '/'));
             $keys         = array_keys($pathParts);
             $searchString = $pathParts[end($keys)];
-            $extension    = pathinfo($url['path'], PATHINFO_EXTENSION);
+            $extension    = pathinfo($parsedUrl['path'], PATHINFO_EXTENSION);
+
+            $context = false;
+            if (count($contextSiteUrls)) {
+                foreach ($contextSiteUrls as $siteUrl => $ctx) {
+                    if (strpos($url, $siteUrl) !== false) {
+                        $context = $ctx;
+                    }
+                }
+            }
 
             if (!empty($extension)) {
                 $searchString = str_replace('.' . $extension, '', $searchString);
@@ -118,6 +128,11 @@ class SeoSuite
                 // Try to find a resource with an exact matching alias
                 // or a resource with matching pagetitle, where non-alphanumeric chars are replaced with space
                 $q = $this->modx->newQuery('modResource');
+                if ($context) {
+                    $q->where(array(
+                        'context_key' => $context
+                    ));
+                }
                 $q->where(array(
                     array(
                         'alias:LIKE' => '%' . $word . '%',
@@ -300,5 +315,24 @@ class SeoSuite
         $entries = $this->modx->lexicon->loadCache('seosuite');
         $langs = 'Ext.applyIf(MODx.lang,' . $this->modx->toJSON($entries) . ');';
         return $langs;
+    }
+
+    /**
+     * Returns a list of all context site urls (if any)
+     * @return array
+     */
+    public function getSiteUrls()
+    {
+        $urls = array();
+        $q = $this->modx->newQuery('modContextSetting');
+        $q->where(array(
+            'key' => 'site_url',
+            'context_key:!=' => 'mgr'
+        ));
+        $collection = $this->modx->getCollection('modContextSetting', $q);
+        foreach ($collection as $item) {
+            $urls[$item->get('value')] = $item->get('context_key');
+        }
+        return $urls;
     }
 }
