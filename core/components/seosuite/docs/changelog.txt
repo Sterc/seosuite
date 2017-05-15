@@ -1,5 +1,15 @@
 Changelog for SeoSuite.
 
+SeoSuite 1.1.0
+==============
+- Add limit to redirect suggestions shown in grid
+- Add SeoSuiteUrl and try to find matches when OnPageNotFound is triggered and no SeoSuiteUrl object is found
+- Add dashboard widget with 10 latest SeoSuite URLs
+- Detect CSV file delimiter on import
+- Add option to limit matches to related context of URL
+- Update find suggestions method to add redirect when one match is found
+- Add search by ID to resource combobox
+
 SeoSuite 1.0.1
 ==============
 - Fix find-suggestions response message to notify if more than one redirect match
