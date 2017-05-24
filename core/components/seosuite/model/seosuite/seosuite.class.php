@@ -143,6 +143,15 @@ class SeoSuite
                         'AND:deleted:=' => false
                     )
                 ));
+                $excludeWords = $this->getExcludeWords();
+                if (count($excludeWords)) {
+                    foreach ($excludeWords as $excludeWord) {
+                        $q->where(array(
+                            'alias:NOT LIKE' => '%' . $excludeWord . '%',
+                            'pagetitle:NOT LIKE' => '%' . $excludeWord . '%',
+                        ));
+                    }
+                }
                 $q->prepare();
 
                 $results = $this->modx->query($q->toSql());
@@ -171,7 +180,7 @@ class SeoSuite
     /**
      * Get an array of stopwords from the stopword txt files
      * Uses stopwords from https://github.com/digitalmethodsinitiative/dmi-tcat/tree/master/analysis/common/stopwords
-     * Also gets words from system setting 'seosuite.exclude_words'
+     * Also uses exclude words from system setting 'seosuite.exclude_words'
      *
      * @return  array An array with stopwords
      */
@@ -188,15 +197,26 @@ class SeoSuite
                 }
             }
         }
-        $excludeWords = $this->modx->getOption('seosuite.exclude_words');
-        if ($excludeWords) {
-            $excludeWords = explode(',', $excludeWords);
-            if (count($excludeWords)) {
-                $stopwords = array_merge($stopwords, $excludeWords);
-            }
+        $excludeWords = $this->getExcludeWords();
+        if (count($excludeWords)) {
+            $stopwords = array_merge($stopwords, $excludeWords);
         }
 
         return $stopwords;
+    }
+
+    /**
+     * Get exclude words from system setting 'seosuite.exclude_words'
+     * @return array
+     */
+    public function getExcludeWords()
+    {
+        $output = array();
+        $excludeWords = $this->modx->getOption('seosuite.exclude_words');
+        if ($excludeWords) {
+            $output = explode(',', $excludeWords);
+        }
+        return $output;
     }
 
     /**

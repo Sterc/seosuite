@@ -24,7 +24,7 @@ class SeoSuiteUrlResourceGetListProcessor extends modObjectGetListProcessor
         }
         $ids = $this->getProperty('ids');
         if (!empty($ids)) {
-            $ids = explode(',', $ids);
+            $ids = json_decode($ids, true);
             $c->where(array(
                 'id:IN' => $ids
             ));

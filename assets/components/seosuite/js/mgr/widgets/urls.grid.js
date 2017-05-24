@@ -298,7 +298,7 @@ SeoSuite.window.Url = function(config) {
                         ,limit: 20
                         ,sort: 'pagetitle'
                         ,dir: 'asc'
-                        ,ids: config.record.suggestions.join()
+                        ,ids: JSON.stringify(config.record.suggestions)
                     }
                     ,typeAhead: true
                     ,typeAheadDelay: 250
