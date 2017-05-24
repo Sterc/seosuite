@@ -37,6 +37,9 @@ $_lang['seosuite.url.notfound_suggestions'] = 'Er zijn geen suggesties gevonden 
 $_lang['seosuite.url.update'] = 'Update URL';
 $_lang['seosuite.url.remove'] = 'Verwijder URL';
 $_lang['seosuite.url.remove_confirm'] = 'Weet je zeker dat je deze URL wil verwijderen?';
+$_lang['seosuite.url.choose_suggestion'] = 'Kies uit suggesties';
+$_lang['seosuite.url.choose_manually'] = 'Kies handmatig een pagina';
+$_lang['seosuite.url.redirect_to_selected'] = 'Geselecteerde redirect';
 
 $_lang['seosuite.error.url_alreadyexists'] = 'Deze URL bestaat al.';
 $_lang['seosuite.error.url_notfound'] = 'Item niet gevonden.';

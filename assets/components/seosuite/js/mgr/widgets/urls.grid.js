@@ -9,7 +9,7 @@ SeoSuite.grid.Urls = function(config) {
         ,baseParams: {
             action: 'mgr/url/getlist'
         }
-        ,fields: ['id','url','solved','redirect_to','redirect_to_text','suggestions_text']
+        ,fields: ['id','url','solved','redirect_to','redirect_to_text','suggestions','suggestions_text']
         ,autoHeight: true
         ,paging: true
         ,remoteSort: true
@@ -81,8 +81,8 @@ SeoSuite.grid.Urls = function(config) {
             ,hiddenName: "solved"
             ,store: new Ext.data.SimpleStore({
                 data: [
-                    ['1', 'да'],
-                    ['0', 'Нет']
+                    ['1', _('yes')],
+                    ['0', _('no')]
                 ],
                 id: 0,
                 fields: ["value", "text"]
@@ -165,7 +165,6 @@ Ext.extend(SeoSuite.grid.Urls,MODx.grid.Grid,{
                 'success': {fn:function() { this.refresh(); },scope:this}
             }
         });
-
         updateUrl.fp.getForm().reset();
         updateUrl.fp.getForm().setValues(this.menu.record);
         updateUrl.show(e.target);
@@ -256,7 +255,8 @@ SeoSuite.window.Url = function(config) {
         ,closeAction: 'close'
         ,url: SeoSuite.config.connectorUrl
         ,action: 'mgr/url/create'
-        ,height: 300
+        ,height: 340
+        ,width: 600
         ,fields: [{
             xtype: 'textfield'
             ,name: 'id'
@@ -267,42 +267,114 @@ SeoSuite.window.Url = function(config) {
             ,name: 'url'
             ,anchor: '100%'
         },{
-            xtype: 'modx-combo'
-            ,id: 'cmb_redirect_to'
-            ,fieldLabel: _('seosuite.url.redirect_to')
-            ,tpl: '<tpl for="."><div class="x-combo-list-item" >{pagetitle_id} ({context_key})<br><small>{resource_url}</small></div></tpl>'
-            ,name: "redirect_to"
-            ,hiddenName: "redirect_to"
-            ,url: SeoSuite.config.connectorUrl
-            ,fields: [{
-                name: 'id',
-                type: 'string'
+            layout: 'column',
+            items: [{
+                columnWidth: 0.5,
+                layout: 'form',
+                items: [{
+                    xtype: 'modx-combo'
+                    ,id: 'cmb_suggestions'
+                    ,fieldLabel: _('seosuite.url.choose_suggestion')
+                    ,tpl: '<tpl for="."><div class="x-combo-list-item" >{pagetitle_id} ({context_key})<br><small>{resource_url}</small></div></tpl>'
+                    ,name: "cmb_suggestions"
+                    ,hiddenName: "cmb_suggestions_value"
+                    ,url: SeoSuite.config.connectorUrl
+                    ,fields: [{
+                        name: 'id',
+                        type: 'string'
+                    },{
+                        name: 'pagetitle_id',
+                        type: 'string'
+                    },{
+                        name: 'context_key',
+                        type: 'string'
+                    },{
+                        name: 'resource_url',
+                        type: 'string'
+                    }]
+                    ,displayField: 'pagetitle_id'
+                    ,baseParams: {
+                        action: 'mgr/resource/getlist'
+                        ,limit: 20
+                        ,sort: 'pagetitle'
+                        ,dir: 'asc'
+                        ,ids: config.record.suggestions.join()
+                    }
+                    ,typeAhead: true
+                    ,typeAheadDelay: 250
+                    ,editable: true
+                    ,forceSelection: true
+                    ,emptyText: _('resource')
+                    ,anchor: '100%'
+                    ,allowBlank: true
+                    ,paging: true
+                    ,pageSize: 20
+                    ,listeners: {
+                        'select': {
+                            fn:this.setRedirectTo,scope: this
+                        }
+                    }
+                }]
             },{
-                name: 'pagetitle_id',
-                type: 'string'
-            },{
-                name: 'context_key',
-                type: 'string'
-            },{
-                name: 'resource_url',
-                type: 'string'
+                columnWidth: 0.5,
+                layout: 'form',
+                items: [{
+                    xtype: 'modx-combo'
+                    ,id: 'cmb_redirect_to'
+                    ,fieldLabel: _('seosuite.url.choose_manually')
+                    ,tpl: '<tpl for="."><div class="x-combo-list-item" >{pagetitle_id} ({context_key})<br><small>{resource_url}</small></div></tpl>'
+                    ,name: "cmb_redirect_to"
+                    ,hiddenName: "redirect_to_value"
+                    ,url: SeoSuite.config.connectorUrl
+                    ,fields: [{
+                        name: 'id',
+                        type: 'string'
+                    },{
+                        name: 'pagetitle_id',
+                        type: 'string'
+                    },{
+                        name: 'context_key',
+                        type: 'string'
+                    },{
+                        name: 'resource_url',
+                        type: 'string'
+                    }]
+                    ,displayField: 'pagetitle_id'
+                    ,baseParams: {
+                        action: 'mgr/resource/getlist'
+                        ,limit: 20
+                        ,sort: 'pagetitle'
+                        ,dir: 'asc'
+                    }
+                    ,typeAhead: true
+                    ,typeAheadDelay: 250
+                    ,editable: true
+                    ,forceSelection: true
+                    ,emptyText: _('resource')
+                    ,anchor: '100%'
+                    ,allowBlank: true
+                    ,paging: true
+                    ,pageSize: 20
+                    ,listeners: {
+                        'select': {
+                            fn:this.setRedirectTo,scope: this
+                        }
+                    }
+                }]
             }]
-            ,displayField: 'pagetitle_id'
-            ,baseParams: {
-                action: 'mgr/resource/getlist'
-                ,limit: 20
-                ,sort: 'pagetitle'
-                ,dir: 'asc'
-            }
-            ,typeAhead: true
-            ,typeAheadDelay: 250
-            ,editable: true
-            ,forceSelection: true
-            ,emptyText: _('resource')
-            ,anchor: '100%'
-            ,allowBlank: true
-            ,paging: true
-            ,pageSize: 20
+        },{
+            xtype: 'hidden'
+            ,name: 'redirect_to'
+            ,id: 'redirect_to_value'
+        },{
+            xtype: 'label'
+            ,text: _('seosuite.url.redirect_to_selected')+': '
+            ,cls: 'text-label text-normal first'
+        },{
+            xtype: 'label'
+            ,id: 'redirect_to_text_value'
+            ,html: config.record.redirect_to_text
+            ,cls: 'text-label'
         }]
     });
     SeoSuite.window.Url.superclass.constructor.call(this,config);
@@ -314,7 +386,15 @@ SeoSuite.window.Url = function(config) {
         cmb_redirect.setValue('');
     }
 };
-Ext.extend(SeoSuite.window.Url,MODx.Window);
+Ext.extend(SeoSuite.window.Url,MODx.Window,{
+    setRedirectTo: function (tf, nv, ov) {
+        var key = tf.getName();
+        var redirect_field = Ext.getCmp('redirect_to_value');
+        redirect_field.setValue(tf.getValue());
+        var redirect_text = Ext.getCmp('redirect_to_text_value');
+        redirect_text.setText(tf.getRawValue());
+    }
+});
 Ext.reg('seosuite-window-url',SeoSuite.window.Url);
 
 SeoSuite.window.Import = function(config) {

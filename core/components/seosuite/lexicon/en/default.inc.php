@@ -41,6 +41,9 @@ $_lang['seosuite.url.notfound_suggestions'] = 'We could not find any matches for
 $_lang['seosuite.url.update'] = 'Update URL';
 $_lang['seosuite.url.remove'] = 'Remove URL';
 $_lang['seosuite.url.remove_confirm'] = 'Are you sure you want to remove this URL?';
+$_lang['seosuite.url.choose_suggestion'] = 'Choose from suggestions';
+$_lang['seosuite.url.choose_manually'] = 'Choose resource manually';
+$_lang['seosuite.url.redirect_to_selected'] = 'Your selected redirect';
 
 $_lang['seosuite.error.url_alreadyexists'] = 'That URL already exists.';
 $_lang['seosuite.error.url_notfound'] = 'Item not found.';
@@ -69,3 +72,6 @@ $_lang['seosuite.widget_desc'] = 'Here you can view the 10 most recently added 4
 $_lang['seosuite.match_site_url'] = 'Match context site url';
 $_lang['seosuite.match_site_url_desc'] = 'Should the matching system only match pages within the same context.
  Useful for when you have a multi-language website in multiple contexts with a lot of the same pages.';
+
+$_lang['setting_seosuite.exclude_words'] = 'Exclude words';
+$_lang['setting_seosuite.exclude_words_desc'] = 'Comma separated list of words which will be excluded from the suggestions matching system.';

@@ -35,6 +35,9 @@ $_lang['seosuite.url.notfound_suggestions'] = 'Мы не можем найти �
 $_lang['seosuite.url.update'] = 'Обновить ссылку';
 $_lang['seosuite.url.remove'] = 'Удалить ссылку';
 $_lang['seosuite.url.remove_confirm'] = 'Вы действительно хотите удалить эту ссылку?';
+$_lang['seosuite.url.choose_suggestion'] = 'Choose from suggestions';
+$_lang['seosuite.url.choose_manually'] = 'Choose resource manually';
+$_lang['seosuite.url.redirect_to_selected'] = 'Your selected redirect';
 
 $_lang['seosuite.error.url_alreadyexists'] = 'Эта ссылка уже существует.';
 $_lang['seosuite.error.url_notfound'] = 'Элемент не найден.';

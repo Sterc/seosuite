@@ -22,6 +22,13 @@ class SeoSuiteUrlResourceGetListProcessor extends modObjectGetListProcessor
                 'OR:longtitle:LIKE' => '%'.$query.'%'
             ));
         }
+        $ids = $this->getProperty('ids');
+        if (!empty($ids)) {
+            $ids = explode(',', $ids);
+            $c->where(array(
+                'id:IN' => $ids
+            ));
+        }
         return $c;
     }
 

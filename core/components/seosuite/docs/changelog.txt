@@ -9,6 +9,8 @@ SeoSuite 1.1.0
 - Add option to limit matches to related context of URL
 - Update find suggestions method to add redirect when one match is found
 - Add search by ID to resource combobox
+- Add system setting (and cmp field) for excluding words from suggestion matching
+- Add suggestions combobox to update url window
 
 SeoSuite 1.0.1
 ==============

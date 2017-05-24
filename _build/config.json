@@ -30,7 +30,11 @@
                 "size": "half"
             }]
         },
-        "systemSettings": []
+        "systemSettings": [{
+            "key": "exclude_words",
+            "value": "",
+            "area": "general"
+        }]
     },
     "database": {
         "tables": ["SeoSuiteUrl"]
