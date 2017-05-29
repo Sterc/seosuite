@@ -109,7 +109,7 @@ class SeoSuite
             $extension    = pathinfo($parsedUrl['path'], PATHINFO_EXTENSION);
 
             $context = false;
-            if (count($contextSiteUrls)) {
+            if (is_array($contextSiteUrls) || is_object($contextSiteUrls)) {
                 foreach ($contextSiteUrls as $siteUrl => $ctx) {
                     if (strpos($url, $siteUrl) !== false) {
                         $context = $ctx;
@@ -124,39 +124,41 @@ class SeoSuite
             $searchWords = $this->splitUrl($searchString);
             $searchWords = $this->filterStopWords($searchWords);
 
-            foreach ($searchWords as $word) {
-                // Try to find a resource with an exact matching alias
-                // or a resource with matching pagetitle, where non-alphanumeric chars are replaced with space
-                $q = $this->modx->newQuery('modResource');
-                if ($context) {
-                    $q->where(array(
-                        'context_key' => $context
-                    ));
-                }
-                $q->where(array(
-                    array(
-                        'alias:LIKE' => '%' . $word . '%',
-                        'OR:pagetitle:LIKE' => '%' . $word . '%'
-                    ),
-                    array(
-                        'AND:published:=' => true,
-                        'AND:deleted:=' => false
-                    )
-                ));
-                $excludeWords = $this->getExcludeWords();
-                if (count($excludeWords)) {
-                    foreach ($excludeWords as $excludeWord) {
+            if (is_array($searchWords) || is_object($searchWords)) {
+                foreach ($searchWords as $word) {
+                    // Try to find a resource with an exact matching alias
+                    // or a resource with matching pagetitle, where non-alphanumeric chars are replaced with space
+                    $q = $this->modx->newQuery('modResource');
+                    if ($context) {
                         $q->where(array(
-                            'alias:NOT LIKE' => '%' . $excludeWord . '%',
-                            'pagetitle:NOT LIKE' => '%' . $excludeWord . '%',
+                            'context_key' => $context
                         ));
                     }
-                }
-                $q->prepare();
+                    $q->where(array(
+                        array(
+                            'alias:LIKE' => '%' . $word . '%',
+                            'OR:pagetitle:LIKE' => '%' . $word . '%'
+                        ),
+                        array(
+                            'AND:published:=' => true,
+                            'AND:deleted:=' => false
+                        )
+                    ));
+                    $excludeWords = $this->getExcludeWords();
+                    if (is_array($excludeWords) || is_object($excludeWords)) {
+                        foreach ($excludeWords as $excludeWord) {
+                            $q->where(array(
+                                'alias:NOT LIKE' => '%' . $excludeWord . '%',
+                                'pagetitle:NOT LIKE' => '%' . $excludeWord . '%',
+                            ));
+                        }
+                    }
+                    $q->prepare();
 
-                $results = $this->modx->query($q->toSql());
-                while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
-                    $output[] = $row['modResource_id'];
+                    $results = $this->modx->query($q->toSql());
+                    while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
+                        $output[] = $row['modResource_id'];
+                    }
                 }
             }
         }
@@ -229,9 +231,11 @@ class SeoSuite
     {
         $stopwords = $this->getStopWords();
         $filtered = array();
-        foreach ($input as $word) {
-            if (!in_array($word, $stopwords)) {
-                $filtered[] = $word;
+        if (is_array($input) || is_object($input)) {
+            foreach ($input as $word) {
+                if (!in_array($word, $stopwords)) {
+                    $filtered[] = $word;
+                }
             }
         }
         return $filtered;

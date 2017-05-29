@@ -42,66 +42,67 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
         } else {
             $data = $this->parseExcelFile($file);
         }
-
-        foreach ($data as $key => $row) {
-            // If first column does not exist, continue to next row
-            if (!isset($row[0])) {
-                continue;
-            }
-
-            $url = $row[0];
-
-            // If not a valid url, continue to next
-            if (substr($url, 0, 4) !== 'http') {
-                continue;
-            }
-
-            $q = $this->modx->newQuery($this->classKey);
-            $q->where(['url' => $url]);
-            $q->prepare();
-
-            $urlResult = $this->modx->query($q->toSql());
-            $urlObject = $urlResult->fetch(PDO::FETCH_ASSOC);
-
-            if ($urlObject !== false) {
-                $this->modx->log(modX::LOG_LEVEL_INFO, 'Skip: ' . $url);
-                $this->updated++;
-
-                continue;
-            }
-
-            $suggestions      = '';
-            $redirect_to      = 0;
-            $solved           = 0;
-            $redirect_handler = 0;
-            $findSuggestions  = $this->modx->seosuite->findRedirectSuggestions($url, $siteUrls);
-
-            if (count($findSuggestions)) {
-                if (count($findSuggestions) === 1) {
-                    $redirect_to = $findSuggestions[0];
-                    $solved = 1;
-
-                    if (!$this->modx->seosuite->checkSeoTab()) {
-                        $redirect_handler = 1;
-                    } else {
-                        $this->modx->seosuite->addSeoTabRedirect($url, $findSuggestions[0]);
-                    }
+        if (is_array($data) || is_object($data)) {
+            foreach ($data as $key => $row) {
+                // If first column does not exist, continue to next row
+                if (!isset($row[0])) {
+                    continue;
                 }
 
-                $suggestions = json_encode(array_values($findSuggestions));
+                $url = $row[0];
+
+                // If not a valid url, continue to next
+                if (substr($url, 0, 4) !== 'http') {
+                    continue;
+                }
+
+                $q = $this->modx->newQuery($this->classKey);
+                $q->where(['url' => $url]);
+                $q->prepare();
+
+                $urlResult = $this->modx->query($q->toSql());
+                $urlObject = $urlResult->fetch(PDO::FETCH_ASSOC);
+
+                if ($urlObject !== false) {
+                    $this->modx->log(modX::LOG_LEVEL_INFO, 'Skip: ' . $url);
+                    $this->updated++;
+
+                    continue;
+                }
+
+                $suggestions = '';
+                $redirect_to = 0;
+                $solved = 0;
+                $redirect_handler = 0;
+                $findSuggestions = $this->modx->seosuite->findRedirectSuggestions($url, $siteUrls);
+
+                if (count($findSuggestions)) {
+                    if (count($findSuggestions) === 1) {
+                        $redirect_to = $findSuggestions[0];
+                        $solved = 1;
+
+                        if (!$this->modx->seosuite->checkSeoTab()) {
+                            $redirect_handler = 1;
+                        } else {
+                            $this->modx->seosuite->addSeoTabRedirect($url, $findSuggestions[0]);
+                        }
+                    }
+
+                    $suggestions = json_encode(array_values($findSuggestions));
+                }
+
+                $this->modx->exec(
+                    "INSERT INTO {$this->modx->getTableName($this->classKey)}
+                    SET {$this->modx->escape('url')} = {$this->modx->quote($url)},
+                        {$this->modx->escape('suggestions')} = {$this->modx->quote($suggestions)},
+                        {$this->modx->escape('redirect_to')} = {$this->modx->quote($redirect_to)},
+                        {$this->modx->escape('redirect_handler')} = {$this->modx->quote($redirect_handler)},
+                        {$this->modx->escape('solved')} = {$this->modx->quote($solved)}"
+                );
+
+                $this->modx->log(modX::LOG_LEVEL_INFO, 'Add: ' . $url);
+                $this->created++;
             }
-
-            $this->modx->exec(
-                "INSERT INTO {$this->modx->getTableName($this->classKey)}
-                SET {$this->modx->escape('url')} = {$this->modx->quote($url)},
-                    {$this->modx->escape('suggestions')} = {$this->modx->quote($suggestions)},
-                    {$this->modx->escape('redirect_to')} = {$this->modx->quote($redirect_to)},
-                    {$this->modx->escape('redirect_handler')} = {$this->modx->quote($redirect_handler)},
-                    {$this->modx->escape('solved')} = {$this->modx->quote($solved)}"
-            );
-
-            $this->modx->log(modX::LOG_LEVEL_INFO, 'Add: ' . $url);
-            $this->created++;
         }
 
         $this->modx->log(modX::LOG_LEVEL_INFO, 'Import successfully completed.');
@@ -181,29 +182,34 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
         $delimiters = array(
             ',',
             '\t',
-            ';',
-            '|',
-            ':'
+            ';'
         );
         $results = array();
         $i = 0;
         while ($file->valid() && $i <= $checkLines) {
             $line = $file->fgets();
-            foreach ($delimiters as $delimiter) {
-                $regExp = '/['.$delimiter.']/';
-                $fields = preg_split($regExp, $line);
-                if (count($fields) > 1) {
-                    if (!empty($results[$delimiter])) {
-                        $results[$delimiter]++;
-                    } else {
-                        $results[$delimiter] = 1;
+            if (is_array($delimiters) || is_object($delimiters)) {
+                foreach ($delimiters as $delimiter) {
+                    $regExp = '/[' . $delimiter . ']/';
+                    $fields = preg_split($regExp, $line);
+                    if (count($fields) > 1) {
+                        if (!empty($results[$delimiter])) {
+                            $results[$delimiter]++;
+                        } else {
+                            $results[$delimiter] = 1;
+                        }
                     }
                 }
             }
             $i++;
         }
-        $results = array_keys($results, max($results));
-        return $results[0];
+        if (count($results)) {
+            $results = array_keys($results, max($results));
+            $output = $results[0];
+        } else {
+            $output = ';';
+        }
+        return $output;
     }
 
     public function cleanup()
