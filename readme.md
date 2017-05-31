@@ -7,14 +7,14 @@ Through simply uploading a single column .csv file containing your 404 URLs, SEO
 1. Gather your 404 URLs in a single column .csv file by exporting them or adding them manually. Make sure you’ve entered full URLs, including the domain. Example: https://modx.org instead of modx.org.
 2. Import the .csv file into SEO Suite.
 3. SEO Suite will look for similarities between your 404 URLs and the pages on your website (make sure the pages are published):
-   * When there is one match, it will be automatically converted into a 301 redirect and stored in SEO Tab.
-   * When there are several matches, you can choose the desired redirect manually (by choosing from suggestions).
-   * When there are no matches, you can pick a redirect yourself (SEO Suite offers a search function so you can find a relevant redirect easily).
+   *  When there is one match, it will be automatically converted into a 301 redirect and stored in SEO Tab.
+   *  When there are several matches, you can choose the desired redirect manually (by choosing from suggestions).
+   *  When there are no matches, you can pick a redirect yourself (SEO Suite offers a search function so you can find a relevant redirect easily).
 
 ## Requirements
 To make sure that SEO Suite functions properly, the following requirements should be met:
-- [SEO Tab][2] (version 2.0 or newer) has to be installed. This is where the redirects of your 404 URLs will be stored.
-- [MODX version 2.5.0 or newer][3] has to be installed. 
+-  [SEO Tab][2] (version 2.0 or newer) has to be installed. This is where the redirects of your 404 URLs will be stored.
+-  [MODX version 2.5.0 or newer][3] has to be installed. 
 
 ## Features
 * When someone visits a non-existent page (404) related to your domain, the URL will be added automatically in SEO Suite so you can redirect it to an existent page.
