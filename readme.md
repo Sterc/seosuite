@@ -13,9 +13,8 @@ Through simply uploading a single column .csv file containing your 404 URLs, SEO
 
 ## Requirements
 To make sure that SEO Suite functions properly, the following requirements should be met:
-* [SEO Tab][2] (version 2.0 or newer) has to be installed. This is where the redirects of your 404 URLs will be stored.
-* [MODX version 2.5.0 or newer][3] has to be installed.
-* 
+- [SEO Tab][2] (version 2.0 or newer) has to be installed. This is where the redirects of your 404 URLs will be stored.
+- [MODX version 2.5.0 or newer][3] has to be installed. 
 
 ## Features
 * When someone visits a non-existent page (404) related to your domain, the URL will be added automatically in SEO Suite so you can redirect it to an existent page.
