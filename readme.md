@@ -17,10 +17,10 @@ To make sure that SEO Suite functions properly, the following requirements shoul
 -  [MODX version 2.5.0 or newer][3] has to be installed. 
 
 ## Features
-* When someone visits a non-existent page (404) related to your domain, the URL will be added automatically in SEO Suite so you can redirect it to an existent page.
-* SEO Suite comes with a widget which you can add to your MODX dashboard. This widget is showing you the latest 10 URL's that have been added to the SEO Suite.
+* When someone visits a non-existent page (404) on your website, the URL will be automatically added to SEO Suite so you can redirect it to an existing page.
+* SEO Suite now comes with a Dashboard widget, showing the 10 newest SEO Suite URL's
 * It is possible to import a .csv file containing 404 URL's and then search for redirects inside only one (related) context. This comes in handy for multilingual websites.
-* To get more specific redirect suggestions, you can exclude words from the matching system. **Pay attention:** when you added words to exclude **after** a .csv import, you might need to refresh the suggestions by clicking your right mouse button on the relevant 404 URL and choose 'Find suggestions'. After doing this, it will be refreshed.
+* To get more specific redirect suggestions, you can exclude words from the matching system. **Pay attention:** when you add words to exclude **after** a .csv import, you might need to refresh the suggestions by clicking your right mouse button on the relevant 404 URL and choose 'Find suggestions'. After doing this, it will be refreshed.
 
 ## Future features
 * 301 redirect statistics: SEO Suite will feature a custom manager page containing 301 redirects statistics.
