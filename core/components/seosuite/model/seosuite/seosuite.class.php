@@ -489,7 +489,7 @@ class SeoSuite
                 $xml = $response->toXml();
                 $valid = (int)$xml->valid;
                 // If the key is found to be valid, set the status to true
-                if (!$valid) {
+                if ($valid) {
                     // It's possible we've been given a new public key (typically for dev licenses or when user has unlimited)
                     // which we will want to update in the pubkey file.
                     $updatePublicKey = (bool)$xml->update_pubkey;
