@@ -12,6 +12,7 @@ SeoSuite.panel.Home = function(config) {
             html: '<h2>'+_('seosuite')+'</h2>'
             ,border: false
             ,cls: 'modx-page-header'
+            ,id: config.id || 'seosuite-panel-home'
         },{
             xtype: 'modx-tabs'
             ,defaults: { border: false ,autoHeight: true }
