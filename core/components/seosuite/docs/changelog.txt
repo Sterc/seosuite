@@ -1,5 +1,9 @@
 Changelog for SeoSuite.
 
+SeoSuite 1.1.1
+==============
+- Modstore/modmore compatibility
+
 SeoSuite 1.1.0
 ==============
 - Add limit to redirect suggestions shown in grid
