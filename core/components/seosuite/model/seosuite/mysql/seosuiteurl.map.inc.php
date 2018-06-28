@@ -4,9 +4,13 @@
  */
 $xpdo_meta_map['SeoSuiteUrl']= array (
   'package' => 'seosuite',
-  'version' => '0.1',
+  'version' => '0.2',
   'table' => 'seosuite_urls',
   'extends' => 'xPDOSimpleObject',
+  'tableMeta' => 
+  array (
+    'engine' => 'InnoDB',
+  ),
   'fields' => 
   array (
     'url' => '',
@@ -19,10 +23,12 @@ $xpdo_meta_map['SeoSuiteUrl']= array (
   array (
     'url' => 
     array (
-      'dbtype' => 'text',
+      'dbtype' => 'varchar',
+      'precision' => '2000',
       'phptype' => 'string',
       'null' => false,
       'default' => '',
+      'index' => 'index',
     ),
     'solved' => 
     array (
@@ -52,6 +58,25 @@ $xpdo_meta_map['SeoSuiteUrl']= array (
       'dbtype' => 'text',
       'phptype' => 'json',
       'null' => true,
+    ),
+  ),
+  'indexes' => 
+  array (
+    'url' => 
+    array (
+      'alias' => 'url',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'url' => 
+        array (
+          'length' => '767',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
     ),
   ),
 );
