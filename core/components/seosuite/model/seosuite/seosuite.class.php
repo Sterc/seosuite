@@ -155,9 +155,10 @@ class SeoSuite
                     }
                     $q->prepare();
 
-                    $results = $this->modx->query($q->toSql());
-                    while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
-                        $output[] = $row['modResource_id'];
+                    if ($results = $this->modx->query($q->toSQL())) {
+                        while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
+                            $output[] = $row['modResource_id'];
+                        }
                     }
                 }
             }
