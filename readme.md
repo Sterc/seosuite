@@ -16,6 +16,23 @@ To make sure that SEO Suite functions properly, the following requirements shoul
 -  [SEO Tab][2] (version 2.0 or newer) has to be installed. This is where the redirects of your 404 URLs will be stored.
 -  [MODX version 2.5.0 or newer][3] has to be installed. 
 
+## Cronjob
+Inside the `core/components/seosuite/elements/cronjobs/` directory you can find the SeoSuite cronjobs.
+
+### Redirect cleanup ###
+Removes unresolved redirects which are older then 1 month and have been triggered just once.
+   
+Example usage:  
+
+```php redirect-cleanup.php --till=2018-11-23 --triggered=2```
+
+File: redirect-cleanup.php
+
+| Property  | Description                                                                 | Default value          |
+|-----------|-----------------------------------------------------------------------------|------------------------|
+| till      | Till date for unresolved redirects to remove.                               | Current date - 1 month |
+| triggered | Maximum amount of triggers for the unresolved redirects you want to remove. | 1                      |
+
 ## Features
 * When someone visits a non-existent page (404) on your website, the URL will be automatically added to SEO Suite so you can redirect it to an existing page.
 * SEO Suite now comes with a Dashboard widget, showing the 10 newest SEO Suite URL's

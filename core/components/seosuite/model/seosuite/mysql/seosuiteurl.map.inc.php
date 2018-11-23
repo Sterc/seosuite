@@ -20,7 +20,7 @@ $xpdo_meta_map['SeoSuiteUrl']= array (
     'suggestions' => NULL,
     'createdon' => 'CURRENT_TIMESTAMP',
     'last_triggered' => '0000-00-00 00:00:00',
-    'triggered_count' => 0,
+    'triggered' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -76,7 +76,7 @@ $xpdo_meta_map['SeoSuiteUrl']= array (
       'null' => true,
       'default' => '0000-00-00 00:00:00',
     ),
-    'triggered_count' => 
+    'triggered' => 
     array (
       'dbtype' => 'int',
       'precision' => '10',

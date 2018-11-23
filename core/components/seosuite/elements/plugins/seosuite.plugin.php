@@ -26,14 +26,14 @@ switch ($modx->event->name) {
         $url = $modx->getOption('server_protocol').'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
         $redirectObject = $modx->getObject('SeoSuiteUrl', array('url' => $url));
         if ($redirectObject) {
+            $count = (int) $redirectObject->get('triggered');
+                
+            $redirectObject->set('last_triggered', time());
+            $redirectObject->set('triggered', ++$count);
+            $redirectObject->save();
+                
             /* Only create redirectUrl when handler is 1 (SeoSuite) */
             if ($redirectObject->get('redirect_to') !== 0 && $redirectObject->get('redirect_handler') === 1) {
-                $count = (int) $redirectObject->get('triggered_count');
-                
-                $redirectObject->set('last_triggered', time());
-                $redirectObject->set('triggered_count', ++$count);
-                $redirectObject->save();
-                
                 $redirectUrl = $modx->makeUrl($redirectObject->get('redirect_to'), '', '', 'full');
             }
         } else {
@@ -64,7 +64,8 @@ switch ($modx->event->name) {
                     {$modx->escape('suggestions')} = {$modx->quote($suggestions)},
                     {$modx->escape('redirect_to')} = {$modx->quote($redirect_to)},
                     {$modx->escape('redirect_handler')} = {$modx->quote($redirect_handler)},
-                    {$modx->escape('solved')} = {$modx->quote($solved)}"
+                    {$modx->escape('solved')} = {$modx->quote($solved)},
+                    {$modx->escape('triggered')} = 1"
             );
             
             if ($redirect_to) {
