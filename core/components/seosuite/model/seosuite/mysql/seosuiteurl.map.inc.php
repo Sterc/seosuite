@@ -18,6 +18,9 @@ $xpdo_meta_map['SeoSuiteUrl']= array (
     'redirect_to' => NULL,
     'redirect_handler' => NULL,
     'suggestions' => NULL,
+    'createdon' => 'CURRENT_TIMESTAMP',
+    'last_triggered' => '0000-00-00 00:00:00',
+    'triggered_count' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -58,6 +61,28 @@ $xpdo_meta_map['SeoSuiteUrl']= array (
       'dbtype' => 'text',
       'phptype' => 'json',
       'null' => true,
+    ),
+    'createdon' => 
+    array (
+      'dbtype' => 'timestamp',
+      'phptype' => 'timestamp',
+      'null' => false,
+      'default' => 'CURRENT_TIMESTAMP',
+    ),
+    'last_triggered' => 
+    array (
+      'dbtype' => 'timestamp',
+      'phptype' => 'timestamp',
+      'null' => true,
+      'default' => '0000-00-00 00:00:00',
+    ),
+    'triggered_count' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '10',
+      'phptype' => 'integer',
+      'null' => false,
+      'default' => 0,
     ),
   ),
   'indexes' => 

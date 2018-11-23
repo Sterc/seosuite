@@ -6,6 +6,10 @@
         <field key="redirect_to" dbtype="int" precision="10" phptype="integer" null="false"/>
         <field key="redirect_handler" dbtype="int" precision="2" phptype="integer" null="false"/>
         <field key="suggestions" dbtype="text" phptype="json" null="true" />
+        <field key="createdon" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP"/>
+        <field key="last_triggered" dbtype="timestamp" phptype="timestamp" null="true" default="0000-00-00 00:00:00"/>
+        <field key="triggered_count" dbtype="int" precision="10" phptype="integer" null="false" default="0" />
+
         <index alias="url" name="url" primary="false" unique="false" type="BTREE">
             <column key="url" length="767" collation="A" null="false" />
         </index>

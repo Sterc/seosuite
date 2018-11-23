@@ -28,6 +28,12 @@ switch ($modx->event->name) {
         if ($redirectObject) {
             /* Only create redirectUrl when handler is 1 (SeoSuite) */
             if ($redirectObject->get('redirect_to') !== 0 && $redirectObject->get('redirect_handler') === 1) {
+                $count = (int) $redirectObject->get('triggered_count');
+                
+                $redirectObject->set('last_triggered', time());
+                $redirectObject->set('triggered_count', ++$count);
+                $redirectObject->save();
+                
                 $redirectUrl = $modx->makeUrl($redirectObject->get('redirect_to'), '', '', 'full');
             }
         } else {
@@ -51,6 +57,7 @@ switch ($modx->event->name) {
                 }
                 $suggestions = json_encode(array_values($findSuggestions));
             }
+
             $modx->exec(
                 "INSERT INTO {$modx->getTableName('SeoSuiteUrl')}
                 SET {$modx->escape('url')} = {$modx->quote($url)},
@@ -59,6 +66,7 @@ switch ($modx->event->name) {
                     {$modx->escape('redirect_handler')} = {$modx->quote($redirect_handler)},
                     {$modx->escape('solved')} = {$modx->quote($solved)}"
             );
+            
             if ($redirect_to) {
                 $redirectUrl = $url;
             }
