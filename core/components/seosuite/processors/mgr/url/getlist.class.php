@@ -29,7 +29,11 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
             ]);
         }
 
-        $c->sortby('id', 'DESC');
+        if ($this->getProperty('sort')) {
+            $c->sortby($this->getProperty('sort'), $this->getProperty('dir'));
+        } else {
+            $c->sortby('id', 'DESC');
+        }
 
         return $c;
     }

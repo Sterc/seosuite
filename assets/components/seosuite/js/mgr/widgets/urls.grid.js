@@ -32,10 +32,12 @@ SeoSuite.grid.Urls = function(config) {
             header: _('seosuite.url.triggered')
             ,dataIndex: 'triggered'
             ,width: 70
+            ,sortable: true
         },{
             header: _('seosuite.url.createdon')
             ,dataIndex: 'createdon'
             ,width: 80
+            ,sortable: true
         },{
             header: _('seosuite.url.suggestions')
             ,dataIndex: 'suggestions_text'
