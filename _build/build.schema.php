@@ -2,7 +2,7 @@
 /**
  * Build Schema script
  *
- * @package Buster404
+ * @package SeoSuite
  * @subpackage build
  */
 $mtime = microtime();
@@ -12,7 +12,7 @@ $tstart = $mtime;
 set_time_limit(0);
 
 /* define package name */
-define('PKG_NAME','Buster404');
+define('PKG_NAME','SeoSuite');
 define('PKG_NAME_LOWER',strtolower(PKG_NAME));
 
 /* define sources */

@@ -1,25 +1,52 @@
 {
-    "name": "Buster404",
-    "lowCaseName": "buster404",
-    "description": "Fix 404 not-found links on your site.",
-    "author": "Joeke Kloosterman",
-    "version": "0.1.0",
+    "name": "SEO Suite",
+    "lowCaseName": "seosuite",
+    "description": "Fix 404 pages on your site.",
+    "author": "Sterc",
+    "version": "1.2.0",
     "package":{
         "menus": [{
-            "text": "buster404.menu.buster404"
-            ,"description": "buster404.menu.buster404_desc"
-            ,"action": "home"
+            "text": "seosuite.menu.seosuite",
+            "description": "seosuite.menu.seosuite_desc",
+            "action": "home"
         }],
-        "elements": { 
-            "plugins": [],
+        "elements": {
+            "plugins": [{
+                "name": "SEO Suite",
+                "description": "Plugin to handle the SEO Suite redirects.",
+                "file": "seosuite.plugin.php",
+                "events": [
+                    "OnPageNotFound"
+                ]
+            }],
             "snippets": [],
-            "chunks": []
+            "chunks": [],
+            "widgets": [{
+                "name": "seosuite",
+                "description": "SEO Suite dashboard widget",
+                "type": "file",
+                "content": "seosuite.widget.php",
+                "lexicon": "seosuite:default",
+                "size": "half"
+            }]
         },
-        "systemSettings": []
+        "systemSettings": [{
+            "key": "exclude_words",
+            "value": "",
+            "area": "general"
+        }]
+    },
+    "database": {
+        "tables": ["SeoSuiteUrl"]
+    },
+    "build": {
+        "readme": "docs/readme.txt",
+        "license": "docs/license.txt",
+        "changelog": "docs/changelog.txt",
+        "resolver": {
+            "after": [
+                "resolve.tables.php"
+            ]
+        }
     }
-    
-    ,"database": {
-        "tables": ["Buster404Url","Buster404Source"]
-    }
-    
 }

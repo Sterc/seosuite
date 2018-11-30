@@ -1,5 +1,0 @@
-Changelog for Buster404.
-
-Buster404 0.0.1
-==============
-- Initial release.
