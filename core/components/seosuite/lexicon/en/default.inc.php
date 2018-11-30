@@ -34,6 +34,8 @@ $_lang['seosuite.url.position'] = 'Position';
 $_lang['seosuite.url.redirect_to'] = 'Redirect to';
 $_lang['seosuite.url.suggestions'] = 'Redirect suggestions';
 $_lang['seosuite.url.find_suggestions'] = 'Find suggestions';
+$_lang['seosuite.url.triggered'] = '404 Fired';
+$_lang['seosuite.url.createdon'] = '404 Created';
 $_lang['seosuite.url.found_suggestions'] = 'We found a match! It is now linked to this URL.';
 $_lang['seosuite.url.found_suggestions_multiple'] = 'Found more than one redirect match.
  Please add a redirect manually';
