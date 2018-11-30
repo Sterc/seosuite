@@ -1,5 +1,11 @@
 Changelog for SeoSuite.
 
+SeoSuite 1.2.0
+==============
+- Added redirect created date
+- Added redirect triggerd count & last time triggerd date
+- Added cleanup cronjob which removes unresolved redirects which are older then 1 month and have been triggered just once
+
 SeoSuite 1.1.2
 ==============
 - Added indexes for improved performance

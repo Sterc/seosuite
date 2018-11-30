@@ -9,7 +9,7 @@ SeoSuite.grid.Urls = function(config) {
         ,baseParams: {
             action: 'mgr/url/getlist'
         }
-        ,fields: ['id','url','solved','redirect_to','redirect_to_text','suggestions','suggestions_text']
+        ,fields: ['id','url','solved','redirect_to','redirect_to_text','suggestions','suggestions_text','triggered','createdon']
         ,autoHeight: true
         ,paging: true
         ,remoteSort: true
@@ -29,18 +29,26 @@ SeoSuite.grid.Urls = function(config) {
             ,dataIndex: 'url'
             ,width: 300
         },{
-            header: _('seosuite.url.solved')
-            ,dataIndex: 'solved'
-            ,renderer: this.renderBoolean
-            ,width: 60
+            header: _('seosuite.url.triggered')
+            ,dataIndex: 'triggered'
+            ,width: 70
+        },{
+            header: _('seosuite.url.createdon')
+            ,dataIndex: 'createdon'
+            ,width: 80
+        },{
+            header: _('seosuite.url.suggestions')
+            ,dataIndex: 'suggestions_text'
+            ,width: 100
         },{
             header: _('seosuite.url.redirect_to')
             ,dataIndex: 'redirect_to_text'
             ,width: 160
         },{
-            header: _('seosuite.url.suggestions')
-            ,dataIndex: 'suggestions_text'
-            ,width: 180
+            header: _('seosuite.url.solved')
+            ,dataIndex: 'solved'
+            ,renderer: this.renderBoolean
+            ,width: 60
         }]
         ,tbar: [{
             xtype: 'button',
