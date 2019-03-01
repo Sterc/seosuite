@@ -88,6 +88,30 @@ class SeoSuite
     }
 
     /**
+     * Validates url for processing.
+     * Checks for SQL injection via regex
+     * Checks if url contains words which are set in system_setting
+     * @param string $url
+     * @return boolean
+     */
+    public function validateUrl($url)
+    {
+        if (!preg_match('/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+$/', $url)) {
+            return false;
+        }
+
+        $blockedWords = explode(',', $this->modx->getOption('seosuite.blocked_words'));
+
+        foreach ($blockedWords as $word) {
+            if (strpos($url, $word)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Finds suggested resource(s) to redirect a 404 url to
      * Uses the part after the last / in the url, without querystring
      * Also strips off the extension

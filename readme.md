@@ -38,6 +38,7 @@ File: redirect-cleanup.php
 * SEO Suite now comes with a Dashboard widget, showing the 10 newest SEO Suite URL's
 * It is possible to import a .csv file containing 404 URL's and then search for redirects inside only one (related) context. This comes in handy for multilingual websites.
 * To get more specific redirect suggestions, you can exclude words from the matching system. **Pay attention:** when you add words to exclude **after** a .csv import, you might need to refresh the suggestions by clicking your right mouse button on the relevant 404 URL and choose 'Find suggestions'. After doing this, it will be refreshed.
+* Block certain redirects from being saved by adding blocking key words to system settings.
 
 ## Future features
 * 301 redirect statistics: SEO Suite will feature a custom manager page containing 301 redirects statistics.
