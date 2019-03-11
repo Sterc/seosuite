@@ -16,11 +16,8 @@ To make sure that SEO Suite functions properly, the following requirements shoul
 -  [SEO Tab][2] (version 2.0 or newer) has to be installed. This is where the redirects of your 404 URLs will be stored.
 -  [MODX version 2.5.0 or newer][3] has to be installed. 
 
-## Cronjob
-Inside the `core/components/seosuite/elements/cronjobs/` directory you can find the SeoSuite cronjobs.
-
-### Redirect cleanup ###
-Removes unresolved redirects which are older then 1 month and have been triggered just once.
+## Cleanup cronjob
+Inside the `core/components/seosuite/elements/cronjobs/` directory you can find the SeoSuite cronjob. It removes unresolved redirects which are older then 1 month and have been triggered just once.
    
 Example usage:  
 
@@ -46,10 +43,9 @@ A dashboard widget will be provided which shows the 10 redirects with the most h
 * Automatically import 404's from Google Search Console.
 
 ## Bugs and feature requests
-We greatly value your feedback, feature requests and bug reports. Please issue them on [Bitbucket][5].
+We greatly value your feedback, feature requests and bug reports. Please email them to modx@sterc.com.
 
-[1]: https://www.sterc.nl/en/modx-extras/seosuite
-[2]: https://www.sterc.nl/en/modx-extras/seotab
+[1]: https://www.sterc.com/modx/extras/seosuite
+[2]: https://www.sterc.com/modx/extras/seotab
 [3]: https://modx.com/download
-[4]: https://www.sterc.nl/en/
-[5]: https://bitbucket.org/sterc/seosuite/issues?status=new&status=open
+[4]: https://www.sterc.com
