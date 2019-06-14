@@ -61,8 +61,8 @@ Installeer a.u.b. SEO Tab (versie 2.0 of hoger) om SEO Suite in staat te stellen
 $_lang['seosuite.seotab.versioninvalid'] = 'De geinstalleerde versie van Seo Tab is verouderd. 
 Installeer Seo Tab versie 2 (of hoger) om een redirect te kunnen toevoegen.';
 
-$_lang['seosuite.widget_desc'] = 'Hier zie je de meest recent toegevoegde 404 urls.
- Om alle 404 urls te bekijken en beheren, ga naar de <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager pagina.</a>';
+$_lang['seosuite.widget_desc'] = 'Hier zie je de meest recent toegevoegde 404 URL\'s. Om alle 404 URL\'s te bekijken en beheren, 
+ ga je naar de <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager pagina.</a>';
 
 $_lang['seosuite.match_site_url']      = 'Match op basis van de context site url';
 $_lang['seosuite.match_site_url_desc'] = 'Vink aan als het matching systeem alleen pagina\'s moet matches op basis van dezelfde context. 
