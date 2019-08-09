@@ -1,5 +1,11 @@
 Changelog for SeoSuite.
 
+SeoSuite 1.2.2
+==============
+- Added some missing Dutch translations
+- Fixed issue with incorrect redirect-cleanup script path
+- Improved Dutch/English descriptions
+
 SeoSuite 1.2.1
 ==============
 - validate URL's before saving them
