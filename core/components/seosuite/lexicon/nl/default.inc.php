@@ -14,10 +14,11 @@ $_lang['seosuite.menu.seosuite_desc'] = 'Beheer je 404 URL\'s.';
 $_lang['seosuite.global.search'] = 'Zoeken';
 
 $_lang['seosuite.url.urls']      = '404 URL\'s';
-$_lang['seosuite.url.intro_msg'] = 'Heb je meerdere 404 URL\'s gevonden? Upload hier simpelweg een .csv file en 
-SEO Suite zorgt ervoor dat ze herleid worden op je website. Deze worden gematcht met bestaande pagina\'s op je website, gebaseerd op het laatste deel van de URL (het gedeelte achter de laatste slash).
- Is er één match, dan wordt deze automatisch geconverteerd naar een 301 redirect in SEO Tab, of, als SEO Tab niet geinstalleerd is, zorgt SEO Suite voor de redirect.
-  Zijn er meerdere matches, dan kun je de gewenste redirect handmatig kiezen. Zijn er geen matches, dan kun je zelf een URL invoeren.';
+$_lang['seosuite.url.intro_msg'] = '404 errors zijn ontzettend vervelend, voor zowel de gebruiker en Google, en kunnen relevant verkeer van je website weghouden. 
+ Met de MODX Extra \'SEO Suite\' kunnen 404 errors gemakkelijk opgelost worden. Upload simpelweg een bestand met alle errors en SEO Suite zoekt matches met bestaande pagina’s:<br/><br/>
+1. Als er één match is gevonden zal SEO Suite de pagina automatisch redirecten naar deze functionerende pagina<br/>
+2. Als er meerdere matched gevonden zijn, geeft SEO Suite suggesties en kun jij kiezen naar welke pagina geredirect wordt<br/>
+3. Als er geen matches gevonden zijn, kun jij handmatig de juiste URL invoeren.';
 $_lang['seosuite.url.import']          = 'Importeer bestand';
 $_lang['seosuite.url.file']            = 'Bestand';
 $_lang['seosuite.import.start']        = 'Starten met importeren van de URL\'s, dit kan even duren afhankelijk van de grootte van je bestand.';
