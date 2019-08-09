@@ -1,8 +1,10 @@
 <?php
+/* GPM path. */
 if (file_exists(dirname(dirname(dirname(dirname(dirname(__DIR__))))) . '/config.core.php')) {
     require_once dirname(dirname(dirname(dirname(dirname(__DIR__))))) . '/config.core.php';
 } else {
-    require_once dirname(dirname(dirname(dirname(dirname(dirname(dirname(__DIR__))))))) . '/config.core.php';
+    /* Normal installation path. */
+    require_once dirname(dirname(dirname(dirname(__DIR__))))  . '/config/config.inc.php';
 }
 require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
 
@@ -13,9 +15,7 @@ $modx->getService('error', 'error.modError');
 $modx->setLogLevel(modX::LOG_LEVEL_INFO);
 $modx->setLogTarget(XPDO_CLI_MODE ? 'ECHO' : 'HTML');
 
-/*
- * 1x of minder getriggerd in en minimaal 1 maand oud is, dan verwijderen.
- */
+/* Redirect redirect if it is triggered only once or less and is at least one month old. */
 $service = $modx->getService(
     'seosuitecronjob',
     'SeoSuiteCronjob',
@@ -39,8 +39,6 @@ if (XPDO_CLI_MODE) {
             'triggered::'
         )
     );
-} else {
-    $options = $_GET;
 }
 
 $service->cleanupRedirects($options);
