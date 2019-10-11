@@ -410,6 +410,49 @@ class SeoSuite
     }
 
     /**
+     * Gets a Chunk and caches it; also falls back to file-based templates.
+     *
+     * @access public
+     * @param string $name The name of the Chunk
+     * @param array $properties The properties for the Chunk
+     * @return string The processed content of the Chunk
+     */
+    public function getChunk($name, $properties = [])
+    {
+        if (class_exists('pdoTools') && $pdo = $this->modx->getService('pdoTools')) {
+            return $pdo->getChunk($name, $properties);
+        }
+
+        $chunk = null;
+        if (substr($name, 0, 6) === '@CODE:') {
+            $content = substr($name, 6);
+            $chunk = $this->modx->newObject('modChunk');
+            $chunk->setContent($content);
+        } elseif (!isset($this->chunks[$name])) {
+            if (!$this->config['debug']) {
+                $chunk = $this->modx->getObject('modChunk', ['name' => $name], true);
+            }
+
+            if (empty($chunk)) {
+                $chunk = $this->_getTplChunk($name);
+                if ($chunk === false) {
+                    return false;
+                }
+            }
+
+            $this->chunks[$name] = $chunk->getContent();
+        } else {
+            $content = $this->chunks[$name];
+            $chunk   = $this->modx->newObject('modChunk');
+            $chunk->setContent($content);
+        }
+
+        $chunk->setCacheable(false);
+
+        return $chunk->process($properties);
+    }
+
+    /**
      * Fire plugins based on event.
      *
      * @param modSystemEvent $event
