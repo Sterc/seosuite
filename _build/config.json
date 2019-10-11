@@ -39,21 +39,9 @@
             "key": "exclude_words",
             "value": "",
             "area": "general"
-        }, {
-          "key": "keywords.delimiter",
-          "value": "|",
-          "area": "keywords"
         },{
           "key": "keywords.fields",
           "value": "pagetitle:70,longtitle:70,description:160,alias:2023,menutitle:2023",
-          "area": "keywords"
-        },{
-          "key": "keywords.usesitename",
-          "type": "combo-boolean",
-          "value": "1",
-          "area": "keywords"
-        },{
-          "key": "keywords.title_format",
           "area": "keywords"
         },{
           "key": "keywords.disabledtemplates",
@@ -68,9 +56,21 @@
           "value": "8",
           "area": "keywords"
         },{
-          "key": "keywords.searchengine",
+          "key": "preview.delimiter",
+          "value": "|",
+          "area": "preview"
+        },{
+          "key": "preview.title_format",
+          "area": "preview"
+        },{
+          "key": "preview.usesitename",
+          "type": "combo-boolean",
+          "value": "1",
+          "area": "preview"
+        },{
+          "key": "preview.searchengine",
           "value": "google",
-          "area": "keywords"
+          "area": "preview"
         }]
     },
     "database": {

@@ -86,21 +86,28 @@ $_lang['seosuite.focuskeywords_desc']              = 'Enter your keywords comma-
 $_lang['seosuite.prevbox']                         = 'Google Preview';
 $_lang['seosuite.prevbox_yandex']                  = 'Yandex Preview';
 $_lang['seosuite.emptymetadescription']            = '<i>Please enter a description</i>';
-$_lang['seosuite.branding_text']                   = 'This site is optimized with the Sterc seoPro plugin - https://github.com/Sterc/SEOPro.';
+$_lang['seosuite.branding_text']                   = 'This site is optimized with the Sterc SeoSuite plugin - https://github.com/Sterc/seosuite.';
 
 /* Areas. */
 $_lang['area_general']  = 'General';
 $_lang['area_keywords'] = 'Keywords';
+$_lang['area_preview']  = 'Search Engine Preview';
 
 /* Settings. */
-$_lang['setting_seosuite.keywords.delimiter']               = 'Delimiter in Google/Yandex Preview.';
-$_lang['setting_seosuite.keywords.delimiter_desc']          = 'Delimiter between Title and Sitename';
-$_lang['setting_seosuite.keywords.fields']                  = 'Fields where SEO Pro will work on';
+$_lang['setting_seosuite.preview.delimiter']               = 'Delimiter in Google/Yandex Preview.';
+$_lang['setting_seosuite.preview.delimiter_desc']          = 'Delimiter between Title and Sitename';
+$_lang['setting_seosuite.preview.searchengine']            = 'Search engine used for the preview.';
+$_lang['setting_seosuite.preview.searchengine_desc']       = 'Possible values: google, yandex. Defaults to google.';
+$_lang['setting_seosuite.preview.usesitename']             = 'Display sitename in the Google/Yandex Preview and add it to the SeoSuite title placeholder?';
+$_lang['setting_seosuite.preview.usesitename_desc']        = 'If this value is \'no\' the delimiter and sitename setting will be removed from the Google Preview AND SEO Pro title placeholder';
+$_lang['setting_seosuite.preview.title_format']            = 'Format used for the meta title.';
+$_lang['setting_seosuite.preview.title_format_desc']       = 'Here you can specify the format for the meta title used
+ in Google/Yandex preview.';
+
+$_lang['setting_seosuite.keywords.fields']                  = 'Fields where the keywords tool will work on';
 $_lang['setting_seosuite.keywords.fields_desc']             = 'Only change these if you know what you\'re doing. Default value:pagetitle,longtitle,description,alias,menutitle. Will not work on the content field';
 $_lang['setting_seosuite.keywords.version']                 = 'Version number';
 $_lang['setting_seosuite.keywords.version_desc']            = 'Current ' . $_lang['setting_seosuite.version'];
-$_lang['setting_seosuite.keywords.usesitename']             = 'Display sitename in the Google/Yandex Preview and add it to the SEO Pro title placeholder [[+seoPro.title]]?';
-$_lang['setting_seosuite.keywords.usesitename_desc']        = 'If this value is \'no\' the delimiter and sitename setting will be removed from the Google Preview AND SEO Pro title placeholder';
 $_lang['setting_seosuite.keywords.disabledtemplates']       = 'Disabled Templates';
 $_lang['setting_seosuite.keywords.disabledtemplates_desc']  = 'Comma separated list of disabled template IDs';
 $_lang['setting_seosuite.keywords.max_keywords_title']      = 'Max amount of focus keywords allowed in title.';
@@ -111,8 +118,3 @@ $_lang['setting_seosuite.keywords.max_keywords_description']      = 'Max amount 
 $_lang['setting_seosuite.keywords.max_keywords_description_desc'] = 'Use this setting to control the maximum amount of focus keywords that are allowed in the description to get a thumbs-up.
  It is advised to use no more than 8 keywords in your description.';
 
-$_lang['setting_seosuite.keywords.searchengine']      = 'Search engine used for the preview.';
-$_lang['setting_seosuite.keywords.searchengine_desc'] = 'Possible values: google, yandex. Defaults to google.';
-$_lang['setting_seosuite.keywords.title_format']      = 'Format used for the meta title.';
-$_lang['setting_seosuite.keywords.title_format_desc'] = 'Here you can specify the format for the meta title used
- in Google/Yandex preview. The rendered output is also available on frontend with [[+seoPro.title]].';

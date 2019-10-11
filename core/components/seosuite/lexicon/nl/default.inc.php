@@ -80,3 +80,39 @@ $_lang['seosuite.widget_desc'] = 'Hier zie je de meest recent toegevoegde 404 ur
 $_lang['seosuite.match_site_url'] = 'Match context site url';
 $_lang['seosuite.match_site_url_desc'] = 'Should the matching system only match pages within the same context.
  Useful for when you have a multi-language website in multiple contexts with a lot of the same pages.';
+
+/* Keywords. */
+$_lang['seosuite.keywords']                 = 'Keywords';
+$_lang['seosuite.characters']               = 'Karakters';
+$_lang['seosuite.characters.allowed']       = 'Toegestane karakters';
+$_lang['seosuite.focuskeywords']            = 'Focus keywords';
+$_lang['seosuite.focuskeywords_desc']       = 'Vul je keywords komma-gescheiden in.';
+$_lang['seosuite.prevbox']                  = 'Google Preview';
+$_lang['seosuite.prevbox_yandex']           = 'Yandex Preview';
+$_lang['seosuite.emptymetadescription']     = '<i>Vul een <span class="seosuite-google-description--field">omschrijving</span> in</i>';
+$_lang['seosuite.branding_text']            = 'Deze website is geoptimaliseerd met de Sterc SeoSuite plugin - https://github.com/Sterc/seosuite.';
+
+/* Settings. */
+$_lang['setting_seosuite.preview.delimiter']            = 'Scheidingsteken in Google/Yandex preview.';
+$_lang['setting_seosuite.preview.delimiter_desc']       = 'Scheidingsteken tussen titel en sitenaam';
+$_lang['setting_seosuite.preview.searchengine']         = 'Welke zoekmachine gebruiken in de preview';
+$_lang['setting_seosuite.preview.searchengine_desc']    = 'Mogelijke waarden: google, yandex.';
+$_lang['setting_seosuite.preview.usesitename']          = 'Site naam tonen in Google/Yandex Preview en in de SeoSuite title placeholder?';
+$_lang['setting_seosuite.preview.usesitename_desc']     = 'Als deze op \'nee\' staat wordt het scheidingsteken en de sitenaam niet getoond.';
+$_lang['setting_seosuite.preview.title_format']         = 'Format used for the meta title.';
+$_lang['setting_seosuite.preview.title_format_desc']    = 'Here you can specify the format used for the meta title used
+ in Google/Yandex preview.';
+
+$_lang['setting_seosuite.keywords.fields']                  = 'Velden waarop de keyword tool zal werken ';
+$_lang['setting_seosuite.keywords.fields_desc']             = 'Verander deze gegevens alleen als je weet wat je doet. Standaard waarde:pagetitle,longtitle,description,alias,menutitle. SEO Pro werkt niet op het content veld';
+$_lang['setting_seosuite.keywords.version']                 = 'Versie nummer';
+$_lang['setting_seosuite.keywords.version_desc']            = 'Huidige '.$_lang['setting_seosuite.version'];
+$_lang['setting_seosuite.keywords.disabledtemplates']       = 'Niet-gebruikte templates';
+$_lang['setting_seosuite.keywords.disabledtemplates_desc']  = 'Komma gescheiden lijst met template ID\'s waar SEO Pro niet getoond wordt.';
+$_lang['setting_seosuite.keywords.max_keywords_title']      = 'Maximaal aantal focus keywords toegestaan in titel.';
+$_lang['setting_seosuite.keywords.max_keywords_title_desc'] = 'Vul hier het maximaal aantal toegestane focus keywords voor de titel om een thumbs-up te krijgen.
+ We adviseren om niet meer dan 4 keywords in de titel te gebruiken.';
+
+$_lang['setting_seosuite.keywords.max_keywords_description']      = 'Maximaal aantal focus keywords toegestaan in omschrijving.';
+$_lang['setting_seosuite.keywords.max_keywords_description_desc'] = 'Vul hier het maximaal aantal toegestane focus keywords voor de omschrijving om een thumbs-up te krijgen.
+ We adviseren om niet meer dan 8 keywords in de omschrijving te gebruiken.';
