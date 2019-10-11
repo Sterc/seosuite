@@ -18,7 +18,6 @@ class SeoSuiteKeywords extends SeoSuitePlugin
     }
 
     /**
-     * @TODO Refactor system settings
      * @TODO Refactor disabled templates.
      *
      * @return string
@@ -35,12 +34,12 @@ class SeoSuiteKeywords extends SeoSuitePlugin
             $override = true;
         }
 
-        $disabledTemplates = explode(',', $this->modx->getOption('seopro.disabledtemplates', null, '0'));
+        $disabledTemplates = explode(',', $this->modx->getOption('seosuite.keywords..disabledtemplates', null, '0'));
         if (($override && $template === '0') || (!empty($template) && in_array($template, $disabledTemplates))) {
             return '';
         }
 
-        $strFields = $this->modx->getOption('seopro.fields', null, 'pagetitle:70,longtitle:70,description:160,alias:2023,menutitle:2023');
+        $strFields = $this->modx->getOption('seosuite.keywords.fields', null, 'pagetitle:70,longtitle:70,description:160,alias:2023,menutitle:2023');
         $arrFields = [];
         if (is_array(explode(',', $strFields))) {
             foreach (explode(',', $strFields) as $field) {
@@ -110,7 +109,7 @@ class SeoSuiteKeywords extends SeoSuitePlugin
     {
         $resource = $properties['resource'];
 
-        $disabledTemplates = explode(',', $this->modx->getOption('seopro.disabledtemplates', null, '0'));
+        $disabledTemplates = explode(',', $this->modx->getOption('seosuite.keywords.disabledtemplates', null, '0'));
 
         $template = (string) $resource->get('template');
         $override = false;
@@ -158,7 +157,7 @@ class SeoSuiteKeywords extends SeoSuitePlugin
         /**
          * @TODO Refactor disabled templates.
          */
-        $disabledTemplates = explode(',', $this->modx->getOption('seopro.disabledtemplates', null, '0'));
+        $disabledTemplates = explode(',', $this->modx->getOption('seosuite.keywords.disabledtemplates', null, '0'));
 
         if (($override && $template === '0') || (!empty($template) && in_array($template, $disabledTemplates))) {
             return '';
@@ -173,7 +172,6 @@ class SeoSuiteKeywords extends SeoSuitePlugin
         $newSeoKeywords->fromArray($seoKeywords->toArray());
         $newSeoKeywords->set('resource', $newResource->get('id'));
         $newSeoKeywords->save();
-
     }
 
     /**
@@ -185,6 +183,11 @@ class SeoSuiteKeywords extends SeoSuitePlugin
         if ($this->modx->context->get('key') === 'mgr') {
             return '';
         }
+
+        /**
+         * @TODO Refactor disabled templates.
+         */
+        $disabledTemplates = explode(',', $this->modx->getOption('seosuite.keywords.disabledtemplates', null, '0'));
 
         $template = ($this->modx->resource->get('template')) ? (string) $this->modx->resource->get('template') : '';
         if (in_array($template, $disabledTemplates)) {

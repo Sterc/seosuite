@@ -85,10 +85,91 @@ Ext.extend(SeoSuite, Ext.Component, {
             fieldLabel  : (SeoSuite.config.searchEngine == 'yandex' ? _('seosuite.prevbox_yandex') : _('seosuite.prevbox')),
             layout      : 'form',
             items       : [{
+                xtype       : 'button',
+                cls         : 'active',
+                id          : 'seosuite-preview-mobile',
+                text        : '<i class="icon icon-mobile"></i>',
+                handler : function () {
+                    this.addClass('active');
+                    Ext.select('#seosuite-preview-desktop').removeClass('active');
+
+                    Ext.select('.seosuite-preview').addClass('mobile');
+                }
+            }, {
+                xtype       : 'button',
+                id          : 'seosuite-preview-desktop',
+                text        : '<i class="icon icon-desktop"></i>',
+                handler : function () {
+                    this.addClass('active');
+                    Ext.select('#seosuite-preview-mobile').removeClass('active');
+
+                    Ext.select('.seosuite-preview').removeClass('mobile');
+                }
+            }, {
+                xtype       : 'button',
+                id          : 'seosuite-snippet-editor',
+                text        : '<i class="icon icon-pencil"></i> ' + 'Edit snippet',
+                handler     : function() {
+                    if (Ext.getCmp('seosuite-preview-editor').hidden) {
+                        Ext.getCmp('seosuite-preview-editor').show();
+                    } else {
+                        Ext.getCmp('seosuite-preview-editor').hide();
+                    }
+                }
+            }, {
+                anchor        : '100%',
+                xtype         : 'panel',
+                id            : 'seosuite-preview-editor',
+                baseCls       : 'seosuite-preview-editor',
+                bodyStyle     : 'padding: 10px;',
+                border        : false,
+                autoHeight    : true,
+                layout        : 'form',
+                labelSeparator: '',
+                labelAlign    : 'top',
+                hidden        : true,
+
+                /**
+                 * #TODO Load default values based on system settings.
+                 *
+                 *
+                 *
+                 */
+                items         : [{
+                    xtype       : 'textfield',
+                    id          : 'seosuite-preview-editor-title',
+                    name        : 'seosuite-preview-editor-title',
+                    fieldLabel  : 'SEO Title',
+                    anchor      : '100%',
+                }, {
+                    xtype       : 'textfield',
+                    id          : 'seosuite-preview-editor-description',
+                    name        : 'seosuite-preview-editor-description',
+                    fieldLabel  : 'Meta Description',
+                    anchor      : '100%',
+                }, {
+                    xtype       : 'button',
+                    id          : 'seosuite-preview-insert-variable-title',
+                    text        : '<i class="icon icon-plus"></i> ' + 'Add field',
+                    handler: this.insertSnippetVariable
+                }, {
+                    xtype       : 'button',
+                    id          : 'seosuite-preview-insert-variable-description',
+                    text        : '<i class="icon icon-plus"></i> ' + 'Add field',
+                    handler: this.insertSnippetVariable
+                }
+
+                // ,
+                //     {
+                //     xtype       : 'seosuite-combo-snippet-variables',
+                //     cls         : 'seosuite-preview-editor-snippet-variables'
+                // }
+                ]
+            }, {
                 columnWidth : .67,
                 xtype       : 'panel',
-                baseCls     : 'seosuite-panel',
-                cls         : SeoSuite.config.searchEngine,
+                baseCls     : 'seosuite-preview',
+                cls         : SeoSuite.config.searchEngine + ' mobile',
                 bodyStyle   : 'padding: 10px;',
                 border      : false,
                 autoHeight  : true,
@@ -115,8 +196,8 @@ Ext.extend(SeoSuite, Ext.Component, {
                 }]
             }]
         });
-        fp.doLayout();
 
+        fp.doLayout();
     },
     count: function(field, overrideCount) {
         var Value    = Ext.get('modx-resource-' + field).getValue();
@@ -234,7 +315,18 @@ Ext.extend(SeoSuite, Ext.Component, {
                 Ext.get('seosuite-replace-alias').dom.innerHTML = SeoSuite.config.values['alias'];
                 break;
         }
+    },
+    insertSnippetVariable: function () {
+        /**
+         *  @TODO Show popup with select xtype: seosuite-combo-snippet-variables
+         *  @TODO Then insert it into the value (perhaps at cursor location)
+         *  @TODO The variable should have its own styling and should not be editable and only be removed in total.
+         */
+
+
+        alert('test');
     }
+
 });
 
 Ext.onReady(function() {
@@ -242,3 +334,27 @@ Ext.onReady(function() {
         SeoSuite.initialize();
     }
 });
+
+
+MODx.combo.SnippetVariables = function(config) {
+    config = config || {};
+
+    Ext.applyIf(config, {
+        name        : 'user',
+        hiddenName   : 'user',
+        displayField    : 'value',
+        valueField      : 'id',
+        fields          : ['key', 'value'],
+        pageSize        : 20,
+        url             : SeoSuite.config.connectorUrl,
+        baseParams      : {
+            action: 'mgr/resource/snippet-variables/getlist'
+        },
+        typeAhead       : false,
+        editable        : false
+    });
+
+    MODx.combo.User.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.combo.SnippetVariables, MODx.combo.ComboBox);
+Ext.reg('seosuite-combo-snippet-variables',MODx.combo.SnippetVariables);
