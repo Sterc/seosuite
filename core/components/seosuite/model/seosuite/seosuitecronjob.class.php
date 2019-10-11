@@ -5,14 +5,21 @@
  */
 class SeoSuiteCronjob
 {
+    /**
+     * @var modX
+     */
     private $modx;
-    private $logs;
+
+    /**
+     * @var array
+     */
+    private $logs = [];
 
     /**
      * SeoSuiteCronjob constructor.
      * @param $modx
      */
-    public function __construct($modx)
+    public function __construct(modX $modx)
     {
         $this->modx = $modx;
 
@@ -42,27 +49,28 @@ class SeoSuiteCronjob
      *
      * @return   bool      true
      */
-    public function log($message, $level = 'info') {
+    public function log($message, $level = 'info')
+    {
         switch ($level) {
             case 'error':
                 $prefix = 'ERROR::';
-                $color = 'red';
+                $color  = 'red';
                 break;
             case 'notice':
                 $prefix = 'NOTICE::';
-                $color = 'yellow';
+                $color  = 'yellow';
                 break;
             case 'success':
                 $prefix = 'SUCCESS::';
-                $color = 'green';
+                $color  = 'green';
                 break;
             case 'info':
             default:
                 $prefix = 'INFO::';
-                $color = 'blue';
+                $color  = 'blue';
         }
 
-        $logMessage = $this->colorize($prefix, $color). ' ' . $message;
+        $logMessage  = $this->colorize($prefix, $color). ' ' . $message;
         $htmlMessage = '<span style="color: ' . $color . '">' . $prefix . '</span> ' . $message;
 
         /*
@@ -105,7 +113,8 @@ class SeoSuiteCronjob
      *
      * @return   string    $string
      */
-    protected function colorize($string, $color = 'white') {
+    protected function colorize($string, $color = 'white')
+    {
         switch ($color) {
             case 'red':
                 return "\033[31m" . $string . "\033[39m";

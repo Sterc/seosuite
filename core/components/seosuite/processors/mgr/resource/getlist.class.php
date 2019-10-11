@@ -34,19 +34,19 @@ class SeoSuiteUrlResourceGetListProcessor extends modObjectGetListProcessor
 
     public function prepareRow(xPDOObject $object)
     {
-        $id = $object->get('id');
-        $url = '';
+        $id      = $object->get('id');
+        $url     = '';
         $ctx_key = $object->get('context_key');
-        $ctx = $this->modx->getContext($ctx_key);
+        $ctx     = $this->modx->getContext($ctx_key);
         if ($ctx) {
             $url = $ctx->getOption('site_url');
         }
+
         $object->set('pagetitle_id', $object->get('pagetitle'). ' ('.$id.')');
         $object->set('resource_url', $url.$object->get('uri'));
 
         return parent::prepareRow($object);
     }
-
-
 }
+
 return 'SeoSuiteUrlResourceGetListProcessor';

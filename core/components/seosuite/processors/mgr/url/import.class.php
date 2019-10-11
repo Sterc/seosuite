@@ -18,18 +18,18 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
         $this->modx->log(modX::LOG_LEVEL_INFO, $this->modx->lexicon('seosuite.import.start'));
         $this->modx->setLogLevel(modX::LOG_LEVEL_DEBUG);
 
-        $file = $this->getProperty('file');
+        $file     = $this->getProperty('file');
         $siteUrls = false;
         if ($this->getProperty('match_site_url')) {
             $siteUrls = $this->modx->seosuite->getSiteUrls();
         }
 
-        // Check if file field is set
+        /* Check if file field is set. */
         if (empty($file)) {
             return $this->failure($this->modx->lexicon('seosuite.error.emptyfile'));
         }
 
-        // Check for file extension
+        /* Check for file extension. */
         $extension = pathinfo($_FILES['file']['name'])['extension'];
         if (!in_array($extension, $this->allowedExtensions)) {
             $this->modx->log(modX::LOG_LEVEL_INFO, $this->modx->lexicon('seosuite.error.extension_notallowed'));
@@ -42,16 +42,17 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
         } else {
             $data = $this->parseExcelFile($file);
         }
+
         if (is_array($data) || is_object($data)) {
             foreach ($data as $key => $row) {
-                // If first column does not exist, continue to next row
+                /* If first column does not exist, continue to next row. */
                 if (!isset($row[0])) {
                     continue;
                 }
 
                 $url = $row[0];
 
-                // If not a valid url, continue to next
+                /* If not a valid url, continue to next. */
                 if (substr($url, 0, 4) !== 'http') {
                     continue;
                 }
@@ -62,7 +63,6 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
 
                 $urlResult = $this->modx->query($q->toSql());
                 $urlObject = $urlResult->fetch(PDO::FETCH_ASSOC);
-
                 if ($urlObject !== false) {
                     $this->modx->log(modX::LOG_LEVEL_INFO, 'Skip: ' . $url);
                     $this->updated++;
@@ -70,16 +70,15 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
                     continue;
                 }
 
-                $suggestions = '';
-                $redirect_to = 0;
-                $solved = 0;
+                $suggestions      = '';
+                $redirect_to      = 0;
+                $solved           = 0;
                 $redirect_handler = 0;
-                $findSuggestions = $this->modx->seosuite->findRedirectSuggestions($url, $siteUrls);
-
+                $findSuggestions  = $this->modx->seosuite->findRedirectSuggestions($url, $siteUrls);
                 if (count($findSuggestions)) {
                     if (count($findSuggestions) === 1) {
                         $redirect_to = $findSuggestions[0];
-                        $solved = 1;
+                        $solved      = 1;
 
                         if (!$this->modx->seosuite->checkSeoTab()) {
                             $redirect_handler = 1;
@@ -122,14 +121,17 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
     public function parseCsvFile($file)
     {
         ini_set('auto_detect_line_endings', true);
+
         $delimiter = $this->getCsvFileDelimiter($file['tmp_name']);
-        $data = [];
-        if (($handle = fopen($file['tmp_name'], "r")) !== false) {
+        $data      = [];
+        if (($handle = fopen($file['tmp_name'], 'r')) !== false) {
             while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
                 $data[] = $row;
             }
+
             fclose($handle);
         }
+
         return $data;
     }
 
@@ -143,29 +145,30 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
      */
     public function parseExcelFile($file, $sheetIndex = 0)
     {
-        // Check if the ZipArchive extension is installed (needed for PHPExcel)
+        /* Check if the ZipArchive extension is installed (needed for PHPExcel). */
         if (!class_exists('ZipArchive')) {
             $this->modx->log(modX::LOG_LEVEL_ERROR, $this->modx->lexicon('seosuite.error.ziparchive_notinstalled'));
             $this->modx->log(modX::LOG_LEVEL_INFO, 'COMPLETED');
+
             return $this->failure($this->modx->lexicon('seosuite.error.ziparchive_notinstalled'));
         }
+
         require_once $this->modx->seosuite->options['corePath'] . 'PHPExcel/Classes/PHPExcel/IOFactory.php';
 
         $data = [];
-
         try {
-            $filetype = PHPExcel_IOFactory::identify($file['tmp_name']);
-            $objReader = PHPExcel_IOFactory::createReader($filetype);
+            $filetype    = PHPExcel_IOFactory::identify($file['tmp_name']);
+            $objReader   = PHPExcel_IOFactory::createReader($filetype);
             $objPHPExcel = $objReader->load($file['tmp_name']);
         } catch (Exception $e) {
             $message = 'Error loading file "' . pathinfo($file['tmp_name'], PATHINFO_BASENAME) . '": ' . $e->getMessage();
+
             $this->modx->log(modX::LOG_LEVEL_INFO, $message);
 
             return $this->failure($message);
         }
 
         $sheet = $objPHPExcel->getSheet($sheetIndex);
-
         foreach ($sheet->getRowIterator() as $rowIndex => $row) {
             foreach ($row->getCellIterator() as $key => $cell) {
                 $data[$rowIndex][] = $cell->getCalculatedValue();
@@ -178,13 +181,10 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
 
     private function getCsvFileDelimiter($file, $checkLines = 2)
     {
-        $file = new SplFileObject($file);
-        $delimiters = array(
-            ',',
-            '\t',
-            ';'
-        );
-        $results = array();
+        $file       = new SplFileObject($file);
+        $delimiters = [',', '\t', ';'];
+        $results    = [];
+
         $i = 0;
         while ($file->valid() && $i <= $checkLines) {
             $line = $file->fgets();
@@ -201,20 +201,23 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
                     }
                 }
             }
+
             $i++;
         }
+
         if (count($results)) {
             $results = array_keys($results, max($results));
             $output = $results[0];
         } else {
             $output = ';';
         }
+
         return $output;
     }
 
     public function cleanup()
     {
-        return $this->success('Updated: '.$this->updated.' - Created: '.$this->created, array('success' => true));
+        return $this->success('Updated: '.$this->updated.' - Created: '.$this->created, ['success' => true]);
     }
 }
 

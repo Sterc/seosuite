@@ -8,6 +8,7 @@
 class SeoSuiteUrlRemoveProcessor extends modObjectRemoveProcessor
 {
     public $classKey = 'SeoSuiteUrl';
-    public $languageTopics = array('seosuite:default');
+    public $languageTopics = ['seosuite:default'];
 }
+
 return 'SeoSuiteUrlRemoveProcessor';

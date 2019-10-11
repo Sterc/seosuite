@@ -7,14 +7,24 @@
  */
 class SeoSuite
 {
-    public $modx = null;
-    public $namespace = 'seosuite';
-    public $cache = null;
-    public $options = array();
+    /**
+     * @var modX
+     */
+    public $modx;
 
-    public function __construct(modX &$modx, array $options = array())
+    /**
+     * @var string
+     */
+    public $namespace = 'seosuite';
+
+    /**
+     * @var array
+     */
+    public $options = [];
+
+    public function __construct(modX &$modx, array $options = [])
     {
-        $this->modx =& $modx;
+        $this->modx      =& $modx;
         $this->namespace = $this->getOption('namespace', $options, 'seosuite');
 
         $corePath = $this->getOption(
@@ -45,20 +55,20 @@ class SeoSuite
         }
 
         /* loads some default paths for easier management */
-        $this->options = array_merge(array(
-            'namespace' => $this->namespace,
-            'corePath' => $corePath,
-            'modelPath' => $corePath . 'model/',
-            'chunksPath' => $corePath . 'elements/chunks/',
-            'snippetsPath' => $corePath . 'elements/snippets/',
+        $this->options = array_merge([
+            'namespace'     => $this->namespace,
+            'corePath'      => $corePath,
+            'modelPath'     => $corePath . 'model/',
+            'chunksPath'    => $corePath . 'elements/chunks/',
+            'snippetsPath'  => $corePath . 'elements/snippets/',
             'templatesPath' => $corePath . 'templates/',
-            'assetsPath' => $assetsPath,
-            'assetsUrl' => $assetsUrl,
-            'jsUrl' => $assetsUrl . 'js/',
-            'cssUrl' => $assetsUrl . 'css/',
-            'connectorUrl' => $assetsUrl . 'connector.php',
-            'seoTabNotice' => $seoTabNotice
-        ), $options);
+            'assetsPath'    => $assetsPath,
+            'assetsUrl'     => $assetsUrl,
+            'jsUrl'         => $assetsUrl . 'js/',
+            'cssUrl'        => $assetsUrl . 'css/',
+            'connectorUrl'  => $assetsUrl . 'connector.php',
+            'seoTabNotice'  => $seoTabNotice
+        ], $options);
 
         $this->modx->addPackage('seosuite', $this->getOption('modelPath'));
     }
@@ -72,7 +82,7 @@ class SeoSuite
      * namespaced system setting; by default this value is null.
      * @return mixed The option value or the default value specified.
      */
-    public function getOption($key, $options = array(), $default = null)
+    public function getOption($key, $options = [], $default = null)
     {
         $option = $default;
         if (!empty($key) && is_string($key)) {
@@ -84,6 +94,7 @@ class SeoSuite
                 $option = $this->modx->getOption("{$this->namespace}.{$key}");
             }
         }
+
         return $option;
     }
 
@@ -97,9 +108,9 @@ class SeoSuite
      * @param array $contextSiteUrls An array with site_url => context combinations. If not empty, limits to context
      * @return array An array with modResource objects
      */
-    public function findRedirectSuggestions($url, $contextSiteUrls = array())
+    public function findRedirectSuggestions($url, $contextSiteUrls = [])
     {
-        $output = [];
+        $output    = [];
         $parsedUrl = parse_url($url);
 
         if (isset($parsedUrl['path'])) {
@@ -123,38 +134,39 @@ class SeoSuite
 
             $searchWords = $this->splitUrl($searchString);
             $searchWords = $this->filterStopWords($searchWords);
-
             if (is_array($searchWords) || is_object($searchWords)) {
                 foreach ($searchWords as $word) {
                     // Try to find a resource with an exact matching alias
                     // or a resource with matching pagetitle, where non-alphanumeric chars are replaced with space
                     $q = $this->modx->newQuery('modResource');
                     if ($context) {
-                        $q->where(array(
+                        $q->where([
                             'context_key' => $context
-                        ));
+                        ]);
                     }
-                    $q->where(array(
-                        array(
+
+                    $q->where([
+                        [
                             'alias:LIKE' => '%' . $word . '%',
                             'OR:pagetitle:LIKE' => '%' . $word . '%'
-                        ),
-                        array(
+                        ],
+                        [
                             'AND:published:=' => true,
                             'AND:deleted:=' => false
-                        )
-                    ));
+                        ]
+                    ]);
+
                     $excludeWords = $this->getExcludeWords();
                     if (is_array($excludeWords) || is_object($excludeWords)) {
                         foreach ($excludeWords as $excludeWord) {
-                            $q->where(array(
+                            $q->where([
                                 'alias:NOT LIKE' => '%' . $excludeWord . '%',
                                 'pagetitle:NOT LIKE' => '%' . $excludeWord . '%',
-                            ));
+                            ]);
                         }
                     }
-                    $q->prepare();
 
+                    $q->prepare();
                     if ($results = $this->modx->query($q->toSQL())) {
                         while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
                             $output[] = $row['modResource_id'];
@@ -189,7 +201,7 @@ class SeoSuite
      */
     public function getStopWords()
     {
-        $stopwords = array();
+        $stopwords    = [];
         $stopwordsDir = $this->options['corePath'].'elements/stopwords/';
         if (file_exists($stopwordsDir)) {
             $files = glob($stopwordsDir.'/*.txt');
@@ -200,6 +212,7 @@ class SeoSuite
                 }
             }
         }
+
         $excludeWords = $this->getExcludeWords();
         if (count($excludeWords)) {
             $stopwords = array_merge($stopwords, $excludeWords);
@@ -214,11 +227,12 @@ class SeoSuite
      */
     public function getExcludeWords()
     {
-        $output = array();
+        $output       = [];
         $excludeWords = $this->modx->getOption('seosuite.exclude_words');
         if ($excludeWords) {
             $output = explode(',', $excludeWords);
         }
+
         return $output;
     }
 
@@ -231,7 +245,7 @@ class SeoSuite
     public function filterStopWords($input)
     {
         $stopwords = $this->getStopWords();
-        $filtered = array();
+        $filtered  = [];
         if (is_array($input) || is_object($input)) {
             foreach ($input as $word) {
                 if (!in_array($word, $stopwords)) {
@@ -239,6 +253,7 @@ class SeoSuite
                 }
             }
         }
+
         return $filtered;
     }
 
@@ -253,23 +268,30 @@ class SeoSuite
     {
         $redirect_id = false;
         $url = urlencode($url);
+
         /* First check for valid version of SeoTab */
         if (!$this->checkSeoTab()) {
             return false;
         }
+
         $redirect = $this->modx->getObject('seoUrl', ['url' => $url, 'resource' => $id]);
         if (!$redirect) {
             $resource = $this->modx->getObject('modResource', $id);
             if ($resource) {
                 $redirect = $this->modx->newObject('seoUrl');
-                $data     = array(
-                    'url' => $url, 'resource' => $id, 'context_key' => $resource->get('context_key'),
-                );
+                $data     = [
+                    'url'         => $url,
+                    'resource'    => $id,
+                    'context_key' => $resource->get('context_key'),
+                ];
+
                 $redirect->fromArray($data);
                 $redirect->save();
+
                 $redirect_id = $redirect->get('id');
             }
         }
+
         return $redirect_id;
     }
 
@@ -338,6 +360,7 @@ class SeoSuite
         if ($gitStPackage) {
             return $gitStPackage->get('version');
         }
+
         return false;
     }
 
@@ -345,28 +368,34 @@ class SeoSuite
      * Gets language strings for use on non-SeoSuite controllers.
      * @return string
      */
-    public function getLangs() {
+    public function getLangs()
+    {
         $entries = $this->modx->lexicon->loadCache('seosuite');
-        $langs = 'Ext.applyIf(MODx.lang,' . $this->modx->toJSON($entries) . ');';
+        $langs   = 'Ext.applyIf(MODx.lang,' . $this->modx->toJSON($entries) . ');';
+
         return $langs;
     }
 
     /**
-     * Returns a list of all context site urls (if any)
+     * Returns a list of all context site urls (if any).
+     *
      * @return array
      */
     public function getSiteUrls()
     {
-        $urls = array();
+        $urls = [];
+
         $q = $this->modx->newQuery('modContextSetting');
-        $q->where(array(
-            'key' => 'site_url',
+        $q->where([
+            'key'            => 'site_url',
             'context_key:!=' => 'mgr'
-        ));
+        ]);
+
         $collection = $this->modx->getCollection('modContextSetting', $q);
         foreach ($collection as $item) {
             $urls[$item->get('value')] = $item->get('context_key');
         }
+
         return $urls;
     }
 }

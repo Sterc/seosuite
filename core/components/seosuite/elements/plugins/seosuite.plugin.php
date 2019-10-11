@@ -2,7 +2,6 @@
 /**
  * Plugin for SEO Suite for handling the redirects
  */
-
 $corePath = $modx->getOption(
     'seosuite.core_path',
     null,

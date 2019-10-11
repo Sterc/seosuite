@@ -9,7 +9,7 @@
 class SeoSuiteUrlUpdateProcessor extends modObjectUpdateProcessor
 {
     public $classKey = 'SeoSuiteUrl';
-    public $languageTopics = array('seosuite:default');
+    public $languageTopics = ['seosuite:default'];
 
     public function beforeSet()
     {
@@ -37,7 +37,7 @@ class SeoSuiteUrlUpdateProcessor extends modObjectUpdateProcessor
         }
 
         $redirect_handler = 0;
-        $solved = 0;
+        $solved           = 0;
         if ((int)$redirectTo > 0) {
             $solved = 1;
             // If SEO Tab is not installed, use SeoSuite as redirect handler
@@ -47,10 +47,12 @@ class SeoSuiteUrlUpdateProcessor extends modObjectUpdateProcessor
                 $this->modx->seosuite->addSeoTabRedirect($url, $redirectTo);
             }
         }
+
         $this->setProperty('redirect_handler', $redirect_handler);
         $this->setProperty('solved', $solved);
 
         return parent::beforeSet();
     }
 }
+
 return 'SeoSuiteUrlUpdateProcessor';

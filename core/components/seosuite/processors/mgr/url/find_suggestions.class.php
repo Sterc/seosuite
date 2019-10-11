@@ -9,7 +9,7 @@
 class SeoSuiteFindSuggestionProcessor extends modObjectUpdateProcessor
 {
     public $classKey = 'SeoSuiteUrl';
-    public $languageTopics = array('seosuite:default');
+    public $languageTopics = ['seosuite:default'];
 
     public function beforeSet()
     {
@@ -18,6 +18,7 @@ class SeoSuiteFindSuggestionProcessor extends modObjectUpdateProcessor
         if ($this->getProperty('match_site_url')) {
             $siteUrls = $this->modx->seosuite->getSiteUrls();
         }
+
         $redirect_to      = 0;
         $solved           = 0;
         $redirect_handler = 0;
@@ -25,7 +26,7 @@ class SeoSuiteFindSuggestionProcessor extends modObjectUpdateProcessor
         if (count($findSuggestions)) {
             if (count($findSuggestions) === 1) {
                 $redirect_to = $findSuggestions[0];
-                $solved = 1;
+                $solved      = 1;
 
                 if (!$this->modx->seosuite->checkSeoTab()) {
                     $redirect_handler = 1;
@@ -34,6 +35,7 @@ class SeoSuiteFindSuggestionProcessor extends modObjectUpdateProcessor
                 }
             }
         }
+
         $this->setProperty('redirect_to', $redirect_to);
         $this->setProperty('solved', $solved);
         $this->setProperty('redirect_handler', $redirect_handler);
@@ -42,4 +44,5 @@ class SeoSuiteFindSuggestionProcessor extends modObjectUpdateProcessor
         return parent::beforeSet();
     }
 }
+
 return 'SeoSuiteFindSuggestionProcessor';

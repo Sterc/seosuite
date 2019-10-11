@@ -1,5 +1,6 @@
 <?php
-require_once dirname(dirname(__FILE__)) . '/index.class.php';
+require_once dirname(__DIR__) . '/index.class.php';
+
 /**
  * Loads the home page.
  *
@@ -8,13 +9,15 @@ require_once dirname(dirname(__FILE__)) . '/index.class.php';
  */
 class SeoSuiteHomeManagerController extends SeoSuiteBaseManagerController
 {
-    public function process(array $scriptProperties = array())
+    public function process(array $scriptProperties = [])
     {
     }
+
     public function getPageTitle()
     {
         return $this->modx->lexicon('seosuite');
     }
+
     public function loadCustomCssJs()
     {
         $this->addJavascript($this->seosuite->getOption('jsUrl').'mgr/widgets/urls.grid.js');
@@ -24,6 +27,6 @@ class SeoSuiteHomeManagerController extends SeoSuiteBaseManagerController
 
     public function getTemplateFile()
     {
-        return $this->seosuite->getOption('templatesPath').'home.tpl';
+        return $this->seosuite->getOption('templatesPath') . 'home.tpl';
     }
 }

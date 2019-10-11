@@ -9,8 +9,10 @@
  * @package modx
  * @subpackage dashboard
  */
-class modDashboardWidgetSeoSuiteUrls extends modDashboardWidgetInterface {
-    public function render() {
+class modDashboardWidgetSeoSuiteUrls extends modDashboardWidgetInterface
+{
+    public function render()
+    {
         $corePath = $this->modx->getOption(
             'seosuite.core_path',
             null,
@@ -27,8 +29,8 @@ class modDashboardWidgetSeoSuiteUrls extends modDashboardWidgetInterface {
         if (!($seoSuite instanceof SeoSuite)) {
             return;
         }
-        $langs = $seoSuite->getLangs();
 
+        $langs = $seoSuite->getLangs();
         $jsUrl = $seoSuite->options['jsUrl'];
         $this->modx->regClientStartupHTMLBlock(
             '<script type="text/javascript" src="'.$jsUrl.'mgr/seosuite.js" ></script>
@@ -43,10 +45,12 @@ class modDashboardWidgetSeoSuiteUrls extends modDashboardWidgetInterface {
                 });
             });</script>'
         );
+
         return '
             <p>[[%seosuite.widget_desc]]</p><br />
             <div id="seosuite-grid-urls"></div>
         ';
     }
 }
+
 return 'modDashboardWidgetSeoSuiteUrls';

@@ -43,8 +43,8 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
         $redirect_to  = $object->get('redirect_to');
         $redirectText = '-';
 
-        if (intval($redirect_to) > 0) {
-            // also check if resource exists
+        if ((int) $redirect_to > 0) {
+            /* Also check if resource exists. */
             $resourceObj = $this->modx->getObject('modResource', $redirect_to);
             if ($resourceObj) {
                 $redirectText = $resourceObj->get('pagetitle') . ' (' . $redirect_to . ')<br><small>' . $this->modx->makeUrl($redirect_to, '', '', 'full') . '</small>';
@@ -53,7 +53,6 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
         $object->set('redirect_to_text', $redirectText);
 
         $suggestions = $object->get('suggestions');
-
         if (!is_array($suggestions)) {
             $suggestions = [];
         }
@@ -62,16 +61,19 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
         /* Only show 10 first suggestions to keep grid listing fast */
         $suggestionsText = '-';
         $suggestionsArray = [];
+
         $limit = 10;
         $count = count($suggestions);
-        $i = 0;
+        $i     = 0;
         foreach ($suggestions as $id) {
             // also check if resource exists
             $resourceObj = $this->modx->getObject('modResource', $id);
             if ($resourceObj) {
                 $suggestionsArray[] = $resourceObj->get('pagetitle') . ' (' . $resourceObj->get('id') . ')';
             }
+
             $i++;
+
             if ($i >= $limit) {
                 $suggestionsArray[] = '<i><b>- '.$count.' '.$this->modx->lexicon('seosuite.url.suggestions').' -</b></i>';
                 break;
@@ -87,4 +89,5 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
         return parent::prepareRow($object);
     }
 }
+
 return 'SeoSuiteUrlGetListProcessor';
