@@ -143,8 +143,11 @@ class SeoSuiteKeywords extends SeoSuitePlugin
      *
      * @return string
      */
-    public function onResourceDuplicate()
+    public function onResourceDuplicate($event, $properties)
     {
+        $resource    = $properties['resource'];
+        $newResource = $properties['newResource'];
+
         $template = (string) $resource->get('template');
         $override = false;
         if (isset($_REQUEST['template'])) {
@@ -160,11 +163,13 @@ class SeoSuiteKeywords extends SeoSuitePlugin
         if (($override && $template === '0') || (!empty($template) && in_array($template, $disabledTemplates))) {
             return '';
         }
-        $seoKeywords = $this->modx->getObject('seoKeywords', array('resource' => $resource->get('id')));
+
+        $seoKeywords = $this->modx->getObject('SeoSuiteKeyword', ['resource' => $resource->get('id')]);
         if (!$seoKeywords) {
-            $seoKeywords = $this->modx->newObject('seoKeywords', array('resource' => $resource->get('id')));
+            $seoKeywords = $this->modx->newObject('SeoSuiteKeyword', ['resource' => $resource->get('id')]);
         }
-        $newSeoKeywords = $this->modx->newObject('seoKeywords');
+
+        $newSeoKeywords = $this->modx->newObject('SeoSuiteKeyword');
         $newSeoKeywords->fromArray($seoKeywords->toArray());
         $newSeoKeywords->set('resource', $newResource->get('id'));
         $newSeoKeywords->save();
@@ -181,20 +186,22 @@ class SeoSuiteKeywords extends SeoSuitePlugin
             return '';
         }
 
-        $template = ($this->modx->resource->get('template')) ? (string)$this->modx->resource->get('template') : '';
+        $template = ($this->modx->resource->get('template')) ? (string) $this->modx->resource->get('template') : '';
         if (in_array($template, $disabledTemplates)) {
             return '';
         }
-        $seoKeywords = $this->modx->getObject('seoKeywords', array('resource' => $this->modx->resource->get('id')));
+
+        $seoKeywords = $this->modx->getObject('seoKeywords', ['resource' => $this->modx->resource->get('id')]);
         if ($seoKeywords) {
             $keyWords = $seoKeywords->get('keywords');
             $this->modx->setPlaceholder('seosuite.keywords', $keyWords);
         }
-        // Render the meta title, based on system settings
-        $titleFormat = $this->modx->getOption('seopro.title_format');
+
+        /* Render the meta title, based on system settings. */
+        $titleFormat = $this->modx->getOption('seosuite.preview.title_format');
         if (empty($titleFormat)) {
-            $siteDelimiter   = $this->modx->getOption('seopro.delimiter', null, '/');
-            $siteUseSitename = (boolean) $this->modx->getOption('seosuite.keywords.usesitename', null, true);
+            $siteDelimiter   = $this->modx->getOption('seosuite.preview.delimiter', null, '/');
+            $siteUseSitename = (boolean) $this->modx->getOption('seosuite.preview.usesitename', null, true);
             $siteID          = $this->modx->resource->get('id');
             $siteName        = $this->modx->getOption('site_name');
             $longtitle       = $this->modx->resource->get('longtitle');
@@ -213,9 +220,9 @@ class SeoSuiteKeywords extends SeoSuitePlugin
 
             $title = implode(' ', $seoProTitle);
         } else {
-            $title = $this->modx->getOption('seopro.title_format');
+            $title = $this->modx->getOption('seosuite.preview.title_format');
         }
 
-        $this->modx->setPlaceholder('seoPro.title', $title);
+        $this->modx->setPlaceholder('seosuite.title', $title);
     }
 }

@@ -2,13 +2,12 @@ Ext.extend(SeoSuite, Ext.Component, {
     page: {}, window: {}, grid: {}, tree: {}, panel: {}, combo: {}, config: {}, view: {},
     initialize: function() {
         SeoSuite.config.loaded       = true;
-        SeoSuite.config.delimiter    = MODx.isEmpty(MODx.config['seosuite.keywords.delimiter']) ? '|' : MODx.config['seosuite.keywords.delimiter'];
-        SeoSuite.config.siteNameShow = !MODx.isEmpty(MODx.config['seosuite.keywords.usesitename']);
-        SeoSuite.config.searchEngine = MODx.isEmpty(MODx.config['seosuite.keywords.searchengine']) ? 'google' : MODx.config['seosuite.keywords.searchengine'];
-        SeoSuite.config.titleFormat  = MODx.isEmpty(MODx.config['seosuite.keywords.title_format']) ? '' : MODx.config['seosuite.keywords.title_format'];
+        SeoSuite.config.delimiter    = MODx.isEmpty(MODx.config['seosuite.preview.delimiter']) ? '|' : MODx.config['seosuite.preview.delimiter'];
+        SeoSuite.config.siteNameShow = !MODx.isEmpty(MODx.config['seosuite.preview.usesitename']);
+        SeoSuite.config.searchEngine = MODx.isEmpty(MODx.config['seosuite.preview.searchengine']) ? 'google' : MODx.config['seosuite.preview.searchengine'];
+        SeoSuite.config.titleFormat  = MODx.isEmpty(MODx.config['seosuite.preview.title_format']) ? '' : MODx.config['seosuite.preview.title_format'];
         SeoSuite.addKeywords();
         SeoSuite.addPanel();
-        console.log(SeoSuite.config.searchEngine);
 
         Ext.each(SeoSuite.config.fields.split(','), function(field) {
             SeoSuite.addCounter(field);
@@ -96,7 +95,6 @@ Ext.extend(SeoSuite, Ext.Component, {
                 items       : [{
                     xtype       : 'box',
                     id          : 'seosuite-google-title',
-                    // style: 'background-image: url(https://www.google.com/s2/favicons?domain='+MODx.config.site_url+');',
                     cls         : SeoSuite.config.searchEngine,
                     html        : '',
                     border      : false

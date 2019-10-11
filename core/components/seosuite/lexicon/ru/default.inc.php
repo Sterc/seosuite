@@ -66,3 +66,15 @@ $_lang['seosuite.widget_desc'] = 'Here you can view the 10 most recently added 4
 $_lang['seosuite.match_site_url'] = 'Match context site url';
 $_lang['seosuite.match_site_url_desc'] = 'Should the matching system only match pages within the same context.
  Useful for when you have a multi-language website in multiple contexts with a lot of the same pages.';
+
+$_lang['seosuite.keywords']                           = 'Ключевые фразы';
+$_lang['seosuite.characters']                         = 'Символы';
+$_lang['seosuite.characters.allowed']                 = 'Разрешено символов';
+$_lang['seosuite.focuskeywords']                      = 'Фокусные фразы';
+$_lang['seosuite.focuskeywords_desc']                 = 'Разделённые запятой';
+$_lang['seosuite.prevbox']                            = 'Как это будет выглядеть в Google?';
+$_lang['seosuite.prevbox_yandex']                     = 'Как это будет выглядеть в Yandex?';
+$_lang['seosuite.emptymetadescription']               = '<i>Для предварительного просмотра заполните поле <span class="seopro-google-description--field">Описание</span></i>';
+$_lang['seosuite.branding_text']                      = 'This site is optimized with the Sterc SeoSuite plugin - https://github.com/Sterc/seosuite.';
+$_lang['setting_seosuite.preview.delimiter']          = 'Разделитель в сниппете Google/Yandex';
+$_lang['setting_seosuite.preview.delimiter_desc']     = 'Разделитель между Заголовком и Названием сайта';
