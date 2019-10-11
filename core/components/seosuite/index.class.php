@@ -9,7 +9,6 @@ abstract class SeoSuiteBaseManagerController extends modExtraManagerController {
     public $seosuite;
     public function initialize() {
         $this->seosuite = new SeoSuite($this->modx);
-        $this->seosuite->f();
 
         $this->addCss($this->seosuite->getOption('cssUrl').'mgr.css');
         $this->addJavascript($this->seosuite->getOption('jsUrl').'mgr/seosuite.js');
