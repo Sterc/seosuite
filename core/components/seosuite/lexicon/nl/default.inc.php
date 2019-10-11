@@ -1,10 +1,19 @@
 <?php
+
 /**
- * Default Dutch Lexicon Entries for SEO Suite
+ * SeoSuite
  *
- * @package seosuite
- * @subpackage lexicon
+ * Copyright 2019 by Sterc <modx@sterc.com>
  */
+
+$_lang['seosuite']                                          = 'SEO Suite';
+$_lang['area_seosuite_tab']                                 = 'SEO tab';
+
+$_lang['setting_seosuite.tab_default_index_type']           = 'Standaard pagina\'s indexen';
+$_lang['setting_seosuite.tab_default_index_type_desc']      = '';
+$_lang['setting_seosuite.tab_default_follow_type']          = 'Standaard links volgen';
+$_lang['setting_seosuite.tab_default_follow_type_desc']     = '';
+
 
 $_lang['seosuite'] = 'SEO Suite';
 

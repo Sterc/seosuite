@@ -20,6 +20,11 @@ class SeoSuite
     /**
      * @var array
      */
+    public $config = [];
+
+    /**
+     * @var array
+     */
     public $options = [];
 
     /**
@@ -74,13 +79,43 @@ class SeoSuite
             'jsUrl'         => $assetsUrl . 'js/',
             'cssUrl'        => $assetsUrl . 'css/',
             'connectorUrl'  => $assetsUrl . 'connector.php',
-            'seoTabNotice'  => $seoTabNotice
+            'seoTabNotice'  => $seoTabNotice,
         ], $options);
+
+        $this->config = array_merge([
+            'namespace'                 => 'seosuite',
+            'lexicons'                  => ['seosuite:default', 'seosuite:tab'],
+            'base_path'                 => $corePath,
+            'core_path'                 => $corePath,
+            'model_path'                => $corePath . 'model/',
+            'processors_path'           => $corePath . 'processors/',
+            'elements_path'             => $corePath . 'elements/',
+            'chunks_path'               => $corePath . 'elements/chunks/',
+            'plugins_path'              => $corePath . 'elements/plugins/',
+            'snippets_path'             => $corePath . 'elements/snippets/',
+            'templates_path'            => $corePath . 'templates/',
+            'assets_path'               => $assetsPath,
+            'js_url'                    => $assetsUrl . 'js/',
+            'css_url'                   => $assetsUrl . 'css/',
+            'assets_url'                => $assetsUrl,
+            'connector_url'             => $assetsUrl . 'connector.php',
+            'version'                   => '1.0.0',
+            'tab_default_index_type'    => (bool) $this->modx->getOption('seosuite.tab_default_index_type', null, true),
+            'tab_default_follow_type'   => (bool) $this->modx->getOption('seosuite.tab_default_follow_type', null, false)
+        ], $options);
+
+        $this->modx->addPackage('seosuite', $this->getOption('model_path'));
+
+        if (is_array($this->config['lexicons'])) {
+            foreach ($this->config['lexicons'] as $lexicon) {
+                $this->modx->lexicon->load($lexicon);
+            }
+        } else {
+            $this->modx->lexicon->load($this->config['lexicons']);
+        }
 
         /* Retrieve all plugin classes. */
         $this->setPlugins();
-
-        $this->modx->addPackage('seosuite', $this->getOption('modelPath'));
     }
 
     /**

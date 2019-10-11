@@ -1,25 +1,12 @@
 <?php
 /**
- * Plugin for SEO Suite for handling the redirects.
+ * SeoSuite
+ *
+ * Copyright 2019 by Sterc <modx@sterc.com>
  */
-$corePath = $modx->getOption(
-    'seosuite.core_path',
-    null,
-    $modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/seosuite/'
-);
-$seoSuite = $modx->getService(
-    'seosuite',
-    'SeoSuite',
-    $corePath . 'model/seosuite/',
-    array(
-        'core_path' => $corePath
-    )
-);
 
-if (!($seoSuite instanceof SeoSuite)) {
-    $modx->log(MODX_LOG_LEVEL_ERROR, '[plugin.SEO Suite] Could not initialize SeoSuite.');
+$instance = $modx->getService('seosuite', 'SeoSuite', $modx->getOption('seosuite.core_path', null, $modx->getOption('core_path') . 'components/seosuite/') . 'model/seosuite/');
 
-    return '';
+if ($instance instanceof SeoSuite) {
+    $instance->firePlugins($modx->event, $scriptProperties);
 }
-
-$seoSuite->firePlugins($modx->event, $scriptProperties);
