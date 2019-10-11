@@ -22,6 +22,13 @@ class SeoSuite
      */
     public $options = [];
 
+    /**
+     * Holds all plugins.
+     *
+     * @var array $plugins
+     */
+    protected $plugins = [];
+
     public function __construct(modX &$modx, array $options = [])
     {
         $this->modx      =& $modx;
@@ -54,7 +61,7 @@ class SeoSuite
             $seoTabNotice = '';
         }
 
-        /* loads some default paths for easier management */
+        /* Loads some default paths for easier management. */
         $this->options = array_merge([
             'namespace'     => $this->namespace,
             'corePath'      => $corePath,
@@ -69,6 +76,9 @@ class SeoSuite
             'connectorUrl'  => $assetsUrl . 'connector.php',
             'seoTabNotice'  => $seoTabNotice
         ], $options);
+
+        /* Retrieve all plugin classes. */
+        $this->setPlugins();
 
         $this->modx->addPackage('seosuite', $this->getOption('modelPath'));
     }
@@ -397,5 +407,78 @@ class SeoSuite
         }
 
         return $urls;
+    }
+
+    /**
+     * Fire plugins based on event.
+     *
+     * @param modSystemEvent $event
+     * @param array $properties
+     *
+     * @return bool
+     */
+    public function firePlugins(modSystemEvent $event, array $properties = [])
+    {
+        foreach ($this->plugins as $plugin) {
+            if (method_exists($plugin, $event->name)) {
+                call_user_func_array(
+                    [
+                        $plugin,
+                        $event->name
+                    ],
+                    [
+                        $event,
+                        $properties
+                    ]
+                );
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Create a list of all plugins.
+     */
+    protected function setPlugins()
+    {
+        require_once __DIR__ . '/seosuiteplugin.class.php';
+
+        $pluginsPath = __DIR__ . '/plugins';
+        $classSuffix = '.class.php';
+
+        if (file_exists($pluginsPath)) {
+            $handle = opendir($pluginsPath);
+
+            while (($file = readdir($handle)) !== false) {
+                if (substr($file, -10) === $classSuffix) {
+                    $class = str_replace($classSuffix, '', $file);
+
+                    $this->plugins[] = $this->getClass('plugins' . '.' . $class);
+                }
+            }
+        }
+    }
+
+    /**
+     * Get the class instance.
+     *
+     * @param string $class
+     *
+     * @return bool|SitePlugin
+     */
+    protected function getClass($class, $path = __DIR__ . '/')
+    {
+        $class = $this->modx->loadClass($class, $path, false, true);
+        if (!$class) {
+            return false;
+        }
+
+        $instance = new $class($this->modx, $this);
+        if (!$instance instanceof $class) {
+            return false;
+        }
+
+        return $instance;
     }
 }
