@@ -16,7 +16,12 @@
                 "description": "Plugin to handle the SEO Suite redirects.",
                 "file": "seosuite.plugin.php",
                 "events": [
-                    "OnPageNotFound"
+                    "OnDocFormRender",
+                    "OnDocFormSave",
+                    "OnLoadWebDocument",
+                    "OnMODXInit",
+                    "OnPageNotFound",
+                    "OnResourceDuplicate"
                 ]
             }],
             "snippets": [],
@@ -34,6 +39,38 @@
             "key": "exclude_words",
             "value": "",
             "area": "general"
+        }, {
+          "key": "keywords.delimiter",
+          "value": "|",
+          "area": "keywords"
+        },{
+          "key": "keywords.fields",
+          "value": "pagetitle:70,longtitle:70,description:160,alias:2023,menutitle:2023",
+          "area": "keywords"
+        },{
+          "key": "keywords.usesitename",
+          "type": "combo-boolean",
+          "value": "1",
+          "area": "keywords"
+        },{
+          "key": "keywords.title_format",
+          "area": "keywords"
+        },{
+          "key": "keywords.disabledtemplates",
+          "value": "",
+          "area": "keywords"
+        },{
+          "key": "keywords.max_keywords_title",
+          "value": "4",
+          "area": "keywords"
+        },{
+          "key": "keywords.max_keywords_description",
+          "value": "8",
+          "area": "keywords"
+        },{
+          "key": "keywords.searchengine",
+          "value": "google",
+          "area": "keywords"
         }]
     },
     "database": {

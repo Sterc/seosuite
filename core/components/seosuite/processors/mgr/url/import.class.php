@@ -2,7 +2,7 @@
 require_once dirname(dirname(dirname(__DIR__))) . '/vendor/autoload.php';
 
 /**
- * Import lexicons key <> value pairs from csv file
+ * Import lexicons key <> value pairs from csv file.
  *
  * @package core
  * @subpackage processors

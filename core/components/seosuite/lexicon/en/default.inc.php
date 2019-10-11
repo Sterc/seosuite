@@ -7,7 +7,6 @@
  */
 
 $_lang['seosuite'] = 'SEO Suite';
-
 $_lang['seosuite.menu.seosuite'] = 'SEO Suite';
 $_lang['seosuite.menu.seosuite_desc'] = 'Manage bulk 404 URLs.';
 
@@ -77,3 +76,43 @@ $_lang['seosuite.match_site_url_desc'] = 'Should the matching system only match 
 
 $_lang['setting_seosuite.exclude_words'] = 'Exclude words';
 $_lang['setting_seosuite.exclude_words_desc'] = 'Comma separated list of words which will be excluded from the suggestions matching system.';
+
+/* Keywords. */
+$_lang['seosuite.keywords']                        = 'Keywords';
+$_lang['seosuite.characters']                      = 'Characters';
+$_lang['seosuite.characters.allowed']              = 'Allowed characters';
+$_lang['seosuite.focuskeywords']                   = 'Focus keywords';
+$_lang['seosuite.focuskeywords_desc']              = 'Enter your keywords comma-separated (example: table, chair)';
+$_lang['seosuite.prevbox']                         = 'Google Preview';
+$_lang['seosuite.prevbox_yandex']                  = 'Yandex Preview';
+$_lang['seosuite.emptymetadescription']            = '<i>Please enter a description</i>';
+$_lang['seosuite.branding_text']                   = 'This site is optimized with the Sterc seoPro plugin - https://github.com/Sterc/SEOPro.';
+
+/* Areas. */
+$_lang['area_general']  = 'General';
+$_lang['area_keywords'] = 'Keywords';
+
+/* Settings. */
+$_lang['setting_seosuite.keywords.delimiter']               = 'Delimiter in Google/Yandex Preview.';
+$_lang['setting_seosuite.keywords.delimiter_desc']          = 'Delimiter between Title and Sitename';
+$_lang['setting_seosuite.keywords.fields']                  = 'Fields where SEO Pro will work on';
+$_lang['setting_seosuite.keywords.fields_desc']             = 'Only change these if you know what you\'re doing. Default value:pagetitle,longtitle,description,alias,menutitle. Will not work on the content field';
+$_lang['setting_seosuite.keywords.version']                 = 'Version number';
+$_lang['setting_seosuite.keywords.version_desc']            = 'Current ' . $_lang['setting_seosuite.version'];
+$_lang['setting_seosuite.keywords.usesitename']             = 'Display sitename in the Google/Yandex Preview and add it to the SEO Pro title placeholder [[+seoPro.title]]?';
+$_lang['setting_seosuite.keywords.usesitename_desc']        = 'If this value is \'no\' the delimiter and sitename setting will be removed from the Google Preview AND SEO Pro title placeholder';
+$_lang['setting_seosuite.keywords.disabledtemplates']       = 'Disabled Templates';
+$_lang['setting_seosuite.keywords.disabledtemplates_desc']  = 'Comma separated list of disabled template IDs';
+$_lang['setting_seosuite.keywords.max_keywords_title']      = 'Max amount of focus keywords allowed in title.';
+$_lang['setting_seosuite.keywords.max_keywords_title_desc'] ='Use this setting to control the maximum amount of focus keywords that are allowed in the title to get a thumbs-up.
+ It is advised to use no more than 4 keywords in your title.';
+
+$_lang['setting_seosuite.keywords.max_keywords_description']      = 'Max amount of focus keywords allowed in description.';
+$_lang['setting_seosuite.keywords.max_keywords_description_desc'] = 'Use this setting to control the maximum amount of focus keywords that are allowed in the description to get a thumbs-up.
+ It is advised to use no more than 8 keywords in your description.';
+
+$_lang['setting_seosuite.keywords.searchengine']      = 'Search engine used for the preview.';
+$_lang['setting_seosuite.keywords.searchengine_desc'] = 'Possible values: google, yandex. Defaults to google.';
+$_lang['setting_seosuite.keywords.title_format']      = 'Format used for the meta title.';
+$_lang['setting_seosuite.keywords.title_format_desc'] = 'Here you can specify the format for the meta title used
+ in Google/Yandex preview. The rendered output is also available on frontend with [[+seoPro.title]].';

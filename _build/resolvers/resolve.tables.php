@@ -113,9 +113,10 @@ if ($object->xpdo) {
             /** @var modX $modx */
             $modx =& $object->xpdo;
 
-            $tables = array(
-                'SeoSuiteUrl'
-            );
+            $tables = [
+                'SeoSuiteUrl',
+                'SeoSuiteKeyword'
+            ];
             $modelPath = $modx->getOption('seosuite.core_path', null, $modx->getOption('core_path').'components/seosuite/').'model/';
             $modx->addPackage('seosuite', $modelPath);
             foreach ($tables as $table) {

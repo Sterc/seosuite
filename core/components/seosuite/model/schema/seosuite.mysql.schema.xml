@@ -14,4 +14,13 @@
             <column key="url" length="767" collation="A" null="false" />
         </index>
     </object>
+
+    <object class="SeoSuiteKeyword" table="seosuite_keyword" extends="xPDOSimpleObject">
+        <field key="resource" dbtype="integer" precision="10" phptype="int" null="false" default="" index="index"/>
+        <field key="keywords" dbtype="text" phptype="string" null="true" default="" />
+
+        <index alias="resource" name="resource" primary="false" unique="false" type="BTREE">
+            <column key="resource" length="767" collation="A" null="false" />
+        </index>
+    </object>
 </model>
