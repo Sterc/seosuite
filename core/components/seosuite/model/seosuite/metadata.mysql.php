@@ -9,6 +9,7 @@
 $xpdo_meta_map = [
     'xPDOSimpleObject' => [
         'SeoSuiteResource',
+        'SeoSuiteRedirect'
         //'SeoSuiteUrl',
         //'SeoSuiteKeyword'
     ]

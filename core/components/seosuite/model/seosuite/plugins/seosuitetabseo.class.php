@@ -10,17 +10,35 @@ class SeoSuiteTabSeo extends SeoSuitePlugin
 {
     /**
      * @access public.
+     * @return Boolean.
+     */
+    protected function hasPermission()
+    {
+        if (isset($this->seosuite->config['tab_seo']['permission'])) {
+            return $this->seosuite->config['tab_seo']['permission'];
+        }
+
+        return false;
+    }
+
+    /**
+     * @access public.
      * @param Object $event.
+     * @return void.
      */
     public function onDocFormPrerender($event)
     {
+        if (!$this->hasPermission()) {
+            return null;
+        }
+
         $this->modx->controller->addCss($this->seosuite->config['css_url'] . 'mgr/seosuite.css');
 
         $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/seosuite.js');
 
         $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/extras/extras.js');
 
-        $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/resource.tab_seo.js');
+        $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/resource.tab_seo.js');
 
         if (is_array($this->seosuite->config['lexicons'])) {
             foreach ($this->seosuite->config['lexicons'] as $lexicon) {
@@ -79,9 +97,14 @@ class SeoSuiteTabSeo extends SeoSuitePlugin
     /**
      * @access public.
      * @param Object $event.
+     * @return void.
      */
     public function onDocFormSave($event)
     {
+        if (!$this->hasPermission()) {
+            return null;
+        }
+
         $resource =& $event->params['resource'];
 
         if ($resource) {
@@ -110,9 +133,14 @@ class SeoSuiteTabSeo extends SeoSuitePlugin
      *
      * @access public.
      * @param Object $event.
+     * @return void.
      */
     public function onResourceDuplicate($event)
     {
+        if (!$this->hasPermission()) {
+            return null;
+        }
+
         $oldResource =& $event->params['oldResource'];
         $newResource =& $event->params['newResource'];
 
@@ -132,9 +160,14 @@ class SeoSuiteTabSeo extends SeoSuitePlugin
     /**
      * @access public.
      * @param Object $event.
+     * @return void.
      */
     public function onEmptyTrash($event)
     {
+        if (!$this->hasPermission()) {
+            return null;
+        }
+
         foreach ((array) $event->params['ids'] as $id) {
             $this->seosuite->removeSeoSuiteResourceProperties($id);
         }

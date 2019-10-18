@@ -60,3 +60,57 @@ SeoSuite.combo.SitemapChangeFreq = function(config) {
 Ext.extend(SeoSuite.combo.SitemapChangeFreq, MODx.combo.ComboBox);
 
 Ext.reg('seosuite-combo-sitemap-changefreq', SeoSuite.combo.SitemapChangeFreq);
+
+SeoSuite.combo.RedirectType = function(config) {
+    config = config || {};
+
+    Ext.applyIf(config, {
+        store       : new Ext.data.ArrayStore({
+            mode        : 'local',
+            fields      : ['type', 'label'],
+            data        : [
+                ['301', 'HTTP/1.1 301 Moved Permanently'],
+                ['302', 'HTTP/1.1 302 Found'],
+                ['303', 'HTTP/1.1 303 See Other']
+            ]
+        }),
+        remoteSort  : ['label', 'asc'],
+        hiddenName  : 'redirect_type',
+        valueField  : 'label',
+        displayField : 'label',
+        mode        : 'local',
+        value       : 'HTTP/1.1 301 Moved Permanently'
+    });
+
+    SeoSuite.combo.RedirectType.superclass.constructor.call(this, config);
+};
+
+Ext.extend(SeoSuite.combo.RedirectType, MODx.combo.ComboBox);
+
+Ext.reg('seosuite-combo-redirect-type', SeoSuite.combo.RedirectType);
+
+SeoSuite.combo.Solved = function(config) {
+    config = config || {};
+
+    Ext.applyIf(config, {
+        store       : new Ext.data.ArrayStore({
+            mode        : 'local',
+            fields      : ['value', 'label'],
+            data        : [
+                [1, _('yes')],
+                [0, _('no')]
+            ]
+        }),
+        remoteSort  : ['label', 'asc'],
+        hiddenName  : 'solved',
+        valueField  : 'value',
+        displayField : 'label',
+        mode        : 'local'
+    });
+
+    SeoSuite.combo.Solved.superclass.constructor.call(this, config);
+};
+
+Ext.extend(SeoSuite.combo.Solved, MODx.combo.ComboBox);
+
+Ext.reg('seosuite-combo-solved', SeoSuite.combo.Solved);

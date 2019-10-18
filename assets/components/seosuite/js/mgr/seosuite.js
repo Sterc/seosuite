@@ -14,6 +14,6 @@ Ext.extend(SeoSuite, Ext.Component, {
     config  : {}
 });
 
-Ext.reg('seosuite',SeoSuite);
+Ext.reg('seosuite', SeoSuite);
 
 SeoSuite = new SeoSuite();

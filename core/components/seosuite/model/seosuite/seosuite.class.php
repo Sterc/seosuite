@@ -82,6 +82,9 @@ class SeoSuite
             'seoTabNotice'  => $seoTabNotice,
         ], $options);
 
+        /* Retrieve all plugin classes. */
+        $this->setPlugins();
+
         $this->config = array_merge([
             'namespace'                 => 'seosuite',
             'lexicons'                  => ['seosuite:default', 'seosuite:tab_seo', 'seosuite:tab_social'],
@@ -100,10 +103,16 @@ class SeoSuite
             'assets_url'                => $assetsUrl,
             'connector_url'             => $assetsUrl . 'connector.php',
             'version'                   => '1.0.0',
+            'branding_url'              => $this->modx->getOption('seosuite.branding_url', null, ''),
+            'branding_help_url'         => $this->modx->getOption('seosuite.branding_url_help', null, ''),
             'tab_seo'                   => [
+                'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_seo'),
                 'default_index_type'        => (int) $this->modx->getOption('seosuite.tab_seo_default_index_type', null, 1),
                 'default_follow_type'       => (int) $this->modx->getOption('seosuite.tab_seo_default_follow_type', null, 1),
                 'default_sitemap'           => (int) $this->modx->getOption('seosuite.tab_seo_default_sitemap', null, 0),
+            ],
+            'tab_social'                => [
+                'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_social'),
             ]
         ], $options);
 
@@ -116,9 +125,32 @@ class SeoSuite
         } else {
             $this->modx->lexicon->load($this->config['lexicons']);
         }
+    }
 
-        /* Retrieve all plugin classes. */
-        $this->setPlugins();
+    /**
+     * @access public.
+     * @return String|Boolean.
+     */
+    public function getHelpUrl()
+    {
+        if (!empty($this->config['branding_help_url'])) {
+            return $this->config['branding_help_url'] . '?v=' . $this->config['version'];
+        }
+
+        return false;
+    }
+
+    /**
+     * @access public.
+     * @return String|Boolean.
+     */
+    public function getBrandingUrl()
+    {
+        if (!empty($this->config['branding_url'])) {
+            return $this->config['branding_url'];
+        }
+
+        return false;
     }
 
     /**
