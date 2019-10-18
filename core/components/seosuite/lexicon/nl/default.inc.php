@@ -6,13 +6,16 @@
  * Copyright 2019 by Sterc <modx@sterc.com>
  */
 
-$_lang['seosuite']                                          = 'SEO Suite';
-$_lang['area_seosuite_tab']                                 = 'SEO tab';
+$_lang['seosuite']                                              = 'SEO Suite';
+$_lang['area_seosuite_tab_seo']                                 = 'Zoekmachine tab';
+$_lang['area_seosuite_tab_social']                              = 'Social tab';
 
-$_lang['setting_seosuite.tab_default_index_type']           = 'Standaard pagina\'s indexen';
-$_lang['setting_seosuite.tab_default_index_type_desc']      = '';
-$_lang['setting_seosuite.tab_default_follow_type']          = 'Standaard links volgen';
-$_lang['setting_seosuite.tab_default_follow_type_desc']     = '';
+$_lang['setting_seosuite.tab_seo_default_index_type']           = 'Standaard pagina\'s indexeren';
+$_lang['setting_seosuite.tab_seo_default_index_type_desc']      = '';
+$_lang['setting_seosuite.tab_seo_default_follow_type']          = 'Standaard links volgen';
+$_lang['setting_seosuite.tab_seo_default_follow_type_desc']     = '';
+$_lang['setting_seosuite.tab_seo_default_sitemap']              = 'Standaard opnemen in sitemap';
+$_lang['setting_seosuite.tab_seo_default_sitemap_desc']         = '';
 
 
 $_lang['seosuite'] = 'SEO Suite';

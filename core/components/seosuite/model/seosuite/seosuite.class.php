@@ -84,7 +84,7 @@ class SeoSuite
 
         $this->config = array_merge([
             'namespace'                 => 'seosuite',
-            'lexicons'                  => ['seosuite:default', 'seosuite:tab'],
+            'lexicons'                  => ['seosuite:default', 'seosuite:tab_seo', 'seosuite:tab_social'],
             'base_path'                 => $corePath,
             'core_path'                 => $corePath,
             'model_path'                => $corePath . 'model/',
@@ -100,11 +100,14 @@ class SeoSuite
             'assets_url'                => $assetsUrl,
             'connector_url'             => $assetsUrl . 'connector.php',
             'version'                   => '1.0.0',
-            'tab_default_index_type'    => (bool) $this->modx->getOption('seosuite.tab_default_index_type', null, true),
-            'tab_default_follow_type'   => (bool) $this->modx->getOption('seosuite.tab_default_follow_type', null, false)
+            'tab_seo'                   => [
+                'default_index_type'        => (int) $this->modx->getOption('seosuite.tab_seo_default_index_type', null, 1),
+                'default_follow_type'       => (int) $this->modx->getOption('seosuite.tab_seo_default_follow_type', null, 1),
+                'default_sitemap'           => (int) $this->modx->getOption('seosuite.tab_seo_default_sitemap', null, 0),
+            ]
         ], $options);
 
-        $this->modx->addPackage('seosuite', $this->getOption('model_path'));
+        $this->modx->addPackage('seosuite', $this->getOption('modelPath'));
 
         if (is_array($this->config['lexicons'])) {
             foreach ($this->config['lexicons'] as $lexicon) {
@@ -558,5 +561,88 @@ class SeoSuite
         }
 
         return $instance;
+    }
+
+    /**
+     * Get the Seo Suite properties of a resource.
+     *
+     * @access public.
+     * @param Integer $id.
+     * @return Null|Object.
+     */
+    public function getSeoSuiteResourceProperties($id)
+    {
+        $resource = $this->modx->getObject('modResource', [
+            'id' => $id
+        ]);
+
+        if ($resource) {
+            $seoSuiteResource = $this->modx->getObject('SeoSuiteResource', [
+                'resource_id' => $id
+            ]);
+
+            if ($seoSuiteResource) {
+                return $seoSuiteResource;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Set the Seo Suite properties of a resource.
+     *
+     * @access public.
+     * @param Integer $id.
+     * @param Array $properties.
+     * @return Boolean.
+     */
+    public function setSeoSuiteResourceProperties($id, array $properties = [])
+    {
+        $resource = $this->modx->getObject('modResource', [
+            'id' => $id
+        ]);
+
+        if ($resource) {
+            $seoSuiteResource = $this->modx->getObject('SeoSuiteResource', [
+                'resource_id' => $id
+            ]);
+
+            if (!$seoSuiteResource) {
+                $seoSuiteResource = $this->modx->newObject('SeoSuiteResource', [
+                    'resource_id' => $id
+                ]);
+            }
+
+            if ($seoSuiteResource) {
+                $seoSuiteResource->fromArray($properties);
+
+                if ($seoSuiteResource->save()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @access public.
+     * @param Integer $id.
+     * @return Boolean.
+     */
+    public function removeSeoSuiteResourceProperties($id)
+    {
+        $seoSuiteResource = $this->modx->getObject('SeoSuiteResource', [
+            'resource_id' => $id
+        ]);
+
+        if ($seoSuiteResource) {
+            if ($seoSuiteResource->remove()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
