@@ -97,9 +97,9 @@ class SeoSuiteKeywords extends SeoSuitePlugin
         });</script>');
 
         $this->modx->regClientCSS($this->seosuite->options['assetsUrl'] . 'css/mgr.css');
-        $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/seosuite.js??v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
-        $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/keywords.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
-
+        $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/seosuite.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
+        $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/metatag.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
+        $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/preview.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
     }
 
     /**

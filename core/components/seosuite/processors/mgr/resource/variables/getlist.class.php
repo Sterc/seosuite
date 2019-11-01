@@ -14,7 +14,7 @@
  * @package modx
  * @subpackage processors.security.user
  */
-class SeoSuiteSnippetVariablesGetListProcessor extends modObjectGetListProcessor
+class SeoSuiteVariablesGetListProcessor extends modObjectGetListProcessor
 {
 
     public function getData()
@@ -26,8 +26,20 @@ class SeoSuiteSnippetVariablesGetListProcessor extends modObjectGetListProcessor
                     'value' => 'pagetitle'
                 ],
                 [
-                    'key'   => 'site_title',
-                    'value' => 'site_title'
+                    'key'   => 'longtitle',
+                    'value' => 'longtitle'
+                ],
+                [
+                    'key'   => 'description',
+                    'value' => 'description'
+                ],
+                [
+                    'key'   => 'introtext',
+                    'value' => 'introtext'
+                ],
+                [
+                    'key'   => 'site_name',
+                    'value' => 'site_name'
                 ]
             ]
         ];
@@ -40,4 +52,4 @@ class SeoSuiteSnippetVariablesGetListProcessor extends modObjectGetListProcessor
 
 }
 
-return 'SeoSuiteSnippetVariablesGetListProcessor';
+return 'SeoSuiteVariablesGetListProcessor';
