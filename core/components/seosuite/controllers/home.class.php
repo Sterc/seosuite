@@ -20,9 +20,9 @@ class SeoSuiteHomeManagerController extends SeoSuiteBaseManagerController
 
     public function loadCustomCssJs()
     {
-        $this->addJavascript($this->seosuite->getOption('jsUrl').'mgr/widgets/urls.grid.js');
-        $this->addJavascript($this->seosuite->getOption('jsUrl').'mgr/widgets/home.panel.js');
-        $this->addLastJavascript($this->seosuite->getOption('jsUrl').'mgr/sections/home.js');
+        $this->addJavascript($this->seosuite->getOption('jsUrl') . 'mgr/widgets/urls.grid.js');
+        $this->addJavascript($this->seosuite->getOption('jsUrl') . 'mgr/widgets/home.panel.js');
+        $this->addLastJavascript($this->seosuite->getOption('jsUrl') . 'mgr/sections/home.js');
     }
 
     public function getTemplateFile()

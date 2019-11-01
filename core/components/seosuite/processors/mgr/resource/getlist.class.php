@@ -16,19 +16,21 @@ class SeoSuiteUrlResourceGetListProcessor extends modObjectGetListProcessor
     {
         $query = $this->getProperty('query');
         if (!empty($query)) {
-            $c->where(array(
-                'id:LIKE' => '%'.$query.'%',
+            $c->where([
+                'id:LIKE'           => '%'.$query.'%',
                 'OR:pagetitle:LIKE' => '%'.$query.'%',
                 'OR:longtitle:LIKE' => '%'.$query.'%'
-            ));
+            ]);
         }
+
         $ids = $this->getProperty('ids');
         if (!empty($ids)) {
             $ids = json_decode($ids, true);
-            $c->where(array(
+            $c->where([
                 'id:IN' => $ids
-            ));
+            ]);
         }
+
         return $c;
     }
 

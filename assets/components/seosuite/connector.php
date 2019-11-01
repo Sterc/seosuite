@@ -14,7 +14,7 @@ $modx->getService('seosuite', 'SeoSuite', $modx->getOption('seosuite.core_path',
 
 if ($modx->seosuite instanceof SeoSuite) {
     $modx->request->handleRequest([
-        'processors_path'   => $modx->seosuite->config['processorsPath'],
+        'processors_path'   => $modx->seosuite->config['processors_path'],
         'location'          => ''
     ]);
 }

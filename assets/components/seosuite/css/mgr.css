@@ -79,7 +79,7 @@
     margin-top: 3px;
 }
 
-#seosuite-google-title {
+#seosuite-preview-title {
     color: #1A0DAB;
     font-size: 18px;
     white-space: nowrap;
@@ -90,30 +90,30 @@
     background-repeat: no-repeat;
     background-size: 0;
 }
-#seosuite-google-title.yandex {
+#seosuite-preview-title.yandex {
     color: #00c;
     padding-left: 20px;
     background-position: 0 4px;
     background-size: auto;
 }
 
-#seosuite-google-url {
+#seosuite-preview-url {
     color: #006621;
     margin-bottom: 1px;
 }
-#seosuite-google-url.yandex {
+#seosuite-preview-url.yandex {
     color: #070;
     padding-left: 20px;
 }
 
-#seosuite-google-description {
+#seosuite-preview-description {
     font-size: 13px;
     color: #545454;
     line-height: 1.4;
     word-wrap: break-word;
     font-family: arial, sans-serif;
 }
-#seosuite-google-description.yandex {
+#seosuite-preview-description.yandex {
     padding-left: 20px;
 }
 
@@ -200,16 +200,18 @@
     border-bottom-right-radius: 3px;
 }
 
-#seosuite-preview-insert-variable-title {
+#seosuite-preview-insert-title,
+#seosuite-preview-insert-description {
     position: absolute;
-    width: auto;
-    top: 60px;
-    right: 10px;
+    top: 3px;
+    right: 0;
+    z-index: 1;
 }
 
-#seosuite-preview-insert-variable-description {
-    position: absolute;
-    width: auto;
-    bottom: 130px;
-    right: 10px;
+.seosuite-snippet-variable {
+    background: #3697cd;
+    border-radius: 3px;
+    color: #fff;
+    font-weight: bold;
+    padding: 5px;
 }
