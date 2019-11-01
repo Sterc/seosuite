@@ -66,16 +66,22 @@ class SeoSuiteKeywords extends SeoSuitePlugin
                 $url = $this->modx->makeUrl($resource->get('id'), '', '', 'full');
             }
 
-            $url = str_replace(
-                $resource->get('alias'),
-                '<span id=\"seopro-replace-alias\">' . $resource->get('alias') . '</span>',
+            $url = preg_replace(
+                '/' . $resource->get('alias') . '(.*)/',
+                '<span id=\"seosuite-replace-alias\">' . $resource->get('alias') . '$1</span>',
                 $url
             );
+
+            if (!strpos($url, 'seosuite-replace-alias')) {
+                $url .= '<span id=\"seosuite-replace-alias\"></span>';
+            }
 
             $seoKeywords = $this->modx->getObject('SeoSuiteKeyword', ['resource' => $resource->get('id')]);
             if ($seoKeywords) {
                 $keywords = $seoKeywords->get('keywords');
             }
+        } else {
+            $url .= '<span id=\"seosuite-replace-alias\"></span>';
         }
 
         if ($_REQUEST['id'] == $this->modx->getOption('site_start')) {
@@ -86,10 +92,24 @@ class SeoSuiteKeywords extends SeoSuitePlugin
         $config = $this->seosuite->options;
         unset($config['resource']);
 
+
+        $record['keywords'] = $keywords;
+
+        $seoSuiteResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $resource->get('id')]);
+        if ($seoSuiteResource) {
+            $record['use_default_meta'] = $seoSuiteResource->get('use_default_meta');
+            $record['meta_title']       = $seoSuiteResource->get('meta_title');
+            $record['meta_description'] = $seoSuiteResource->get('meta_description');
+        } else {
+            $record['use_default_meta'] = 1;
+            $record['meta_title']       = json_decode($this->modx->getOption('seosuite.preview.default.meta_title'), true);
+            $record['meta_description'] = json_decode($this->modx->getOption('seosuite.preview.default.meta_description'), true);
+        }
+
         $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
         Ext.onReady(function() {
             SeoSuite.config        = ' . $this->modx->toJSON($config) . ';
-            SeoSuite.config.record = "' . $keywords . '";
+            SeoSuite.config.record = ' . $this->modx->toJSON($record) . ';
             SeoSuite.config.values = {};
             SeoSuite.config.fields = "' . implode(',', array_keys($arrFields)) . '";
             SeoSuite.config.chars  = ' . $this->modx->toJSON($arrFields) . '
@@ -101,6 +121,7 @@ class SeoSuiteKeywords extends SeoSuitePlugin
         $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/metatag.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
         $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/preview.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
     }
+
 
     /**
      * @TODO Refactor disabled templates.

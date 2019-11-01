@@ -15,9 +15,29 @@ class SeoSuitePreviewProcessor extends modProcessor
         $this->modx->switchContext($this->getProperty('context', 'web'));
         $this->modx->resource = $this->modx->getObject('modResource', $this->getProperty('resource'));
 
+        /* If no resource is set, when creating a resource, then temporarily create a new one so the getAliasPath method can be used. */
+        if (!$this->modx->resource) {
+            $this->modx->resource = $this->modx->newObject('modResource');
+        }
+
+        $alias = $this->modx->resource->getAliasPath($this->getProperty('alias'), [
+            'content_type' => $this->getProperty('content_type'),
+            'uri'          => $this->getProperty('uri'),
+            'uri_override' => $this->getProperty('uri_override') === 'true' ? true : false,
+            'context_key'  => $this->getProperty('context', 'web')
+        ]);
+
+        $title       = $this->getProperty('title');
+        $description = $this->getProperty('description');
+        if ($this->getProperty('use_default_meta') === 'true') {
+            $title       = $this->modx->getOption('seosuite.preview.default.meta_title');
+            $description = $this->modx->getOption('seosuite.preview.default.meta_description');
+        }
+
         $rendered = [
-            'title'       => $this->renderValue($this->getProperty('title')),
-            'description' => $this->renderValue($this->getProperty('description'))
+            'title'       => $this->renderValue($title),
+            'description' => $this->renderValue($description),
+            'alias'       => $alias
         ];
 
         return $this->outputArray(['output' => $rendered],0);

@@ -106,9 +106,11 @@ class SeoSuiteTabSeo extends SeoSuitePlugin
         }
 
         $resource =& $event->params['resource'];
-
         if ($resource) {
             $properties = [
+                'use_default_meta'      => 0,
+                'meta_title'            => '',
+                'meta_description'      => '',
                 'index_type'            => $this->seosuite->config['tab_seo']['default_index_type'],
                 'follow_type'           => $this->seosuite->config['tab_seo']['default_follow_type'],
                 'sitemap'               => 0,

@@ -87,6 +87,12 @@ $_lang['seosuite.prevbox']                         = 'Google Preview';
 $_lang['seosuite.prevbox_yandex']                  = 'Yandex Preview';
 $_lang['seosuite.emptymetadescription']            = '<i>Please enter a description</i>';
 $_lang['seosuite.branding_text']                   = 'This site is optimized with the Sterc SeoSuite plugin - https://github.com/Sterc/seosuite.';
+$_lang['seosuite.meta.use_default']                = 'Use default settings for the meta title and meta description.';
+$_lang['seosuite.meta_title']                      = 'SEO Title';
+$_lang['seosuite.meta_description']                = 'SEO Description';
+$_lang['seosuite.meta.variable']                   = 'Variable';
+$_lang['seosuite.meta.insert_btn']                 = 'Insert';
+$_lang['seosuite.meta.insert_title']               = 'Insert snippet variable';
 
 /* Areas. */
 $_lang['area_general']  = 'General';

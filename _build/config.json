@@ -71,6 +71,14 @@
           "key": "preview.searchengine",
           "value": "google",
           "area": "preview"
+        }, {
+          "key": "preview.default.meta_title",
+          "value": "[{\"type\":\"placeholder\",\"value\":\"longtitle\"},{\"type\":\"text\",\"value\":\" | \"},{\"type\":\"placeholder\",\"value\":\"site_name\"}]",
+          "area": "preview"
+        }, {
+          "key": "preview.default.meta_description",
+          "value": "google",
+          "area": "preview"
         }]
     },
     "database": {
