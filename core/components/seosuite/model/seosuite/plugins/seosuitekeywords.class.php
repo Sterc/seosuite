@@ -144,7 +144,7 @@ class SeoSuiteKeywords extends SeoSuitePlugin
      */
     public function onResourceDuplicate($event, $properties)
     {
-        $resource    = $properties['resource'];
+        $resource    = $properties['oldResource'];
         $newResource = $properties['newResource'];
 
         $template = (string) $resource->get('template');
