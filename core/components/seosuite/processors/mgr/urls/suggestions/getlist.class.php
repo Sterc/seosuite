@@ -6,13 +6,13 @@
  * Copyright 2019 by Sterc <modx@sterc.com>
  */
 
-class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
+class SeoSuiteSuggestionsGetListProcessor extends modObjectGetListProcessor
 {
     /**
      * @access public.
      * @var String.
      */
-    public $classKey = 'SeoSuiteUrl';
+    public $classKey = 'modResource';
 
     /**
      * @access public.
@@ -24,19 +24,25 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
      * @access public.
      * @var String.
      */
-    public $defaultSortField = 'last_visit';
+    public $defaultSortField = null;
 
     /**
      * @access public.
      * @var String.
      */
-    public $defaultSortDirection = 'DESC';
+    public $defaultSortDirection = 'ASC';
 
     /**
      * @access public.
      * @var String.
      */
-    public $objectType = 'seosuite.url';
+    public $objectType = 'seosuite.suggestion';
+
+    /**
+     * @access public.
+     * @var Array.
+     */
+    public $suggestions = [];
 
     /**
      * @access public.
@@ -52,9 +58,11 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
     {
         $this->modx->getService('seosuite', 'SeoSuite', $this->modx->getOption('seosuite.core_path', null, $this->modx->getOption('core_path') . 'components/seosuite/') . 'model/seosuite/');
 
-        $this->setDefaultProperties([
-            'dateFormat' => $this->modx->getOption('manager_date_format') . ', ' .  $this->modx->getOption('manager_time_format')
-        ]);
+        $suggestions = json_decode($this->getProperty('suggestions'), true);
+
+        arsort($suggestions);
+
+        $this->suggestions = $suggestions;
 
         return parent::initialize();
     }
@@ -66,13 +74,20 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
      */
     public function prepareQueryBeforeCount(xPDOQuery $criteria)
     {
-        $query = $this->getProperty('query');
+        $criteria->where([
+            'id:IN' => array_keys($this->suggestions)
+        ]);
 
-        if (!empty($query)) {
-            $criteria->where([
-                'old_url:LIKE' => '%' . $query . '%'
-            ]);
-        }
+        return $criteria;
+    }
+
+    /**
+     * @access public.
+     * @param xPDOQuery $criteria.
+     * @return xPDOQuery.
+     */
+    public function prepareQueryAfterCount(xPDOQuery $criteria) {
+        $criteria->sortby('FIELD(id, ' . implode(', ', array_keys($this->suggestions)) . ')');
 
         return $criteria;
     }
@@ -84,24 +99,14 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
      */
     public function prepareRow(xPDOObject $object)
     {
-        $array = array_merge($object->toArray(), [
-            'time_ago'  => $object->getTimeAgo(),
-            'site_url'  => $this->getSiteUrl($object->get('context_key'))
-        ]);
-
-        if (in_array($object->get('last_visit'), ['-001-11-30 00:00:00', '-1-11-30 00:00:00', '0000-00-00 00:00:00', null], true)) {
-            $array['last_visit'] = '';
-        } else {
-            $array['last_visit'] = date($this->getProperty('dateFormat'), strtotime($object->get('last_visit')));
-        }
-
-        if (in_array($object->get('createdon'), ['-001-11-30 00:00:00', '-1-11-30 00:00:00', '0000-00-00 00:00:00', null], true)) {
-            $array['createdon'] = '';
-        } else {
-            $array['createdon'] = date($this->getProperty('dateFormat'), strtotime($object->get('createdon')));
-        }
-
-        return $array;
+        return [
+            'id'                    => $object->get('id'),
+            'pagetitle'             => $object->get('pagetitle'),
+            'pagetitle_formatted'   => $object->get('pagetitle') . ($this->modx->hasPermission('tree_show_resource_ids') ? ' (' . $object->get('id') . ')' : ''),
+            'uri'                   => $object->get('uri'),
+            'site_url'              => $this->getSiteUrl($object->get('context_key')),
+            'boost'                 => $this->suggestions[$object->get('id')]
+        ];
     }
 
     /**
@@ -127,4 +132,4 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
     }
 }
 
-return 'SeoSuiteUrlGetListProcessor';
+return 'SeoSuiteSuggestionsGetListProcessor';

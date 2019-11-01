@@ -6,7 +6,7 @@
  * Copyright 2019 by Sterc <modx@sterc.com>
  */
     
-class SeoSuiteRedirectUpdateProcessor extends modObjectUpdateProcessor
+class SeoSuiteRedirectRemoveMultipleProcessor extends modObjectProcessor
 {
     /**
      * @access public.
@@ -34,10 +34,6 @@ class SeoSuiteRedirectUpdateProcessor extends modObjectUpdateProcessor
     {
         $this->modx->getService('seosuite', 'SeoSuite', $this->modx->getOption('seosuite.core_path', null, $this->modx->getOption('core_path') . 'components/seosuite/') . 'model/seosuite/');
 
-        if ($this->getProperty('active') === null) {
-            $this->setProperty('active', 0);
-        }
-
         return parent::initialize();
     }
 
@@ -45,21 +41,18 @@ class SeoSuiteRedirectUpdateProcessor extends modObjectUpdateProcessor
      * @access public.
      * @return Mixed.
      */
-    public function beforeSave()
+    public function process()
     {
-        $criteria = [
-            'id:!='     => $this->object->get('id'),
-            'old_url'   => $this->object->get('old_url')
-        ];
+        $redirects = $this->modx->getCollection($this->classKey, [
+            'id:IN' => explode(',', $this->getProperty('id'))
+        ]);
 
-        if ($this->doesAlreadyExist($criteria)) {
-            $this->addFieldError('old_url', $this->modx->lexicon('seosuite.redirect_error_exists'));
+        foreach ($redirects as $redirect) {
+            $redirect->remove();
         }
 
-        $this->object->set('new_url', trim($this->getProperty('new_url'), '/'));
-
-        return parent::beforeSave();
+        return $this->success();
     }
 }
 
-return 'SeoSuiteRedirectUpdateProcessor';
+return 'SeoSuiteRedirectRemoveMultipleProcessor';

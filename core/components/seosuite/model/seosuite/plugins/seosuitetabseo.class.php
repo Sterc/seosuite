@@ -38,6 +38,8 @@ class SeoSuiteTabSeo extends SeoSuitePlugin
 
         $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/extras/extras.js');
 
+        $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/redirects.grid.js');
+
         $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/resource.tab_seo.js');
 
         if (is_array($this->seosuite->config['lexicons'])) {

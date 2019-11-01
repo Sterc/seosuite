@@ -24,7 +24,7 @@ class SeoSuiteRedirectGetListProcessor extends modObjectGetListProcessor
      * @access public.
      * @var String.
      */
-    public $defaultSortField = 'id';
+    public $defaultSortField = 'Redirect.id';
 
     /**
      * @access public.
@@ -37,6 +37,12 @@ class SeoSuiteRedirectGetListProcessor extends modObjectGetListProcessor
      * @var String.
      */
     public $objectType = 'seosuite.redirect';
+
+    /**
+     * @access public.
+     * @var Array.
+     */
+    public $contexts = [];
 
     /**
      * @access public.
@@ -60,12 +66,27 @@ class SeoSuiteRedirectGetListProcessor extends modObjectGetListProcessor
      */
     public function prepareQueryBeforeCount(xPDOQuery $criteria)
     {
+        $criteria->setClassAlias('Redirect');
+
+        $criteria->select($this->modx->getSelectColumns('SeoSuiteRedirect', 'Redirect'));
+        $criteria->select($this->modx->getSelectColumns('modResource', 'Resource', 'resource_', ['id', 'context_key']));
+
+        $criteria->leftJoin('modResource', 'Resource');
+
+        $resource = $this->getProperty('resource');
+
+        if (!empty($resource)) {
+            $criteria->where([
+                'Redirect.resource_id' => $resource
+            ]);
+        }
+
         $query = $this->getProperty('query');
 
         if (!empty($query)) {
             $criteria->where([
-                'old_url:LIKE'      => '%' . $query . '%',
-                'OR:.new_url:LIKE'  => '%' . $query . '%'
+                'Redirect.old_url:LIKE'     => '%' . $query . '%',
+                'OR:Redirect.new_url:LIKE'  => '%' . $query . '%'
             ]);
         }
 
@@ -79,7 +100,11 @@ class SeoSuiteRedirectGetListProcessor extends modObjectGetListProcessor
      */
     public function prepareRow(xPDOObject $object)
     {
-        $array = $object->toArray();
+        $array = array_merge($object->toArray(), [
+            'old_site_url'      => $object->getOldSiteUrl(),
+            'new_site_url'      => $object->getNewSiteUrl(),
+            'new_url_formatted' => $object->getRedirectUrl()
+        ]);
 
         if (in_array($object->get('editedon'), ['-001-11-30 00:00:00', '-1-11-30 00:00:00', '0000-00-00 00:00:00', null], true)) {
             $array['editedon'] = '';
