@@ -16,6 +16,7 @@ $xpdo_meta_map['SeoSuiteRedirect'] = [
     ],
     'fields'        => [
         'id'            => null,
+        'context_key'   => null,
         'resource_id'   => null,
         'old_url'       => null,
         'new_url'       => null,
@@ -31,6 +32,12 @@ $xpdo_meta_map['SeoSuiteRedirect'] = [
             'null'          => false,
             'index'         => 'pk',
             'generated'     => 'native'
+        ],
+        'context_key'   => [
+            'dbtype'        => 'varchar',
+            'precision'     => '75',
+            'phptype'       => 'string',
+            'null'          => false
         ],
         'resource_id'   => [
             'dbtype'        => 'int',
@@ -83,6 +90,13 @@ $xpdo_meta_map['SeoSuiteRedirect'] = [
         ]
     ],
     'aggregates'    =>  [
+        'Context'       => [
+            'local'         => 'context_key',
+            'class'         => 'modContext',
+            'foreign'       => 'key',
+            'owner'         => 'local',
+            'cardinality'   => 'one'
+        ],
         'Resource'      => [
             'local'         => 'resource_id',
             'class'         => 'modResource',

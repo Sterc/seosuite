@@ -22,7 +22,7 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
 
         $file     = $this->getProperty('file');
         $siteUrls = false;
-        if ($this->getProperty('match_site_url')) {
+        if ($this->getProperty('match_context')) {
             $siteUrls = $this->modx->seosuite->getSiteUrls();
         }
 

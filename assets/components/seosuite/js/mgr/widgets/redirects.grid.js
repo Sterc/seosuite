@@ -6,6 +6,13 @@ SeoSuite.grid.Redirects = function(config) {
         cls         : 'primary-button',
         handler     : this.createRedirect,
         scope       : this
+    }, {
+        text        : _('bulk_actions'),
+        menu        : [{
+            text        : '<i class="x-menu-item-icon icon icon-times"></i>' + _('seosuite.redirects_remove'),
+            handler     : this.removeSelectedRedirects,
+            scope       : this
+        }]
     }, '->', {
         xtype       : 'textfield',
         name        : 'seosuite-filter-redirects-search',
@@ -40,20 +47,24 @@ SeoSuite.grid.Redirects = function(config) {
         }
     }];
 
+    var sm = new Ext.grid.CheckboxSelectionModel();
+
     var columns = new Ext.grid.ColumnModel({
-        columns     : [{
+        columns     : [sm, {
             header      : _('seosuite.label_redirect_old_url'),
             dataIndex   : 'old_url',
             sortable    : true,
             editable    : false,
-            width       : 250
+            width       : 50,
+            renderer    : this.renderOldUrl
         }, {
             header      : _('seosuite.label_redirect_new_url'),
-            dataIndex   : 'new_url',
+            dataIndex   : 'new_url_formatted',
             sortable    : false,
             editable    : false,
-            width       : 350,
-            fixed       : true
+            width       : 50,
+            renderer    : this.renderNewUrl,
+            hidden      : config.mode === 'resource'
         }, {
             header      : _('seosuite.label_redirect_active'),
             dataIndex   : 'active',
@@ -77,19 +88,23 @@ SeoSuite.grid.Redirects = function(config) {
     });
     
     Ext.applyIf(config, {
+        sm          : sm,
         cm          : columns,
         id          : 'seosuite-grid-redirects',
         url         : SeoSuite.config.connector_url,
         baseParams  : {
-            action      : 'mgr/redirects/getlist'
+            action      : 'mgr/redirects/getlist',
+            resource    : config.resource
         },
         autosave    : true,
         save_action : 'mgr/redirects/updatefromgrid',
-        fields      : ['id', 'resource_id', 'old_url', 'new_url', 'redirect_type', 'active', 'editedon'],
+        fields      : ['id', 'context_key', 'resource_id', 'old_url', 'new_url', 'redirect_type', 'active', 'editedon', 'new_url_formatted', 'old_site_url', 'new_site_url'],
         paging      : true,
-        pageSize    : MODx.config.default_per_page > 30 ? MODx.config.default_per_page : 30
+        pageSize    : MODx.config.default_per_page > 30 ? MODx.config.default_per_page : 30,
+        emptyText   : config.mode === 'resource' ? _('seosuite.resource_no_redirects') : _('ext_emptymsg'),
+        mode        : 'component'
     });
-    
+
     SeoSuite.grid.Redirects.superclass.constructor.call(this, config);
 };
 
@@ -121,9 +136,16 @@ Ext.extend(SeoSuite.grid.Redirects, MODx.grid.Grid, {
         if (this.createRedirectWindow) {
             this.createRedirectWindow.destroy();
         }
-        
+
+        var record = Ext.applyIf({}, {
+            resource_id : this.resource,
+            new_url     : this.resource
+        });
+
         this.createRedirectWindow = MODx.load({
             xtype       : 'seosuite-window-redirect-create',
+            mode        : this.mode,
+            record      : record,
             closeAction : 'close',
             listeners   : {
                 'success'   : {
@@ -132,17 +154,24 @@ Ext.extend(SeoSuite.grid.Redirects, MODx.grid.Grid, {
                 }
             }
         });
-        
+
+        this.createRedirectWindow.setValues(record);
         this.createRedirectWindow.show(e.target);
     },
     updateRedirect: function(btn, e) {
         if (this.updateRedirectWindow) {
             this.updateRedirectWindow.destroy();
         }
-        
+
+        var record = Ext.applyIf(this.menu.record, {
+            resource_id : this.resource,
+            new_url     : this.resource
+        });
+
         this.updateRedirectWindow = MODx.load({
             xtype       : 'seosuite-window-redirect-update',
-            record      : this.menu.record,
+            mode        : this.mode,
+            record      : record,
             closeAction : 'close',
             listeners   : {
                 'success'   : {
@@ -152,7 +181,7 @@ Ext.extend(SeoSuite.grid.Redirects, MODx.grid.Grid, {
             }
         });
         
-        this.updateRedirectWindow.setValues(this.menu.record);
+        this.updateRedirectWindow.setValues(record);
         this.updateRedirectWindow.show(e.target);
     },
     removeRedirect: function() {
@@ -171,6 +200,41 @@ Ext.extend(SeoSuite.grid.Redirects, MODx.grid.Grid, {
                 }
             }
         });
+    },
+    removeSelectedRedirects: function(btn, e) {
+        MODx.msg.confirm({
+            title       : _('seosuite.redirects_remove'),
+            text        : _('seosuite.redirects_remove_confirm'),
+            url         : SeoSuite.config.connector_url,
+            params      : {
+                action      : 'mgr/redirects/removemultiple',
+                id          : this.getSelectedAsList()
+            },
+            listeners   : {
+                'success'   : {
+                    fn          : this.refresh,
+                    scope       : this
+                }
+            }
+        });
+    },
+    renderOldUrl: function(d, c, e) {
+        if (!Ext.isEmpty(e.json.old_site_url)) {
+            return '<span class="x-grid-span">' + e.json.old_site_url + '</span>' + d;
+        }
+
+        return d;
+    },
+    renderNewUrl: function(d, c, e) {
+        if (!Ext.isEmpty(e.json.new_site_url)) {
+            if (/^(((http|https|ftp):\/\/)|www\.)/.test(d)) {
+                return d;
+            }
+
+            return '<span class="x-grid-span">' + e.json.new_site_url + '</span>' + d;
+        }
+
+        return d;
     },
     renderBoolean: function(d, c) {
         c.css = parseInt(d) === 1 || d ? 'green' : 'red';
@@ -193,20 +257,22 @@ SeoSuite.window.CreateRedirect = function(config) {
     
     Ext.applyIf(config, {
         autoHeight  : true,
-        width       : 600,
         title       : _('seosuite.redirect_create'),
         url         : SeoSuite.config.connector_url,
         baseParams  : {
             action      : 'mgr/redirects/create'
         },
         fields      : [{
+            xtype       : 'hidden',
+            name        : 'resource_id'
+        }, {
             layout      : 'column',
             defaults    : {
                 layout      : 'form',
                 labelSeparator : ''
             },
             items       : [{
-                columnWidth : .9,
+                columnWidth : .85,
                 items       : [{
                     xtype       : 'textfield',
                     fieldLabel  : _('seosuite.label_redirect_old_url'),
@@ -220,7 +286,7 @@ SeoSuite.window.CreateRedirect = function(config) {
                     cls         : 'desc-under'
                 }]
             }, {
-                columnWidth : .1,
+                columnWidth : .15,
                 items       : [{
                     xtype       : 'checkbox',
                     fieldLabel  : _('seosuite.label_redirect_active'),
@@ -235,16 +301,21 @@ SeoSuite.window.CreateRedirect = function(config) {
                 }]
             }]
         }, {
-            xtype       : 'textfield',
-            fieldLabel  : _('seosuite.label_redirect_new_url'),
-            description : MODx.expandHelp ? '' : _('seosuite.label_redirect_new_url_desc'),
-            name        : 'new_url',
-            anchor      : '100%',
-            allowBlank  : false
-        }, {
-            xtype       : MODx.expandHelp ? 'label' : 'hidden',
-            html        : _('seosuite.label_redirect_new_url_desc'),
-            cls         : 'desc-under'
+            layout      : 'form',
+            labelSeparator : '',
+            hidden      : config.mode === 'resource',
+            items       : [{
+                xtype       : 'textfield',
+                fieldLabel  : _('seosuite.label_redirect_new_url'),
+                description : MODx.expandHelp ? '' : _('seosuite.label_redirect_new_url_desc'),
+                name        : 'new_url',
+                anchor      : '100%',
+                allowBlank  : false
+            }, {
+                xtype       : MODx.expandHelp ? 'label' : 'hidden',
+                html        : _('seosuite.label_redirect_new_url_desc'),
+                cls         : 'desc-under'
+            }]
         }, {
             xtype       : 'seosuite-combo-redirect-type',
             fieldLabel  : _('seosuite.label_redirect_type'),
@@ -271,7 +342,6 @@ SeoSuite.window.UpdateRedirect = function(config) {
     
     Ext.applyIf(config, {
         autoHeight  : true,
-        width       : 600,
         title       : _('seosuite.redirect_update'),
         url         : SeoSuite.config.connector_url,
         baseParams  : {
@@ -281,13 +351,16 @@ SeoSuite.window.UpdateRedirect = function(config) {
             xtype       : 'hidden',
             name        : 'id'
         }, {
+            xtype       : 'hidden',
+            name        : 'resource_id'
+        }, {
             layout      : 'column',
             defaults    : {
                 layout      : 'form',
                 labelSeparator : ''
             },
             items       : [{
-                columnWidth : .9,
+                columnWidth : .85,
                 items       : [{
                     xtype       : 'textfield',
                     fieldLabel  : _('seosuite.label_redirect_old_url'),
@@ -301,7 +374,7 @@ SeoSuite.window.UpdateRedirect = function(config) {
                     cls         : 'desc-under'
                 }]
             }, {
-                columnWidth : .1,
+                columnWidth : .15,
                 items       : [{
                     xtype       : 'checkbox',
                     fieldLabel  : _('seosuite.label_redirect_active'),
@@ -316,16 +389,21 @@ SeoSuite.window.UpdateRedirect = function(config) {
                 }]
             }]
         }, {
-            xtype       : 'textfield',
-            fieldLabel  : _('seosuite.label_redirect_new_url'),
-            description : MODx.expandHelp ? '' : _('seosuite.label_redirect_new_url_desc'),
-            name        : 'new_url',
-            anchor      : '100%',
-            allowBlank  : false
-        }, {
-            xtype       : MODx.expandHelp ? 'label' : 'hidden',
-            html        : _('seosuite.label_redirect_new_url_desc'),
-            cls         : 'desc-under'
+            layout      : 'form',
+            labelSeparator : '',
+            hidden      : config.mode === 'resource',
+            items       : [{
+                xtype       : 'textfield',
+                fieldLabel  : _('seosuite.label_redirect_new_url'),
+                description : MODx.expandHelp ? '' : _('seosuite.label_redirect_new_url_desc'),
+                name        : 'new_url',
+                anchor      : '100%',
+                allowBlank  : false
+            }, {
+                xtype       : MODx.expandHelp ? 'label' : 'hidden',
+                html        : _('seosuite.label_redirect_new_url_desc'),
+                cls         : 'desc-under'
+            }]
         }, {
             xtype       : 'seosuite-combo-redirect-type',
             fieldLabel  : _('seosuite.label_redirect_type'),

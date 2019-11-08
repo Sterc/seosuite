@@ -5,14 +5,14 @@
  *
  * Copyright 2019 by Sterc <modx@sterc.com>
  */
-    
-class SeoSuiteRedirectUpdateProcessor extends modObjectUpdateProcessor
+
+class SeoSuiteSuggestionsFindProcessor extends modObjectUpdateProcessor
 {
     /**
      * @access public.
      * @var String.
      */
-    public $classKey = 'SeoSuiteRedirect';
+    public $classKey = 'SeoSuiteUrl';
 
     /**
      * @access public.
@@ -24,7 +24,7 @@ class SeoSuiteRedirectUpdateProcessor extends modObjectUpdateProcessor
      * @access public.
      * @var String.
      */
-    public $objectType = 'seosuite.redirect';
+    public $objectType = 'seosuite.url';
 
     /**
      * @access public.
@@ -34,32 +34,32 @@ class SeoSuiteRedirectUpdateProcessor extends modObjectUpdateProcessor
     {
         $this->modx->getService('seosuite', 'SeoSuite', $this->modx->getOption('seosuite.core_path', null, $this->modx->getOption('core_path') . 'components/seosuite/') . 'model/seosuite/');
 
-        if ($this->getProperty('active') === null) {
-            $this->setProperty('active', 0);
-        }
-
         return parent::initialize();
     }
 
     /**
+     * @TODO create redirect from first suggestion.
+     *
      * @access public.
      * @return Mixed.
      */
     public function beforeSave()
     {
-        $criteria = [
-            'id:!='     => $this->object->get('id'),
-            'old_url'   => $this->object->get('old_url')
-        ];
+        $context = $this->getProperty('match_context') !== null;
+        $excludeWords = $this->modx->seosuite->getExcludeWords();
 
-        if ($this->doesAlreadyExist($criteria)) {
-            $this->addFieldError('old_url', $this->modx->lexicon('seosuite.redirect_error_exists'));
+        $suggestions = $this->object->getRedirectSuggestions($context, $excludeWords);
+
+        if (count($suggestions) >= 1) {
+            if ($this->getProperty('create_redirect') !== null) {
+                // Create redirect
+            }
         }
 
-        $this->object->set('new_url', trim($this->getProperty('new_url'), '/'));
+        $this->object->set('suggestions', json_encode($suggestions));
 
         return parent::beforeSave();
     }
 }
 
-return 'SeoSuiteRedirectUpdateProcessor';
+return 'SeoSuiteSuggestionsFindProcessor';

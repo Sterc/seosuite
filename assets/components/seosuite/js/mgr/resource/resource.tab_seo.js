@@ -1,10 +1,8 @@
 Ext.onReady(function() {
-    console.log(SeoSuite.record);
-    console.log(SeoSuite.config['tab_default_sitemap']);
-
     var panel = Ext.getCmp('modx-resource-tabs');
+    var resource = Ext.getCmp('modx-panel-resource');
 
-    if (panel) {
+    if (panel && resource) {
         ['modx-resource-searchable', 'modx-resource-uri-override', 'modx-resource-uri'].forEach(function(field) {
             var field = Ext.getCmp(field);
 
@@ -12,6 +10,22 @@ Ext.onReady(function() {
                 field.hide();
             }
         });
+
+        var tabs = [];
+
+        if (resource.mode === 'update') {
+            tabs.push({
+                title       : _('seosuite.tab_seo.tab_urls'),
+                layout      : 'form',
+                labelAlign  : 'top',
+                labelSeparator : '',
+                items       : [{
+                    xtype       : 'seosuite-grid-redirects',
+                    resource    : resource.record.id,
+                    mode        : 'resource'
+                }]
+            });
+        }
 
         panel.add({
             title       : _('seosuite.tab_seo'),
@@ -166,6 +180,49 @@ Ext.onReady(function() {
                             }),
                             cls         : 'desc-under'
                         }]
+                    }, {
+                        xtype       : 'checkbox',
+                        boxLabel    : _('seosuite.tab_seo.label_canonical'),
+                        name        : 'seosuite_canonical',
+                        anchor      : '100%',
+                        inputValue  : 1,
+                        checked     : SeoSuite.record.seosuite_canonical,
+                        listeners   : {
+                            check       : {
+                                fn          : function(tf) {
+                                    if (tf.getValue()) {
+                                        Ext.getCmp('seosuite-canonical-uri-container').show();
+                                    } else {
+                                        Ext.getCmp('seosuite-canonical-uri-container').hide();
+                                    }
+                                },
+                                scope       : this
+                            }
+                        }
+                    }, {
+                        xtype       : MODx.expandHelp ? 'label' : 'hidden',
+                        html        : _('seosuite.tab_seo.label_canonical_desc'),
+                        cls         : 'desc-under'
+                    }, {
+                        id          : 'seosuite-canonical-uri-container',
+                        layout      : 'form',
+                        labelSeparator : '',
+                        hidden      : !SeoSuite.record.seosuite_canonical,
+                        items       : [{
+                            xtype       : 'textfield',
+                            fieldLabel  : _('seosuite.tab_seo.label_canonical_uri', {
+                                site_url    : MODx.config.site_url
+                            }),
+                            name        : 'seosuite_canonical_uri',
+                            anchor      : '100%',
+                            value       : SeoSuite.record.seosuite_canonical_uri
+                        }, {
+                            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+                            html        : _('seosuite.tab_seo.label_canonical_uri_desc', {
+                                site_url    : MODx.config.site_url
+                            }),
+                            cls         : 'desc-under'
+                        }]
                     }]
                 }, {
                     title       : _('seosuite.tab_seo.tab_sitemap'),
@@ -239,57 +296,7 @@ Ext.onReady(function() {
                             }]
                         }]
                     }]
-                }, {
-                    title       : _('seosuite.tab_seo.tab_urls'),
-                    layout      : 'form',
-                    labelAlign  : 'top',
-                    labelSeparator : '',
-                    items       : [{
-                        xtype       : 'checkbox',
-                        hideLabel   : true,
-                        boxLabel    : _('seosuite.tab_seo.label_canonical'),
-                        name        : 'seosuite_canonical',
-                        anchor      : '100%',
-                        inputValue  : 1,
-                        checked     : SeoSuite.record.seosuite_canonical,
-                        listeners   : {
-                            check       : {
-                                fn          : function(tf) {
-                                    if (tf.getValue()) {
-                                        Ext.getCmp('seosuite-canonical-uri-container').show();
-                                    } else {
-                                        Ext.getCmp('seosuite-canonical-uri-container').hide();
-                                    }
-                                },
-                                scope       : this
-                            }
-                        }
-                    }, {
-                        xtype       : MODx.expandHelp ? 'label' : 'hidden',
-                        html        : _('seosuite.tab_seo.label_canonical_desc'),
-                        cls         : 'desc-under'
-                    }, {
-                        id          : 'seosuite-canonical-uri-container',
-                        layout      : 'form',
-                        labelSeparator : '',
-                        hidden      : !SeoSuite.record.seosuite_canonical,
-                        items       : [{
-                            xtype       : 'textfield',
-                            fieldLabel  : _('seosuite.tab_seo.label_canonical_uri', {
-                                site_url    : MODx.config.site_url
-                            }),
-                            name        : 'seosuite_canonical_uri',
-                            anchor      : '100%',
-                            value       : SeoSuite.record.seosuite_canonical_uri
-                        }, {
-                            xtype       : MODx.expandHelp ? 'label' : 'hidden',
-                            html        : _('seosuite.tab_seo.label_canonical_uri_desc', {
-                                site_url    : MODx.config.site_url
-                            }),
-                            cls         : 'desc-under'
-                        }]
-                    }]
-                }]
+                }, tabs]
             }]
         });
     }

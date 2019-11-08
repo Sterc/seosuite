@@ -89,28 +89,32 @@ Ext.extend(SeoSuite.combo.RedirectType, MODx.combo.ComboBox);
 
 Ext.reg('seosuite-combo-redirect-type', SeoSuite.combo.RedirectType);
 
-SeoSuite.combo.Solved = function(config) {
+SeoSuite.combo.Suggestions = function(config) {
     config = config || {};
 
     Ext.applyIf(config, {
-        store       : new Ext.data.ArrayStore({
-            mode        : 'local',
-            fields      : ['value', 'label'],
-            data        : [
-                [1, _('yes')],
-                [0, _('no')]
-            ]
-        }),
-        remoteSort  : ['label', 'asc'],
-        hiddenName  : 'solved',
-        valueField  : 'value',
-        displayField : 'label',
-        mode        : 'local'
+        url         : SeoSuite.config.connector_url,
+        baseParams  : {
+            action      : 'mgr/urls/suggestions/getlist',
+            combo       : true,
+            suggestions : Ext.encode(config.suggestions)
+        },
+        fields      : ['id', 'pagetitle', 'pagetitle_formatted', 'uri', 'site_url', 'boost'],
+        hiddenName  : 'suggestion',
+        pageSize    : 15,
+        valueField  : 'id',
+        displayField : 'pagetitle',
+        tpl         : '<tpl for=".">' +
+            '<div class="x-combo-list-item x-combo-list-item-boost">' +
+                '{pagetitle_formatted:htmlEncode} <span class="x-combo-list-item-booster">({boost} ' + _('seosuite.suggestion_boost') + ')</span>' +
+                '<span class="x-combo-list-item-block"><span class="x-grid-span">{site_url}</span>{uri}</span>' +
+            '</div>' +
+        '</tpl>'
     });
 
-    SeoSuite.combo.Solved.superclass.constructor.call(this, config);
+    SeoSuite.combo.Suggestions.superclass.constructor.call(this, config);
 };
 
-Ext.extend(SeoSuite.combo.Solved, MODx.combo.ComboBox);
+Ext.extend(SeoSuite.combo.Suggestions, MODx.combo.ComboBox);
 
-Ext.reg('seosuite-combo-solved', SeoSuite.combo.Solved);
+Ext.reg('seosuite-combo-suggestions', SeoSuite.combo.Suggestions);

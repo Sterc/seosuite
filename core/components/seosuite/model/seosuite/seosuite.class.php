@@ -105,6 +105,7 @@ class SeoSuite
             'version'                   => '1.0.0',
             'branding_url'              => $this->modx->getOption('seosuite.branding_url', null, ''),
             'branding_help_url'         => $this->modx->getOption('seosuite.branding_url_help', null, ''),
+            'exclude_words'             => array_filter(explode(',', $this->modx->getOption('seosuite.exclude_words', null, ''))),
             'tab_seo'                   => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_seo'),
                 'default_index_type'        => (int) $this->modx->getOption('seosuite.tab_seo_default_index_type', null, 1),
@@ -200,75 +201,9 @@ class SeoSuite
      */
     public function findRedirectSuggestions($url, $contextSiteUrls = [])
     {
-        $output    = [];
-        $parsedUrl = parse_url($url);
+        $this->modx->log(xPDO::LOG_LEVEL_ERROR,'SeoSuite->findRedirectSuggestions deprecated, use SeoSuiteUrl->findRedirectSuggestions method.');
 
-        if (isset($parsedUrl['path'])) {
-            $pathParts    = explode('/', trim($parsedUrl['path'], '/'));
-            $keys         = array_keys($pathParts);
-            $searchString = $pathParts[end($keys)];
-            $extension    = pathinfo($parsedUrl['path'], PATHINFO_EXTENSION);
-
-            $context = false;
-            if (is_array($contextSiteUrls) || is_object($contextSiteUrls)) {
-                foreach ($contextSiteUrls as $siteUrl => $ctx) {
-                    if (strpos($url, $siteUrl) !== false) {
-                        $context = $ctx;
-                    }
-                }
-            }
-
-            if (!empty($extension)) {
-                $searchString = str_replace('.' . $extension, '', $searchString);
-            }
-
-            $searchWords = $this->splitUrl($searchString);
-            $searchWords = $this->filterStopWords($searchWords);
-            if (is_array($searchWords) || is_object($searchWords)) {
-                foreach ($searchWords as $word) {
-                    // Try to find a resource with an exact matching alias
-                    // or a resource with matching pagetitle, where non-alphanumeric chars are replaced with space
-                    $q = $this->modx->newQuery('modResource');
-                    if ($context) {
-                        $q->where([
-                            'context_key' => $context
-                        ]);
-                    }
-
-                    $q->where([
-                        [
-                            'alias:LIKE' => '%' . $word . '%',
-                            'OR:pagetitle:LIKE' => '%' . $word . '%'
-                        ],
-                        [
-                            'AND:published:=' => true,
-                            'AND:deleted:=' => false
-                        ]
-                    ]);
-
-                    $excludeWords = $this->getExcludeWords();
-                    if (is_array($excludeWords) || is_object($excludeWords)) {
-                        foreach ($excludeWords as $excludeWord) {
-                            $q->where([
-                                'alias:NOT LIKE' => '%' . $excludeWord . '%',
-                                'pagetitle:NOT LIKE' => '%' . $excludeWord . '%',
-                            ]);
-                        }
-                    }
-
-                    $q->prepare();
-                    if ($results = $this->modx->query($q->toSQL())) {
-                        while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
-                            $output[] = $row['modResource_id'];
-                        }
-                    }
-                }
-            }
-        }
-
-        $output = array_unique($output);
-
-        return $output;
+        return [];
     }
 
     /**
@@ -279,7 +214,9 @@ class SeoSuite
      */
     public function splitUrl($input)
     {
-        return str_word_count(str_replace('-', '_', $input), 1, '1234567890');
+        $this->modx->log(xPDO::LOG_LEVEL_ERROR,'SeoSuite->splitUrl deprecated');
+
+        return [];
     }
 
     /**
@@ -291,39 +228,9 @@ class SeoSuite
      */
     public function getStopWords()
     {
-        $stopwords    = [];
-        $stopwordsDir = $this->options['corePath'].'elements/stopwords/';
-        if (file_exists($stopwordsDir)) {
-            $files = glob($stopwordsDir.'/*.txt');
-            foreach ($files as $file) {
-                $content = file_get_contents($file);
-                if (is_array(explode(PHP_EOL, $content)) && count(explode(PHP_EOL, $content))) {
-                    $stopwords = array_merge($stopwords, explode(PHP_EOL, $content));
-                }
-            }
-        }
+        $this->modx->log(xPDO::LOG_LEVEL_ERROR,'SeoSuite->getExcludeWords deprecated');
 
-        $excludeWords = $this->getExcludeWords();
-        if (count($excludeWords)) {
-            $stopwords = array_merge($stopwords, $excludeWords);
-        }
-
-        return $stopwords;
-    }
-
-    /**
-     * Get exclude words from system setting 'seosuite.exclude_words'
-     * @return array
-     */
-    public function getExcludeWords()
-    {
-        $output       = [];
-        $excludeWords = $this->modx->getOption('seosuite.exclude_words');
-        if ($excludeWords) {
-            $output = explode(',', $excludeWords);
-        }
-
-        return $output;
+        return [];
     }
 
     /**
@@ -686,5 +593,31 @@ class SeoSuite
         }
 
         return false;
+    }
+
+    /**
+     * Get an array of words from the word txt files.
+     * Uses words from https://github.com/digitalmethodsinitiative/dmi-tcat/tree/master/analysis/common/stopwords.
+     * Also uses exclude words from system setting 'seosuite.exclude_words'.
+     *
+     * @access public.
+     * @return Array.
+     */
+    public function getExcludeWords()
+    {
+        $words = [];
+        $wordsPath = rtrim($this->config['elements_path'], '/') . '/stopwords/';
+
+        if (is_dir($wordsPath)) {
+            foreach (glob($wordsPath . '/*.txt') as $file) {
+                $content = file_get_contents($file);
+
+                if ($content) {
+                    $words = array_merge($words, explode(PHP_EOL, $content));
+                }
+            }
+        }
+
+        return array_unique(array_filter(array_merge($words, $this->config['exclude_words'])));
     }
 }

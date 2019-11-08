@@ -40,6 +40,26 @@ class SeoSuiteRedirectCreateProcessor extends modObjectCreateProcessor
 
         return parent::initialize();
     }
+
+    /**
+     * @access public.
+     * @return Mixed.
+     */
+    public function beforeSave()
+    {
+        $criteria = [
+            'id:!='     => $this->object->get('id'),
+            'old_url'   => $this->object->get('old_url')
+        ];
+
+        if ($this->doesAlreadyExist($criteria)) {
+            $this->addFieldError('old_url', $this->modx->lexicon('seosuite.redirect_error_exists'));
+        }
+
+        $this->object->set('new_url', trim($this->getProperty('new_url'), '/'));
+
+        return parent::beforeSave();
+    }
 }
 
 return 'SeoSuiteRedirectCreateProcessor';

@@ -18,3 +18,28 @@
     border: none !important;
     color: #555555 !important;
 }
+
+.x-grid-span {
+    display: inline;
+    color: #fff;
+    padding: 3px 5px;
+    border-radius: 10px;
+    background-color: #1a7Fb8;
+}
+
+.x-combo-list-item .x-combo-list-item-block {
+    display: block;
+    margin-top: 5px;
+}
+
+.x-combo-list-item.x-combo-list-item-boost {
+    position: relative;
+}
+
+.x-combo-list-item.x-combo-list-item-boost .x-combo-list-item-booster {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: small;
+    font-weight: bold;
+}

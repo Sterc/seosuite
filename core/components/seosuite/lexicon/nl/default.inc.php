@@ -32,20 +32,31 @@ $_lang['seosuite.urls_desc']                                    = 'Heb je meerde
 $_lang['seosuite.url_update']                                   = '404 URL wijzigen';
 $_lang['seosuite.url_remove']                                   = '404 URL verwijderen';
 $_lang['seosuite.url_remove_confirm']                           = 'Weet je zeker dat je deze 404 URL wilt verwijderen?';
-$_lang['seosuite.url_suggesstions']                             = 'Vind 404 URL suggesties';
+$_lang['seosuite.urls_remove']                                  = '404 URL(s) verwijderen';
+$_lang['seosuite.urls_remove_confirm']                          = 'Weet je zeker dat je de geselecteerde 404 URL(s) wilt verwijderen?';
+$_lang['seosuite.url_suggesstions']                             = '404 URL suggesties';
+$_lang['seosuite.url_import']                                   = 'Importeer 404 url(s)';
 
 $_lang['seosuite.label_url_url']                                = 'Url';
 $_lang['seosuite.label_url_url_desc']                           = '';
 $_lang['seosuite.label_url_visits']                             = 'Hits';
 $_lang['seosuite.label_url_visits_desc']                        = '';
+$_lang['seosuite.label_url_last_visit']                         = 'Laatste hit';
+$_lang['seosuite.label_url_last_visit_desc']                    = '';
+$_lang['seosuite.label_url_suggestion']                         = 'Suggestie';
+$_lang['seosuite.label_url_suggestion_desc']                    = 'De suggestie waar de URL verwijzing heen wijst.';
 $_lang['seosuite.label_url_suggestions']                        = 'Suggesties';
 $_lang['seosuite.label_url_suggestions_desc']                   = '';
-$_lang['seosuite.label_url_redirect']                           = 'Verwijzen naar';
-$_lang['seosuite.label_url_redirect_desc']                      = '';
-$_lang['seosuite.label_url_solved']                             = 'Opgelost';
-$_lang['seosuite.label_url_solved_desc']                        = '';
 $_lang['seosuite.label_url_createdon']                          = 'Aangemaakt op';
 $_lang['seosuite.label_url_createdon_desc']                     = '';
+
+$_lang['seosuite.label_url_match_context']                      = 'Matchen op domein [[+domain]]';
+$_lang['seosuite.label_url_match_context_desc']                 = 'Indien aangevinkt zal het matchen gebeuren met pagina\'s binnen het domein [[+domain]]. Handig voor wanneer u een meertalige website hebt in meerdere contexten met veel dezelfde pagina\'s.';
+$_lang['seosuite.label_url_match_create_redirect']              = 'Automatisch URL verwijzing maken';
+$_lang['seosuite.label_url_match_create_redirect_desc']         = 'Indien aangevinkt zal er automatisch een URL verwijzing aangemaakt worden aan de hand van de eerste gevonden match.';
+
+$_lang['seosuite.label_import_file']                            = 'Bestand';
+$_lang['seosuite.label_import_file_desc']                       = 'Selecteer een geldig bestand om 404 URL(s) te importeren.';
 
 $_lang['seosuite.redirect']                                     = 'URL verwijzing';
 $_lang['seosuite.redirects']                                    = 'URL verwijzingen';
@@ -54,11 +65,13 @@ $_lang['seosuite.redirect_create']                              = 'Nieuwe URL ve
 $_lang['seosuite.redirect_update']                              = 'URL verwijzing wijzigen';
 $_lang['seosuite.redirect_remove']                              = 'URL verwijzing verwijderen';
 $_lang['seosuite.redirect_remove_confirm']                      = 'Weet je zeker dat je deze URL verwijzing wilt verwijderen?';
+$_lang['seosuite.redirects_remove']                             = 'URL verwijzing(en) verwijderen';
+$_lang['seosuite.redirects_remove_confirm']                     = 'Weet je zeker dat je de geselecteerde URL verwijzing(en) wilt verwijderen?';
 
 $_lang['seosuite.label_redirect_old_url']                       = 'Oude URL';
 $_lang['seosuite.label_redirect_old_url_desc']                  = 'De oude URL van de URL verwijzing.';
 $_lang['seosuite.label_redirect_new_url']                       = 'Nieuwe URL';
-$_lang['seosuite.label_redirect_new_url_desc']                  = 'De nieuwe URL van de URL verwijzing.';
+$_lang['seosuite.label_redirect_new_url_desc']                  = 'De nieuwe URL van de URL verwijzing. Dit kan met of zonder domein, maar kan ook een ID van een pagina zijn.';
 $_lang['seosuite.label_redirect_active']                        = 'Actief';
 $_lang['seosuite.label_redirect_active_desc']                   = '';
 $_lang['seosuite.label_redirect_type']                          = 'Verwijzingstype';
@@ -68,9 +81,24 @@ $_lang['seosuite.label_exclude_words']                          = 'Woorden uitsl
 $_lang['seosuite.label_exclude_words_desc']                     = 'Een komma gescheiden lijst van woorden om uit te sluiten vam de 404 URL suggesties.';
 
 $_lang['seosuite.urls_import']                                  = 'Importeer bestand';
-$_lang['seosuite.filter_solved']                                = 'Filter op opgelost...';
+$_lang['seosuite.find_suggestions']                             = 'Vind suggesties';
 $_lang['seosuite.exclude_words']                                = 'Woorden uitsluiten';
-
+$_lang['seosuite.suggestions_found']                            = 'Er zijn [[+suggestions]] pagina suggesties gevonden.';
+$_lang['seosuite.suggestion_boost']                             = 'pnt';
+$_lang['seosuite.redirect_error_exists']                        = 'Er bestaat al een URL verwijzing voor deze URL.';
+$_lang['seosuite.resource_no_redirects']                        = 'Er zijn geen URL verwijzingen voor de deze pagina.';
+$_lang['seosuite.time_seconds']                                 = 'Minder dan 1 minuut geleden';
+$_lang['seosuite.time_minute']                                  = '1 minuut geleden';
+$_lang['seosuite.time_minutes']                                 = '[[+minutes]] minuten geleden';
+$_lang['seosuite.time_hour']                                    = '1 uur geleden';
+$_lang['seosuite.time_hours']                                   = '[[+hours]] uren geleden';
+$_lang['seosuite.time_day']                                     = '1 dag geleden';
+$_lang['seosuite.time_days']                                    = '[[+days]] dagen geleden';
+$_lang['seosuite.time_week']                                    = '1 week geleden';
+$_lang['seosuite.time_weeks']                                   = '[[+weeks]] weken geleden';
+$_lang['seosuite.time_month']                                   = '1 maand geleden';
+$_lang['seosuite.time_months']                                  = '[[+months]] maanden geleden';
+$_lang['seosuite.time_to_long']                                 = 'Meer dan een half jaar geleden';
 
 
 
@@ -82,7 +110,7 @@ $_lang['seosuite.exclude_words']                                = 'Woorden uitsl
 
 $_lang['seosuite.global.search'] = 'Zoeken';
 $_lang['seosuite.url.import'] = 'Importeer bestand';
-$_lang['seosuite.url.file'] = 'Bestand';
+
 $_lang['seosuite.import.start'] = 'Starten met importeren van de URL\'s, dit kan even duren afhankelijk van 
 de grootte van je bestand.';
 $_lang['seosuite.import.instructions'] = 'Gebruik een .csv, .xls of .xlsx bestand. Zorg ervoor dat je de complete URL\'s hebt ingevuld, inclusief de domeinnaam. Voorbeeld: https://www.seosuite.com in plaats van seosuite.com.';

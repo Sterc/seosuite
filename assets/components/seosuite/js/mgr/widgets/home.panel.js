@@ -18,6 +18,7 @@ SeoSuite.panel.Home = function(config) {
                     xtype       : 'seosuite-grid-urls',
                     cls         : 'main-wrapper',
                     preventRender : true,
+                    refreshGrid : 'seosuite-grid-redirects'
                 }]
             }, {
                 title       : _('seosuite.redirects'),
@@ -27,7 +28,7 @@ SeoSuite.panel.Home = function(config) {
                 }, {
                     xtype       : 'seosuite-grid-redirects',
                     cls         : 'main-wrapper',
-                    preventRender : true,
+                    preventRender : true
                 }]
             }]
         }]
