@@ -1,5 +1,5 @@
 SeoSuite.panel.MetaTag = function(config) {
-    config                      = config || {};
+    config = config || {};
 
     SeoSuite.currentCaretPosition = [];
 
@@ -279,7 +279,7 @@ SeoSuite.combo.SnippetVariables = function(config) {
         valueField      : 'key',
         fields          : ['key', 'value'],
         pageSize        : 20,
-        url             : SeoSuite.config.connectorUrl,
+        url             : SeoSuite.config.connector_url,
         baseParams      : {
             action: 'mgr/resource/variables/getlist'
         },

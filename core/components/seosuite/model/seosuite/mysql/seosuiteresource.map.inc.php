@@ -17,6 +17,7 @@ $xpdo_meta_map['SeoSuiteResource'] = [
     'fields'        => [
         'id'                 => null,
         'resource_id'        => null,
+        'keywords'           => null,
         'use_default_meta'   => 1,
         'meta_title'         => null,
         'meta_description'   => null,
@@ -43,6 +44,12 @@ $xpdo_meta_map['SeoSuiteResource'] = [
             'precision'     => '1',
             'phptype'       => 'integer',
             'null'          => false
+        ],
+        'keywords'      => [
+            'dbtype'        => 'text',
+            'phptype'       => 'string',
+            'null'          => true,
+            'default'       => ''
         ],
         'use_default_meta' => [
             'dbtype'        => 'tinyint',

@@ -113,6 +113,16 @@ class SeoSuite
             ],
             'tab_social'                => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_social'),
+            ],
+            'meta'                      => [
+                'permission'                => (bool) $this->modx->hasPermission('seosuite_meta'),
+                'counter_fields'            => $this->modx->getOption('seosuite.meta.counter_fields', null, 'longtitle:70,description:160,content'),
+                'default_meta_description'  => $this->modx->getOption('seosuite.meta.default_meta_description', null, '[{"type":"placeholder","value":"description"}]'),
+                'default_meta_title'        => $this->modx->getOption('seosuite.meta.default_meta_title', null, '[{"type":"placeholder","value":"title"},{"type":"text","value":" | "},{"type":"placeholder","value":"site_name"}]'),
+                'disabled_templates'        => $this->modx->getOption('seosuite.meta.disabled_templates'),
+                'max_keywords_description'  => (int) $this->modx->getOption('seosuite.meta.max_keywords_description', null, 8),
+                'max_keywords_title'        => (int) $this->modx->getOption('seosuite.meta.max_keywords_title', null, 4),
+                'search_engine'             => $this->modx->getOption('seosuite.meta.searchengine', null, 'google')
             ]
         ], $options);
 

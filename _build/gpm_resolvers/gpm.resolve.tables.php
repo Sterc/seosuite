@@ -22,11 +22,9 @@ if ($object->xpdo) {
             $modx->addPackage('seosuite', $modelPath, null);
 
 
-
             $manager = $modx->getManager();
 
             $manager->createObjectContainer('SeoSuiteUrl');
-
 
             break;
     }

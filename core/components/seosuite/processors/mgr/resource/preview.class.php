@@ -30,8 +30,8 @@ class SeoSuitePreviewProcessor extends modProcessor
         $title       = $this->getProperty('title');
         $description = $this->getProperty('description');
         if ($this->getProperty('use_default_meta') === 'true') {
-            $title       = $this->modx->getOption('seosuite.preview.default.meta_title');
-            $description = $this->modx->getOption('seosuite.preview.default.meta_description');
+            $title       = $this->modx->getOption('seosuite.meta.default_meta_title');
+            $description = $this->modx->getOption('seosuite.meta.default_meta_description');
         }
 
         $rendered = [
@@ -40,7 +40,15 @@ class SeoSuitePreviewProcessor extends modProcessor
             'alias'       => $alias
         ];
 
-        return $this->outputArray(['output' => $rendered],0);
+        return $this->outputArray([
+            'output' => $rendered,
+            'counts' => [
+                'title'       => strlen($rendered['title']),
+                'description' => strlen($rendered['description'])
+            ]
+        ],
+        0
+        );
     }
 
     /**
@@ -71,7 +79,10 @@ class SeoSuitePreviewProcessor extends modProcessor
                                 if (isset($fields[$item['value']])) {
                                     $output[] = $fields[$item['value']];
                                 }
-                            break;
+                                break;
+                            case 'title':
+                                $output[] = $fields['longtitle'] ?: $fields['pagetitle'];
+                                break;
                         }
                     }
                 }

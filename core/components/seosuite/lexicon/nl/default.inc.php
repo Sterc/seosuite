@@ -150,7 +150,7 @@ $_lang['setting_seosuite.preview.title_format_desc']    = 'Here you can specify 
  in Google/Yandex preview.';
 
 $_lang['setting_seosuite.keywords.fields']                  = 'Velden waarop de keyword tool zal werken ';
-$_lang['setting_seosuite.keywords.fields_desc']             = 'Verander deze gegevens alleen als je weet wat je doet. Standaard waarde:pagetitle,longtitle,description,alias,menutitle. SEO Pro werkt niet op het content veld';
+$_lang['setting_seosuite.keywords.fields_desc']             = 'Verander deze gegevens alleen als je weet wat je doet. Standaard waarde:pagetitle,longtitle,content.';
 $_lang['setting_seosuite.keywords.version']                 = 'Versie nummer';
 $_lang['setting_seosuite.keywords.version_desc']            = 'Huidige '.$_lang['setting_seosuite.version'];
 $_lang['setting_seosuite.keywords.disabledtemplates']       = 'Niet-gebruikte templates';
