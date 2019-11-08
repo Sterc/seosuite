@@ -620,4 +620,40 @@ class SeoSuite
 
         return array_unique(array_filter(array_merge($words, $this->config['exclude_words'])));
     }
+
+    public function renderMetaValue($json, $resourceArray)
+    {
+        $output = [];
+
+        if (!empty($json)) {
+            $array = json_decode($json, true);
+
+            if (is_array($array) && count($array) > 0) {
+                foreach ($array as $item) {
+                    if ($item['type'] === 'text') {
+                        $output[] = $item['value'];
+                    } else {
+                        switch ($item['value']) {
+                            case 'site_name':
+                                $output[] = $this->modx->getOption($item['value']);
+                                break;
+                            case 'pagetitle':
+                            case 'longtitle':
+                            case 'description':
+                            case 'introtext':
+                                if (isset($resourceArray[$item['value']])) {
+                                    $output[] = $resourceArray[$item['value']];
+                                }
+                                break;
+                            case 'title':
+                                $output[] = $resourceArray['longtitle'] ?: $resourceArray['pagetitle'];
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return implode('', $output);
+    }
 }

@@ -25,8 +25,20 @@
                     "OnResourceDuplicate"
                 ]
             }],
-            "snippets": [],
-            "chunks": [],
+            "snippets": [{
+                "name": "SeoSuiteMeta",
+                "description": "Snippet for adding the title and meta description in your website.",
+                "file": "seosuitemeta.snippet.php"
+            }],
+            "chunks": [{
+                "name": "tplMetaTitle",
+                "file": "metatitle.chunk.tpl",
+                "description": "The default chunk used for the title."
+            }, {
+                "name": "tplMeta",
+                "file": "meta.chunk.tpl",
+                "description": "The default chunk used for the meta."
+            }],
             "widgets": [{
                 "name": "seosuite",
                 "description": "SEO Suite dashboard widget",

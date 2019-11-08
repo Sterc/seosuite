@@ -7,6 +7,21 @@
  */
 class SeoSuitePreviewProcessor extends modProcessor
 {
+    protected $seosuite;
+    public function __construct(modX &$modx, array $properties = array())
+    {
+        $modelPath = $modx->getOption(
+                'seosuite.core_path',
+                null,
+                $modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/seosuite/'
+            ) . 'model/seosuite/';
+        $modx->loadClass('SeoSuite', $modelPath, true, true);
+
+        $this->seosuite = new SeoSuite($modx);
+
+        parent::__construct($modx, $properties);
+    }
+
     /**
      * @return mixed|string
      */
@@ -34,9 +49,10 @@ class SeoSuitePreviewProcessor extends modProcessor
             $description = $this->modx->getOption('seosuite.meta.default_meta_description');
         }
 
+        $fields   = json_decode($this->getProperty('fields'), true);
         $rendered = [
-            'title'       => $this->renderValue($title),
-            'description' => $this->renderValue($description),
+            'title'       => $this->seosuite->renderMetaValue($title, $fields),
+            'description' => $this->seosuite->renderMetaValue($description, $fields),
             'alias'       => $alias
         ];
 
@@ -49,47 +65,6 @@ class SeoSuitePreviewProcessor extends modProcessor
         ],
         0
         );
-    }
-
-    /**
-     * @param $json
-     * @return string
-     */
-    protected function renderValue($json)
-    {
-        $output = [];
-
-        if (!empty($json)) {
-            $array = json_decode($json, true);
-
-            $fields = json_decode($this->getProperty('fields'), true);
-            if (is_array($array) && count($array) > 0) {
-                foreach ($array as $item) {
-                    if ($item['type'] === 'text') {
-                        $output[] = $item['value'];
-                    } else {
-                        switch ($item['value']) {
-                            case 'site_name':
-                                $output[] = $this->modx->getOption($item['value']);
-                                break;
-                            case 'pagetitle':
-                            case 'longtitle':
-                            case 'description':
-                            case 'introtext':
-                                if (isset($fields[$item['value']])) {
-                                    $output[] = $fields[$item['value']];
-                                }
-                                break;
-                            case 'title':
-                                $output[] = $fields['longtitle'] ?: $fields['pagetitle'];
-                                break;
-                        }
-                    }
-                }
-            }
-        }
-
-        return implode('', $output);
     }
 }
 
