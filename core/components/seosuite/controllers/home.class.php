@@ -16,12 +16,9 @@ class SeoSuiteHomeManagerController extends SeoSuiteManagerController
     public function loadCustomCssJs()
     {
         $this->addJavascript($this->modx->seosuite->config['js_url'] . 'mgr/extras/extras.js');
-
         $this->addJavascript($this->modx->seosuite->config['js_url'] . 'mgr/widgets/home.panel.js');
-
         $this->addJavascript($this->modx->seosuite->config['js_url'] . 'mgr/widgets/urls.grid.js');
         $this->addJavascript($this->modx->seosuite->config['js_url'] . 'mgr/widgets/redirects.grid.js');
-
         $this->addLastJavascript($this->modx->seosuite->config['js_url'] . 'mgr/sections/home.js');
     }
 

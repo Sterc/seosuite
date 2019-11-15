@@ -112,9 +112,9 @@
 
 .seosuite-counter-chars {
     position: absolute;
-    top: 29px;
+    top: 22px;
     float: none;
-    width: 50px;
+    width: 24px;
     right: 10px;
 }
 
@@ -148,15 +148,15 @@
 }
 
 .seosuite-counter .current {
-    text-align: right;
-    margin-right: 1px;
-    display: inline-block;
-    width: 21px;
+    text-align: center;
+    display: block;
+    margin-top: 5px;
+    font-size: 10px;
+    margin-right: 5px;
 }
 
 .seosuite-counter .allowed {
-    display: inline-block;
-    text-align: left;
+    display: none;
 }
 
 #seosuite-preview-mobile,
@@ -248,4 +248,33 @@
 
 .seosuite-preview.desktop #seosuite-preview-description.yandex {
     margin-top: 35px;
+}
+
+.circular-chart {
+    position: absolute;
+    right: 0;
+    width: 28px;
+    top: 2px;
+}
+
+.circle {
+    stroke: #4CC790;
+    fill: none;
+    stroke-width: 5;
+    stroke-linecap: round;
+    animation: progress 1s ease-out forwards;
+}
+
+.seosuite-counter-wrap.red .circle {
+    stroke: #BE0000;
+}
+
+.seosuite-counter-wrap.orange  .circle {
+    stroke: #F49548;
+}
+
+@keyframes progress {
+    0% {
+        stroke-dasharray: 0 100;
+    }
 }

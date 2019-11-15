@@ -54,7 +54,7 @@
             "area": "general"
         },{
           "key": "meta.counter_fields",
-          "value": "longtitle:70,description:160,content",
+          "value": "longtitle:30|70,description:70|155,content",
           "area": "meta"
         },{
           "key": "meta.disabled_templates",

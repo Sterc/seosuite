@@ -103,7 +103,7 @@ $_lang['area_meta']     = 'SeoSuite Meta';
 
 /* Settings. */
 $_lang['setting_seosuite.meta.counter_fields']                  = 'Fields where the keywords tool will work on';
-$_lang['setting_seosuite.meta.counter_fields_desc']             = 'Only change these if you know what you\'re doing. Default value:pagetitle,longtitle,content.';
+$_lang['setting_seosuite.meta.counter_fields_desc']             = 'Only change these if you know what you\'re doing. Default value: longtitle:30|70,description:70|155,content.';
 $_lang['setting_seosuite.meta.searchengine']                    = 'Search engine used for the preview.';
 $_lang['setting_seosuite.meta.searchengine_desc']               = 'Possible values: google, yandex. Defaults to google.';
 $_lang['setting_seosuite.meta.disabled_templates']              = 'Disabled Templates';

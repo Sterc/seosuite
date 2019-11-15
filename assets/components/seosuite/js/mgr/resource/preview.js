@@ -56,7 +56,7 @@ Ext.extend(SeoSuite, Ext.Component, {
             SeoSuite.record.values[fieldKey] = field.getValue();
 
             if (fieldKey !== 'content') {
-                field.maxLength = Number(SeoSuite.record.chars[fieldKey]);
+                field.maxLength = Number(SeoSuite.record.chars[fieldKey]['max']);
                 field.reset();
             }
 
@@ -71,7 +71,17 @@ Ext.extend(SeoSuite, Ext.Component, {
 
             var counterHtml = '<span class="seosuite-counter-wrap seosuite-counter-keywords" id="seosuite-counter-keywords-' + fieldKey + '" title="' + _('seosuite.keywords') + '"><strong>' + _('seosuite.keywords') + ':&nbsp;&nbsp;</strong><span id="seosuite-counter-keywords-' + fieldKey + '-current">0</span></span>';
             if (fieldKey !== 'content') {
-                counterHtml += '<span class="seosuite-counter-wrap seosuite-counter-chars green" id="seosuite-counter-chars-' + fieldKey + '" title="' + _('seosuite.characters.allowed') + '"><span class="current" id="seosuite-counter-chars-' + fieldKey + '-current">1</span>/<span class="allowed" id="seosuite-counter-chars-' + fieldKey + '-allowed">' + SeoSuite.record.chars[fieldKey] + '</span></span>';
+                var chartHtml = '<svg viewBox="0 0 36 36" class="circular-chart">\n' +
+                    '  <path class="circle" id="seosuite-counter-circle-' + fieldKey + '"\n' +
+                    '    stroke-dasharray="0, 100"\n' +
+                    '    d="M18 2.0845\n' +
+                    '      a 15.9155 15.9155 0 0 1 0 31.831\n' +
+                    '      a 15.9155 15.9155 0 0 1 0 -31.831"\n' +
+                    '  />\n' +
+                    '</svg>';
+
+                counterHtml += '<span class="seosuite-counter-wrap seosuite-counter-chars green" id="seosuite-counter-chars-' + fieldKey + '" title="' + _('seosuite.characters.allowed') + '">' + chartHtml + '<span class="current" id="seosuite-counter-chars-' + fieldKey + '-current">1</span>';
+                counterHtml += '<span class="allowed" id="seosuite-counter-chars-' + fieldKey + '-allowed">' + SeoSuite.record.chars[fieldKey]['max'] + '</span></span>';
             }
 
             Ext.get('x-form-el-' + fieldId).createChild({
@@ -299,6 +309,8 @@ Ext.extend(SeoSuite, Ext.Component, {
         var field    = this.getFieldId(fieldKey);
         var value    = Ext.getCmp(field).getValue();
         var maxChars = Ext.get('seosuite-counter-chars-' + fieldKey + '-allowed').dom.innerHTML;
+        var tooLong  = false;
+        var tooShort = false;
         var charCount;
 
         /* Title and description counts are updated via Ajax request and will contain the overrideCount parameter. */
@@ -306,19 +318,28 @@ Ext.extend(SeoSuite, Ext.Component, {
             return '';
         }
 
-        if (overrideCount) {
-            charCount = overrideCount;
-        } else {
-            charCount = value.length;
+        charCount = overrideCount ? overrideCount : value.length;
+        if (charCount > maxChars) {
+            tooLong = true;
+        } else if (charCount < SeoSuite.record.chars[fieldKey]['min']) {
+            tooShort = true;
         }
 
-        if (charCount > maxChars || charCount === 0) {
-            Ext.get('seosuite-counter-chars-' + fieldKey).addClass('red').removeClass('green');
+        if (tooLong || tooShort) {
+            if (tooShort && charCount > (SeoSuite.record.chars[fieldKey]['min'] - 10)) {
+                Ext.get('seosuite-counter-chars-' + fieldKey).addClass('orange').removeClass('green').removeClass('red');
+            } else {
+                Ext.get('seosuite-counter-chars-' + fieldKey).addClass('red').removeClass('green').removeClass('orange');
+            }
         } else {
-            Ext.get('seosuite-counter-chars-' + fieldKey).addClass('green').removeClass('red');
+            Ext.get('seosuite-counter-chars-' + fieldKey).removeClass('red').removeClass('orange').addClass('green');
         }
 
-        Ext.get('seosuite-counter-chars-' + fieldKey + '-current').dom.innerHTML    = charCount;
+        Ext.get('seosuite-counter-chars-' + fieldKey + '-current').dom.innerHTML = charCount;
+
+        /* Update character count circle. */
+        var percentage = Math.round((charCount / maxChars) * 100);
+        document.getElementById('seosuite-counter-circle-' + fieldKey).setAttribute('stroke-dasharray', percentage + ', 100');
     },
     countKeywords: function (fieldKey) {
         var field        = this.getFieldId(fieldKey);

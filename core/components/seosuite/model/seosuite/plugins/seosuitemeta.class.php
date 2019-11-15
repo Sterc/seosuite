@@ -74,7 +74,15 @@ class SeoSuiteMeta extends SeoSuitePlugin
         if (is_array(explode(',', $strFields))) {
             foreach (explode(',', $strFields) as $field) {
                 list($fieldName, $fieldCount) = explode(':', $field);
-                $arrFields[$fieldName]        = $fieldCount;
+
+                $min = 0;
+                $max = $fieldCount;
+                if (strpos($fieldCount, '|')) {
+                    list($min, $max) = explode('|', $fieldCount);
+                }
+
+                $arrFields[$fieldName]['min'] = $min;
+                $arrFields[$fieldName]['max'] = $max;
             }
         } else {
             return null;
