@@ -272,9 +272,3 @@
 .seosuite-counter-wrap.orange  .circle {
     stroke: #F49548;
 }
-
-@keyframes progress {
-    0% {
-        stroke-dasharray: 0 100;
-    }
-}

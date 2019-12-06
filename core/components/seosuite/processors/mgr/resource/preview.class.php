@@ -8,6 +8,7 @@
 class SeoSuitePreviewProcessor extends modProcessor
 {
     protected $seosuite;
+
     public function __construct(modX &$modx, array $properties = array())
     {
         $modelPath = $modx->getOption(
