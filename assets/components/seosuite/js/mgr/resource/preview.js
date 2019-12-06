@@ -1,6 +1,6 @@
 Ext.extend(SeoSuite, Ext.Component, {
     initialize: function() {
-        SeoSuite.config.loaded       = true;
+        SeoSuite.config.loaded = true;
         SeoSuite.addPanel();
 
         var self = this;

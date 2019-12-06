@@ -1,0 +1,408 @@
+<?php
+
+class SeoSuiteResourcePlugin extends SeoSuitePlugin
+{
+    /**
+     * Holds an array of the config to be used in JS.
+     * @var array
+     */
+    protected $config = [];
+
+    /**
+     * Holds an array of the record to be used in JS.
+     * @var array
+     */
+    protected $record = [];
+
+    /**
+     * Holds an array of all loaded sections.
+     * @var array
+     */
+    protected $loaded = [];
+
+    /**
+     * @access public.
+     * @return Boolean.
+     */
+    protected function hasPermission($section)
+    {
+        if (isset($this->seosuite->config[$section]['permission'])) {
+            return $this->seosuite->config[$section]['permission'];
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     */
+    public function onMODXInit()
+    {
+        $version = $this->modx->getVersionData();
+        $version = (int) ($version['version'] . $version['major_version']);
+        if ($version < 27) {
+            $this->modx->loadClass('modResource');
+            $this->modx->map['modResource']['fieldMeta']['description'] = [
+                'dbtype'   => 'text',
+                'phptype'  => 'string',
+                'index'    => 'fulltext',
+                'indexgrp' => 'content_ft_idx'
+            ];
+        }
+    }
+
+    /**
+     * @access public.
+     * @param Object $event.
+     * @return void.
+     */
+    public function onDocFormSave($event)
+    {
+        $resource =& $event->params['resource'];
+        if ($resource) {
+            $properties = [
+                'keywords'              => '',
+                'use_default_meta'      => 0,
+                'meta_title'            => '',
+                'meta_description'      => '',
+                'index_type'            => $this->seosuite->config['tab_seo']['default_index_type'],
+                'follow_type'           => $this->seosuite->config['tab_seo']['default_follow_type'],
+                'sitemap'               => 0,
+                'sitemap_prio'          => 'normal',
+                'sitemap_changefreq'    => '',
+                'canonical'             => 0,
+                'canonical_uri'         => ''
+            ];
+
+            $seoSuiteResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $resource->get('id')]);
+            if ($seoSuiteResource) {
+                $properties = array_merge($seoSuiteResource->toArray(), $properties);
+            }
+
+            foreach (array_keys($properties) as $key) {
+                if (isset($_POST['seosuite_' . $key])) {
+                    $properties[$key] = $_POST['seosuite_' . $key];
+                }
+            }
+
+            $this->seosuite->setSeoSuiteResourceProperties($resource->get('id'), $properties);
+        }
+    }
+
+    /**
+     * @param $event
+     */
+    public function onDocFormRender($event)
+    {
+        $resource =& $event->params['resource'];
+        $mode     =& $event->params['mode'];
+
+        if ($this->hasPermission('meta') && !$this->isMetaDisabled($resource)) {
+            $this->loadMeta($resource, $mode);
+        }
+
+        if ($this->hasPermission('tab_seo')) {
+            $this->loadSeo($resource);
+        }
+
+        if ($this->hasPermission('tab_social')) {
+            $this->loadSocial($resource);
+        }
+
+        /* Loading base scripts. */
+        if (count($this->loaded) > 0) {
+            if (is_array($this->seosuite->config['lexicons'])) {
+                foreach ($this->seosuite->config['lexicons'] as $lexicon) {
+                    $this->modx->controller->addLexiconTopic($lexicon);
+                }
+            } else {
+                $this->modx->controller->addLexiconTopic($this->seosuite->config['lexicons']);
+            }
+
+            $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
+            Ext.onReady(function() {
+                SeoSuite.config = ' . $this->modx->toJSON($this->seosuite->config) . ';
+                SeoSuite.record = ' . $this->modx->toJSON($this->record) . ';
+            });</script>');
+
+            $this->modx->regClientCSS($this->seosuite->options['assetsUrl'] . 'css/mgr.css');
+
+            $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/seosuite.js');
+            $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/extras/extras.js');
+        }
+
+        /* Loading specific scripts for specific section. */
+        if ($this->isLoaded('meta')) {
+            $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/node_modules/web-animations-js/web-animations.min.js');
+            $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/metatag.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
+            $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/preview.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
+        }
+
+        /* Loading specific scripts for specific section. */
+        if ($this->isLoaded('seo')) {
+            $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/redirects.grid.js');
+            $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/resource.tab_seo.js');
+        }
+
+        /* Loading specific scripts for specific section. */
+        if ($this->isLoaded('social')) {
+            $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/resource.tab_social.js');
+        }
+    }
+
+    /**
+     * @TODO Fix it for duplicating child resources.
+     *
+     * @access public.
+     * @param Object $event.
+     * @return void.
+     */
+    public function onResourceDuplicate($event)
+    {
+        $oldResource =& $event->params['oldResource'];
+        $newResource =& $event->params['newResource'];
+
+        if ($oldResource && $newResource) {
+            $properties = $this->seosuite->getSeoSuiteResourceProperties($oldResource->get('id'));
+
+            if ($properties) {
+                $properties = array_merge($properties->toArray(), [
+                    'resource_id' => $newResource->get('id')
+                ]);
+
+                $this->seosuite->setSeoSuiteResourceProperties($newResource->get('id'), $properties);
+            }
+        }
+    }
+
+    /**
+     * @access public.
+     * @param Object $event.
+     * @return void.
+     */
+    public function onEmptyTrash($event)
+    {
+        foreach ((array) $event->params['ids'] as $id) {
+            $this->seosuite->removeSeoSuiteResourceProperties($id);
+        }
+    }
+
+    public function onBeforeDocFormSave()
+    {
+
+    }
+
+    public function onLoadWebDocument()
+    {
+
+    }
+
+    public function onPageNotFound()
+    {
+
+    }
+
+    public function onResourceBeforeSort()
+    {
+
+    }
+
+    public function onManagerPageBeforeRender()
+    {
+
+    }
+
+    /**
+     * Check if a section is loaded.
+     *
+     * @param $section
+     * @return bool
+     */
+    protected function isLoaded($section)
+    {
+        return in_array($section, $this->loaded, true);
+    }
+
+    /**
+     * Load section meta.
+     *
+     * @param $resource
+     * @param $mode
+     * @return |null
+     */
+    protected function loadMeta($resource, $mode)
+    {
+        $strFields = $this->modx->seosuite->config['meta']['counter_fields'];
+        $arrFields = [];
+        if (is_array(explode(',', $strFields))) {
+            foreach (explode(',', $strFields) as $field) {
+                list($fieldName, $fieldCount) = explode(':', $field);
+
+                $min = 0;
+                $max = $fieldCount;
+                if (strpos($fieldCount, '|')) {
+                    list($min, $max) = explode('|', $fieldCount);
+                }
+
+                $arrFields[$fieldName]['min'] = $min;
+                $arrFields[$fieldName]['max'] = $max;
+            }
+        } else {
+            return null;
+        }
+
+        if ((int) $_REQUEST['id'] === (int) $this->modx->getOption('site_start')) {
+            unset($arrFields['alias'], $arrFields['menutitle']);
+        }
+
+        $seoSuiteResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $resource->get('id')]);
+        if ($seoSuiteResource) {
+            $this->record['keywords']         = $seoSuiteResource->get('keywords');
+            $this->record['use_default_meta'] = $seoSuiteResource->get('use_default_meta');
+            $this->record['meta_title']       = $seoSuiteResource->get('meta_title');
+            $this->record['meta_description'] = $seoSuiteResource->get('meta_description');
+        } else {
+            $this->record['keywords']         = '';
+            $this->record['use_default_meta'] = 1;
+            $this->record['meta_title']       = json_decode($this->modx->seosuite->config['meta']['default_meta_title'], true);
+            $this->record['meta_description'] = json_decode($this->modx->seosuite->config['meta']['default_meta_description'], true);
+        }
+
+        $this->record['fields']  = implode(',', array_keys($arrFields));
+        $this->record['values']  = [];
+        $this->record['chars']   = $arrFields;
+        $this->record['url']     = $this->prepareUrl($resource, $mode);;
+        $this->record['favicon'] = $this->getFavicon($resource);
+
+        $this->loaded[] = 'meta';
+    }
+
+    /**
+     * Load section SEO.
+     * @param $resource
+     */
+    protected function loadSeo($resource)
+    {
+        $this->record = array_merge($this->record, [
+            'seosuite_index_type'           => $this->seosuite->config['tab_seo']['default_index_type'],
+            'seosuite_follow_type'          => $this->seosuite->config['tab_seo']['default_follow_type'],
+            'seosuite_searchable'           => 1,
+            'seosuite_override_uri'         => 0,
+            'seosuite_uri'                  => '',
+            'seosuite_sitemap'              => $this->seosuite->config['tab_seo']['default_sitemap'],
+            'seosuite_sitemap_prio'         => 'normal',
+            'seosuite_sitemap_changefreq'   => '',
+            'seosuite_canonical'            => 0,
+            'seosuite_canonical_uri'        => ''
+        ]);
+
+        if ($resource) {
+            $this->record = array_merge($this->record, [
+                'seosuite_searchable'   => $resource->get('searchable') ? 1 : 0,
+                'seosuite_override_uri' => $resource->get('uri_override') ? 1 : 0,
+                'seosuite_uri'          => $resource->get('uri')
+            ]);
+
+            $seoSuiteResource = $this->seosuite->getSeoSuiteResourceProperties($resource->get('id'));
+
+            if ($seoSuiteResource) {
+                $this->record = array_merge($this->record, [
+                    'seosuite_index_type'           => $seoSuiteResource->get('index_type'),
+                    'seosuite_follow_type'          => $seoSuiteResource->get('follow_type'),
+                    'seosuite_sitemap'              => $seoSuiteResource->get('sitemap'),
+                    'seosuite_sitemap_prio'         => $seoSuiteResource->get('sitemap_prio'),
+                    'seosuite_sitemap_changefreq'   => $seoSuiteResource->get('sitemap_changefreq'),
+                    'seosuite_canonical'            => $seoSuiteResource->get('canonical'),
+                    'seosuite_canonical_uri'        => $seoSuiteResource->get('canonical_uri')
+                ]);
+            }
+        }
+
+        $this->loaded[] = 'seo';
+    }
+
+    /**
+     * Load section social.
+     * @param $resource
+     */
+    protected function loadSocial($resource)
+    {
+        $this->loaded[] = 'social';
+    }
+
+    /**
+     * Check if Meta is disabled for the current template.
+     *
+     * @param $resource
+     * @return bool
+     */
+    protected function isMetaDisabled($resource)
+    {
+        $template = (string) $resource->get('template');
+        $override = false;
+        if (isset($_REQUEST['template'])) {
+            $template = (string) $_REQUEST['template'];
+            $override = true;
+        }
+
+        if ((int) $template === 0) {
+            $template = $this->modx->getOption('default_template');
+        }
+
+        $disabledTemplates = explode(',', $this->modx->seosuite->config['meta']['disabled_templates']);
+        return ($override && empty($template)) || ($override && (int) $template === 0) || (!empty($template) && in_array($template, $disabledTemplates, false));
+    }
+
+    /**
+     * Prepare url HTML.
+     *
+     * @param $resource
+     * @param $mode
+     * @return mixed|string|string[]|null
+     */
+    protected function prepareUrl($resource, $mode)
+    {
+        $ctxKey   = !empty($resource) ? $resource->get('context_key') : $this->modx->getOption('default_context');
+        $ctx      = $this->modx->getContext($ctxKey);
+        $url      = $ctx ? $ctx->getOption('site_url', '', $this->modx->getOption('site_url')) : $this->modx->getOption('site_url');
+
+        if ($mode === 'upd') {
+            if ($ctx) {
+                if ($resource->get('id') != $ctx->getOption('site_start', '', $this->modx->getOption('site_start'))) {
+                    $url .= $resource->get('uri');
+                }
+            } else {
+                $url = $this->modx->makeUrl($resource->get('id'), '', '', 'full');
+            }
+
+            $url = preg_replace(
+                '/' . $resource->get('alias') . '(.*)/',
+                '<span id="seosuite-replace-alias">' . $resource->get('alias') . '$1</span>',
+                $url
+            );
+
+            if (!strpos($url, 'seosuite-replace-alias')) {
+                $url .= '<span id="seosuite-replace-alias"></span>';
+            }
+        } else {
+            $url .= '<span id="seosuite-replace-alias"></span>';
+        }
+
+        return $url;
+    }
+
+    /**
+     * Retrieve http_host based upon current context.
+     *
+     * @param $resource
+     * @return string
+     */
+    protected function getFavicon($resource)
+    {
+        $result   = $this->modx->query(sprintf('SELECT * FROM %scontext_setting WHERE `context_key`="%s" AND `key` = "http_host" LIMIT 1', $this->modx->getOption(xpdo::OPT_TABLE_PREFIX), $resource->get('context_key')));
+        $row      = $result ? $result->fetch(PDO::FETCH_ASSOC) : null;
+        $httpHost = $row ? $row['value'] : $this->modx->getOption('http_host');
+
+        return 'https://www.google.com/s2/favicons?domain='  . $httpHost;
+    }
+}

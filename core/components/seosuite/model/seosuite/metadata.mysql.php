@@ -1,16 +1,10 @@
 <?php
 
-/**
- * SeoSuite
- *
- * Copyright 2019 by Sterc <modx@sterc.com>
- */
-
-$xpdo_meta_map = [
-    'xPDOSimpleObject' => [
-        'SeoSuiteResource',
-        'SeoSuiteRedirect',
-        'SeoSuiteUrl'
-        //'SeoSuiteKeyword'
-    ]
-];
+$xpdo_meta_map = array (
+  'xPDOSimpleObject' => 
+  array (
+    0 => 'SeoSuiteUrl',
+    1 => 'SeoSuiteResource',
+    2 => 'SeoSuiteRedirect'
+  ),
+);
