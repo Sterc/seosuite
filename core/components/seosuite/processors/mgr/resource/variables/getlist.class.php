@@ -19,8 +19,15 @@ class SeoSuiteVariablesGetListProcessor extends modObjectGetListProcessor
 
     public function getData()
     {
+        /**
+         * Title is a non existing fields but translates to longtitle with a default to pagetitle.
+         */
         return [
             'results' => [
+                [
+                    'key'   => 'title',
+                    'value' => 'title'
+                ],
                 [
                     'key'   => 'pagetitle',
                     'value' => 'pagetitle'

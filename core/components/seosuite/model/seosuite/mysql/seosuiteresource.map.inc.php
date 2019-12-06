@@ -15,16 +15,20 @@ $xpdo_meta_map['SeoSuiteResource'] = [
         'engine'        => 'InnoDB'
     ],
     'fields'        => [
-        'id'            => null,
-        'resource_id'   => null,
-        'index_type'    => null,
-        'follow_type'   => null,
-        'sitemap'       => null,
-        'sitemap_prio'  => null,
+        'id'                 => null,
+        'resource_id'        => null,
+        'keywords'           => null,
+        'use_default_meta'   => 1,
+        'meta_title'         => null,
+        'meta_description'   => null,
+        'index_type'         => null,
+        'follow_type'        => null,
+        'sitemap'            => null,
+        'sitemap_prio'       => null,
         'sitemap_changefreq' => null,
-        'canonical'     => 1,
-        'canonical_uri' => null,
-        'editedon'      => null
+        'canonical'          => 1,
+        'canonical_uri'      => null,
+        'editedon'           => null
     ],
     'fieldMeta'     => [
         'id'            => [
@@ -40,6 +44,29 @@ $xpdo_meta_map['SeoSuiteResource'] = [
             'precision'     => '1',
             'phptype'       => 'integer',
             'null'          => false
+        ],
+        'keywords'      => [
+            'dbtype'        => 'text',
+            'phptype'       => 'string',
+            'null'          => true,
+            'default'       => ''
+        ],
+        'use_default_meta' => [
+            'dbtype'        => 'tinyint',
+            'precision'     => '1',
+            'phptype'       => 'integer',
+            'null'          => false,
+            'default'       => 1
+        ],
+        'meta_title' => [
+            'dbtype'  => 'mediumtext',
+            'phptype' => 'json',
+            'null'    => true,
+        ],
+        'meta_description' => [
+            'dbtype'  => 'mediumtext',
+            'phptype' => 'json',
+            'null'    => true,
         ],
         'index_type'    => [
             'dbtype'        => 'tinyint',

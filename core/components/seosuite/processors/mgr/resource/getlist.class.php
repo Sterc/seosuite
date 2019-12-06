@@ -8,7 +8,7 @@
 class SeoSuiteUrlResourceGetListProcessor extends modObjectGetListProcessor
 {
     public $classKey = 'modResource';
-    public $languageTopics = array('seosuite:default');
+    public $languageTopics = ['seosuite:default'];
     public $defaultSortField = 'menuindex';
     public $defaultSortDirection = 'ASC';
 
@@ -17,9 +17,9 @@ class SeoSuiteUrlResourceGetListProcessor extends modObjectGetListProcessor
         $query = $this->getProperty('query');
         if (!empty($query)) {
             $c->where([
-                'id:LIKE'           => '%'.$query.'%',
-                'OR:pagetitle:LIKE' => '%'.$query.'%',
-                'OR:longtitle:LIKE' => '%'.$query.'%'
+                'id:LIKE'           => '%' . $query . '%',
+                'OR:pagetitle:LIKE' => '%' . $query . '%',
+                'OR:longtitle:LIKE' => '%' . $query . '%'
             ]);
         }
 

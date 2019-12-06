@@ -1,13 +1,8 @@
 SeoSuite.panel.MetaTag = function(config) {
-    config                      = config || {};
+    config = config || {};
 
     SeoSuite.currentCaretPosition = [];
 
-    /**
-     * @TODO Detect if rendered placeholder is changed, then:
-     * - Update settings field
-     * - Update google preview
-     */
     Ext.applyIf(config, {
         layout          : 'form',
         labelSeparator  : '',
@@ -16,7 +11,7 @@ SeoSuite.panel.MetaTag = function(config) {
             id              : 'seosuite-preview-insert-' + config.id,
             text            : '<i class="icon icon-plus"></i> ' + 'Add field',
             handler         : this.showVariableWindow,
-            target_field    : 'seosuite-variables-preview-' + config.name,
+            target_field    : 'seosuite-variables-preview-' + config.id,
         }, {
             xtype           : 'textfield',
             fieldLabel      : config.label,
@@ -24,21 +19,16 @@ SeoSuite.panel.MetaTag = function(config) {
             id              : 'seosuite-preview-editor-' + config.id,
             anchor          : '100%',
             value           : config.value,
+            hidden          : true,
             listeners       : {
                 change          : {
                     fn              : this.onUpdateValue,
                     scope           : this
-                },
-                //change: function (input) {
-
-                    /* Update variable preview if the value changes. */
-                    //Ext.get('seosuite-variables-preview-' + config.id).dom.innerHTML = this.renderVariablesPreview(input.getValue());
-                //},
-                //scope: this
-            },
-            hidden: true
+                }
+            }
         }, {
-            html        : '<strong>' + config.label + '</strong><div id="seosuite-variables-preview-' + config.id + '"></div>',
+            fieldLabel  : config.label,
+            html        : '<div id="seosuite-variables-preview-' + config.id + '"></div>',
             listeners   : {
                 afterRender: function () {
                     Ext.get('seosuite-variables-preview-' + config.id).dom.innerHTML = this.renderVariablesPreview(config.value);
@@ -142,7 +132,7 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
             if (range) {
                 container = range[isStart ? "startContainer" : "endContainer"];
 
-                // Check if the container is a text node and return its parent if so
+                /* Check if the container is a text node and return its parent if so. */
                 return container.nodeType === 3 ? container.parentNode : container;
             }
         }
@@ -289,7 +279,7 @@ SeoSuite.combo.SnippetVariables = function(config) {
         valueField      : 'key',
         fields          : ['key', 'value'],
         pageSize        : 20,
-        url             : SeoSuite.config.connectorUrl,
+        url             : SeoSuite.config.connector_url,
         baseParams      : {
             action: 'mgr/resource/variables/getlist'
         },
@@ -308,25 +298,23 @@ SeoSuite.window.InsertVariable = function(config) {
 
     Ext.applyIf(config, {
         autoHeight  : true,
-        title       : 'Insert snippet variable',
+        title       : _('seosuite.meta.insert_title'),
         fields      : [{
             xtype       : 'hidden',
             name        : 'target_field'
         }, {
             xtype       : 'seosuite-combo-snippet-variables',
-            fieldLabel  : 'Variable',
-            // description : MODx.expandHelp ? '' : _('knpm.label_addon_subaddon_subaddon_desc'),
+            fieldLabel  : _('seosuite.meta.variable'),
             hiddenName  : 'variables',
             anchor      : '100%',
             allowBlank  : false
         }, {
             xtype       : MODx.expandHelp ? 'label' : 'hidden',
-            // html        : _('knpm.label_addon_subaddon_subaddon_desc'),
             cls         : 'desc-under'
         }],
         buttons: [{
-            text: 'Insert',
-            handler:  function() {
+            text    : _('seosuite.meta.insert_btn'),
+            handler :  function() {
                 var variable     = Ext.getCmp('seosuite-variable').getValue();
                 var preview      = Ext.get(config.record.target_field).query('.x-form-text')[0];
                 var html         = preview.innerHTML;

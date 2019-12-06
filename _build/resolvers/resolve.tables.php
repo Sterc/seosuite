@@ -115,7 +115,7 @@ if ($object->xpdo) {
 
             $tables = [
                 'SeoSuiteUrl',
-                'SeoSuiteKeyword'
+                'SeoSuiteResource'
             ];
             $modelPath = $modx->getOption('seosuite.core_path', null, $modx->getOption('core_path').'components/seosuite/').'model/';
             $modx->addPackage('seosuite', $modelPath);

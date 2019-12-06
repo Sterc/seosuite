@@ -18,14 +18,27 @@
                 "events": [
                     "OnDocFormRender",
                     "OnDocFormSave",
+                    "onEmptyTrash",
                     "OnLoadWebDocument",
                     "OnMODXInit",
                     "OnPageNotFound",
                     "OnResourceDuplicate"
                 ]
             }],
-            "snippets": [],
-            "chunks": [],
+            "snippets": [{
+                "name": "SeoSuiteMeta",
+                "description": "Snippet for adding the title and meta description in your website.",
+                "file": "seosuitemeta.snippet.php"
+            }],
+            "chunks": [{
+                "name": "tplMetaTitle",
+                "file": "metatitle.chunk.tpl",
+                "description": "The default chunk used for the title."
+            }, {
+                "name": "tplMeta",
+                "file": "meta.chunk.tpl",
+                "description": "The default chunk used for the meta."
+            }],
             "widgets": [{
                 "name": "seosuite",
                 "description": "SEO Suite dashboard widget",
@@ -40,37 +53,33 @@
             "value": "",
             "area": "general"
         },{
-          "key": "keywords.fields",
-          "value": "pagetitle:70,longtitle:70,description:160,alias:2023,menutitle:2023",
-          "area": "keywords"
+          "key": "meta.counter_fields",
+          "value": "longtitle:30|70,description:70|155,content",
+          "area": "meta"
         },{
-          "key": "keywords.disabledtemplates",
+          "key": "meta.disabled_templates",
           "value": "",
-          "area": "keywords"
+          "area": "meta"
         },{
-          "key": "keywords.max_keywords_title",
+          "key": "meta.max_keywords_title",
           "value": "4",
-          "area": "keywords"
+          "area": "meta"
         },{
-          "key": "keywords.max_keywords_description",
+          "key": "meta.max_keywords_description",
           "value": "8",
-          "area": "keywords"
+          "area": "meta"
         },{
-          "key": "preview.delimiter",
-          "value": "|",
-          "area": "preview"
-        },{
-          "key": "preview.title_format",
-          "area": "preview"
-        },{
-          "key": "preview.usesitename",
-          "type": "combo-boolean",
-          "value": "1",
-          "area": "preview"
-        },{
-          "key": "preview.searchengine",
+          "key": "meta.searchengine",
           "value": "google",
-          "area": "preview"
+          "area": "meta"
+        }, {
+          "key": "meta.default_meta_title",
+          "value": "[{\"type\":\"placeholder\",\"value\":\"title\"},{\"type\":\"text\",\"value\":\" | \"},{\"type\":\"placeholder\",\"value\":\"site_name\"}]",
+          "area": "meta"
+        }, {
+          "key": "meta.default_meta_description",
+          "value": "[{\"type\":\"placeholder\",\"value\":\"description\"}]",
+          "area": "meta"
         }]
     },
     "database": {
@@ -82,7 +91,8 @@
         "changelog": "docs/changelog.txt",
         "resolver": {
             "after": [
-                "resolve.tables.php"
+                "resolve.tables.php",
+                "permissions.resolver.php"
             ]
         }
     }
