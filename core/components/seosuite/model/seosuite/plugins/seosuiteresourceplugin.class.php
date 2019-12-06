@@ -76,7 +76,7 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
 
             $seoSuiteResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $resource->get('id')]);
             if ($seoSuiteResource) {
-                $properties = array_merge($seoSuiteResource->toArray(), $properties);
+                $properties = array_merge($properties, $seoSuiteResource->toArray());
             }
 
             foreach (array_keys($properties) as $key) {
@@ -135,7 +135,7 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
         if ($this->isLoaded('meta')) {
             $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/node_modules/web-animations-js/web-animations.min.js');
             $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/metatag.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
-            $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/preview.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
+            $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/resource.tab_meta.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
         }
 
         /* Loading specific scripts for specific section. */
@@ -151,7 +151,7 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
     }
 
     /**
-     * @TODO Fix it for duplicating child resources.
+     * @TODO Fix it for duplicating child resources, I created a PR to fix this in MODX Core: https://github.com/modxcms/revolution/pull/14874
      *
      * @access public.
      * @param Object $event.
@@ -187,12 +187,19 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
         }
     }
 
-    public function onBeforeDocFormSave()
+    /**
+     * Set placeholders for SeoSuite Meta data.
+     */
+    public function onLoadWebDocument()
     {
-
+        if (!$this->isMetaDisabled($this->modx->resource)) {
+            $this->modx->runSnippet('seosuiteMeta', [
+                'toPlaceholders' => true
+            ]);
+        }
     }
 
-    public function onLoadWebDocument()
+    public function onBeforeDocFormSave()
     {
 
     }

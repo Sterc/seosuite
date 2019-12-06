@@ -46,7 +46,7 @@ class SeoSuiteSnippets extends SeoSuite
         }
 
         $html = [];
-        foreach ($meta as $item) {
+        foreach ($meta as $key => $item) {
             $tpl = $item['tpl'];
 
             /* Unset tpl from placeholders. */
@@ -57,7 +57,7 @@ class SeoSuiteSnippets extends SeoSuite
 
             $rowHtml = $this->getChunk($tpl, $item);
             if ($toPlaceholders) {
-                $this->modx->toPlaceholder($item['name'], $rowHtml,self::PHS_PREFIX);
+                $this->modx->toPlaceholder($key, $rowHtml,self::PHS_PREFIX);
             } else {
                 $html[] = $rowHtml;
             }

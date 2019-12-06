@@ -20,33 +20,36 @@ class SeoSuiteVariablesGetListProcessor extends modObjectGetListProcessor
     public function getData()
     {
         /**
-         * Title is a non existing fields but translates to longtitle with a default to pagetitle.
+         * Title is a non existing field but translates to longtitle with a default to pagetitle.
          */
+
+        $this->modx->lexicon->load('core:resource', 'core:setting');
+
         return [
             'results' => [
                 [
                     'key'   => 'title',
-                    'value' => 'title'
+                    'value' => $this->modx->lexicon('seosuite.tab_meta.longtitle')
                 ],
                 [
                     'key'   => 'pagetitle',
-                    'value' => 'pagetitle'
+                    'value' => $this->modx->lexicon('resource_pagetitle')
                 ],
                 [
                     'key'   => 'longtitle',
-                    'value' => 'longtitle'
+                    'value' => $this->modx->lexicon('resource_longtitle')
                 ],
                 [
                     'key'   => 'description',
-                    'value' => 'description'
+                    'value' => $this->modx->lexicon('resource_description')
                 ],
                 [
                     'key'   => 'introtext',
-                    'value' => 'introtext'
+                    'value' => $this->modx->lexicon('resource_summary')
                 ],
                 [
                     'key'   => 'site_name',
-                    'value' => 'site_name'
+                    'value' => $this->modx->lexicon('setting_site_name')
                 ]
             ]
         ];
