@@ -1,6 +1,6 @@
 Ext.extend(SeoSuite, Ext.Component, {
     initialize: function() {
-        SeoSuite.config.loaded       = true;
+        SeoSuite.config.loaded = true;
         SeoSuite.addPanel();
 
         var self = this;
@@ -73,7 +73,7 @@ Ext.extend(SeoSuite, Ext.Component, {
             if (fieldKey !== 'content') {
                 var chartHtml = '<svg viewBox="0 0 36 36" class="circular-chart">\n' +
                     '  <path class="circle" id="seosuite-counter-circle-' + fieldKey + '"\n' +
-                    '    stroke-dasharray="0, 100"\n' +
+                    '    stroke-dasharray="0px, 100px"\n' +
                     '    d="M18 2.0845\n' +
                     '      a 15.9155 15.9155 0 0 1 0 31.831\n' +
                     '      a 15.9155 15.9155 0 0 1 0 -31.831"\n' +
@@ -339,7 +339,23 @@ Ext.extend(SeoSuite, Ext.Component, {
 
         /* Update character count circle. */
         var percentage = Math.round((charCount / maxChars) * 100);
-        document.getElementById('seosuite-counter-circle-' + fieldKey).setAttribute('stroke-dasharray', percentage + ', 100');
+        var circle = document.querySelector('#seosuite-counter-circle-' + fieldKey);
+
+        /**
+         * Using animate to support stroke-dasharray in IE.
+         * @see(https://github.com/web-animations/web-animations-js)
+         */
+        circle.animate([{
+            'strokeDasharray': percentage + 'px, 100px',
+            easing           : 'cubic-bezier(0.4, 0, 0.2, 1)',
+            offset           : 0
+        }, {
+            'strokeDasharray': percentage + 'px, 100px',
+            offset           : 1
+        }], {
+            duration: 600,
+            fill    : 'forwards'
+        });
     },
     countKeywords: function (fieldKey) {
         var field        = this.getFieldId(fieldKey);

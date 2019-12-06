@@ -131,6 +131,9 @@ class SeoSuite
 
         $this->modx->addPackage('seosuite', $this->getOption('modelPath'));
 
+        $query = $this->modx->newQuery('SeoSuiteResource');
+        $query->where(['keywords' => 'test']);
+
         if (is_array($this->config['lexicons'])) {
             foreach ($this->config['lexicons'] as $lexicon) {
                 $this->modx->lexicon->load($lexicon);
@@ -258,7 +261,7 @@ class SeoSuite
 
     /**
      * Adds a redirect to SEOTab for a given resource
-     *
+     * @deprecated This should be refactored
      * @param   int $url    The 404 url
      * @param   int $id     The resource id
      * @return  int The id of the seoUrl object, or false if seotab is not installed
@@ -296,6 +299,7 @@ class SeoSuite
 
     /**
      * Check if SeoTab is installed and is the minimum correct version
+     * @deprecated This is not needed anymore.
      * @return  boolean
      */
     public function checkSeoTab()
@@ -323,6 +327,10 @@ class SeoSuite
         return true;
     }
 
+    /**
+     * @deprecated
+     * @return bool|string
+     */
     public function getSeoTabVersion()
     {
         $c = $this->modx->newQuery('transport.modTransportPackage');

@@ -8,6 +8,11 @@ class SeoSuiteSnippets extends SeoSuite
 {
     const PHS_PREFIX = 'ss_meta';
 
+    /**
+     * Snippet for outputting meta data.
+     * @param $properties
+     * @return string
+     */
     public function seosuiteMeta($properties)
     {
         $id             = $this->modx->getOption('id', $properties, $this->modx->resource->get('id'));

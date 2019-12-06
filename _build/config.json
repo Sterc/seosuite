@@ -16,6 +16,7 @@
                 "description": "Plugin to handle the SEO Suite redirects.",
                 "file": "seosuite.plugin.php",
                 "events": [
+                    "OnDocFormPrerender",
                     "OnDocFormRender",
                     "OnDocFormSave",
                     "onEmptyTrash",

@@ -15,12 +15,23 @@
         </index>
     </object>
 
-    <object class="SeoSuiteKeyword" table="seosuite_keyword" extends="xPDOSimpleObject">
-        <field key="resource" dbtype="integer" precision="10" phptype="int" null="false" default="" index="index"/>
+    <object class="SeoSuiteResource" table="seosuite_resource" extends="xPDOSimpleObject">
         <field key="keywords" dbtype="text" phptype="string" null="true" default="" />
+        <field key="resource_id" dbtype="integer" precision="10" phptype="int" null="false" default="" index="index"/>
+        <field key="use_default_meta" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
+        <field key="meta_title" dbtype="mediumtext" phptype="json" null="true" />
+        <field key="meta_description" dbtype="mediumtext" phptype="json" null="true" />
+        <field key="index_type" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
+        <field key="follow_type" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
+        <field key="sitemap" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
+        <field key="sitemap_prio" dbtype="varchar" precision="10" phptype="string" null="false" default="" />
+        <field key="sitemap_changefreq" dbtype="varchar" precision="10" phptype="string" null="false" default="" />
+        <field key="canonical" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
+        <field key="canonical_uri" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" default="NULL" attributes="ON UPDATE CURRENT_TIMESTAMP" />
 
-        <index alias="resource" name="resource" primary="false" unique="false" type="BTREE">
-            <column key="resource" length="767" collation="A" null="false" />
+        <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
+            <column key="resource_id" length="767" collation="A" null="false" />
         </index>
     </object>
 </model>
