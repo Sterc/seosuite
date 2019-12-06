@@ -114,6 +114,8 @@ class SeoSuite
             ],
             'tab_social'                => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_social'),
+                'og_types'                  => explode(',', $this->modx->getOption('seosuite.tab_social_og_types')),
+                'twitter_cards'             => explode(',', $this->modx->getOption('seosuite.tab_social_twitter_cards'))
             ],
             'meta'                      => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_meta'),

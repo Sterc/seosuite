@@ -89,6 +89,68 @@ Ext.extend(SeoSuite.combo.RedirectType, MODx.combo.ComboBox);
 
 Ext.reg('seosuite-combo-redirect-type', SeoSuite.combo.RedirectType);
 
+SeoSuite.combo.SocialOgType = function(config) {
+    config = config || {};
+
+    var data = [];
+
+    if (SeoSuite.config.tab_social.og_types) {
+        SeoSuite.config.tab_social.og_types.forEach(function (index) {
+            data.push([index, index]);
+        });
+    }
+
+    Ext.applyIf(config, {
+        store       : new Ext.data.ArrayStore({
+            mode        : 'local',
+            fields      : ['value', 'label'],
+            data        : data
+        }),
+        hiddenName  : 'seosuite_og_type',
+        valueField  : 'value',
+        displayField : 'label',
+        mode        : 'local',
+        value       : data[0] ? data[0][0] : ''
+    });
+
+    SeoSuite.combo.SocialOgType.superclass.constructor.call(this,config);
+};
+
+Ext.extend(SeoSuite.combo.SocialOgType, MODx.combo.ComboBox);
+
+Ext.reg('seosuite-combo-social-og-type', SeoSuite.combo.SocialOgType);
+
+SeoSuite.combo.SocialTwitterCard = function(config) {
+    config = config || {};
+
+    var data = [];
+
+    if (SeoSuite.config.tab_social.twitter_cards) {
+        SeoSuite.config.tab_social.twitter_cards.forEach(function (index) {
+            data.push([index, index]);
+        });
+    }
+
+    Ext.applyIf(config, {
+        store       : new Ext.data.ArrayStore({
+            mode        : 'local',
+            fields      : ['value', 'label'],
+            data        : data
+        }),
+        hiddenName  : 'seosuite_twitter_card',
+        valueField  : 'value',
+        displayField : 'label',
+        mode        : 'local',
+        value       : data[0] ? data[0][0] : ''
+    });
+
+    SeoSuite.combo.SocialTwitterCard.superclass.constructor.call(this,config);
+};
+
+Ext.extend(SeoSuite.combo.SocialTwitterCard, MODx.combo.ComboBox);
+
+Ext.reg('seosuite-combo-social-twitter-card', SeoSuite.combo.SocialTwitterCard);
+
 SeoSuite.combo.Suggestions = function(config) {
     config = config || {};
 
