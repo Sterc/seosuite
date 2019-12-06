@@ -109,8 +109,7 @@ SeoSuite.combo.SocialOgType = function(config) {
         hiddenName  : 'seosuite_og_type',
         valueField  : 'value',
         displayField : 'label',
-        mode        : 'local',
-        value       : data[0] ? data[0][0] : ''
+        mode        : 'local'
     });
 
     SeoSuite.combo.SocialOgType.superclass.constructor.call(this,config);
@@ -140,8 +139,7 @@ SeoSuite.combo.SocialTwitterCard = function(config) {
         hiddenName  : 'seosuite_twitter_card',
         valueField  : 'value',
         displayField : 'label',
-        mode        : 'local',
-        value       : data[0] ? data[0][0] : ''
+        mode        : 'local'
     });
 
     SeoSuite.combo.SocialTwitterCard.superclass.constructor.call(this,config);

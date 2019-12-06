@@ -25,7 +25,8 @@ SeoSuite.panel.SocialTab = function(config) {
                     fieldLabel  : _('seosuite.tab_social.label_og_title'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_og_title_desc'),
                     name        : 'seosuite_og_title',
-                    anchor      : '100%'
+                    anchor      : '100%',
+                    value       : SeoSuite.record.seosuite_og_title
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.tab_social.label_og_title_desc'),
@@ -35,7 +36,8 @@ SeoSuite.panel.SocialTab = function(config) {
                     fieldLabel  : _('seosuite.tab_social.label_og_description'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_og_description_desc'),
                     name        : 'seosuite_og_description',
-                    anchor      : '100%'
+                    anchor      : '100%',
+                    value       : SeoSuite.record.seosuite_og_description
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.tab_social.label_og_description_desc'),
@@ -45,7 +47,8 @@ SeoSuite.panel.SocialTab = function(config) {
                     fieldLabel  : _('seosuite.tab_social.label_og_image'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_og_image_desc'),
                     name        : 'seosuite_og_image',
-                    anchor      : '100%'
+                    anchor      : '100%',
+                    value       : SeoSuite.record.seosuite_og_image
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.tab_social.label_og_image_desc'),
@@ -54,8 +57,9 @@ SeoSuite.panel.SocialTab = function(config) {
                     xtype       : 'textfield',
                     fieldLabel  : _('seosuite.tab_social.label_og_image_alt'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_og_image_alt_desc'),
-                    name        : 'seosuite_og_image_desc',
-                    anchor      : '100%'
+                    name        : 'seosuite_og_image_alt',
+                    anchor      : '100%',
+                    value       : SeoSuite.record.seosuite_og_image_alt
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.tab_social.label_og_image_alt_desc'),
@@ -64,8 +68,9 @@ SeoSuite.panel.SocialTab = function(config) {
                     xtype       : 'seosuite-combo-social-og-type',
                     fieldLabel  : _('seosuite.tab_social.label_og_type'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_og_type_desc'),
-                    name        : 'seosuite_og_image_desc',
-                    anchor      : '100%'
+                    name        : 'seosuite_og_type',
+                    anchor      : '100%',
+                    value       : SeoSuite.record.seosuite_og_type
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.tab_social.label_og_type_desc'),
@@ -81,7 +86,8 @@ SeoSuite.panel.SocialTab = function(config) {
                     fieldLabel  : _('seosuite.tab_social.label_twitter_title'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_title_desc'),
                     name        : 'seosuite_twitter_title',
-                    anchor      : '100%'
+                    anchor      : '100%',
+                    value       : SeoSuite.record.seosuite_twitter_title
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.tab_social.label_twitter_title_desc'),
@@ -91,7 +97,8 @@ SeoSuite.panel.SocialTab = function(config) {
                     fieldLabel  : _('seosuite.tab_social.label_twitter_description'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_description_desc'),
                     name        : 'seosuite_twitter_description',
-                    anchor      : '100%'
+                    anchor      : '100%',
+                    value       : SeoSuite.record.seosuite_twitter_description
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.tab_social.label_twitter_description_desc'),
@@ -101,7 +108,8 @@ SeoSuite.panel.SocialTab = function(config) {
                     fieldLabel  : _('seosuite.tab_social.label_twitter_image'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_image_desc'),
                     name        : 'seosuite_twitter_image',
-                    anchor      : '100%'
+                    anchor      : '100%',
+                    value       : SeoSuite.record.seosuite_twitter_image
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.tab_social.label_twitter_image_desc'),
@@ -110,8 +118,9 @@ SeoSuite.panel.SocialTab = function(config) {
                     xtype       : 'textfield',
                     fieldLabel  : _('seosuite.tab_social.label_twitter_image_alt'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_image_alt_desc'),
-                    name        : 'seosuite_twitter_image_desc',
-                    anchor      : '100%'
+                    name        : 'seosuite_twitter_image_alt',
+                    anchor      : '100%',
+                    value       : SeoSuite.record.seosuite_twitter_image_alt
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.tab_social.label_twitter_image_alt_desc'),
@@ -121,7 +130,8 @@ SeoSuite.panel.SocialTab = function(config) {
                     fieldLabel  : _('seosuite.tab_social.label_twitter_card'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_card_desc'),
                     name        : 'seosuite_twitter_card',
-                    anchor      : '100%'
+                    anchor      : '100%',
+                    value       : SeoSuite.record.seosuite_twitter_card
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.tab_social.label_twitter_card_desc'),
