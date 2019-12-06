@@ -2,11 +2,6 @@
 
 class SeoSuiteResourcePlugin extends SeoSuitePlugin
 {
-    /**
-     * Holds an array of the config to be used in JS.
-     * @var array
-     */
-    protected $config = [];
 
     /**
      * Holds an array of the record to be used in JS.
@@ -21,7 +16,8 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
     protected $loaded = [];
 
     /**
-     * @access public.
+     * @access protected.
+     * @param String $section.
      * @return Boolean.
      */
     protected function hasPermission($section)
@@ -31,6 +27,23 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
         }
 
         return false;
+    }
+
+    /**
+     * @access protected.
+     * @return Array.
+     */
+    protected function getSeoSuiteFields()
+    {
+        $fields = [];
+
+        foreach ($_POST as $key => $value) {
+            if (preg_match('/^seosuite_(.*)/', $key, $matches)) {
+                $fields[$matches[1]] = $value;
+            }
+        }
+
+        return $fields;
     }
 
     /**
@@ -52,6 +65,7 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
     }
 
     /**
+<<<<<<< HEAD
      * @access public.
      * @param Object $event.
      * @return void.
@@ -90,6 +104,8 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
     }
 
     /**
+=======
+>>>>>>> 93da26117f502519e77b9de0cd32dc3ebe6b2259
      * @param $event
      */
     public function onDocFormRender($event)
@@ -102,15 +118,15 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
         }
 
         if ($this->hasPermission('tab_seo')) {
-            $this->loadSeo($resource);
+            $this->loadTabSeo($resource);
         }
 
         if ($this->hasPermission('tab_social')) {
-            $this->loadSocial($resource);
+            $this->loadTabSocial($resource);
         }
 
         /* Loading base scripts. */
-        if (count($this->loaded) > 0) {
+        if ($this->isLoaded()) {
             if (is_array($this->seosuite->config['lexicons'])) {
                 foreach ($this->seosuite->config['lexicons'] as $lexicon) {
                     $this->modx->controller->addLexiconTopic($lexicon);
@@ -119,34 +135,61 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
                 $this->modx->controller->addLexiconTopic($this->seosuite->config['lexicons']);
             }
 
-            $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
-            Ext.onReady(function() {
-                SeoSuite.config = ' . $this->modx->toJSON($this->seosuite->config) . ';
-                SeoSuite.record = ' . $this->modx->toJSON($this->record) . ';
-            });</script>');
+            $this->modx->controller->addHtml('<script type="text/javascript">
+                Ext.onReady(function() {
+                    SeoSuite.config = ' . $this->modx->toJSON($this->seosuite->config) . ';
+                    SeoSuite.record = ' . $this->modx->toJSON($this->record) . ';
+                });
+            </script>');
 
-            $this->modx->regClientCSS($this->seosuite->options['assetsUrl'] . 'css/mgr.css');
+            $this->modx->controller->addCss($this->seosuite->config['css_url'] . 'mgr/seosuite.css');
+            $this->modx->controller->addCss($this->seosuite->config['css_url'] . 'mgr.css');
 
-            $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/seosuite.js');
-            $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/extras/extras.js');
-        }
+            $this->modx->controller->addJavascript($this->seosuite->config['js_url'] . 'mgr/seosuite.js');
 
+<<<<<<< HEAD
         /* Loading specific scripts for specific section. */
         if ($this->isLoaded('meta')) {
             $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/node_modules/web-animations-js/web-animations.min.js');
             $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/metatag.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
             $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/resource.tab_meta.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
         }
+=======
+            $this->modx->controller->addJavascript($this->seosuite->config['js_url'] . 'mgr/extras/extras.js');
 
-        /* Loading specific scripts for specific section. */
-        if ($this->isLoaded('seo')) {
-            $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/redirects.grid.js');
-            $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/resource.tab_seo.js');
+            /* Loading specific scripts for specific section. */
+            if ($this->isLoaded('meta')) {
+                $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'node_modules/web-animations-js/web-animations.min.js');
+                $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/metatag.js?v=' . $this->seosuite->config['version']);
+                $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/preview.js?v=' . $this->seosuite->config['version']);
+            }
+
+            /* Loading specific scripts for specific section. */
+            if ($this->isLoaded('seo')) {
+                $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/redirects.grid.js?v='. $this->seosuite->config['version']);
+                $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/resource.tab_seo.js?v='. $this->seosuite->config['version']);
+            }
+>>>>>>> 93da26117f502519e77b9de0cd32dc3ebe6b2259
+
+            /* Loading specific scripts for specific section. */
+            if ($this->isLoaded('social')) {
+                $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/resource.tab_social.js?v='. $this->seosuite->config['version']);
+            }
         }
+    }
 
-        /* Loading specific scripts for specific section. */
-        if ($this->isLoaded('social')) {
-            $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/resource.tab_social.js');
+    /**
+     * @access public.
+     * @param Object $event.
+     * @return void.
+     */
+    public function onDocFormSave($event)
+    {
+        $resource =& $event->params['resource'];
+
+        if ($resource) {
+            $this->seosuite->setResourceProperties($resource->get('id'), $this->getSeoSuiteFields());
+            $this->seosuite->setSocialProperties($resource->get('id'), $this->getSeoSuiteFields());
         }
     }
 
@@ -222,12 +265,17 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
     /**
      * Check if a section is loaded.
      *
-     * @param $section
-     * @return bool
+     * @access protected.
+     * @param Null|String $section.
+     * @return Boolean.
      */
-    protected function isLoaded($section)
+    protected function isLoaded($section = null)
     {
-        return in_array($section, $this->loaded, true);
+        if ($section !== null) {
+            return in_array($section, $this->loaded, true);
+        }
+
+        return count($this->loaded) >= 1;
     }
 
     /**
@@ -285,55 +333,36 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
     }
 
     /**
-     * Load section SEO.
-     * @param $resource
+     * Load tab SEO.
+     *
+     * @access protected.
+     * @param Object $resource.
      */
-    protected function loadSeo($resource)
+    protected function loadTabSeo($resource)
     {
-        $this->record = array_merge($this->record, [
-            'seosuite_index_type'           => $this->seosuite->config['tab_seo']['default_index_type'],
-            'seosuite_follow_type'          => $this->seosuite->config['tab_seo']['default_follow_type'],
-            'seosuite_searchable'           => 1,
-            'seosuite_override_uri'         => 0,
-            'seosuite_uri'                  => '',
-            'seosuite_sitemap'              => $this->seosuite->config['tab_seo']['default_sitemap'],
-            'seosuite_sitemap_prio'         => 'normal',
-            'seosuite_sitemap_changefreq'   => '',
-            'seosuite_canonical'            => 0,
-            'seosuite_canonical_uri'        => ''
-        ]);
+        $properties = $this->seosuite->getResourceProperties($resource->get('id'));
 
-        if ($resource) {
-            $this->record = array_merge($this->record, [
-                'seosuite_searchable'   => $resource->get('searchable') ? 1 : 0,
-                'seosuite_override_uri' => $resource->get('uri_override') ? 1 : 0,
-                'seosuite_uri'          => $resource->get('uri')
-            ]);
-
-            $seoSuiteResource = $this->seosuite->getSeoSuiteResourceProperties($resource->get('id'));
-
-            if ($seoSuiteResource) {
-                $this->record = array_merge($this->record, [
-                    'seosuite_index_type'           => $seoSuiteResource->get('index_type'),
-                    'seosuite_follow_type'          => $seoSuiteResource->get('follow_type'),
-                    'seosuite_sitemap'              => $seoSuiteResource->get('sitemap'),
-                    'seosuite_sitemap_prio'         => $seoSuiteResource->get('sitemap_prio'),
-                    'seosuite_sitemap_changefreq'   => $seoSuiteResource->get('sitemap_changefreq'),
-                    'seosuite_canonical'            => $seoSuiteResource->get('canonical'),
-                    'seosuite_canonical_uri'        => $seoSuiteResource->get('canonical_uri')
-                ]);
-            }
+        foreach ((array) $properties as $key => $value) {
+            $this->record['seosuite_' . $key] = $value;
         }
 
         $this->loaded[] = 'seo';
     }
 
     /**
-     * Load section social.
-     * @param $resource
+     * Load tab social.
+     *
+     * @access public.
+     * @param Object $resource.
      */
-    protected function loadSocial($resource)
+    protected function loadTabSocial($resource)
     {
+        $properties = $this->seosuite->getSocialProperties($resource->get('id'));
+
+        foreach ((array) $properties as $key => $value) {
+            $this->record['seosuite_' . $key] = $value;
+        }
+
         $this->loaded[] = 'social';
     }
 

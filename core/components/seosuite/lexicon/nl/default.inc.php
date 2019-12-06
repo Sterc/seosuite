@@ -25,6 +25,10 @@ $_lang['setting_seosuite.tab_seo_default_follow_type']          = 'Standaard lin
 $_lang['setting_seosuite.tab_seo_default_follow_type_desc']     = '';
 $_lang['setting_seosuite.tab_seo_default_sitemap']              = 'Standaard opnemen in sitemap';
 $_lang['setting_seosuite.tab_seo_default_sitemap_desc']         = '';
+$_lang['setting_seosuite.tab_social_og_types']                  = 'Facebook type values';
+$_lang['setting_seosuite.tab_social_og_types_desc']             = '';
+$_lang['setting_seosuite.tab_social_twitter_cards']             = 'Twitter card values';
+$_lang['setting_seosuite.tab_social_twitter_cards_desc']        = '';
 
 $_lang['seosuite.url']                                          = '404 URL';
 $_lang['seosuite.urls']                                         = '404 URL\'s';

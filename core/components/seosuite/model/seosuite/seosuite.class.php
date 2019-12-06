@@ -114,6 +114,10 @@ class SeoSuite
             ],
             'tab_social'                => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_social'),
+                'og_types'                  => explode(',', $this->modx->getOption('seosuite.tab_social_og_types')),
+                'default_og_type'           => explode(',', $this->modx->getOption('seosuite.tab_social_og_types'))[0],
+                'twitter_cards'             => explode(',', $this->modx->getOption('seosuite.tab_social_twitter_cards')),
+                'default_twitter_card'      => explode(',', $this->modx->getOption('seosuite.tab_social_twitter_cards'))[0]
             ],
             'meta'                      => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_meta'),
@@ -521,60 +525,92 @@ class SeoSuite
     }
 
     /**
-     * Get the Seo Suite properties of a resource.
-     *
      * @access public.
-     * @param Integer $id.
-     * @return Null|Object.
+     * @return Array.
      */
-    public function getSeoSuiteResourceProperties($id)
+    public function getResourceDefaultProperties()
     {
-        $resource = $this->modx->getObject('modResource', [
-            'id' => $id
-        ]);
-
-        if ($resource) {
-            $seoSuiteResource = $this->modx->getObject('SeoSuiteResource', [
-                'resource_id' => $id
-            ]);
-
-            if ($seoSuiteResource) {
-                return $seoSuiteResource;
-            }
-        }
-
-        return null;
+        return [
+            'index_type'            => $this->config['tab_seo']['default_index_type'],
+            'follow_type'           => $this->config['tab_seo']['default_follow_type'],
+            'searchable'            => 1,
+            'override_uri'          => 0,
+            'uri'                   => '',
+            'sitemap'               => $this->config['tab_seo']['default_sitemap'],
+            'sitemap_prio'          => 'normal',
+            'sitemap_changefreq'    => 'weekly',
+            'canonical'             => 0,
+            'canonical_uri'         => ''
+        ];
     }
 
     /**
-     * Set the Seo Suite properties of a resource.
+     * Get the resource properties of a resource.
      *
      * @access public.
      * @param Integer $id.
-     * @param Array $properties.
+     * @return Array
+     */
+    public function getResourceProperties($id)
+    {
+        $defaultProperties = $this->getResourceDefaultProperties();
+
+        $resource = $this->modx->getObject('modResource', [
+            'id' => $id
+        ]);
+
+        if ($resource) {
+            $defaultProperties['searchable']   = $resource->get('searchable') ? 1 : 0;
+            $defaultProperties['override_uri'] = $resource->get('uri_override') ? 1 : 0;
+            $defaultProperties['uri']          = $resource->get('uri');
+
+            $object = $this->modx->getObject('SeoSuiteResource', [
+                'resource_id' => $resource->get('id')
+            ]);
+
+            if ($object) {
+                $properties = $object->toArray();
+
+                unset($properties['id'], $properties['resource_id'], $properties['editedon']);
+
+                return array_merge($defaultProperties, $properties);
+            }
+        }
+
+        return $defaultProperties;
+    }
+
+    /**
+     * Set the resource properties of a resource.
+     *
+     * @access public.
+     * @param Integer $id.
+     * @param Array $values.
      * @return Boolean.
      */
-    public function setSeoSuiteResourceProperties($id, array $properties = [])
+    public function setResourceProperties($id, array $values = [])
     {
         $resource = $this->modx->getObject('modResource', [
             'id' => $id
         ]);
 
         if ($resource) {
-            $seoSuiteResource = $this->modx->getObject('SeoSuiteResource', [
-                'resource_id' => $id
+            $properties = array_merge($this->getResourceDefaultProperties(), $values);
+
+            $object = $this->modx->getObject('SeoSuiteResource', [
+                'resource_id' => $resource->get('id')
             ]);
 
-            if (!$seoSuiteResource) {
-                $seoSuiteResource = $this->modx->newObject('SeoSuiteResource', [
-                    'resource_id' => $id
+            if (!$object) {
+                $object = $this->modx->newObject('SeoSuiteResource', [
+                    'resource_id' => $resource->get('id')
                 ]);
             }
 
-            if ($seoSuiteResource) {
-                $seoSuiteResource->fromArray($properties);
+            if ($object) {
+                $object->fromArray(array_merge($object->toArray(), $properties));
 
-                if ($seoSuiteResource->save()) {
+                if ($object->save()) {
                     return true;
                 }
             }
@@ -584,19 +620,112 @@ class SeoSuite
     }
 
     /**
+     * Removes the resource properties of a resource.
+     *
      * @access public.
      * @param Integer $id.
      * @return Boolean.
      */
     public function removeSeoSuiteResourceProperties($id)
     {
-        $seoSuiteResource = $this->modx->getObject('SeoSuiteResource', [
-            'resource_id' => $id
+        //$seoSuiteResource = $this->modx->getObject('SeoSuiteResource', [
+        //    'resource_id' => $id
+        //]);
+
+        //if ($seoSuiteResource) {
+        //    if ($seoSuiteResource->remove()) {
+        //        return true;
+        //    }
+        //}
+
+        //return false;
+    }
+
+    /**
+     * @access public.
+     * @return Array.
+     */
+    public function getSocialDefaultProperties()
+    {
+        return [
+            'og_title'             => '',
+            'og_description'       => '',
+            'og_image'             => '',
+            'og_image_alt'         => '',
+            'og_type'              => $this->config['tab_social']['default_og_type'],
+            'twitter_title'        => '',
+            'twitter_description'  => '',
+            'twitter_image'        => '',
+            'twitter_image_alt'    => '',
+            'twitter_card'         => $this->config['tab_social']['default_twitter_card']
+        ];
+    }
+
+    /**
+     * Get the social properties of a resource.
+     *
+     * @access public.
+     * @param Integer $id.
+     * @return Array.
+     */
+    public function getSocialProperties($id)
+    {
+        $defaultProperties = $this->getSocialDefaultProperties();
+
+        $resource = $this->modx->getObject('modResource', [
+            'id' => $id
         ]);
 
-        if ($seoSuiteResource) {
-            if ($seoSuiteResource->remove()) {
-                return true;
+        if ($resource) {
+            $object = $this->modx->getObject('SeoSuiteSocial', [
+                'resource_id' => $resource->get('id')
+            ]);
+
+            if ($object) {
+                $properties = $object->toArray();
+
+                unset($properties['id'], $properties['resource_id'], $properties['editedon']);
+
+                return array_merge($defaultProperties, $properties);
+            }
+        }
+
+        return $defaultProperties;
+    }
+
+    /**
+     * Set the social properties of a resource.
+     *
+     * @access public.
+     * @param Integer $id.
+     * @param Array $values.
+     * @return Boolean.
+     */
+    public function setSocialProperties($id, array $values = [])
+    {
+        $resource = $this->modx->getObject('modResource', [
+            'id' => $id
+        ]);
+
+        if ($resource) {
+            $properties = array_merge($this->getSocialDefaultProperties(), $values);
+
+            $object = $this->modx->getObject('SeoSuiteSocial', [
+                'resource_id' => $resource->get('id')
+            ]);
+
+            if (!$object) {
+                $object = $this->modx->newObject('SeoSuiteSocial', [
+                    'resource_id' => $resource->get('id')
+                ]);
+            }
+
+            if ($object) {
+                $object->fromArray(array_merge($object->toArray(), $properties));
+
+                if ($object->save()) {
+                    return true;
+                }
             }
         }
 
