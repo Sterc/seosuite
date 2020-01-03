@@ -9,13 +9,29 @@ SeoSuite.panel.MetaTag = function(config) {
         items           : [{
             xtype           : 'button',
             id              : 'seosuite-preview-insert-' + config.id,
-            text            : '<i class="icon icon-plus"></i> ' + 'Add field',
-            handler         : this.showVariableWindow,
+            text            : '<i class="icon icon-plus"></i> ' + _('seosuite.tab_meta.add_field'),
+            handler         : function (btn) {
+                var type = 'description';
+                if (btn.target_field === 'seosuite-variables-preview-title') {
+                    type = 'title';
+                }
+
+                /* Set default position if needed. */
+                if (!SeoSuite.currentCaretPosition[type]) {
+                    SeoSuite.currentCaretPosition[type]             = [];
+                    SeoSuite.currentCaretPosition[type]['element']  = Ext.query('#' + btn.target_field)[0];
+                    SeoSuite.currentCaretPosition[type]['position'] = 0;
+                }
+
+                this.showVariableWindow(btn);
+            },
+            scope           : this,
             target_field    : 'seosuite-variables-preview-' + config.id,
         }, {
             xtype           : 'textfield',
             fieldLabel      : config.label,
             name            : config.name,
+            description     : MODx.expandHelp ? '' : config.description,
             id              : 'seosuite-preview-editor-' + config.id,
             anchor          : '100%',
             value           : config.value,
@@ -92,6 +108,10 @@ SeoSuite.panel.MetaTag = function(config) {
                 },
                 scope: this
             }
+        }, {
+            xtype: MODx.expandHelp ? 'label' : 'hidden',
+            html : config.description,
+            cls  : 'desc-under'
         }]
     });
 
@@ -205,7 +225,7 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
 
         return range;
     },
-    setCaretPosition(elemId, pos) {
+    setCaretPosition: function (elemId, pos) {
         var selection = window.getSelection();
 
         var range = this.createRange(document.getElementById(elemId), { count: pos });
@@ -229,6 +249,7 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
 
         if (json && json.length > 0) {
             var jsonObject = JSON.parse(json);
+
             for (var property in jsonObject) {
                 if (jsonObject.hasOwnProperty(property)) {
                     var uniqueID = SeoSuite.generateUniqueID();
@@ -298,22 +319,24 @@ SeoSuite.window.InsertVariable = function(config) {
 
     Ext.applyIf(config, {
         autoHeight  : true,
-        title       : _('seosuite.meta.insert_title'),
+        title       : _('seosuite.tab_meta.insert_field'),
         fields      : [{
             xtype       : 'hidden',
             name        : 'target_field'
         }, {
             xtype       : 'seosuite-combo-snippet-variables',
-            fieldLabel  : _('seosuite.meta.variable'),
+            fieldLabel  : _('seosuite.tab_meta.field'),
+            description     : MODx.expandHelp ? '' : _('seosuite.tab_meta.field_desc'),
             hiddenName  : 'variables',
             anchor      : '100%',
             allowBlank  : false
         }, {
             xtype       : MODx.expandHelp ? 'label' : 'hidden',
+            html        : _('seosuite.tab_meta.field_desc'),
             cls         : 'desc-under'
         }],
         buttons: [{
-            text    : _('seosuite.meta.insert_btn'),
+            text    : _('seosuite.tab_meta.insert_btn'),
             handler :  function() {
                 var variable     = Ext.getCmp('seosuite-variable').getValue();
                 var preview      = Ext.get(config.record.target_field).query('.x-form-text')[0];

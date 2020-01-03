@@ -87,7 +87,7 @@ class SeoSuite
 
         $this->config = array_merge([
             'namespace'                 => 'seosuite',
-            'lexicons'                  => ['seosuite:default', 'seosuite:tab_seo', 'seosuite:tab_social'],
+            'lexicons'                  => ['seosuite:default', 'seosuite:tab_meta', 'seosuite:tab_seo', 'seosuite:tab_social'],
             'base_path'                 => $corePath,
             'core_path'                 => $corePath,
             'model_path'                => $corePath . 'model/',

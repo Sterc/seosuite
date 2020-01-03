@@ -69,7 +69,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                 SeoSuite.record.values[fieldKey] = field.getValue();
             });
 
-            var counterHtml = '<span class="seosuite-counter-wrap seosuite-counter-keywords" id="seosuite-counter-keywords-' + fieldKey + '" title="' + _('seosuite.keywords') + '"><strong>' + _('seosuite.keywords') + ':&nbsp;&nbsp;</strong><span id="seosuite-counter-keywords-' + fieldKey + '-current">0</span></span>';
+            var counterHtml = '<span class="seosuite-counter-wrap seosuite-counter-keywords" id="seosuite-counter-keywords-' + fieldKey + '" title="' + _('seosuite.tab_meta.keywords') + '"><strong>' + _('seosuite.tab_meta.keywords') + ':&nbsp;&nbsp;</strong><span id="seosuite-counter-keywords-' + fieldKey + '-current">0</span></span>';
             if (fieldKey !== 'content') {
                 var chartHtml = '<svg viewBox="0 0 36 36" class="circular-chart">\n' +
                     '  <path class="circle" id="seosuite-counter-circle-' + fieldKey + '"\n' +
@@ -80,7 +80,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                     '  />\n' +
                     '</svg>';
 
-                counterHtml += '<span class="seosuite-counter-wrap seosuite-counter-chars green" id="seosuite-counter-chars-' + fieldKey + '" title="' + _('seosuite.characters.allowed') + '">' + chartHtml + '<span class="current" id="seosuite-counter-chars-' + fieldKey + '-current">1</span>';
+                counterHtml += '<span class="seosuite-counter-wrap seosuite-counter-chars green" id="seosuite-counter-chars-' + fieldKey + '" title="' + _('seosuite.tab_meta.characters.allowed') + '">' + chartHtml + '<span class="current" id="seosuite-counter-chars-' + fieldKey + '-current">1</span>';
                 counterHtml += '<span class="allowed" id="seosuite-counter-chars-' + fieldKey + '-allowed">' + SeoSuite.record.chars[fieldKey]['max'] + '</span></span>';
             }
 
@@ -100,7 +100,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                 xtype        : 'panel',
                 anchor       : '100%',
                 border       : false,
-                fieldLabel   : (this.config.meta.search_engine === 'yandex' ? _('seosuite.prevbox_yandex') : _('seosuite.prevbox')),
+                fieldLabel   : (this.config.meta.search_engine === 'yandex' ? _('seosuite.tab_meta.prevbox_yandex') : _('seosuite.tab_meta.prevbox')),
                 layout       : 'form',
                 bodyCssClass : 'main-wrapper',
                 id           : 'resource-seosuite-panel',
@@ -108,7 +108,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                 collapsible  : true,
                 animCollapse : false,
                 hideMode     : 'offsets',
-                title        : _('seosuite.seo'),
+                title        : _('seosuite.tab_meta.seo'),
                 items        : [{
                     layout      : 'column',
                     anchor      : '100%',
@@ -132,8 +132,8 @@ Ext.extend(SeoSuite, Ext.Component, {
                                 xtype           : 'textfield',
                                 name            : 'seosuite_keywords',
                                 id              : 'seosuite-keywords',
-                                fieldLabel      : _('seosuite.focuskeywords'),
-                                description     : _('seosuite.focuskeywords_desc'),
+                                fieldLabel      : _('seosuite.tab_meta.focuskeywords'),
+                                description     : MODx.expandHelp ? '' : _('seosuite.tab_meta.focuskeywords_desc'),
                                 value           : SeoSuite.record.keywords,
                                 enableKeyEvents : true,
                                 anchor          : '100%',
@@ -150,10 +150,14 @@ Ext.extend(SeoSuite, Ext.Component, {
                                     }
                                 }
                             }, {
+                                xtype       : MODx.expandHelp ? 'label' : 'hidden',
+                                html        : _('seosuite.tab_meta.focuskeywords_desc'),
+                                cls         : 'desc-under'
+                            }, {
                                 xtype           : 'textfield',
                                 name            : 'seosuite_longtitle',
                                 id              : 'seosuite-longtitle',
-                                fieldLabel      : _('seosuite.longtitle'),
+                                fieldLabel      : _('seosuite.tab_meta.longtitle'),
                                 emptyText       : MODx.activePage.record.pagetitle,
                                 value           : MODx.activePage.record.longtitle,
                                 enableKeyEvents : true,
@@ -168,7 +172,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                                 xtype           : 'textarea',
                                 name            : 'seosuite_description',
                                 id              : 'seosuite-description',
-                                fieldLabel      : _('seosuite.description'),
+                                fieldLabel      : _('seosuite.tab_meta.description'),
                                 value           : MODx.activePage.record.description,
                                 enableKeyEvents : true,
                                 anchor          : '100%',
@@ -259,7 +263,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                                     xtype       : 'checkbox',
                                     name        : 'seosuite_use_default_meta',
                                     id          : 'seosuite_use_default_meta',
-                                    boxLabel    : _('seosuite.meta.use_default'),
+                                    boxLabel    : _('seosuite.tab_meta.use_default'),
                                     inputValue  : 1,
                                     checked     : SeoSuite.record.use_default_meta,
                                     listeners    : {
@@ -267,12 +271,13 @@ Ext.extend(SeoSuite, Ext.Component, {
                                         'check'    : this.onChangeUseDefault
                                     }
                                 }, {
-                                    xtype   : 'seosuite-field-metatag',
-                                    label   : _('seosuite.meta_title'),
-                                    name    : 'seosuite_meta_title',
-                                    id      : 'title',
-                                    value   : JSON.stringify(SeoSuite.record.meta_title),
-                                    listeners   : {
+                                    xtype      : 'seosuite-field-metatag',
+                                    label      : _('seosuite.tab_meta.meta_title'),
+                                    name       : 'seosuite_meta_title',
+                                    description: _('seosuite.tab_meta.meta_title_desc'),
+                                    id         : 'title',
+                                    value      : JSON.stringify(SeoSuite.record.meta_title),
+                                    listeners  : {
                                         'change'    : {
                                             fn          : function() {
                                                 this.renderPreview();
@@ -281,12 +286,13 @@ Ext.extend(SeoSuite, Ext.Component, {
                                         }
                                     }
                                 }, {
-                                    xtype   : 'seosuite-field-metatag',
-                                    label   : _('seosuite.meta_description'),
-                                    name    : 'seosuite_meta_description',
-                                    id      : 'description',
-                                    value   : JSON.stringify(SeoSuite.record.meta_description),
-                                    listeners   : {
+                                    xtype      : 'seosuite-field-metatag',
+                                    label      : _('seosuite.tab_meta.meta_description'),
+                                    name       : 'seosuite_meta_description',
+                                    description: _('seosuite.tab_meta.meta_description_desc'),
+                                    id         : 'description',
+                                    value      : JSON.stringify(SeoSuite.record.meta_description),
+                                    listeners  : {
                                         'change'    : {
                                             fn          : function() {
                                                 this.renderPreview();
@@ -305,7 +311,7 @@ Ext.extend(SeoSuite, Ext.Component, {
 
         this.renderPreview();
     },
-    countCharacters(fieldKey, overrideCount) {
+    countCharacters: function (fieldKey, overrideCount) {
         var field    = this.getFieldId(fieldKey);
         var value    = Ext.getCmp(field).getValue();
         var maxChars = Ext.get('seosuite-counter-chars-' + fieldKey + '-allowed').dom.innerHTML;

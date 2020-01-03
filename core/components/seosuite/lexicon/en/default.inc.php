@@ -78,24 +78,11 @@ $_lang['setting_seosuite.exclude_words'] = 'Exclude words';
 $_lang['setting_seosuite.exclude_words_desc'] = 'Comma separated list of words which will be excluded from the suggestions matching system.';
 
 /* Keywords. */
-$_lang['seosuite.keywords']                        = 'Keywords';
 $_lang['seosuite.characters']                      = 'Characters';
-$_lang['seosuite.characters.allowed']              = 'Allowed characters';
-$_lang['seosuite.focuskeywords']                   = 'Focus keywords';
-$_lang['seosuite.focuskeywords_desc']              = 'Enter your keywords comma-separated (example: table, chair)';
-$_lang['seosuite.prevbox']                         = 'Google Preview';
-$_lang['seosuite.prevbox_yandex']                  = 'Yandex Preview';
+
+
 $_lang['seosuite.emptymetadescription']            = '<i>Please enter a description</i>';
 $_lang['seosuite.branding_text']                   = 'This site is optimized with the Sterc SeoSuite plugin - https://github.com/Sterc/seosuite.';
-$_lang['seosuite.meta.use_default']                = 'Use default settings for the meta title and meta description.';
-$_lang['seosuite.meta_title']                      = 'SEO Title';
-$_lang['seosuite.meta_description']                = 'SEO Description';
-$_lang['seosuite.meta.variable']                   = 'Variable';
-$_lang['seosuite.meta.insert_btn']                 = 'Insert';
-$_lang['seosuite.meta.insert_title']               = 'Insert snippet variable';
-$_lang['seosuite.seo']                             = 'SEO';
-$_lang['seosuite.longtitle']                       = 'Title';
-$_lang['seosuite.description']                     = 'META Description';
 
 /* Areas. */
 $_lang['area_general']  = 'General';

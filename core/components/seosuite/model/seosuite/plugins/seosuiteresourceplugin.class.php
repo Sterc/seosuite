@@ -71,6 +71,47 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
     }
 
     /**
+     * @access public.
+     * @param Object $event.
+     * @return void.
+     */
+    public function onDocFormSave($event)
+    {
+        $resource =& $event->params['resource'];
+        if ($resource) {
+            $properties = [
+                'keywords'              => '',
+                'use_default_meta'      => 0,
+                'meta_title'            => '',
+                'meta_description'      => '',
+                'index_type'            => $this->seosuite->config['tab_seo']['default_index_type'],
+                'follow_type'           => $this->seosuite->config['tab_seo']['default_follow_type'],
+                'sitemap'               => 0,
+                'sitemap_prio'          => 'normal',
+                'sitemap_changefreq'    => '',
+                'canonical'             => 0,
+                'canonical_uri'         => ''
+            ];
+
+            $seoSuiteResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $resource->get('id')]);
+            if ($seoSuiteResource) {
+                $properties = array_merge($properties, $seoSuiteResource->toArray());
+            }
+
+            foreach (array_keys($properties) as $key) {
+                if (isset($_POST['seosuite_' . $key])) {
+                    $properties[$key] = $_POST['seosuite_' . $key];
+                }
+            }
+
+            $this->seosuite->setSeoSuiteResourceProperties($resource->get('id'), $properties);
+            
+            $this->seosuite->setResourceProperties($resource->get('id'), $this->getSeoSuiteFields());
+            $this->seosuite->setSocialProperties($resource->get('id'), $this->getSeoSuiteFields());
+        }
+    }
+
+    /**
      * @param $event
      */
     public function onDocFormRender($event)
@@ -112,14 +153,13 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
 
             $this->modx->controller->addJavascript($this->seosuite->config['js_url'] . 'mgr/seosuite.js');
 
-            $this->modx->controller->addJavascript($this->seosuite->config['js_url'] . 'mgr/extras/extras.js');
-
             /* Loading specific scripts for specific section. */
             if ($this->isLoaded('meta')) {
-                $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'node_modules/web-animations-js/web-animations.min.js');
-                $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/metatag.js?v=' . $this->seosuite->config['version']);
-                $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/preview.js?v=' . $this->seosuite->config['version']);
+                $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/node_modules/web-animations-js/web-animations.min.js');
+                $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/metatag.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
+                $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/resource.tab_meta.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
             }
+            $this->modx->controller->addJavascript($this->seosuite->config['js_url'] . 'mgr/extras/extras.js');
 
             /* Loading specific scripts for specific section. */
             if ($this->isLoaded('seo')) {
@@ -135,22 +175,7 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
     }
 
     /**
-     * @access public.
-     * @param Object $event.
-     * @return void.
-     */
-    public function onDocFormSave($event)
-    {
-        $resource =& $event->params['resource'];
-
-        if ($resource) {
-            $this->seosuite->setResourceProperties($resource->get('id'), $this->getSeoSuiteFields());
-            $this->seosuite->setSocialProperties($resource->get('id'), $this->getSeoSuiteFields());
-        }
-    }
-
-    /**
-     * @TODO Fix it for duplicating child resources.
+     * @TODO Fix it for duplicating child resources, I created a PR to fix this in MODX Core: https://github.com/modxcms/revolution/pull/14874
      *
      * @access public.
      * @param Object $event.
@@ -180,12 +205,19 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
         }
     }
 
-    public function onBeforeDocFormSave()
+    /**
+     * Set placeholders for SeoSuite Meta data.
+     */
+    public function onLoadWebDocument()
     {
-
+        if (!$this->isMetaDisabled($this->modx->resource)) {
+            $this->modx->runSnippet('seosuiteMeta', [
+                'toPlaceholders' => true
+            ]);
+        }
     }
 
-    public function onLoadWebDocument()
+    public function onBeforeDocFormSave()
     {
 
     }
