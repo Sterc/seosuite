@@ -29,6 +29,8 @@ $_lang['setting_seosuite.tab_social_og_types']                  = 'Facebook type
 $_lang['setting_seosuite.tab_social_og_types_desc']             = '';
 $_lang['setting_seosuite.tab_social_twitter_cards']             = 'Twitter card values';
 $_lang['setting_seosuite.tab_social_twitter_cards_desc']        = '';
+$_lang['setting_seosuite.default_redirect_type']                = 'Standaard redirect type';
+$_lang['setting_seosuite.default_redirect_type_desc']           = '';
 
 $_lang['seosuite.url']                                          = '404 URL';
 $_lang['seosuite.urls']                                         = '404 URL\'s';

@@ -43,27 +43,43 @@ SeoSuite.panel.SocialTab = function(config) {
                     html        : _('seosuite.tab_social.label_og_description_desc'),
                     cls         : 'desc-under'
                 }, {
-                    xtype       : 'textfield',
-                    fieldLabel  : _('seosuite.tab_social.label_og_image'),
-                    description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_og_image_desc'),
-                    name        : 'seosuite_og_image',
-                    anchor      : '100%',
-                    value       : SeoSuite.record.seosuite_og_image
-                }, {
-                    xtype       : MODx.expandHelp ? 'label' : 'hidden',
-                    html        : _('seosuite.tab_social.label_og_image_desc'),
-                    cls         : 'desc-under'
-                }, {
-                    xtype       : 'textfield',
-                    fieldLabel  : _('seosuite.tab_social.label_og_image_alt'),
-                    description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_og_image_alt_desc'),
-                    name        : 'seosuite_og_image_alt',
-                    anchor      : '100%',
-                    value       : SeoSuite.record.seosuite_og_image_alt
-                }, {
-                    xtype       : MODx.expandHelp ? 'label' : 'hidden',
-                    html        : _('seosuite.tab_social.label_og_image_alt_desc'),
-                    cls         : 'desc-under'
+                    layout      : 'column',
+                    labelAlign  : 'top',
+                    defaults    : {
+                        layout      : 'form',
+                        labelSeparator : ''
+                    },
+                    items       : [{
+                        columnWidth : .5,
+                        items       : [{
+                            xtype       : 'modx-combo-browser',
+                            fieldLabel  : _('seosuite.tab_social.label_og_image'),
+                            description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_og_image_desc'),
+                            name        : 'seosuite_og_image',
+                            anchor      : '100%',
+                            value       : SeoSuite.record.seosuite_og_image,
+                            source      : MODx.config.default_media_source,
+                            allowedFileTypes : SeoSuite.config.tab_social.image_types
+                        }, {
+                            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+                            html        : _('seosuite.tab_social.label_og_image_desc'),
+                            cls         : 'desc-under'
+                        }]
+                    }, {
+                        columnWidth : .5,
+                        items       : [{
+                            xtype       : 'textfield',
+                            fieldLabel  : _('seosuite.tab_social.label_og_image_alt'),
+                            description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_og_image_alt_desc'),
+                            name        : 'seosuite_og_image_alt',
+                            anchor      : '100%',
+                            value       : SeoSuite.record.seosuite_og_image_alt
+                        }, {
+                            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+                            html        : _('seosuite.tab_social.label_og_image_alt_desc'),
+                            cls         : 'desc-under'
+                        }]
+                    }]
                 }, {
                     xtype       : 'seosuite-combo-social-og-type',
                     fieldLabel  : _('seosuite.tab_social.label_og_type'),
@@ -104,28 +120,43 @@ SeoSuite.panel.SocialTab = function(config) {
                     html        : _('seosuite.tab_social.label_twitter_description_desc'),
                     cls         : 'desc-under'
                 }, {
-                    xtype       : 'modx-combo-browser',
-                    fieldLabel  : _('seosuite.tab_social.label_twitter_image'),
-                    description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_image_desc'),
-                    name        : 'seosuite_twitter_image',
-                    anchor      : '100%',
-                    value       : SeoSuite.record.seosuite_twitter_image,
-                    source      : MODx.config.default_media_source
-                }, {
-                    xtype       : MODx.expandHelp ? 'label' : 'hidden',
-                    html        : _('seosuite.tab_social.label_twitter_image_desc'),
-                    cls         : 'desc-under'
-                }, {
-                    xtype       : 'textfield',
-                    fieldLabel  : _('seosuite.tab_social.label_twitter_image_alt'),
-                    description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_image_alt_desc'),
-                    name        : 'seosuite_twitter_image_alt',
-                    anchor      : '100%',
-                    value       : SeoSuite.record.seosuite_twitter_image_alt
-                }, {
-                    xtype       : MODx.expandHelp ? 'label' : 'hidden',
-                    html        : _('seosuite.tab_social.label_twitter_image_alt_desc'),
-                    cls         : 'desc-under'
+                    layout      : 'column',
+                    labelAlign  : 'top',
+                    defaults    : {
+                        layout      : 'form',
+                        labelSeparator : ''
+                    },
+                    items       : [{
+                        columnWidth : .5,
+                        items       : [{
+                            xtype       : 'modx-combo-browser',
+                            fieldLabel  : _('seosuite.tab_social.label_twitter_image'),
+                            description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_image_desc'),
+                            name        : 'seosuite_twitter_image',
+                            anchor      : '100%',
+                            value       : SeoSuite.record.seosuite_twitter_image,
+                            source      : MODx.config.default_media_source,
+                            allowedFileTypes : SeoSuite.config.tab_social.image_types
+                        }, {
+                            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+                            html        : _('seosuite.tab_social.label_twitter_image_desc'),
+                            cls         : 'desc-under'
+                        }]
+                    }, {
+                        columnWidth : .5,
+                        items       : [{
+                            xtype       : 'textfield',
+                            fieldLabel  : _('seosuite.tab_social.label_twitter_image_alt'),
+                            description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_image_alt_desc'),
+                            name        : 'seosuite_twitter_image_alt',
+                            anchor      : '100%',
+                            value       : SeoSuite.record.seosuite_twitter_image_alt
+                        }, {
+                            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+                            html        : _('seosuite.tab_social.label_twitter_image_alt_desc'),
+                            cls         : 'desc-under'
+                        }]
+                    }]
                 }, {
                     xtype       : 'seosuite-combo-social-twitter-card',
                     fieldLabel  : _('seosuite.tab_social.label_twitter_card'),

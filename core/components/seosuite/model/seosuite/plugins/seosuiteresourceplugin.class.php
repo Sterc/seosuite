@@ -2,7 +2,6 @@
 
 class SeoSuiteResourcePlugin extends SeoSuitePlugin
 {
-
     /**
      * Holds an array of the record to be used in JS.
      * @var array
@@ -78,36 +77,36 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
     public function onDocFormSave($event)
     {
         $resource =& $event->params['resource'];
+
         if ($resource) {
-            $properties = [
-                'keywords'              => '',
-                'use_default_meta'      => 0,
-                'meta_title'            => '',
-                'meta_description'      => '',
-                'index_type'            => $this->seosuite->config['tab_seo']['default_index_type'],
-                'follow_type'           => $this->seosuite->config['tab_seo']['default_follow_type'],
-                'sitemap'               => 0,
-                'sitemap_prio'          => 'normal',
-                'sitemap_changefreq'    => '',
-                'canonical'             => 0,
-                'canonical_uri'         => ''
-            ];
+            //$properties = [
+            //    'keywords'              => '',
+            //    'use_default_meta'      => 0,
+            //    'meta_title'            => '',
+            //    'meta_description'      => '',
+            //    'index_type'            => $this->seosuite->config['tab_seo']['default_index_type'],
+            //    'follow_type'           => $this->seosuite->config['tab_seo']['default_follow_type'],
+            //    'sitemap'               => 0,
+            //    'sitemap_prio'          => 'normal',
+            //    'sitemap_changefreq'    => '',
+            //    'canonical'             => 0,
+            //    'canonical_uri'         => ''
+            //];
 
-            $seoSuiteResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $resource->get('id')]);
-            if ($seoSuiteResource) {
-                $properties = array_merge($properties, $seoSuiteResource->toArray());
-            }
+            //$seoSuiteResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $resource->get('id')]);
+            //if ($seoSuiteResource) {
+            //    $properties = array_merge($properties, $seoSuiteResource->toArray());
+            //}
 
-            foreach (array_keys($properties) as $key) {
-                if (isset($_POST['seosuite_' . $key])) {
-                    $properties[$key] = $_POST['seosuite_' . $key];
-                }
-            }
+            //foreach (array_keys($properties) as $key) {
+            //    if (isset($_POST['seosuite_' . $key])) {
+            //        $properties[$key] = $_POST['seosuite_' . $key];
+            //    }
+            //}
 
-            $this->seosuite->setSeoSuiteResourceProperties($resource->get('id'), $properties);
-            
             $this->seosuite->setResourceProperties($resource->get('id'), $this->getSeoSuiteFields());
             $this->seosuite->setSocialProperties($resource->get('id'), $this->getSeoSuiteFields());
+            $this->seosuite->setRedirectProperties($resource);
         }
     }
 
@@ -152,6 +151,7 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
             $this->modx->controller->addCss($this->seosuite->config['css_url'] . 'mgr.css');
 
             $this->modx->controller->addJavascript($this->seosuite->config['js_url'] . 'mgr/seosuite.js');
+            $this->modx->controller->addJavascript($this->seosuite->config['js_url'] . 'mgr/extras/extras.js');
 
             /* Loading specific scripts for specific section. */
             if ($this->isLoaded('meta')) {
@@ -159,7 +159,6 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
                 $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/metatag.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
                 $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/resource.tab_meta.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
             }
-            $this->modx->controller->addJavascript($this->seosuite->config['js_url'] . 'mgr/extras/extras.js');
 
             /* Loading specific scripts for specific section. */
             if ($this->isLoaded('seo')) {
