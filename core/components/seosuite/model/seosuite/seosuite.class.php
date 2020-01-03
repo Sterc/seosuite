@@ -130,6 +130,12 @@ class SeoSuite
                 'max_keywords_description'  => (int) $this->modx->getOption('seosuite.meta.max_keywords_description', null, 8),
                 'max_keywords_title'        => (int) $this->modx->getOption('seosuite.meta.max_keywords_title', null, 4),
                 'search_engine'             => $this->modx->getOption('seosuite.meta.searchengine', null, 'google')
+            ],
+            'sitemap'                   => [
+                'babel_add_alternate_links' => (bool) $this->modx->getOption('seosuite.sitemap.babel.add_alternate_links', null, true),
+                'dependent_ultimateparent'  => (bool) $this->modx->getOption('seosuite.sitemap.dependent_ultimateparent', null, false),
+                'default_changefreq'        => $this->modx->getOption('seosuite.sitemap.default_changefreq', null, 'weekly'),
+                'default_priority'          => $this->modx->getOption('seosuite.sitemap.default_priority', null, '0.5')
             ]
         ], $options);
 

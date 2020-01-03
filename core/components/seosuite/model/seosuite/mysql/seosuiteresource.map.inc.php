@@ -84,7 +84,7 @@ $xpdo_meta_map['SeoSuiteResource']= array (
       'null' => false,
       'default' => 1,
     ),
-    'sitemap' =>
+    'sitemap' => 
     array (
       'dbtype' => 'tinyint',
       'precision' => '1',
@@ -135,17 +135,6 @@ $xpdo_meta_map['SeoSuiteResource']= array (
       'attributes' => 'ON UPDATE CURRENT_TIMESTAMP',
     ),
   ),
-    'aggregates' =>
-        array (
-            'Resource' =>
-                array (
-                    'class'       => 'modResource',
-                    'local'       => 'resource_id',
-                    'foreign'     => 'id',
-                    'cardinality' => 'one',
-                    'owner'       => 'foreign',
-                ),
-        ),
   'indexes' => 
   array (
     'resource_id' => 
@@ -163,6 +152,17 @@ $xpdo_meta_map['SeoSuiteResource']= array (
           'null' => false,
         ),
       ),
+    ),
+  ),
+  'aggregates' => 
+  array (
+    'Resource' => 
+    array (
+      'class' => 'modResource',
+      'local' => 'bundle',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
     ),
   ),
 );

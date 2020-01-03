@@ -140,22 +140,13 @@ class SeoSuiteSnippets extends SeoSuite
         }
 
         /* If resources should be displayed based upon parent/ultimate parent properties. */
-        /**
-         * @TODO REFACTOR BELOW
-         */
-        $sitemapDependsOnUltimateParent = (bool) $this->getOption('stercseo.xmlsitemap.dependent_ultimateparent', null, false);
+        $sitemapDependsOnUltimateParent = $this->config['sitemap']['dependent_ultimateparent'];
         if ($sitemapDependsOnUltimateParent) {
             $resources = $this->filterResourcesByParentProperties($resources);
         }
 
         $output = [];
         foreach ($resources as $resource) {
-            $lastmod = $this->getLastModTime($options['type'], $resource);
-
-            /**
-             * @TODO default changefreq
-             * @TODO default priority
-             */
             $output[] = $this->getChunk(
                 $rowTpl,
                 array_merge(
@@ -163,9 +154,9 @@ class SeoSuiteSnippets extends SeoSuite
                     [
                         'url'        => $this->modx->makeUrl($resource->get('id'), '', '', 'full'),
                         'alternates' => $this->getAlternateLinks($resource, $options),
-                        'lastmod'    => date('c', $lastmod),
-                        'changefreq' => !empty($resource->get('SeoSuiteResource.sitemap_changefreq')) ? $resource->get('SeoSuiteResource.sitemap_changefreq') : $this->defaults['changefreq'],
-                        'priority'   => !empty($resource->get('SeoSuiteResource.sitemap_prio')) ? $resource->get('SeoSuiteResource.sitemap_prio') : $this->defaults['priority'],
+                        'lastmod'    => date('c', $this->getLastModTime($options['type'], $resource)),
+                        'changefreq' => !empty($resource->get('SeoSuiteResource.sitemap_changefreq')) ? $resource->get('SeoSuiteResource.sitemap_changefreq') : $this->config['sitemap']['default_changefreq'],
+                        'priority'   => !empty($resource->get('SeoSuiteResource.sitemap_prio')) ? $resource->get('SeoSuiteResource.sitemap_prio') : $this->config['sitemap']['default_priority'],
                     ]
                 )
             );
@@ -255,12 +246,9 @@ class SeoSuiteSnippets extends SeoSuite
             ) . 'model/babel/'
         );
 
-        /**
-         * @TODO REFACTOR BELOW.
-         */
         /* Return if babel is not installed or the alternate links option is set to false or type is index or images. */
         if (!$babel ||
-            (int) $this->modx->getOption('stercseo.xmlsitemap.babel.add_alternate_links') !== 1 ||
+            $this->config['babel_add_alternate_links'] === false ||
             (isset($options['type']) && in_array($options['type'], ['index', 'images'], true))
         ) {
             return '';
@@ -277,6 +265,7 @@ class SeoSuiteSnippets extends SeoSuite
                 ]
             );
         }
+
         return implode(PHP_EOL, $alternates);
     }
 
@@ -289,7 +278,7 @@ class SeoSuiteSnippets extends SeoSuite
      *
      * @return string
      */
-    public function sitemapImages($contextKey, $resources, $options)
+    protected function sitemapImages($contextKey, $resources, $options)
     {
         $usedMediaSourceIds = [];
         $resourceIds        = [];
@@ -300,51 +289,52 @@ class SeoSuiteSnippets extends SeoSuite
         }
 
         /* Get all image tvs of the retrieved resources and return all image tv's chained to resource. */
-        $q = $this->modx->newQuery('modTemplateVar');
-        $q->select('modTemplateVar.*, Value.*');
-        $q->leftJoin('modTemplateVarResource', 'Value', array('modTemplateVar.id = Value.tmplvarid'));
-        $q->where(
-            array(
-                'Value.contentid:IN'     => $resourceIds,
-                'Value.value:!='         => '',
-                'modTemplateVar.type:IN' => array('image','migx')
-            )
-        );
+        $query = $this->modx->newQuery('modTemplateVar');
+        $query->select('modTemplateVar.*, Value.*');
+        $query->leftJoin('modTemplateVarResource', 'Value', ['modTemplateVar.id = Value.tmplvarid']);
+        $query->where([
+            'Value.contentid:IN'     => $resourceIds,
+            'Value.value:!='         => '',
+            'modTemplateVar.type:IN' => ['image', 'migx']
+        ]);
 
-        $imageTVs = $this->modx->getIterator('modTemplateVar', $q);
+        $imageTVs = $this->modx->getIterator('modTemplateVar', $query);
         if ($imageTVs) {
-            $q = $this->modx->newQuery('sources.modMediaSourceElement');
-            $q->where(
-                array(
-                    'object_class'   => 'modTemplateVar',
-                    'context_key:IN' => $contextKey
-                )
-            );
-            $getTVSources = $this->modx->getIterator('sources.modMediaSourceElement', $q);
-            $tvSources    = array();
+            $query = $this->modx->newQuery('sources.modMediaSourceElement');
+            $query->where([
+                'object_class'   => 'modTemplateVar',
+                'context_key:IN' => $contextKey
+            ]);
+
+            $getTVSources = $this->modx->getIterator('sources.modMediaSourceElement', $query);
+            $tvSources    = [];
             if ($getTVSources) {
                 foreach ($getTVSources as $tvSource) {
                     $tvSources[$tvSource->get('object')] = $tvSource->get('source');
                 }
             }
+
             foreach ($imageTVs as $imageTV) {
                 $imageTV = $imageTV->toArray();
                 $cid     = $imageTV['contentid'];
+
                 if ($imageTV['type'] === 'migx') {
                     $this->getImagesValuesFromMIGX($cid, $imageTV, $tvSources);
                 } else {
-                    $this->images[$cid][] = array(
+                    $this->images[$cid][] = [
                         'id'     => $imageTV['id'],
                         'value'  => $imageTV['value'],
                         'source' => $tvSources[$imageTV['tmplvarid']]
-                    );
+                    ];
                 }
+
                 /* Store used mediasource ID's in an array. */
                 if (!in_array($tvSources[$imageTV['tmplvarid']], $usedMediaSourceIds)) {
                     $usedMediaSourceIds[] = $tvSources[$imageTV['tmplvarid']];
                 }
             }
         }
+
         $output = '';
         if ($resources) {
             $mediasources = [];
@@ -362,6 +352,7 @@ class SeoSuiteSnippets extends SeoSuite
                     }
                 }
             }
+
             foreach ($resources as $resource) {
                 $imagesOutput = '';
                 if (isset($this->images[$resource->get('id')])) {
@@ -372,6 +363,7 @@ class SeoSuiteSnippets extends SeoSuite
                             'url' => $image['value']
                         ));
                     }
+
                     $output .= $this->getChunk($options['imagesRowTpl'], array(
                         'url'    => $this->modx->makeUrl($resource->get('id'), '', '', 'full'),
                         'images' => $imagesOutput
@@ -379,7 +371,8 @@ class SeoSuiteSnippets extends SeoSuite
                 }
             }
         }
-        return $this->getChunk($options['imagesOuterTpl'], array('wrapper' => $output));
+
+        return $this->getChunk($options['imagesOuterTpl'], ['wrapper' => $output]);
     }
 
     /**
@@ -490,5 +483,21 @@ class SeoSuiteSnippets extends SeoSuite
                 $allowedTemplates[] = $template;
             }
         }
+    }
+
+    /**
+     * Set the image URL based on related mediasource.
+     *
+     * @param $mediasources
+     * @param $image
+     *
+     * @return mixed
+     */
+    protected function setImageUrl($mediasources, $image)
+    {
+        if (array_key_exists($image['source'], $mediasources)) {
+            $image['value'] = rtrim($mediasources[$image['source']]['full_url'], '/') . '/' . ltrim($image['value'], '/');
+        }
+        return $image;
     }
 }

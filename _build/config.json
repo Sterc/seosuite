@@ -85,6 +85,24 @@
           "key": "meta.default_meta_description",
           "value": "[{\"type\":\"placeholder\",\"value\":\"description\"}]",
           "area": "meta"
+        }, {
+          "key": "sitemap.default_changefreq",
+          "value": "weekly",
+          "area": "sitemap"
+        }, {
+          "key": "sitemap.default_priority",
+          "value": "0.5",
+          "area": "sitemap"
+        }, {
+          "key": "sitemap.dependent_ultimateparent",
+          "type": "combo-boolean",
+          "value": "0",
+          "area": "sitemap"
+        }, {
+          "key": "sitemap.babel.add_alternate_links",
+          "type": "combo-boolean",
+          "value": "1",
+          "area": "sitemap"
         }]
     },
     "database": {
