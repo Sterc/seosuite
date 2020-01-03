@@ -43,6 +43,12 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
             }
         }
 
+        foreach (['sitemap', 'searchable', 'searchable', 'canonical'] as $key) {
+            if (!isset($fields[$key])) {
+                $fields[$key] = 0;
+            }
+        }
+
         return $fields;
     }
 
@@ -181,15 +187,8 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
         $newResource =& $event->params['newResource'];
 
         if ($oldResource && $newResource) {
-            $properties = $this->seosuite->getSeoSuiteResourceProperties($oldResource->get('id'));
-
-            if ($properties) {
-                $properties = array_merge($properties->toArray(), [
-                    'resource_id' => $newResource->get('id')
-                ]);
-
-                $this->seosuite->setSeoSuiteResourceProperties($newResource->get('id'), $properties);
-            }
+            $this->seosuite->setResourceProperties($newResource->get('id'), $this->seosuite->getResourceProperties($oldResource->get('id')));
+            $this->seosuite->setSocialProperties($newResource->get('id'), $this->seosuite->setSocialProperties($oldResource->get('id')));
         }
     }
 
@@ -201,7 +200,8 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
     public function onEmptyTrash($event)
     {
         foreach ((array) $event->params['ids'] as $id) {
-            $this->seosuite->removeSeoSuiteResourceProperties($id);
+            $this->seosuite->removeResourceProperties($id);
+            $this->seosuite->removeSocialProperties($id);
         }
     }
 
