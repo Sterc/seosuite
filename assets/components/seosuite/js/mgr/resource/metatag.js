@@ -103,7 +103,7 @@ SeoSuite.panel.MetaTag = function(config) {
                         /* Make sure to reset current caret position, in case other field is focused upon. */
                         SeoSuite.currentCaretPosition            = [];
                         SeoSuite.currentCaretPosition[config.id] = self.getCaretPosition();
-                    });
+                    });:
 
                     document.getElementById('seosuite-variables-preview-' + config.id).addEventListener('keyup', function(event) {
                         /* If left arrow or right arrow. */
