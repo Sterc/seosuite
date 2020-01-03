@@ -86,6 +86,13 @@ SeoSuite.panel.MetaTag = function(config) {
                         SeoSuite.updateHiddenMetafieldValue(config.id);
                     }, false);
 
+                    var elements = document.querySelectorAll('.seosuite-snippet-variable');
+                    for (i = 0; i < elements.length; ++i) {
+                        elements[i].addEventListener('click', function (event) {
+                            SeoSuite.selectElementById(event.target.id);
+                        });
+                    }
+
                     document.getElementById('seosuite-variables-preview-' + config.id).addEventListener('focusin', function() {
                         /* Make sure to reset current caret position, in case other field is focused upon. */
                         SeoSuite.currentCaretPosition            = [];
@@ -101,6 +108,16 @@ SeoSuite.panel.MetaTag = function(config) {
                     document.getElementById('seosuite-variables-preview-' + config.id).addEventListener('keyup', function(event) {
                         /* If left arrow or right arrow. */
                         if (event.keyCode === 37 || event.keyCode === 39) {
+                            var selection = window.getSelection();
+
+                            /* If arrow cursor is moved by arrow key and cursor is inside seosuite snippet variable, then auto select the element. */
+                            if (selection.anchorNode.parentNode.classList.contains('seosuite-snippet-variable') && selection.type !== 'Range') {
+
+                                /* Ignore if already selected. */
+                                console.log(event);
+                                SeoSuite.selectElementById(selection.anchorNode.parentNode.id);
+                            }
+
                             SeoSuite.currentCaretPosition            = [];
                             SeoSuite.currentCaretPosition[config.id] = self.getCaretPosition();
                         }
@@ -255,7 +272,7 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
                     var uniqueID = SeoSuite.generateUniqueID();
 
                     if (jsonObject[property].type === 'placeholder') {
-                        output += '<span class="seosuite-snippet-variable" contenteditable="false" id="' + uniqueID + '">' + jsonObject[property].value + '</span>';
+                        output += '<span class="seosuite-snippet-variable" spellcheck="false" id="' + uniqueID + '">' + jsonObject[property].value + '</span>';
                     } else {
                         output += '<span id="' + uniqueID + '">' + jsonObject[property].value + '</span>';
                     }
@@ -341,7 +358,8 @@ SeoSuite.window.InsertVariable = function(config) {
                 var variable     = Ext.getCmp('seosuite-variable').getValue();
                 var preview      = Ext.get(config.record.target_field).query('.x-form-text')[0];
                 var html         = preview.innerHTML;
-                var variableHTML = '<span class="seosuite-snippet-variable" contenteditable="false">' + variable + '</span>';
+                var uniqueID = SeoSuite.generateUniqueID();
+                var variableHTML = '<span class="seosuite-snippet-variable" spellcheck="false" id="' + uniqueID + '">' + variable + '</span>';
 
                 var type = 'description';
                 if (config.record.target_field === 'seosuite-variables-preview-title') {
@@ -394,6 +412,13 @@ SeoSuite.window.InsertVariable = function(config) {
                 preview.innerHTML = html;
 
                 SeoSuite.updateHiddenMetafieldValue(type);
+
+                var elements = document.querySelectorAll('.seosuite-snippet-variable');
+                for (i = 0; i < elements.length; ++i) {
+                    elements[i].addEventListener('click', function (event) {
+                        SeoSuite.selectElementById(event.target.id);
+                    });
+                }
 
                 this.destroy();
             },
