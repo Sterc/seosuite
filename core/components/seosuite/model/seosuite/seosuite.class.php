@@ -418,10 +418,6 @@ class SeoSuite
      */
     public function getChunk($name, $properties = [])
     {
-        if (class_exists('pdoTools') && $pdo = $this->modx->getService('pdoTools')) {
-            return $pdo->getChunk($name, $properties);
-        }
-
         $chunk = null;
         if (substr($name, 0, 6) === '@CODE:') {
             $content = substr($name, 6);
@@ -433,12 +429,15 @@ class SeoSuite
             }
 
             if (empty($chunk)) {
-                $chunk = $this->_getTplChunk($name);
+                $chunk = $this->getTplChunk($name);
                 if ($chunk === false) {
-                    return false;
+                    if (class_exists('pdoTools') && $pdo = $this->modx->getService('pdoTools')) {
+                        return $pdo->getChunk($name, $properties);
+                    } else {
+                        return false;
+                    }
                 }
             }
-
             $this->chunks[$name] = $chunk->getContent();
         } else {
             $content = $this->chunks[$name];
@@ -450,6 +449,32 @@ class SeoSuite
 
         return $chunk->process($properties);
     }
+
+    /**
+     * Returns a modChunk object from a template file.
+     *
+     * @access private
+     * @param string $name The name of the Chunk. Will parse to name.chunk.tpl
+     * @param string $postFix
+     * @return modChunk/boolean Returns the modChunk object if found, otherwise
+     * false.
+     */
+    private function getTplChunk($name, $postFix = '.chunk.tpl')
+    {
+        $chunk = false;
+        $file = $this->options['chunksPath'] . strtolower($name) . $postFix;
+
+        if (file_exists($file)) {
+            $content = file_get_contents($file);
+            $chunk   = $this->modx->newObject('modChunk');
+
+            $chunk->set('name', $name);
+            $chunk->setContent($content);
+        }
+
+        return $chunk;
+    }
+
 
     /**
      * Fire plugins based on event.

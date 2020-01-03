@@ -30,6 +30,8 @@
         <field key="canonical_uri" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
         <field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" default="NULL" attributes="ON UPDATE CURRENT_TIMESTAMP" />
 
+        <aggregate alias="Resource" class="modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
+
         <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
             <column key="resource_id" length="767" collation="A" null="false" />
         </index>

@@ -104,7 +104,7 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
                 }
             }
 
-            $this->seosuite->setSeoSuiteResourceProperties($resource->get('id'), $properties);
+//            $this->seosuite->setSeoSuiteResourceProperties($resource->get('id'), $properties);
             
             $this->seosuite->setResourceProperties($resource->get('id'), $this->getSeoSuiteFields());
             $this->seosuite->setSocialProperties($resource->get('id'), $this->getSeoSuiteFields());

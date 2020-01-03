@@ -30,6 +30,10 @@
                 "name": "SeoSuiteMeta",
                 "description": "Snippet for adding the title and meta description in your website.",
                 "file": "seosuitemeta.snippet.php"
+            },{
+              "name": "SeoSuiteSitemap",
+              "description": "Snippet for adding a google sitemap to your website.",
+              "file": "seosuitesitemap.snippet.php"
             }],
             "chunks": [{
                 "name": "tplMetaTitle",
