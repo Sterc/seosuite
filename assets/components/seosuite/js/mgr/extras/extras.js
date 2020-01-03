@@ -79,7 +79,7 @@ SeoSuite.combo.RedirectType = function(config) {
         valueField  : 'label',
         displayField : 'label',
         mode        : 'local',
-        value       : 'HTTP/1.1 301 Moved Permanently'
+        value       : SeoSuite.config.default_redirect_type
     });
 
     SeoSuite.combo.RedirectType.superclass.constructor.call(this, config);

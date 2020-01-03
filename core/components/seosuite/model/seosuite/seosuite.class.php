@@ -106,6 +106,7 @@ class SeoSuite
             'branding_url'              => $this->modx->getOption('seosuite.branding_url', null, ''),
             'branding_help_url'         => $this->modx->getOption('seosuite.branding_url_help', null, ''),
             'exclude_words'             => array_filter(explode(',', $this->modx->getOption('seosuite.exclude_words', null, ''))),
+            'default_redirect_type'     => $this->modx->getOption('seosuite.default_redirect_type', null, 'HTTP/1.1 301 Moved Permanently'),
             'tab_seo'                   => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_seo'),
                 'default_index_type'        => (int) $this->modx->getOption('seosuite.tab_seo_default_index_type', null, 1),
@@ -117,7 +118,8 @@ class SeoSuite
                 'og_types'                  => explode(',', $this->modx->getOption('seosuite.tab_social_og_types')),
                 'default_og_type'           => explode(',', $this->modx->getOption('seosuite.tab_social_og_types'))[0],
                 'twitter_cards'             => explode(',', $this->modx->getOption('seosuite.tab_social_twitter_cards')),
-                'default_twitter_card'      => explode(',', $this->modx->getOption('seosuite.tab_social_twitter_cards'))[0]
+                'default_twitter_card'      => explode(',', $this->modx->getOption('seosuite.tab_social_twitter_cards'))[0],
+                'image_types'               => 'jpg,jpeg.png,gif'
             ],
             'meta'                      => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_meta'),
@@ -620,7 +622,7 @@ class SeoSuite
         ]);
 
         if ($resource) {
-            $properties = array_merge($this->getResourceDefaultProperties(), $values);
+            $properties = array_merge($this->getResourceProperties($id), $values);
 
             $object = $this->modx->getObject('SeoSuiteResource', [
                 'resource_id' => $resource->get('id')
@@ -658,7 +660,9 @@ class SeoSuite
         ]);
 
         if ($object) {
-            return $object->remove();
+            if ($object->remove()) {
+                return true;
+            }
         }
 
         return false;
@@ -731,7 +735,7 @@ class SeoSuite
         ]);
 
         if ($resource) {
-            $properties = array_merge($this->getSocialDefaultProperties(), $values);
+            $properties = array_merge($this->getSocialProperties($id), $values);
 
             $object = $this->modx->getObject('SeoSuiteSocial', [
                 'resource_id' => $resource->get('id')
@@ -769,10 +773,70 @@ class SeoSuite
         ]);
 
         if ($object) {
-            return $object->remove();
+            if ($object->remove()) {
+                return true;
+            }
         }
 
         return false;
+    }
+
+    /**
+     * @access public.
+     * @param Object $resource.
+     * @return Boolean.
+     */
+    public function setRedirectProperties($resource)
+    {
+        if ($resource) {
+            $properties = $resource->getProperties('seosuite');
+
+            if (isset($properties['uri'])) {
+                $oldUrl = trim($properties['uri'], '/');
+                $newUrl = trim($resource->get('uri'), '/');
+
+                if ($oldUrl !== $newUrl && $oldUrl !== '' && $newUrl !== '') {
+                    if ($this->handleRedirect($oldUrl, $newUrl)) {
+                        $object = $this->modx->newObject('SeoSuiteRedirect');
+
+                        if ($object) {
+                            $object->fromArray([
+                                'resource_id'   => $resource->get('id'),
+                                'old_url'       => $oldUrl,
+                                'new_url'       => $newUrl,
+                                'redirect_type' => $this->config['default_redirect_type'],
+                                'active'        => 1
+                            ]);
+
+                            $object->save();
+                        }
+                    }
+                }
+            }
+
+            $resource->setProperties(array_merge($properties, [
+                'uri' => trim($resource->get('uri'), '/')
+            ]), 'seosuite');
+
+            if ($resource->save()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @TODO check if a redirect exists or is infitite loop shizzle.
+     *
+     * @access protected.
+     * @param String $oldUrl.
+     * @param String $newUrl.
+     * @return Boolean.
+     */
+    protected function handleRedirect($oldUrl, $newUrl)
+    {
+        return true;
     }
 
     /**
