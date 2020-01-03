@@ -202,6 +202,7 @@
     background: #3697cd;
     border-radius: 3px;
     color: #fff;
+    cursor: pointer;
     font-weight: bold;
     padding: 5px;
 }

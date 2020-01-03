@@ -311,7 +311,7 @@ Ext.extend(SeoSuite, Ext.Component, {
 
         this.renderPreview();
     },
-    countCharacters(fieldKey, overrideCount) {
+    countCharacters: function (fieldKey, overrideCount) {
         var field    = this.getFieldId(fieldKey);
         var value    = Ext.getCmp(field).getValue();
         var maxChars = Ext.get('seosuite-counter-chars-' + fieldKey + '-allowed').dom.innerHTML;

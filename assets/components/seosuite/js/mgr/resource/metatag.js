@@ -225,7 +225,7 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
 
         return range;
     },
-    setCaretPosition(elemId, pos) {
+    setCaretPosition: function (elemId, pos) {
         var selection = window.getSelection();
 
         var range = this.createRange(document.getElementById(elemId), { count: pos });
@@ -249,6 +249,7 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
 
         if (json && json.length > 0) {
             var jsonObject = JSON.parse(json);
+
             for (var property in jsonObject) {
                 if (jsonObject.hasOwnProperty(property)) {
                     var uniqueID = SeoSuite.generateUniqueID();
