@@ -626,19 +626,17 @@ class SeoSuite
      * @param Integer $id.
      * @return Boolean.
      */
-    public function removeSeoSuiteResourceProperties($id)
+    public function removeResourceProperties($id)
     {
-        //$seoSuiteResource = $this->modx->getObject('SeoSuiteResource', [
-        //    'resource_id' => $id
-        //]);
+        $object = $this->modx->getObject('SeoSuiteResource', [
+            'resource_id' => $id
+        ]);
 
-        //if ($seoSuiteResource) {
-        //    if ($seoSuiteResource->remove()) {
-        //        return true;
-        //    }
-        //}
+        if ($object) {
+            return $object->remove();
+        }
 
-        //return false;
+        return false;
     }
 
     /**
@@ -727,6 +725,26 @@ class SeoSuite
                     return true;
                 }
             }
+        }
+
+        return false;
+    }
+
+    /**
+     * Removes the social properties of a resource.
+     *
+     * @access public.
+     * @param Integer $id.
+     * @return Boolean.
+     */
+    public function removeSocialProperties($id)
+    {
+        $object = $this->modx->getObject('SeoSuiteSocial', [
+            'resource_id' => $id
+        ]);
+
+        if ($object) {
+            return $object->remove();
         }
 
         return false;

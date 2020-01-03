@@ -104,12 +104,13 @@ SeoSuite.panel.SocialTab = function(config) {
                     html        : _('seosuite.tab_social.label_twitter_description_desc'),
                     cls         : 'desc-under'
                 }, {
-                    xtype       : 'textfield',
+                    xtype       : 'modx-combo-browser',
                     fieldLabel  : _('seosuite.tab_social.label_twitter_image'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_image_desc'),
                     name        : 'seosuite_twitter_image',
                     anchor      : '100%',
-                    value       : SeoSuite.record.seosuite_twitter_image
+                    value       : SeoSuite.record.seosuite_twitter_image,
+                    source      : MODx.config.default_media_source
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.tab_social.label_twitter_image_desc'),
