@@ -86,6 +86,22 @@
           "value": "[{\"type\":\"placeholder\",\"value\":\"description\"}]",
           "area": "meta"
         }, {
+          "key": "meta.preview.length_desktop_title",
+          "value": "70",
+          "area": "meta"
+        }, {
+          "key": "meta.preview.length_desktop_description",
+          "value": "160",
+          "area": "meta"
+        },{
+          "key": "meta.preview.length_mobile_title",
+          "value": "78",
+          "area": "meta"
+        }, {
+          "key": "meta.preview.length_mobile_description",
+          "value": "130",
+          "area": "meta"
+        },{
           "key": "sitemap.default_changefreq",
           "value": "weekly",
           "area": "sitemap"

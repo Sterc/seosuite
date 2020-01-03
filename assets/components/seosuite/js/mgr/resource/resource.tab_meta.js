@@ -191,22 +191,30 @@ Ext.extend(SeoSuite, Ext.Component, {
                             cls         : 'active',
                             id          : 'seosuite-preview-mobile',
                             text        : '<i class="icon icon-mobile"></i>',
-                            handler     : function () {
-                                this.addClass('active');
+                            handler     : function (button) {
+                                button.addClass('active');
+
+                                SeoSuite.preview_type = 'mobile';
+                                this.renderPreview();
 
                                 Ext.select('#seosuite-preview-desktop').removeClass('active');
                                 Ext.select('.seosuite-preview').addClass('mobile').removeClass('desktop');
-                            }
+                            },
+                            scope: this
                         }, {
                             xtype   : 'button',
                             id      : 'seosuite-preview-desktop',
                             text    : '<i class="icon icon-desktop"></i>',
-                            handler : function () {
-                                this.addClass('active');
+                            handler : function (button) {
+                                button.addClass('active');
+
+                                SeoSuite.preview_type = 'desktop';
+                                this.renderPreview();
 
                                 Ext.select('#seosuite-preview-mobile').removeClass('active');
                                 Ext.select('.seosuite-preview').removeClass('mobile').addClass('desktop');
-                            }
+                            },
+                            scope: this
                         }, {
                             xtype       : 'button',
                             id          : 'seosuite-snippet-editor',
@@ -433,10 +441,11 @@ Ext.extend(SeoSuite, Ext.Component, {
         MODx.Ajax.request({
             url     : SeoSuite.config.connector_url,
             params  : {
-                action      : 'mgr/resource/preview',
-                title       : Ext.getCmp('seosuite-preview-editor-title').getValue(),
-                description : Ext.getCmp('seosuite-preview-editor-description').getValue(),
-                fields      : Ext.encode({
+                action       : 'mgr/resource/preview',
+                preview_type : SeoSuite.preview_type ? SeoSuite.preview_type : 'mobile',
+                title        : Ext.getCmp('seosuite-preview-editor-title').getValue(),
+                description  : Ext.getCmp('seosuite-preview-editor-description').getValue(),
+                fields       : Ext.encode({
                     pagetitle    : Ext.getCmp('modx-resource-pagetitle').getValue(),
                     longtitle    : Ext.getCmp('modx-resource-longtitle').getValue(),
                     description  : Ext.getCmp('modx-resource-description').getValue(),
