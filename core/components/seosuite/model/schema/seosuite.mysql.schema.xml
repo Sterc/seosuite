@@ -36,4 +36,12 @@
             <column key="resource_id" length="767" collation="A" null="false" />
         </index>
     </object>
+
+    <object class="SeoSuiteRedirect" table="seosuite_redirect" extends="xPDOSimpleObject">
+        <field key="context_key" dbtype="text" phptype="string" null="true" default="" index="index"/>
+
+        <index alias="context_key" name="context_key" primary="false" unique="false" type="BTREE">
+            <column key="context_key" length="767" collation="A" null="false"></column>
+        </index>
+    </object>
 </model>

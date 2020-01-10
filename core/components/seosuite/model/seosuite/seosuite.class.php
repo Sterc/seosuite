@@ -875,6 +875,13 @@ class SeoSuite
         return array_unique(array_filter(array_merge($words, $this->config['exclude_words'])));
     }
 
+    /**
+     * Renders the meta value from the configuration json to the output string.
+     *
+     * @param $json
+     * @param $resourceArray
+     * @return string
+     */
     public function renderMetaValue($json, $resourceArray)
     {
         $output = [];

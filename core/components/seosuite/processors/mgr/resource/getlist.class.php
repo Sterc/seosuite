@@ -12,11 +12,15 @@ class SeoSuiteUrlResourceGetListProcessor extends modObjectGetListProcessor
     public $defaultSortField = 'menuindex';
     public $defaultSortDirection = 'ASC';
 
-    public function prepareQueryBeforeCount(xPDOQuery $c)
+    /**
+     * @param xPDOQuery $c
+     * @return xPDOQuery
+     */
+    public function prepareQueryBeforeCount(xPDOQuery $oriQuery)
     {
         $query = $this->getProperty('query');
         if (!empty($query)) {
-            $c->where([
+            $oriQuery->where([
                 'id:LIKE'           => '%' . $query . '%',
                 'OR:pagetitle:LIKE' => '%' . $query . '%',
                 'OR:longtitle:LIKE' => '%' . $query . '%'
@@ -26,14 +30,18 @@ class SeoSuiteUrlResourceGetListProcessor extends modObjectGetListProcessor
         $ids = $this->getProperty('ids');
         if (!empty($ids)) {
             $ids = json_decode($ids, true);
-            $c->where([
+            $oriQuery->where([
                 'id:IN' => $ids
             ]);
         }
 
-        return $c;
+        return $oriQuery;
     }
 
+    /**
+     * @param xPDOObject $object
+     * @return array
+     */
     public function prepareRow(xPDOObject $object)
     {
         $id      = $object->get('id');
@@ -44,8 +52,8 @@ class SeoSuiteUrlResourceGetListProcessor extends modObjectGetListProcessor
             $url = $ctx->getOption('site_url');
         }
 
-        $object->set('pagetitle_id', $object->get('pagetitle'). ' ('.$id.')');
-        $object->set('resource_url', $url.$object->get('uri'));
+        $object->set('pagetitle_id', $object->get('pagetitle') . ' (' . $id . ')');
+        $object->set('resource_url', $url . $object->get('uri'));
 
         return parent::prepareRow($object);
     }
