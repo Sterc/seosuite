@@ -5,24 +5,24 @@
  * @package SeoSuite
  * @subpackage build
  */
-$mtime = microtime();
-$mtime = explode(" ", $mtime);
-$mtime = $mtime[1] + $mtime[0];
+$mtime  = microtime();
+$mtime  = explode(" ", $mtime);
+$mtime  = $mtime[1] + $mtime[0];
 $tstart = $mtime;
 set_time_limit(0);
 
 /* define package name */
-define('PKG_NAME','SeoSuite');
-define('PKG_NAME_LOWER',strtolower(PKG_NAME));
+define('PKG_NAME', 'SeoSuite');
+define('PKG_NAME_LOWER', strtolower(PKG_NAME));
 
 /* define sources */
-$root = dirname(dirname(__FILE__)).'/';
-$sources = array(
-    'root' => $root,
-    'core' => $root.'core/components/'.PKG_NAME_LOWER.'/',
-    'model' => $root.'core/components/'.PKG_NAME_LOWER.'/model/',
-    'assets' => $root.'assets/components/'.PKG_NAME_LOWER.'/',
-);
+$root = dirname(__DIR__) . '/';
+$sources = [
+    'root'   => $root,
+    'core'   => $root . 'core/components/' . PKG_NAME_LOWER . '/',
+    'model'  => $root . 'core/components/' . PKG_NAME_LOWER . '/model/',
+    'assets' => $root . 'assets/components/' . PKG_NAME_LOWER . '/',
+];
 
 /* load modx and configs */
 require_once dirname(__FILE__) . '/build.config.php';
@@ -60,15 +60,15 @@ $generator->mapHeader= <<<EOD
  * [+phpdoc-package+]
  */
 EOD;
-$generator->parseSchema($sources['model'] . 'schema/'.PKG_NAME_LOWER.'.mysql.schema.xml', $sources['model']);
+$generator->parseSchema($sources['model'] . 'schema/' . PKG_NAME_LOWER . '.mysql.schema.xml', $sources['model']);
 
 
-$mtime= microtime();
-$mtime= explode(" ", $mtime);
-$mtime= $mtime[1] + $mtime[0];
-$tend= $mtime;
-$totalTime= ($tend - $tstart);
-$totalTime= sprintf("%2.4f s", $totalTime);
+$mtime     = microtime();
+$mtime     = explode(" ", $mtime);
+$mtime     = $mtime[1] + $mtime[0];
+$tend      = $mtime;
+$totalTime = ($tend - $tstart);
+$totalTime = sprintf("%2.4f s", $totalTime);
 
 echo "\nExecution time: {$totalTime}\n";
 

@@ -122,7 +122,11 @@
         }]
     },
     "database": {
-        "tables": ["SeoSuiteUrl"]
+        "tables": [
+          "SeoSuiteRedirect",
+          "SeoSuiteResource",
+          "SeoSuiteUrl"
+        ]
     },
     "build": {
         "readme": "docs/readme.txt",

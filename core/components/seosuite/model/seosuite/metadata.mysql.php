@@ -5,5 +5,6 @@ $xpdo_meta_map = array (
   array (
     0 => 'SeoSuiteUrl',
     1 => 'SeoSuiteResource',
+    2 => 'SeoSuiteRedirect',
   ),
 );

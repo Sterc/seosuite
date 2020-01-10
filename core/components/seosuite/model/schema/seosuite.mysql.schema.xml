@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model package="seosuite" baseClass="xPDOObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="seosuite" version="0.2">
-    <object class="SeoSuiteUrl" table="seosuite_urls" extends="xPDOSimpleObject">
-        <field key="url" dbtype="varchar" precision="2000" phptype="string" null="false" default="" index="index" />
-        <field key="solved" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
-        <field key="redirect_to" dbtype="int" precision="10" phptype="integer" null="false"/>
-        <field key="redirect_handler" dbtype="int" precision="2" phptype="integer" null="false"/>
+    <object class="SeoSuiteUrl" table="seosuite_url" extends="xPDOSimpleObject">
+        <field key="context_key" dbtype="varchar" precision="100" phptype="string" null="false" default="" index="index"/>
+        <field key="url" dbtype="varchar" precision="2000" phptype="string" null="false" default="" index="index"/>
         <field key="suggestions" dbtype="text" phptype="json" null="true" />
+        <field key="visits" dbtype="integer" precision="11" phptype="int" null="false" default=""/>
+        <field key="last_visit" dbtype="timestamp" phptype="timestamp" null="true" default="0000-00-00 00:00:00"/>
         <field key="createdon" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP"/>
-        <field key="last_triggered" dbtype="timestamp" phptype="timestamp" null="true" default="0000-00-00 00:00:00"/>
-        <field key="triggered" dbtype="int" precision="10" phptype="integer" null="false" default="0" />
 
+        <aggregate alias="Context" class="modContext" local="bundle" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="context_key" name="context_key" primary="false" unique="false" type="BTREE">
+            <column key="context_key" length="767" collation="A" null="false"></column>
+        </index>
         <index alias="url" name="url" primary="false" unique="false" type="BTREE">
             <column key="url" length="767" collation="A" null="false" />
         </index>
@@ -38,10 +41,22 @@
     </object>
 
     <object class="SeoSuiteRedirect" table="seosuite_redirect" extends="xPDOSimpleObject">
-        <field key="context_key" dbtype="text" phptype="string" null="true" default="" index="index"/>
+        <field key="context_key" dbtype="varchar" precision="100" phptype="string" null="false" default="" index="index"/>
+        <field key="resource_id" dbtype="integer" precision="10" phptype="int" null="false" default="" index="index"/>
+        <field key="old_url" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+        <field key="new_url" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+        <field key="redirect_type" dbtype="varchar" precision="75" phptype="string" null="false" default="" />
+        <field key="active" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
+        <field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" default="NULL" attributes="ON UPDATE CURRENT_TIMESTAMP" />
+
+        <aggregate alias="Context" class="modContext" local="bundle" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Resource" class="modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
 
         <index alias="context_key" name="context_key" primary="false" unique="false" type="BTREE">
             <column key="context_key" length="767" collation="A" null="false"></column>
+        </index>
+        <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
+            <column key="resource_id" length="767" collation="A" null="false" />
         </index>
     </object>
 </model>
