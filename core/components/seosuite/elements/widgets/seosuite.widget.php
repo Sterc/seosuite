@@ -11,6 +11,9 @@
  */
 class modDashboardWidgetSeoSuiteUrls extends modDashboardWidgetInterface
 {
+    /**
+     * @return string|void
+     */
     public function render()
     {
         $corePath = $this->modx->getOption(
@@ -22,10 +25,11 @@ class modDashboardWidgetSeoSuiteUrls extends modDashboardWidgetInterface
             'seosuite',
             'SeoSuite',
             $corePath . 'model/seosuite/',
-            array(
+            [
                 'core_path' => $corePath
-            )
+            ]
         );
+
         if (!($seoSuite instanceof SeoSuite)) {
             return;
         }
@@ -33,15 +37,15 @@ class modDashboardWidgetSeoSuiteUrls extends modDashboardWidgetInterface
         $langs = $seoSuite->getLangs();
         $jsUrl = $seoSuite->options['jsUrl'];
         $this->modx->regClientStartupHTMLBlock(
-            '<script type="text/javascript" src="'.$jsUrl.'mgr/seosuite.js" ></script>
-            <script type="text/javascript" src="'.$jsUrl.'mgr/widgets/dashboardwidget.grid.js" ></script>
+            '<script type="text/javascript" src="' . $jsUrl . 'mgr/seosuite.js"></script>
+            <script type="text/javascript" src="' . $jsUrl . 'mgr/widgets/dashboardwidget.grid.js"></script>
             <script type="text/javascript">Ext.onReady(function() {
-                ' .$langs. '
-                SeoSuite.config = '.$this->modx->toJSON($seoSuite->options).';
-                SeoSuite.config.connector_url = "'.$seoSuite->getOption('connectorUrl').'";
+                ' . $langs . '
+                SeoSuite.config = ' . $this->modx->toJSON($seoSuite->options) . ';
+                SeoSuite.config.connector_url = "' . $seoSuite->getOption('connectorUrl') . '";
                 MODx.load({
-                    xtype: "seosuite-dashboard-grid-urls"
-                    ,renderTo: "seosuite-grid-urls"
+                    xtype: "seosuite-dashboard-grid-urls",
+                    renderTo: "seosuite-grid-urls"
                 });
             });</script>'
         );

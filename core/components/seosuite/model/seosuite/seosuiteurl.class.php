@@ -20,7 +20,7 @@ class SeoSuiteUrl extends xPDOSimpleObject
             $timestamp = strtotime($timestamp);
         }
 
-        $days = floor((time() - $timestamp) / 86400);
+        $days    = floor((time() - $timestamp) / 86400);
         $minutes = floor((time() - $timestamp) / 60);
 
         $output = [
@@ -96,8 +96,8 @@ class SeoSuiteUrl extends xPDOSimpleObject
     {
         $suggestions = [];
 
-        $url    = $this->getUrlSegment($this->get('url'));
-        $words  = array_diff($this->getUrlSegmentWords($url), $excludeWords);
+        $url   = $this->getUrlSegment($this->get('url'));
+        $words = array_diff($this->getUrlSegmentWords($url), $excludeWords);
 
         asort($words);
 
@@ -158,7 +158,6 @@ class SeoSuiteUrl extends xPDOSimpleObject
         array_multisort($sort, SORT_DESC, $suggestions);
 
         $output = [];
-
         foreach ($suggestions as $suggestion) {
             $output[$suggestion['id']] = $suggestion['boost'];
         }

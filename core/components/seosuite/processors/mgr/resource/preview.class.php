@@ -9,6 +9,11 @@ class SeoSuitePreviewProcessor extends modProcessor
 {
     protected $seosuite;
 
+    /**
+     * SeoSuitePreviewProcessor constructor.
+     * @param modX $modx
+     * @param array $properties
+     */
     public function __construct(modX &$modx, array $properties = array())
     {
         $modelPath = $modx->getOption(
@@ -51,21 +56,39 @@ class SeoSuitePreviewProcessor extends modProcessor
         }
 
         $fields   = json_decode($this->getProperty('fields'), true);
+
+        $renderedTitle       = $this->seosuite->renderMetaValue($title, $fields);
+        $renderedDescription = $this->seosuite->renderMetaValue($description, $fields);
+
         $rendered = [
-            'title'       => $this->seosuite->renderMetaValue($title, $fields),
-            'description' => $this->seosuite->renderMetaValue($description, $fields),
+            'title'       => $this->truncate($renderedTitle, $this->seosuite->config['meta']['preview.length_' . $this->getProperty('preview_type') . '_title']),
+            'description' => $this->truncate($renderedDescription, $this->seosuite->config['meta']['preview.length_' . $this->getProperty('preview_type') . '_description']),
             'alias'       => $alias
         ];
 
         return $this->outputArray([
             'output' => $rendered,
             'counts' => [
-                'title'       => strlen($rendered['title']),
-                'description' => strlen($rendered['description'])
+                'title'       => strlen($renderedTitle),
+                'description' => strlen($renderedDescription)
             ]
         ],
         0
         );
+    }
+
+    /**
+     * @param $output
+     * @param $maxLength
+     * @return string
+     */
+    protected function truncate($output, $maxLength)
+    {
+        if (strlen($output) > $maxLength) {
+            $output = substr($output, 0, $maxLength) . '...';
+        }
+
+        return $output;
     }
 }
 

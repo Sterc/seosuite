@@ -16,13 +16,12 @@
  */
 class SeoSuiteVariablesGetListProcessor extends modObjectGetListProcessor
 {
-
+    /**
+     * @return array
+     */
     public function getData()
     {
-        /**
-         * Title is a non existing field but translates to longtitle with a default to pagetitle.
-         */
-
+        /* Title is a non existing field but translates to longtitle with a default to pagetitle. */
         $this->modx->lexicon->load('core:resource', 'core:setting');
 
         return [
@@ -55,11 +54,14 @@ class SeoSuiteVariablesGetListProcessor extends modObjectGetListProcessor
         ];
     }
 
+    /**
+     * @param xPDOObject $array
+     * @return array|xPDOObject
+     */
     public function prepareRow($array)
     {
         return $array;
     }
-
 }
 
 return 'SeoSuiteVariablesGetListProcessor';

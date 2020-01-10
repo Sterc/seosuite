@@ -122,14 +122,24 @@ class SeoSuite
                 'image_types'               => 'jpg,jpeg.png,gif'
             ],
             'meta'                      => [
-                'permission'                => (bool) $this->modx->hasPermission('seosuite_meta'),
-                'counter_fields'            => $this->modx->getOption('seosuite.meta.counter_fields', null, 'longtitle:70,description:160,content'),
-                'default_meta_description'  => $this->modx->getOption('seosuite.meta.default_meta_description', null, '[{"type":"placeholder","value":"description"}]'),
-                'default_meta_title'        => $this->modx->getOption('seosuite.meta.default_meta_title', null, '[{"type":"placeholder","value":"title"},{"type":"text","value":" | "},{"type":"placeholder","value":"site_name"}]'),
-                'disabled_templates'        => $this->modx->getOption('seosuite.meta.disabled_templates'),
-                'max_keywords_description'  => (int) $this->modx->getOption('seosuite.meta.max_keywords_description', null, 8),
-                'max_keywords_title'        => (int) $this->modx->getOption('seosuite.meta.max_keywords_title', null, 4),
-                'search_engine'             => $this->modx->getOption('seosuite.meta.searchengine', null, 'google')
+                'preview.length_desktop_title'       => $this->modx->getOption('seosuite.meta.preview.length_desktop_title', null, null),
+                'preview.length_desktop_description' => $this->modx->getOption('seosuite.meta.preview.length_desktop_description', null, null),
+                'preview.length_mobile_title'        => $this->modx->getOption('seosuite.meta.preview.length_mobile_title', null, null),
+                'preview.length_mobile_description'  => $this->modx->getOption('seosuite.meta.preview.length_mobile_description', null, null),
+                'permission'                         => (bool) $this->modx->hasPermission('seosuite_meta'),
+                'counter_fields'                     => $this->modx->getOption('seosuite.meta.counter_fields', null, 'longtitle:70,description:160,content'),
+                'default_meta_description'           => $this->modx->getOption('seosuite.meta.default_meta_description', null, '[{"type":"placeholder","value":"description"}]'),
+                'default_meta_title'                 => $this->modx->getOption('seosuite.meta.default_meta_title', null, '[{"type":"placeholder","value":"title"},{"type":"text","value":" | "},{"type":"placeholder","value":"site_name"}]'),
+                'disabled_templates'                 => $this->modx->getOption('seosuite.meta.disabled_templates'),
+                'max_keywords_description'           => (int) $this->modx->getOption('seosuite.meta.max_keywords_description', null, 8),
+                'max_keywords_title'                 => (int) $this->modx->getOption('seosuite.meta.max_keywords_title', null, 4),
+                'search_engine'                      => $this->modx->getOption('seosuite.meta.searchengine', null, 'google')
+            ],
+            'sitemap'                   => [
+                'babel_add_alternate_links' => (bool) $this->modx->getOption('seosuite.sitemap.babel.add_alternate_links', null, true),
+                'dependent_ultimateparent'  => (bool) $this->modx->getOption('seosuite.sitemap.dependent_ultimateparent', null, false),
+                'default_changefreq'        => $this->modx->getOption('seosuite.sitemap.default_changefreq', null, 'weekly'),
+                'default_priority'          => $this->modx->getOption('seosuite.sitemap.default_priority', null, '0.5')
             ]
         ], $options);
 
@@ -420,10 +430,6 @@ class SeoSuite
      */
     public function getChunk($name, $properties = [])
     {
-        if (class_exists('pdoTools') && $pdo = $this->modx->getService('pdoTools')) {
-            return $pdo->getChunk($name, $properties);
-        }
-
         $chunk = null;
         if (substr($name, 0, 6) === '@CODE:') {
             $content = substr($name, 6);
@@ -435,12 +441,15 @@ class SeoSuite
             }
 
             if (empty($chunk)) {
-                $chunk = $this->_getTplChunk($name);
+                $chunk = $this->getTplChunk($name);
                 if ($chunk === false) {
-                    return false;
+                    if (class_exists('pdoTools') && $pdo = $this->modx->getService('pdoTools')) {
+                        return $pdo->getChunk($name, $properties);
+                    } else {
+                        return false;
+                    }
                 }
             }
-
             $this->chunks[$name] = $chunk->getContent();
         } else {
             $content = $this->chunks[$name];
@@ -452,6 +461,32 @@ class SeoSuite
 
         return $chunk->process($properties);
     }
+
+    /**
+     * Returns a modChunk object from a template file.
+     *
+     * @access private
+     * @param string $name The name of the Chunk. Will parse to name.chunk.tpl
+     * @param string $postFix
+     * @return modChunk/boolean Returns the modChunk object if found, otherwise
+     * false.
+     */
+    private function getTplChunk($name, $postFix = '.chunk.tpl')
+    {
+        $chunk = false;
+        $file = $this->options['chunksPath'] . strtolower($name) . $postFix;
+
+        if (file_exists($file)) {
+            $content = file_get_contents($file);
+            $chunk   = $this->modx->newObject('modChunk');
+
+            $chunk->set('name', $name);
+            $chunk->setContent($content);
+        }
+
+        return $chunk;
+    }
+
 
     /**
      * Fire plugins based on event.
@@ -871,6 +906,13 @@ class SeoSuite
         return array_unique(array_filter(array_merge($words, $this->config['exclude_words'])));
     }
 
+    /**
+     * Renders the meta value from the configuration json to the output string.
+     *
+     * @param $json
+     * @param $resourceArray
+     * @return string
+     */
     public function renderMetaValue($json, $resourceArray)
     {
         $output = [];

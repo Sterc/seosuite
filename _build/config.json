@@ -30,6 +30,10 @@
                 "name": "SeoSuiteMeta",
                 "description": "Snippet for adding the title and meta description in your website.",
                 "file": "seosuitemeta.snippet.php"
+            },{
+              "name": "SeoSuiteSitemap",
+              "description": "Snippet for adding a google sitemap to your website.",
+              "file": "seosuitesitemap.snippet.php"
             }],
             "chunks": [{
                 "name": "tplMetaTitle",
@@ -81,10 +85,48 @@
           "key": "meta.default_meta_description",
           "value": "[{\"type\":\"placeholder\",\"value\":\"description\"}]",
           "area": "meta"
+        }, {
+          "key": "meta.preview.length_desktop_title",
+          "value": "70",
+          "area": "meta"
+        }, {
+          "key": "meta.preview.length_desktop_description",
+          "value": "160",
+          "area": "meta"
+        },{
+          "key": "meta.preview.length_mobile_title",
+          "value": "78",
+          "area": "meta"
+        }, {
+          "key": "meta.preview.length_mobile_description",
+          "value": "130",
+          "area": "meta"
+        },{
+          "key": "sitemap.default_changefreq",
+          "value": "weekly",
+          "area": "sitemap"
+        }, {
+          "key": "sitemap.default_priority",
+          "value": "0.5",
+          "area": "sitemap"
+        }, {
+          "key": "sitemap.dependent_ultimateparent",
+          "type": "combo-boolean",
+          "value": "0",
+          "area": "sitemap"
+        }, {
+          "key": "sitemap.babel.add_alternate_links",
+          "type": "combo-boolean",
+          "value": "1",
+          "area": "sitemap"
         }]
     },
     "database": {
-        "tables": ["SeoSuiteUrl"]
+        "tables": [
+          "SeoSuiteRedirect",
+          "SeoSuiteResource",
+          "SeoSuiteUrl"
+        ]
     },
     "build": {
         "readme": "docs/readme.txt",
