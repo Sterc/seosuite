@@ -149,32 +149,37 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
         }
     },
     importUrls: function(btn, e) {
-        /*if (this.importUrlsWindow) {
+        if (this.importUrlsWindow) {
             this.importUrlsWindow.destroy();
         }
 
         this.importUrlsWindow = MODx.load({
             xtype       : 'seosuite-window-import-urls',
             closeAction : 'close',
-            listeners: {
-                'beforeSubmit': {fn:function() {
-                var topic = '/seosuiteimport/';
-                var register = 'mgr';
-                this.console = MODx.load({
-                         xtype: 'modx-console',
-                         register: register,
-                         topic: topic,
-                         show_filename: 0
-                     });
-                this.console.show(Ext.getBody());
-                },scope:this},
-                'success': {fn:function(data) {
-                this.refresh();
-                },scope:this}
+            listeners   : {
+                'beforeSubmit': {
+                    fn: function() {
+                        this.console = MODx.load({
+                             xtype         : 'modx-console',
+                             register      : 'mgr',
+                             topic         : '/seosuiteimport/',
+                             show_filename : 0
+                        });
+
+                        this.console.show(Ext.getBody());
+                    },
+                    scope: this
+                },
+                'success': {
+                    fn: function() {
+                        this.refresh();
+                    },
+                    scope: this
+                }
             }
         });
 
-        this.importUrlsWindow.show(e.target);*/
+        this.importUrlsWindow.show(e.target);
     },
     excludeWords: function(btn, e) {
         if (this.importUrlsWindow) {
@@ -525,7 +530,7 @@ SeoSuite.window.ImportUrls = function(config) {
         }]
     });
 
-    SeoSuite.window.ImportUrls.superclass.constructor.call(this,config);
+    SeoSuite.window.ImportUrls.superclass.constructor.call(this, config);
 };
 
 Ext.extend(SeoSuite.window.ImportUrls, MODx.Window);

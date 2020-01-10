@@ -40,7 +40,7 @@ $_lang['setting_seosuite.meta.default_meta_description_desc']   = '';
 
 $_lang['seosuite.url']                                          = '404 URL';
 $_lang['seosuite.urls']                                         = '404 URL\'s';
-$_lang['seosuite.urls_desc']                                    = 'Heb je meerdere 404 URL\'s gevonden? Upload hier simpelweg een .csv file en SEO Suite zorgt ervoor dat ze herleid worden op je website. Deze worden gematcht met bestaande pagina\'s op je website, gebaseerd op het laatste deel van de URL (het gedeelte achter de laatste slash). Is er één match, dan wordt deze automatisch geconverteerd naar een 301 redirect in SEO Tab, of, als SEO Tab niet geinstalleerd is, zorgt SEO Suite voor de redirect. Zijn er meerdere matches, dan kun je de gewenste redirect handmatig kiezen. Zijn er geen matches, dan kun je zelf een URL invoeren.';
+$_lang['seosuite.urls_desc']                                    = 'Heb je meerdere 404 URL\'s gevonden? Upload hier simpelweg een .csv file en SEO Suite zorgt ervoor dat ze herleid worden op je website. Deze worden gematcht met bestaande pagina\'s op je website, gebaseerd op het laatste deel van de URL (het gedeelte achter de laatste slash). Is er één match, dan wordt deze automatisch geconverteerd naar een 301 redirect. Zijn er meerdere matches, dan kun je de gewenste redirect handmatig kiezen. Zijn er geen matches, dan kun je zelf een URL invoeren.';
 $_lang['seosuite.url_update']                                   = '404 URL wijzigen';
 $_lang['seosuite.url_remove']                                   = '404 URL verwijderen';
 $_lang['seosuite.url_remove_confirm']                           = 'Weet je zeker dat je deze 404 URL wilt verwijderen?';

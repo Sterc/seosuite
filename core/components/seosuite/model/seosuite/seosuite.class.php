@@ -398,29 +398,6 @@ class SeoSuite
     }
 
     /**
-     * Returns a list of all context site urls (if any).
-     *
-     * @return array
-     */
-    public function getSiteUrls()
-    {
-        $urls = [];
-
-        $q = $this->modx->newQuery('modContextSetting');
-        $q->where([
-            'key'            => 'site_url',
-            'context_key:!=' => 'mgr'
-        ]);
-
-        $collection = $this->modx->getCollection('modContextSetting', $q);
-        foreach ($collection as $item) {
-            $urls[$item->get('value')] = $item->get('context_key');
-        }
-
-        return $urls;
-    }
-
-    /**
      * Gets a Chunk and caches it; also falls back to file-based templates.
      *
      * @access public

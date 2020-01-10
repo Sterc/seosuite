@@ -9,10 +9,15 @@ require_once dirname(dirname(dirname(__DIR__))) . '/vendor/autoload.php';
  */
 class SeoSuiteUrlImportProcessor extends modObjectProcessor
 {
-    public $classKey = 'SeoSuiteUrl';
+    public $classKey       = 'SeoSuiteUrl';
     public $languageTopics = ['seosuite:default'];
-    public $created = 0;
-    public $updated = 0;
+
+    protected $totals = [
+        'total'     => 0,
+        'redirects' => 0,
+        'not_found' => 0
+    ];
+
     public $allowedExtensions = ['csv', 'xls', 'xlsx'];
 
     public function process()
@@ -23,7 +28,7 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
         $file     = $this->getProperty('file');
         $siteUrls = false;
         if ($this->getProperty('match_context')) {
-            $siteUrls = $this->modx->seosuite->getSiteUrls();
+            $siteUrls = $this->getSiteUrls();
         }
 
         /* Check if file field is set. */
@@ -36,6 +41,7 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
         if (!in_array($extension, $this->allowedExtensions)) {
             $this->modx->log(modX::LOG_LEVEL_INFO, $this->modx->lexicon('seosuite.error.extension_notallowed'));
             $this->modx->log(modX::LOG_LEVEL_INFO, 'COMPLETED');
+
             return $this->failure($this->modx->lexicon('seosuite.error.extension_notallowed'));
         }
 
@@ -46,6 +52,8 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
         }
 
         if (is_array($data) || is_object($data)) {
+            $this->totals['total'] = count($data);
+
             foreach ($data as $key => $row) {
                 /* If first column does not exist, continue to next row. */
                 if (!isset($row[0])) {
@@ -59,59 +67,78 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
                     continue;
                 }
 
-                $q = $this->modx->newQuery($this->classKey);
-                $q->where(['url' => $url]);
-                $q->prepare();
+                $params = [
+                    'url' => $this->modx->seosuite->formatUrl($url)
+                ];
 
-                $urlResult = $this->modx->query($q->toSql());
-                $urlObject = $urlResult->fetch(PDO::FETCH_ASSOC);
-                if ($urlObject !== false) {
-                    $this->modx->log(modX::LOG_LEVEL_INFO, 'Skip: ' . $url);
-                    $this->updated++;
-
-                    continue;
-                }
-
-                $suggestions      = '';
-                $redirect_to      = 0;
-                $solved           = 0;
-                $redirect_handler = 0;
-                $findSuggestions  = $this->modx->seosuite->findRedirectSuggestions($url, $siteUrls);
-                if (count($findSuggestions)) {
-                    if (count($findSuggestions) === 1) {
-                        $redirect_to = $findSuggestions[0];
-                        $solved      = 1;
-
-                        if (!$this->modx->seosuite->checkSeoTab()) {
-                            $redirect_handler = 1;
-                        } else {
-                            $this->modx->seosuite->addSeoTabRedirect($url, $findSuggestions[0]);
+                $context = false;
+                if ($siteUrls) {
+                    foreach ($siteUrls as $siteUrl => $ctx) {
+                        if (strpos($url, $siteUrl) !== false) {
+                            $context = $ctx;
                         }
                     }
-
-                    $suggestions = json_encode(array_values($findSuggestions));
                 }
 
-                $this->modx->exec(
-                    "INSERT INTO {$this->modx->getTableName($this->classKey)}
-                    SET {$this->modx->escape('url')} = {$this->modx->quote($url)},
-                        {$this->modx->escape('suggestions')} = {$this->modx->quote($suggestions)},
-                        {$this->modx->escape('redirect_to')} = {$this->modx->quote($redirect_to)},
-                        {$this->modx->escape('redirect_handler')} = {$this->modx->quote($redirect_handler)},
-                        {$this->modx->escape('solved')} = {$this->modx->quote($solved)}"
-                );
+                if ($context) {
+                    $params['context_key'] = $context;
+                }
 
-                $this->modx->log(modX::LOG_LEVEL_INFO, 'Add: ' . $url);
-                $this->created++;
+                $seoSuiteUrl = $this->modx->getObject($this->classKey, $params);
+                if (!$seoSuiteUrl) {
+                    $seoSuiteUrl = $this->modx->newObject($this->classKey);
+                    $seoSuiteUrl->fromArray($params);
+                }
+
+                /* Context is false or if set, then it contains the context_key. */
+                $findSuggestions = $seoSuiteUrl->getRedirectSuggestions($context === false ? false : true);
+                $this->modx->log(modX::LOG_LEVEL_INFO, 'Found suggestions: ' . count($findSuggestions));
+                if (count($findSuggestions) === 1) {
+                    $redirectToResourceId = array_key_first($findSuggestions);
+
+                    $params = [
+                        'context_key'   => $context ? $context : '',
+                        'resource_id'   => $redirectToResourceId,
+                        'old_url'       => $seoSuiteUrl->get('url'),
+                        'new_url'       => $redirectToResourceId,
+                        'redirect_type' => 'HTTP/1.1 301 Moved Permanently'
+                    ];
+
+                    $seoSuiteRedirect = $this->modx->getObject('SeoSuiteRedirect', $params);
+                    if (!$seoSuiteRedirect) {
+                        $seoSuiteRedirect = $this->modx->newObject('SeoSuiteRedirect');
+
+                        $seoSuiteRedirect->fromArray($params);
+                        if ($seoSuiteRedirect->save()) {
+                            $this->modx->log(modX::LOG_LEVEL_INFO, 'Added redirect for: ' . $url);
+                        }
+                    } else {
+                        $this->modx->log(modX::LOG_LEVEL_INFO, 'A redirect already exists for: ' . $url);
+                    }
+
+                    $this->totals['redirects']++;
+                } else {
+                    if (count($findSuggestions) > 1) {
+                        $seoSuiteUrl->set('suggestions', json_encode($findSuggestions));
+                    }
+
+                    /* Add 404 URL if no suggestions where found. */
+                    if ($seoSuiteUrl->save()) {
+                        $this->modx->log(modX::LOG_LEVEL_INFO, 'Added 404 URL: ' . $url);
+
+                        $this->totals['not_found']++;
+                    }
+                }
             }
         }
 
         $this->modx->log(modX::LOG_LEVEL_INFO, 'Import successfully completed.');
-        $this->modx->log(modX::LOG_LEVEL_INFO, $this->created.' Urls added.');
-        $this->modx->log(modX::LOG_LEVEL_INFO, $this->updated.' Urls skipped (existing urls).');
+        $this->modx->log(modX::LOG_LEVEL_INFO, 'Total rows: ' . $this->totals['total']);
+        $this->modx->log(modX::LOG_LEVEL_INFO, 'Total imported redirects: ' . $this->totals['redirects']);
+        $this->modx->log(modX::LOG_LEVEL_INFO, 'Total imported 404 URLs: ' . $this->totals['not_found']);
         $this->modx->log(modX::LOG_LEVEL_INFO, 'COMPLETED');
 
-        return $this->success('Updated: ' . $this->updated . ' - Created: ' . $this->created, ['success' => true]);
+        return $this->success('Redirects: ' . $this->totals['redirects'] . ' - 404 URLs: ' . $this->totals['not_found'], ['success' => true]);
     }
 
     /**
@@ -216,7 +243,33 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
 
     public function cleanup()
     {
-        return $this->success('Updated: '.$this->updated.' - Created: '.$this->created, ['success' => true]);
+        return $this->success('Redirects: ' . $this->totals['redirects'].' - 404 URLs: ' . $this->totals['not_found'], ['success' => true]);
+    }
+
+    /**
+     * Returns a list of all context site urls (if any).
+     *
+     * @return array
+     */
+    protected function getSiteUrls()
+    {
+        $urls = [];
+
+        $query = $this->modx->newQuery('modContextSetting');
+        $query->where([
+            'key'            => 'site_url',
+            'context_key:!=' => 'mgr'
+        ]);
+
+        $collection = $this->modx->getCollection('modContextSetting', $query);
+        foreach ($collection as $item) {
+            $siteurl = rtrim($item->get('value'), '/');
+            $siteurl = str_replace(['https://', 'http://'], '', $siteurl);
+
+            $urls[$siteurl] = $item->get('context_key');
+        }
+
+        return $urls;
     }
 }
 
