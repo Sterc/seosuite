@@ -3,7 +3,7 @@
     "lowCaseName": "seosuite",
     "description": "Fix 404 pages on your site.",
     "author": "Sterc",
-    "version": "1.2.0",
+    "version": "2.0.0",
     "package":{
         "menus": [{
             "text": "seosuite.menu.seosuite",
@@ -119,12 +119,21 @@
           "type": "combo-boolean",
           "value": "1",
           "area": "sitemap"
+        }, {
+          "key": "tab_social_og_types",
+          "value": "website",
+          "area": "seosuite_tab_social"
+        }, {
+          "key": "tab_social_twitter_cards",
+          "value": "summary,summary_large_image,app,player",
+          "area": "seosuite_tab_social"
         }]
     },
     "database": {
         "tables": [
           "SeoSuiteRedirect",
           "SeoSuiteResource",
+          "SeoSuiteSocial",
           "SeoSuiteUrl"
         ]
     },

@@ -24,6 +24,9 @@ if ($object->xpdo) {
 
             $manager = $modx->getManager();
 
+            $manager->createObjectContainer('SeoSuiteRedirect');
+            $manager->createObjectContainer('SeoSuiteResource');
+            $manager->createObjectContainer('SeoSuiteSocial');
             $manager->createObjectContainer('SeoSuiteUrl');
 
             break;
