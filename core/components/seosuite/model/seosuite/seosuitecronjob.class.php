@@ -147,9 +147,8 @@ class SeoSuiteCronjob
         $triggered = isset($options['triggered']) && !empty($options['triggered']) ? $options['triggered'] : 1;
 
         $removed = $this->modx->removeCollection('SeoSuiteUrl', [
-            'active'       => false,
             'createdon:<=' => $till,
-            'triggered:<=' => $triggered
+            'visits:<='    => $triggered
         ]);
 
         $this->log('Removed redirects: ' . $removed);
