@@ -1,3 +1,24 @@
+SeoSuite.combo.SnippetVariable = function(config) {
+    config = config || {};
+
+    Ext.applyIf(config, {
+        url             : SeoSuite.config.connector_url,
+        baseParams      : {
+            action          : 'mgr/resource/variables/getlist'
+        },
+        fields          : ['key', 'value'],
+        hiddenName      : 'variable',
+        valueField      : 'key',
+        displayField    : 'value'
+    });
+
+    SeoSuite.combo.SnippetVariable.superclass.constructor.call(this, config);
+};
+
+Ext.extend(SeoSuite.combo.SnippetVariable, MODx.combo.ComboBox);
+
+Ext.reg('seosuite-combo-snippet-variable', SeoSuite.combo.SnippetVariable);
+
 SeoSuite.combo.SitemapPrio = function(config) {
     config = config || {};
 

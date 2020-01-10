@@ -304,8 +304,8 @@ SeoSuite.panel.SeoTab = function(config) {
 
 Ext.extend(SeoSuite.panel.SeoTab, Ext.Panel, {
     onAfterRender: function() {
-        ['modx-resource-searchable', 'modx-resource-uri-override', 'modx-resource-uri'].forEach(function(field) {
-            var field = Ext.getCmp(field);
+        ['modx-resource-searchable', 'modx-resource-uri-override', 'modx-resource-uri'].forEach(function(key) {
+            var field = Ext.getCmp(key);
 
             if (field) {
                 field.hide();

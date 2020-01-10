@@ -562,12 +562,43 @@ class SeoSuite
     }
 
     /**
+     * @access public
+     * @return Array.
+     */
+    public function getFieldCounters()
+    {
+        $fields = [];
+
+        foreach (explode(',', $this->config['meta']['counter_fields']) as $field) {
+            list($name, $count) = explode(':', $field);
+
+            $min = 0;
+            $max = $count;
+
+            if (strpos($count, '|')) {
+                list($min, $max) = explode('|', $count);
+            }
+
+            $fields[$name] = [
+                'min'   => $min,
+                'max'   => $max ?: $min
+            ];
+        }
+
+        return $fields;
+    }
+
+    /**
      * @access public.
      * @return Array.
      */
     public function getResourceDefaultProperties()
     {
         return [
+            'keywords'              => '',
+            'use_default_meta'      => 1,
+            'meta_title'            => [],
+            'meta_description'      => [],
             'index_type'            => $this->config['tab_seo']['default_index_type'],
             'follow_type'           => $this->config['tab_seo']['default_follow_type'],
             'searchable'            => 1,

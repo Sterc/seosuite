@@ -4,28 +4,14 @@ SeoSuite.panel.MetaTag = function(config) {
     SeoSuite.currentCaretPosition = [];
 
     Ext.applyIf(config, {
-        itemCls     : 'seosuite-meta-field',
-        items       : [{
-            xtype       : 'hidden',
-            description : MODx.expandHelp ? '' : config.description,
-            name        : config.name,
-            id          : 'seosuite-preview-editor-' + config.id,
-            value       : config.value,
-            listeners   : {
-                change      : {
-                    fn          : this.onUpdateValue,
-                    scope       : this
-                }
-            }
-        }, {
-            xtype       : 'button',
-            cls         : 'seosuite-meta-field-btn',
-            text        : '<i class="icon icon-plus"></i> ' + _('seosuite.tab_meta.add_variable'),
-            target_field    : 'seosuite-variables-preview-' + config.id,
-            handler     : function (btn) {
-
+        layout          : 'form',
+        labelSeparator  : '',
+        items           : [{
+            xtype           : 'button',
+            id              : 'seosuite-preview-insert-' + config.id,
+            text            : '<i class="icon icon-plus"></i> ' + _('seosuite.tab_meta.add_field'),
+            handler         : function (btn) {
                 var type = 'description';
-
                 if (btn.target_field === 'seosuite-variables-preview-title') {
                     type = 'title';
                 }
@@ -39,17 +25,25 @@ SeoSuite.panel.MetaTag = function(config) {
 
                 this.showVariableWindow(btn);
             },
-            scope       : this,
+            scope           : this,
+            target_field    : 'seosuite-variables-preview-' + config.id,
         }, {
-            cls         : 'seosuite-meta-editor',
-            html        : '<div class="x-form-text" id="seosuite-meta-editor-' + config.id + '" contenteditable="true" spellcheck="false"></div>',
-            listeners   : {
-                afterrender : {
-                    fn          : this.onAfterRender,
-                    scope       : this
+            xtype           : 'textfield',
+            fieldLabel      : config.label,
+            name            : config.name,
+            description     : MODx.expandHelp ? '' : config.description,
+            id              : 'seosuite-preview-editor-' + config.id,
+            anchor          : '100%',
+            value           : config.value,
+            hidden          : true,
+            listeners       : {
+                change          : {
+                    fn              : this.onUpdateValue,
+                    scope           : this
                 }
             }
         }, {
+            fieldLabel  : config.label,
             html        : '<div id="seosuite-variables-preview-' + config.id + '"></div>',
             listeners   : {
                 afterRender: function () {
@@ -144,90 +138,6 @@ SeoSuite.panel.MetaTag = function(config) {
 };
 
 Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
-    onAfterRender: function() {
-        this.editor = Ext.get('seosuite-meta-editor-' + this.id);
-
-        //this.editor.addListener('keyup', function(event) {
-        //    console.log('keyup', event, this);
-        //});
-
-        //this.editor.addListener('click', function(event) {
-        //    console.log('click', event);
-        //});
-
-
-
-        this.editor.addListener('keydown', function(event, tf) {
-            if (event.keyCode === 13) {
-                event.preventDefault();
-            }
-        });
-
-        this.editor.addListener('keyup', (function(event, tf) {
-            var data    = [];
-            var matches = tf.innerHTML.match(/<span[^>]*>*.*?<\/span>/gm);
-
-            if (matches) {
-                matches.forEach(function (snippet) {
-                    var value = snippet.match(/<span.*?data-type="(.*?)"?.*?>(.*?)<\/span>/);
-
-                    if (value) {
-                        data.push({
-                            type    : value[1],
-                            value   : value[2]
-                        });
-                    }
-                });
-            }
-
-            this.data = data;
-        }).bind(this));
-
-        if (this.value) {
-            this.setValue(this.value);
-        }
-    },
-    setValue: function(value) {
-        this.data = this.parseEditorData(value);
-
-        this.onUpdateEditorValue();
-    },
-    getValue: function() {
-        return this.data;
-    },
-    parseEditorData: function(value) {
-        var data = [];
-
-        if (!Ext.isEmpty(value)) {
-            var json = Ext.decode(value);
-
-            if (json) {
-                json.forEach(function(item) {
-                    data.push({
-                        type    : item.type,
-                        value   : item.value || ''
-                    });
-                });
-            }
-        }
-
-        return data;
-    },
-    onUpdateHiddenValue: function() {
-    },
-    onUpdateEditorValue: function() {
-        var output = [];
-
-        this.data.forEach(function(item) {
-            if (item.type === 'variable' || item.type === 'placeholder') {
-                output.push('<span data-type="variable" contenteditable="false" spellcheck="false">' + item.value.replace(/&nbsp;/g, ' ') + '</span>');
-            } else {
-                output.push('<span data-type="string" spellcheck="false">' + item.value.replace(/&nbsp;/g, ' ') + '</span>');
-            }
-        });
-
-        this.editor.dom.innerHTML = output.join('');
-    },
     onUpdateValue: function(tf) {
         this.fireEvent('change', this, tf.getValue());
     },
@@ -375,82 +285,144 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
         return output;
     },
     showVariableWindow: function(btn) {
+        var record = {
+            target_field: btn.target_field
+        };
+
         if (this.variablesWindow) {
             this.variablesWindow.destroy();
         }
 
         this.variablesWindow = MODx.load({
-            xtype       : 'seosuite-window-insert-variable',
-            closeAction : 'close',
-            listeners   : {
-                submit      : {
-                    fn          : function(record) {
-                        this.insertVariable(record.variable, 'last');
-                    },
-                    scope       : this
-                }
-            }
+            xtype       : 'seosuite-window-insertvariable',
+            record      : record,
+            closeAction : 'close'
         });
 
+        this.variablesWindow.setValues(record);
         this.variablesWindow.show();
-    },
-    insertVariable: function(variable, position) {
-        var record = {
-            type    : 'variable',
-            value   : variable
-        };
-
-        if (position === 'first') {
-            var prefix = this.data[0];
-
-            if (prefix && prefix.type !== 'string') {
-                this.data.unshift({
-                    type    : 'string',
-                    value   : ' '
-                });
-            }
-
-            this.data.unshift(record);
-        } else if (position === 'last') {
-            var prefix = this.data[this.data.length - 1];
-
-            if (prefix && prefix.type !== 'string') {
-                this.data.push({
-                    type    : 'string',
-                    value   : ' '
-                });
-            }
-
-            this.data.push(record);
-        }
-
-        this.onUpdateEditorValue();
     }
 });
 
 Ext.reg('seosuite-field-metatag', SeoSuite.panel.MetaTag);
+
+SeoSuite.combo.SnippetVariables = function(config) {
+    config = config || {};
+
+    Ext.applyIf(config, {
+        name            : 'variable',
+        hiddenName      : 'variable',
+        displayField    : 'value',
+        id              : 'seosuite-variable',
+        valueField      : 'key',
+        fields          : ['key', 'value'],
+        pageSize        : 20,
+        url             : SeoSuite.config.connector_url,
+        baseParams      : {
+            action: 'mgr/resource/variables/getlist'
+        },
+        typeAhead       : false,
+        editable        : false
+    });
+
+    SeoSuite.combo.SnippetVariables.superclass.constructor.call(this, config);
+};
+
+Ext.extend(SeoSuite.combo.SnippetVariables, MODx.combo.ComboBox);
+Ext.reg('seosuite-combo-snippet-variables', SeoSuite.combo.SnippetVariables);
 
 SeoSuite.window.InsertVariable = function(config) {
     config = config || {};
 
     Ext.applyIf(config, {
         autoHeight  : true,
-        title       : _('seosuite.tab_meta.insert_variable'),
+        title       : _('seosuite.tab_meta.insert_field'),
         fields      : [{
-            xtype       : 'seosuite-combo-snippet-variable',
-            fieldLabel  : _('seosuite.tab_meta.label_variable'),
-            description : MODx.expandHelp ? '' : _('seosuite.tab_meta.label_variable_desc'),
+            xtype       : 'hidden',
+            name        : 'target_field'
+        }, {
+            xtype       : 'seosuite-combo-snippet-variables',
+            fieldLabel  : _('seosuite.tab_meta.field'),
+            description     : MODx.expandHelp ? '' : _('seosuite.tab_meta.field_desc'),
+            hiddenName  : 'variables',
             anchor      : '100%',
             allowBlank  : false
         }, {
             xtype       : MODx.expandHelp ? 'label' : 'hidden',
-            html        : _('seosuite.tab_meta.label_variable_desc'),
+            html        : _('seosuite.tab_meta.field_desc'),
             cls         : 'desc-under'
         }],
-        buttons     : [{
-            text        : _('seosuite.tab_meta.submit'),
-            handler     : this.submit,
-            scope       : this
+        buttons: [{
+            text    : _('seosuite.tab_meta.insert_btn'),
+            handler :  function() {
+                var variable     = Ext.getCmp('seosuite-variable').getValue();
+                var preview      = Ext.get(config.record.target_field).query('.x-form-text')[0];
+                var html         = preview.innerHTML;
+                var uniqueID = SeoSuite.generateUniqueID();
+                var variableHTML = '<span class="seosuite-snippet-variable" spellcheck="false" id="' + uniqueID + '">' + variable + '</span>';
+
+                var type = 'description';
+                if (config.record.target_field === 'seosuite-variables-preview-title') {
+                    type = 'title';
+                }
+
+                /* If tagname is DIV insert HTML at the start or end of string. */
+                if (SeoSuite.currentCaretPosition[type]['element'].tagName === 'DIV') {
+                    if (SeoSuite.currentCaretPosition[type]['position'] === 0) {
+                        html = variableHTML + html;
+                    } else {
+                        html += variableHTML;
+                    }
+                } else {
+                    /**
+                     * Because now the variable is inserted in existing span, first close the existing span.
+                     */
+                    variableHTML = '</span>' + variableHTML;
+
+                    /* Set oldHTML which will replace later on. */
+                    element     = SeoSuite.currentCaretPosition[type]['element'];
+                    var oldHTML = SeoSuite.currentCaretPosition[type]['element'].outerHTML;
+
+                    element.innerHTML = element.innerHTML.replace(/&nbsp;/g, ' ');
+
+                    /* Set rawHTML, which will exist out of the innerHTML with the new variable inserted. */
+                    var rawHTML = this.insertStringAtPosition(element.innerHTML, variableHTML, SeoSuite.currentCaretPosition[type]['position']);
+
+                    /* Prepend rawHTML again with original span ID. */
+                    rawHTML = '<span id="' + element.id + '">' + rawHTML;
+
+                    /* Retrieve final part of string which is now not wrapped in a span anymore. */
+                    var parts = [];
+                    rawHTML.split(/<\/span>/gm).forEach(function(value) {
+                        parts.push(value);
+                    });
+
+                    var lastValue = parts.slice(-1)[0];
+
+                    /* Remove final unwrapped part first. */
+                    rawHTML = rawHTML.substring(0, rawHTML.length - lastValue.length);
+
+                    /* Now readd the final unwrapped part of the string and wrap it in a span. */
+                    rawHTML += '<span id="' + SeoSuite.generateUniqueID() + '">' + lastValue + '</span>';
+
+                    html = html.replace(oldHTML.toString(), rawHTML);
+                }
+
+                /* Updates the rendered variable preview. */
+                preview.innerHTML = html;
+
+                SeoSuite.updateHiddenMetafieldValue(type);
+
+                var elements = document.querySelectorAll('.seosuite-snippet-variable');
+                for (i = 0; i < elements.length; ++i) {
+                    elements[i].addEventListener('click', function (event) {
+                        SeoSuite.selectElementById(event.target.id);
+                    });
+                }
+
+                this.destroy();
+            },
+            scope: this
         }]
     });
 
@@ -458,21 +430,11 @@ SeoSuite.window.InsertVariable = function(config) {
 };
 
 Ext.extend(SeoSuite.window.InsertVariable, MODx.Window, {
-    submit: function() {
-        var form = this.fp.getForm();
-
-        if (form.isValid()) {
-            this.fireEvent('submit', form.getValues());
-
-            if (close) {
-                if (this.config.closeAction !== 'close') {
-                    this.hide();
-                } else {
-                    this.close();
-                }
-            }
-        }
-    },
+    insertStringAtPosition: function (main_string, ins_string, pos) {
+        return pos > 0
+            ? main_string.replace(new RegExp('.{' + pos + '}'), '$&' + ins_string)
+            : ins_string + main_string;
+    }
 });
 
-Ext.reg('seosuite-window-insert-variable', SeoSuite.window.InsertVariable);
+Ext.reg('seosuite-window-insertvariable', SeoSuite.window.InsertVariable);
