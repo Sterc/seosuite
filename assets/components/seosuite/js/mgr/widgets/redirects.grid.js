@@ -254,7 +254,7 @@ Ext.reg('seosuite-grid-redirects', SeoSuite.grid.Redirects);
 
 SeoSuite.window.CreateRedirect = function(config) {
     config = config || {};
-    
+
     Ext.applyIf(config, {
         autoHeight  : true,
         title       : _('seosuite.redirect_create'),
@@ -321,11 +321,14 @@ SeoSuite.window.CreateRedirect = function(config) {
             fieldLabel  : _('seosuite.label_redirect_match_context'),
             description : MODx.expandHelp ? '' : _('seosuite.label_redirect_match_context_desc'),
             name        : 'context_key',
+            hidden      : config.mode === 'resource',
+            value       : config.mode === 'resource' ? MODx.ctx : '',
             anchor      : '100%',
             allowBlank  : true
         }, {
             xtype       : MODx.expandHelp ? 'label' : 'hidden',
             html        : _('seosuite.label_redirect_match_context_desc'),
+            hidden      : config.mode === 'resource',
             cls         : 'desc-under'
         }, {
             xtype       : 'seosuite-combo-redirect-type',
