@@ -38,21 +38,30 @@ class SeoSuiteSuggestionsFindProcessor extends modObjectUpdateProcessor
     }
 
     /**
-     * @TODO create redirect from first suggestion.
-     *
      * @access public.
      * @return Mixed.
      */
     public function beforeSave()
     {
-        $context = $this->getProperty('match_context') !== null;
+        $context      = $this->getProperty('match_context') !== null;
         $excludeWords = $this->modx->seosuite->getExcludeWords();
 
         $suggestions = $this->object->getRedirectSuggestions($context, $excludeWords);
-
         if (count($suggestions) >= 1) {
             if ($this->getProperty('create_redirect') !== null) {
-                // Create redirect
+                /* array_key_first retrieves the first array key of the suggestions array which contains the highest boosted suggested resource id. */
+                $redirectToResourceId =  array_key_first($suggestions);
+                if ($redirectToResourceId) {
+                    $redirect = $this->modx->newObject('SeoSuiteRedirect');
+                    $redirect->fromArray([
+                        'context_key' => $this->object->get('context_key'),
+                        'resource_id' => $redirectToResourceId,
+                        'old_url'     => $this->object->get('url'),
+                        'new_url'     => $redirectToResourceId
+                    ]);
+
+                    $redirect->save();
+                }
             }
         }
 

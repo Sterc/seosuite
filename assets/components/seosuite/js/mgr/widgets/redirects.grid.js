@@ -219,22 +219,22 @@ Ext.extend(SeoSuite.grid.Redirects, MODx.grid.Grid, {
         });
     },
     renderOldUrl: function(d, c, e) {
+        var url = '*/';
         if (!Ext.isEmpty(e.json.old_site_url)) {
-            return '<span class="x-grid-span">' + e.json.old_site_url + '</span>' + d;
+            url = e.json.old_site_url;
         }
 
-        return d;
+        return '<span class="x-grid-span">' + url + '</span>' + d;
     },
     renderNewUrl: function(d, c, e) {
+        var url = '*/';
         if (!Ext.isEmpty(e.json.new_site_url)) {
-            if (/^(((http|https|ftp):\/\/)|www\.)/.test(d)) {
-                return d;
+            if (!/^(((http|https|ftp):\/\/)|www\.)/.test(d)) {
+                url = e.json.new_site_url;
             }
-
-            return '<span class="x-grid-span">' + e.json.new_site_url + '</span>' + d;
         }
 
-        return d;
+        return '<span class="x-grid-span">' + url + '</span>' + d;
     },
     renderBoolean: function(d, c) {
         c.css = parseInt(d) === 1 || d ? 'green' : 'red';
@@ -317,6 +317,17 @@ SeoSuite.window.CreateRedirect = function(config) {
                 cls         : 'desc-under'
             }]
         }, {
+            xtype       : 'seosuite-combo-contexts',
+            fieldLabel  : _('seosuite.label_redirect_match_context'),
+            description : MODx.expandHelp ? '' : _('seosuite.label_redirect_match_context_desc'),
+            name        : 'context_key',
+            anchor      : '100%',
+            allowBlank  : true
+        }, {
+            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+            html        : _('seosuite.label_redirect_match_context_desc'),
+            cls         : 'desc-under'
+        }, {
             xtype       : 'seosuite-combo-redirect-type',
             fieldLabel  : _('seosuite.label_redirect_type'),
             description : MODx.expandHelp ? '' : _('seosuite.label_redirect_type_desc'),
@@ -339,7 +350,11 @@ Ext.reg('seosuite-window-redirect-create', SeoSuite.window.CreateRedirect);
 
 SeoSuite.window.UpdateRedirect = function(config) {
     config = config || {};
-    
+
+    if (config.record.context_key === '') {
+        config.record.context_key = 'seosuite_all';
+    }
+
     Ext.applyIf(config, {
         autoHeight  : true,
         title       : _('seosuite.redirect_update'),
@@ -404,6 +419,17 @@ SeoSuite.window.UpdateRedirect = function(config) {
                 html        : _('seosuite.label_redirect_new_url_desc'),
                 cls         : 'desc-under'
             }]
+        }, {
+            xtype       : 'seosuite-combo-contexts',
+            fieldLabel  : _('seosuite.label_redirect_match_context'),
+            description : MODx.expandHelp ? '' : _('seosuite.label_redirect_match_context_desc'),
+            name        : 'context_key',
+            anchor      : '100%',
+            allowBlank  : true
+        }, {
+            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+            html        : _('seosuite.label_redirect_match_context_desc'),
+            cls         : 'desc-under'
         }, {
             xtype       : 'seosuite-combo-redirect-type',
             fieldLabel  : _('seosuite.label_redirect_type'),

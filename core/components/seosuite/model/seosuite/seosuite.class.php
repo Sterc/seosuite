@@ -917,4 +917,19 @@ class SeoSuite
 
         return implode('', $output);
     }
+
+    /**
+     * This strips the domain from the request.
+     * For example: domain.tld/path/to/page will become path/to/page.
+     * @param $request
+     */
+    public function formatUrl($request)
+    {
+        if (!empty($request)) {
+            $parts   = parse_url($request);
+            $request = isset($parts['path']) ? $parts['path'] : $request;
+        }
+
+        return urldecode(trim($request, '/'));
+    }
 }

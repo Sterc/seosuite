@@ -80,12 +80,15 @@ $_lang['seosuite.label_redirect_new_url']                       = 'Nieuwe URL';
 $_lang['seosuite.label_redirect_new_url_desc']                  = 'De nieuwe URL van de URL verwijzing. Dit kan met of zonder domein, maar kan ook een ID van een pagina zijn.';
 $_lang['seosuite.label_redirect_active']                        = 'Actief';
 $_lang['seosuite.label_redirect_active_desc']                   = '';
+$_lang['seosuite.label_redirect_match_context']                 = 'Context';
+$_lang['seosuite.label_redirect_match_context_desc']            = 'Match de redirect aan een specifieke context of gebruik de redirect als een wildcard voor alle websites.';
 $_lang['seosuite.label_redirect_type']                          = 'Verwijzingstype';
 $_lang['seosuite.label_redirect_type_desc']                     = 'De verwijzingstype van de URL verwijzing.';
 
 $_lang['seosuite.label_exclude_words']                          = 'Woorden uitsluiten';
 $_lang['seosuite.label_exclude_words_desc']                     = 'Een komma gescheiden lijst van woorden om uit te sluiten vam de 404 URL suggesties.';
 
+$_lang['seosuite.use_redirect_across_domains']                  = 'Gebruik redirect voor alle domeinen';
 $_lang['seosuite.urls_import']                                  = 'Importeer bestand';
 $_lang['seosuite.find_suggestions']                             = 'Vind suggesties';
 $_lang['seosuite.exclude_words']                                = 'Woorden uitsluiten';

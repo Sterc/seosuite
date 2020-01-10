@@ -71,10 +71,9 @@ class SeoSuiteRedirectGetListProcessor extends modObjectGetListProcessor
         $criteria->select($this->modx->getSelectColumns('SeoSuiteRedirect', 'Redirect'));
         $criteria->select($this->modx->getSelectColumns('modResource', 'Resource', 'resource_', ['id', 'context_key']));
 
-        $criteria->leftJoin('modResource', 'Resource');
+        $criteria->leftJoin('modResource', 'Resource', '`Resource`.`id` = `Redirect`.`resource_id`');
 
         $resource = $this->getProperty('resource');
-
         if (!empty($resource)) {
             $criteria->where([
                 'Redirect.resource_id' => $resource
@@ -82,7 +81,6 @@ class SeoSuiteRedirectGetListProcessor extends modObjectGetListProcessor
         }
 
         $query = $this->getProperty('query');
-
         if (!empty($query)) {
             $criteria->where([
                 'Redirect.old_url:LIKE'     => '%' . $query . '%',
