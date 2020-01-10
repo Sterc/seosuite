@@ -259,9 +259,7 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
                     fn          : function(record) {
                         MODx.msg.status({
                             title   : _('success'),
-                            message : _('seosuite.suggestions_found', {
-                                suggestions : Object.keys(record.a.result.object.suggestions).length
-                            }),
+                            message : record.a.result.message,
                             delay   : 4
                         });
 
@@ -336,7 +334,12 @@ SeoSuite.window.ExcludeWords = function(config) {
             xtype       : MODx.expandHelp ? 'label' : 'hidden',
             html        : _('seosuite.label_exclude_words_desc'),
             cls         : 'desc-under'
-        }]
+        }],
+        listeners: {
+            success: function (response) {
+                SeoSuite.config['exclude_words'] = response.a.result.object.exclude_words.split(',');
+            }
+        }
     });
 
     SeoSuite.window.ExcludeWords.superclass.constructor.call(this, config);

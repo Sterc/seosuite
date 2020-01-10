@@ -92,7 +92,7 @@ $_lang['seosuite.label_redirect_type']                          = 'Verwijzingsty
 $_lang['seosuite.label_redirect_type_desc']                     = 'De verwijzingstype van de URL verwijzing.';
 
 $_lang['seosuite.label_exclude_words']                          = 'Woorden uitsluiten';
-$_lang['seosuite.label_exclude_words_desc']                     = 'Een komma gescheiden lijst van woorden om uit te sluiten vam de 404 URL suggesties.';
+$_lang['seosuite.label_exclude_words_desc']                     = 'Een komma gescheiden lijst van woorden om uit te sluiten van de 404 URL suggesties.';
 
 $_lang['seosuite.use_redirect_across_domains']                  = 'Gebruik redirect voor alle domeinen';
 $_lang['seosuite.urls_import']                                  = 'Importeer bestand';
@@ -130,16 +130,16 @@ $_lang['seosuite.import.start'] = 'Starten met importeren van de URL\'s, dit kan
 de grootte van je bestand.';
 $_lang['seosuite.import.instructions'] = 'Gebruik een .csv, .xls of .xlsx bestand. Zorg ervoor dat je de complete URL\'s hebt ingevuld, inclusief de domeinnaam. Voorbeeld: https://www.seosuite.com in plaats van seosuite.com.';
 
-$_lang['seosuite.url.position'] = 'Positie';
-$_lang['seosuite.url.found_suggestions'] = 'Er is een suggestie gevonden! De suggestie is nu verbonden met deze URL.';
-$_lang['seosuite.url.found_suggestions_multiple'] = 'Er is meer dan 1 suggestie gevonden.
- Voeg a.u.b. handmatig een redirect toe.';
-$_lang['seosuite.url.notfound_suggestions'] = 'Er zijn geen suggesties gevonden voor deze URL.';
-$_lang['seosuite.url.remove'] = 'Verwijder URL';
-$_lang['seosuite.url.remove_confirm'] = 'Weet je zeker dat je deze URL wil verwijderen?';
-$_lang['seosuite.url.choose_suggestion'] = 'Kies uit suggesties';
-$_lang['seosuite.url.choose_manually'] = 'Kies handmatig een pagina';
-$_lang['seosuite.url.redirect_to_selected'] = 'Geselecteerde redirect';
+$_lang['seosuite.url.position']                          = 'Positie';
+$_lang['seosuite.url.found_suggestions']                 = 'Er is een suggestie gevonden! De suggestie is nu verbonden met deze URL.';
+$_lang['seosuite.url.found_suggestions_multiple']        = 'Er is meer dan 1 suggestie gevonden. Voeg a.u.b. handmatig een redirect toe.';
+$_lang['seosuite.url.notfound_suggestions']              = 'Er zijn geen suggesties gevonden voor deze URL.';
+$_lang['seosuite.url.found_suggestions.redirect_exists'] = 'Er bestaat al een redirect voor deze 404 pagina, we hebben de 404 URL verwijderd.';
+$_lang['seosuite.url.remove']                            = 'Verwijder URL';
+$_lang['seosuite.url.remove_confirm']                    = 'Weet je zeker dat je deze URL wil verwijderen?';
+$_lang['seosuite.url.choose_suggestion']                 = 'Kies uit suggesties';
+$_lang['seosuite.url.choose_manually']                   = 'Kies handmatig een pagina';
+$_lang['seosuite.url.redirect_to_selected']              = 'Geselecteerde redirect';
 
 $_lang['seosuite.error.url_alreadyexists'] = 'Deze URL bestaat al.';
 $_lang['seosuite.error.url_notfound'] = 'Item niet gevonden.';
@@ -153,15 +153,8 @@ $_lang['seosuite.error.extension_notallowed'] = 'Bestandstype niet toegestaan. A
 $_lang['seosuite.error.ziparchive_notinstalled'] = 'PHP extensie ZipArchive is niet geïnstalleerd, 
 deze is nodig om xls(x) bestanden te importeren. Installeer de ZipArchive extensie of gebruik een .csv bestand.';
 
-$_lang['seosuite.import.seoUrl.error'] = 'De gevonden suggestie kon niet automatisch worden toegevoegd als redirect.
- Voeg deze a.u.b. handmatig toe.';
-$_lang['seosuite.import.seoUrl.error'] = 'De suggestie kon niet worden verbonden met de SEO Tab URL.
- Verbind deze a.u.b. handmatig.';
-$_lang['seosuite.seotab.notfound'] = 'SEO Tab is niet geïnstalleerd of de versie is ongeldig. 
-Installeer a.u.b. SEO Tab (versie 2.0 of hoger) om SEO Suite in staat te stellen
- om redirects automatisch te koppelen aan 404 URL\'s.';
-$_lang['seosuite.seotab.versioninvalid'] = 'De geinstalleerde versie van Seo Tab is verouderd. 
-Installeer Seo Tab versie 2 (of hoger) om een redirect te kunnen toevoegen.';
+$_lang['seosuite.import.seoUrl.error'] = 'De gevonden suggestie kon niet automatisch worden toegevoegd als redirect. Voeg deze a.u.b. handmatig toe.';
+$_lang['seosuite.import.seoUrl.error'] = 'De suggestie kon niet worden verbonden met de SEO Tab URL. Verbind deze a.u.b. handmatig.';
 
 $_lang['seosuite.widget_desc'] = 'Hier zie je de meest recent toegevoegde 404 urls.
  Om alle 404 urls te bekijken en beheren, ga naar de <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager pagina.</a>';
@@ -195,7 +188,7 @@ $_lang['setting_seosuite.preview.title_format_desc']    = 'Here you can specify 
 $_lang['setting_seosuite.keywords.fields']                  = 'Velden waarop de keyword tool zal werken ';
 $_lang['setting_seosuite.keywords.fields_desc']             = 'Verander deze gegevens alleen als je weet wat je doet. Standaard waarde:pagetitle,longtitle,content.';
 $_lang['setting_seosuite.keywords.version']                 = 'Versie nummer';
-$_lang['setting_seosuite.keywords.version_desc']            = 'Huidige '.$_lang['setting_seosuite.version'];
+$_lang['setting_seosuite.keywords.version_desc']            = 'Huidige ' . $_lang['setting_seosuite.version'];
 $_lang['setting_seosuite.keywords.disabledtemplates']       = 'Niet-gebruikte templates';
 $_lang['setting_seosuite.keywords.disabledtemplates_desc']  = 'Komma gescheiden lijst met template ID\'s waar SEO Pro niet getoond wordt.';
 $_lang['setting_seosuite.keywords.max_keywords_title']      = 'Maximaal aantal focus keywords toegestaan in titel.';
