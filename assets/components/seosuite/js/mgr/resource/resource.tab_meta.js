@@ -3,98 +3,53 @@ Ext.extend(SeoSuite, Ext.Component, {
         SeoSuite.config.loaded = true;
         SeoSuite.addPanel();
 
-        var self = this;
+        var longtitleField = Ext.getCmp('seosuite-longtitle');
 
-        /**
-         * Hide default longtitle and description fields, because SeoSuite adds their own and mirrors the content to the default fields.
-         */
-        Ext.getCmp('modx-resource-longtitle').hide();
-        Ext.getCmp('modx-resource-description').hide();
+        ['modx-resource-pagetitle', 'modx-resource-introtext', 'modx-resource-alias', 'modx-resource-uri', 'seosuite-longtitle', 'seosuite-description', 'modx-resource-uri-override', 'seosuite_use_default_meta'].forEach((function(key) {
+            var field = Ext.getCmp(key);
 
-        /* Live update preview when these fields change. */
-        ['modx-resource-pagetitle', 'modx-resource-introtext', 'modx-resource-alias', 'modx-resource-uri', 'seosuite-longtitle', 'seosuite-description']
-            .map(document.getElementById, document)
-            .forEach(function (elem) {
-                elem.addEventListener('keyup', function() {
-                    self.renderPreview();
+            if (field) {
+                if (field.xtype === 'xcheckbox') {
+                    field.on('check', this.renderPreview, this);
+                } else {
+                    field.on('keyup', (function(tf) {
+                        //if (tf.name === 'pagetitle') {
+                            //console.log(tf.name, tf.getValue());
+                            //console.log(longtitleField.getValue());
 
-                    if (elem.id === 'modx-resource-pagetitle') {
-                        if (Ext.getCmp('seosuite-longtitle')) {
-                            var isEmpty = Ext.getCmp('seosuite-longtitle').getValue().length == 0;
-                            Ext.getCmp('seosuite-longtitle').emptyText = Ext.getCmp(elem.id).getValue();
-                            Ext.getCmp('seosuite-longtitle').applyEmptyText();
+                            //if (longtitleField) {
+                            //    if (longtitleField.getValue() === '') {
+                            //        longtitleField.emptyText = tf.getValue();
+                            //        longtitleField.applyEmptyText();
+                            //    }
+                            //}
 
-                            if (isEmpty) {
-                                Ext.getCmp('seosuite-longtitle').reset();
-                            }
-                        }
+                            //this.count('longtitle');
+                        //}
 
-                        /* Live update keyword count for longtitle field, because of the fallback. */
-                        self.count('longtitle');
-                    }
-                });
-            });
-
-        /* Live update preview when these fields change. */
-        ['modx-resource-uri-override', 'seosuite_use_default_meta']
-            .map(document.getElementById, document)
-            .forEach(function (elem) {
-                elem.addEventListener('change', function() {
-                    self.renderPreview();
-                });
-            });
+                        this.renderPreview();
+                    }).bind(this));
+                }
+            }
+        }).bind(this));
 
         Ext.each(SeoSuite.record.fields.split(','), function(field) {
             SeoSuite.addCounter(field);
         });
-    },
-    addCounter: function(fieldKey) {
-        var fieldId = this.getFieldId(fieldKey);
-        var field = Ext.getCmp(fieldId);
 
-        if (field) {
-            SeoSuite.record.values[fieldKey] = field.getValue();
+        ['modx-resource-longtitle', 'modx-resource-description'].forEach(function(key) {
+            var field = Ext.getCmp(key);
 
-            if (fieldKey !== 'content') {
-                field.maxLength = Number(SeoSuite.record.chars[fieldKey]['max']);
-                field.reset();
+            if (field) {
+                field.hide();
             }
-
-            field.on('keyup', function() {
-                SeoSuite.record.values[fieldKey] = field.getValue();
-                SeoSuite.count(fieldKey);
-            });
-
-            field.on('blur', function() {
-                SeoSuite.record.values[fieldKey] = field.getValue();
-            });
-
-            var counterHtml = '<span class="seosuite-counter-wrap seosuite-counter-keywords" id="seosuite-counter-keywords-' + fieldKey + '" title="' + _('seosuite.tab_meta.keywords') + '"><strong>' + _('seosuite.tab_meta.keywords') + ':&nbsp;&nbsp;</strong><span id="seosuite-counter-keywords-' + fieldKey + '-current">0</span></span>';
-            if (fieldKey !== 'content') {
-                var chartHtml = '<svg viewBox="0 0 36 36" class="circular-chart">\n' +
-                    '  <path class="circle" id="seosuite-counter-circle-' + fieldKey + '"\n' +
-                    '    stroke-dasharray="0px, 100px"\n' +
-                    '    d="M18 2.0845\n' +
-                    '      a 15.9155 15.9155 0 0 1 0 31.831\n' +
-                    '      a 15.9155 15.9155 0 0 1 0 -31.831"\n' +
-                    '  />\n' +
-                    '</svg>';
-
-                counterHtml += '<span class="seosuite-counter-wrap seosuite-counter-chars green" id="seosuite-counter-chars-' + fieldKey + '" title="' + _('seosuite.tab_meta.characters.allowed') + '">' + chartHtml + '<span class="current" id="seosuite-counter-chars-' + fieldKey + '-current">1</span>';
-                counterHtml += '<span class="allowed" id="seosuite-counter-chars-' + fieldKey + '-allowed">' + SeoSuite.record.chars[fieldKey]['max'] + '</span></span>';
-            }
-
-            Ext.get('x-form-el-' + fieldId).createChild({
-                tag   : 'div',
-                id    : 'seosuite-resource-' + fieldKey,
-                class : 'seosuite-counter',
-                html  : counterHtml
-            });
-            SeoSuite.count(fieldKey);
-        }
+        });
     },
     addPanel: function() {
         var fp = Ext.getCmp('modx-panel-resource');
+
+        console.log(SeoSuite.record);
+        console.log(SeoSuite.config.meta);
 
         fp.insert(2, {
                 xtype        : 'panel',
@@ -116,7 +71,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                         layout          : 'form',
                         labelSeparator  : ''
                     },
-                    items: [{
+                    items   : [{
                         columnWidth : .5,
                         items       : [{
                             anchor          : '100%',
@@ -130,13 +85,13 @@ Ext.extend(SeoSuite, Ext.Component, {
                             labelAlign      : 'top',
                             items           : [{
                                 xtype           : 'textfield',
-                                name            : 'seosuite_keywords',
-                                id              : 'seosuite-keywords',
                                 fieldLabel      : _('seosuite.tab_meta.focuskeywords'),
                                 description     : MODx.expandHelp ? '' : _('seosuite.tab_meta.focuskeywords_desc'),
+                                anchor          : '100%',
+                                name            : 'seosuite_keywords',
+                                id              : 'seosuite-keywords',
                                 value           : SeoSuite.record.keywords,
                                 enableKeyEvents : true,
-                                anchor          : '100%',
                                 listeners       : {
                                     'keyup': function () {
                                         MODx.fireResourceFormChange();
@@ -155,18 +110,19 @@ Ext.extend(SeoSuite, Ext.Component, {
                                 cls         : 'desc-under'
                             }, {
                                 xtype           : 'textfield',
+                                fieldLabel      : _('seosuite.tab_meta.longtitle'),
+                                anchor          : '100%',
                                 name            : 'seosuite_longtitle',
                                 id              : 'seosuite-longtitle',
-                                fieldLabel      : _('seosuite.tab_meta.longtitle'),
-                                emptyText       : MODx.activePage.record.pagetitle,
                                 value           : MODx.activePage.record.longtitle,
                                 enableKeyEvents : true,
-                                anchor          : '100%',
                                 listeners       : {
-                                    'keyup' : function (field) {
-                                        Ext.getCmp('modx-resource-longtitle').setValue(field.getValue());
-                                    },
-                                    scope    : this
+                                    keyup           : {
+                                        fn              : function (tf) {
+                                            Ext.getCmp('modx-resource-longtitle').setValue(tf.getValue());
+                                        },
+                                        scope           : this
+                                    }
                                 }
                             }, {
                                 xtype           : 'textarea',
@@ -177,130 +133,116 @@ Ext.extend(SeoSuite, Ext.Component, {
                                 enableKeyEvents : true,
                                 anchor          : '100%',
                                 listeners       : {
-                                    'keyup' : function (field) {
-                                        Ext.getCmp('modx-resource-description').setValue(field.getValue());
-                                    },
-                                    scope    : this
+                                    keyup           : {
+                                        fn              : function (tf) {
+                                            Ext.getCmp('modx-resource-description').setValue(tf.getValue());
+                                        },
+                                        scope           : this
+                                    }
                                 }
                             }]
                         }]
                     }, {
                         columnWidth : .5,
                         items       : [{
-                            xtype       : 'button',
-                            cls         : 'active',
-                            id          : 'seosuite-preview-mobile',
-                            text        : '<i class="icon icon-mobile"></i>',
-                            handler     : function () {
-                                this.addClass('active');
-
-                                Ext.select('#seosuite-preview-desktop').removeClass('active');
-                                Ext.select('.seosuite-preview').addClass('mobile').removeClass('desktop');
-                            }
-                        }, {
-                            xtype   : 'button',
-                            id      : 'seosuite-preview-desktop',
-                            text    : '<i class="icon icon-desktop"></i>',
-                            handler : function () {
-                                this.addClass('active');
-
-                                Ext.select('#seosuite-preview-mobile').removeClass('active');
-                                Ext.select('.seosuite-preview').removeClass('mobile').addClass('desktop');
-                            }
-                        }, {
-                            xtype       : 'button',
-                            id          : 'seosuite-snippet-editor',
-                            text        : '<i class="icon icon-cog"></i>',
-                            handler     : function () {
-                                if (Ext.getCmp('seosuite-preview-editor').hidden) {
-                                    Ext.getCmp('seosuite-preview-editor').show();
-                                } else {
-                                    Ext.getCmp('seosuite-preview-editor').hide();
+                            xtype       : 'toolbar',
+                            items       : [{
+                                cls         : 'x-btn-no-text',
+                                text        : '<i class="icon icon-desktop"></i>',
+                                preview     : 'desktop',
+                                handler     : this.onChangePreview,
+                                scope       : this,
+                                listeners    : {
+                                    afterrender : {
+                                        fn          : this.onChangePreview,
+                                        scope       : this
+                                    }
                                 }
-                            }
+                            }, {
+                                cls         : 'x-btn-no-text',
+                                text        : '<i class="icon icon-mobile"></i>',
+                                preview     : 'mobile',
+                                handler     : this.onChangePreview,
+                                scope       : this
+                            }, '->', {
+                                cls         : 'x-btn-no-text',
+                                text        : '<i class="icon icon-cog"></i>',
+                                handler     : this.onTogglePreviewEditor,
+                                scope       : this
+                            }]
                         }, {
                             xtype       : 'panel',
                             baseCls     : 'seosuite-preview',
-                            cls         : this.config.meta.search_engine + ' mobile',
-                            bodyStyle   : 'padding: 10px;',
-                            border      : false,
-                            autoHeight  : true,
+                            id          : 'seosuite-seo-preview',
+                            cls         : 'seosuite-seo-preview-' + SeoSuite.config.meta.search_engine,
                             items       : [{
-                                xtype       : 'box',
-                                id          : 'seosuite-preview-url',
-                                bodyStyle   : 'background-color: #fbfbfb;',
-                                cls         : this.config.meta.search_engine,
-                                html        : this.generateUrlHtml(),
-                                border      : false
+                                id          : 'seosuite-seo-preview-favicon',
+                                html        : '<img src="' + SeoSuite.record.favicon + '" class="favicon" />'
                             }, {
-                                xtype       : 'box',
-                                id          : 'seosuite-preview-title',
-                                cls         : this.config.meta.search_engine,
-                                html        : '',
-                                border      : false
+                                id          : 'seosuite-seo-preview-title'
                             }, {
-                                xtype       : 'box',
-                                id          : 'seosuite-preview-description',
-                                bodyStyle   : 'background-color: #fbfbfb;',
-                                cls         : this.config.meta.search_engine,
-                                html        : '',
-                                border      : false
+                                id          : 'seosuite-seo-preview-url',
+                                html        : this.getUrlHTML()
+                            }, {
+                                id          : 'seosuite-seo-preview-description'
                             }]
                         }, {
-                            anchor          : '100%',
-                            xtype           : 'panel',
-                            id              : 'seosuite-preview-editor',
-                            baseCls         : 'seosuite-preview-editor',
-                            bodyStyle       : 'padding: 10px;',
-                            border          : false,
-                            autoHeight      : true,
                             layout          : 'form',
+                            id              : 'seosuite-preview-editor',
                             labelSeparator  : '',
                             labelAlign      : 'top',
                             hidden          : true,
-                            items: [
-                                {
-                                    xtype       : 'checkbox',
-                                    name        : 'seosuite_use_default_meta',
-                                    id          : 'seosuite_use_default_meta',
-                                    boxLabel    : _('seosuite.tab_meta.use_default'),
-                                    inputValue  : 1,
-                                    checked     : SeoSuite.record.use_default_meta,
-                                    listeners    : {
-                                        'render'   : this.onChangeUseDefault,
-                                        'check'    : this.onChangeUseDefault
+                            items           : [{
+                                xtype       : 'xcheckbox',
+                                hideLabel   : true,
+                                boxLabel    : _('seosuite.tab_meta.use_default'),
+                                name        : 'seosuite_use_default_meta',
+                                id          : 'seosuite_use_default_meta',
+                                inputValue  : 1,
+                                checked     : parseInt(SeoSuite.record.use_default_meta) === 1,
+                                listeners   : {
+                                    check       : {
+                                        fn          : this.onChangeMetaDefault,
+                                        scope       : this
+                                    },
+                                    afterrender : {
+                                        fn          : this.onChangeMetaDefault,
+                                        scope       : this
                                     }
-                                }, {
-                                    xtype      : 'seosuite-field-metatag',
-                                    label      : _('seosuite.tab_meta.meta_title'),
-                                    name       : 'seosuite_meta_title',
-                                    description: _('seosuite.tab_meta.meta_title_desc'),
-                                    id         : 'title',
-                                    value      : JSON.stringify(SeoSuite.record.meta_title),
-                                    listeners  : {
-                                        'change'    : {
-                                            fn          : function() {
-                                                this.renderPreview();
-                                            },
-                                            scope       : this
-                                        }
+                                }
+                            }, {
+                                xtype       : 'seosuite-field-metatag',
+                                fieldLabel  : _('seosuite.tab_meta.meta_title'),
+                                description : _('seosuite.tab_meta.meta_title_desc'),
+                                anchor      : '100%',
+                                name        : 'seosuite_meta_title',
+                                id          : 'title',
+                                value       : JSON.stringify(SeoSuite.record.meta_title),
+                                listeners   : {
+                                    'change'    : {
+                                        fn          : function() {
+                                            this.renderPreview();
+                                        },
+                                        scope       : this
                                     }
-                                }, {
-                                    xtype      : 'seosuite-field-metatag',
-                                    label      : _('seosuite.tab_meta.meta_description'),
-                                    name       : 'seosuite_meta_description',
-                                    description: _('seosuite.tab_meta.meta_description_desc'),
-                                    id         : 'description',
-                                    value      : JSON.stringify(SeoSuite.record.meta_description),
-                                    listeners  : {
-                                        'change'    : {
-                                            fn          : function() {
-                                                this.renderPreview();
-                                            },
-                                            scope       : this
-                                        }
+                                }
+                            }, {
+                                xtype       : 'seosuite-field-metatag',
+                                fieldLabel  : _('seosuite.tab_meta.meta_description'),
+                                description : _('seosuite.tab_meta.meta_description_desc'),
+                                anchor      : '100%',
+                                name        : 'seosuite_meta_description',
+                                id          : 'description',
+                                value       : JSON.stringify(SeoSuite.record.meta_description),
+                                listeners   : {
+                                    'change'    : {
+                                        fn          : function() {
+                                            this.renderPreview();
+                                        },
+                                        scope       : this
                                     }
-                                }]
+                                }
+                            }]
                         }]
                     }]
                 }]
@@ -310,6 +252,47 @@ Ext.extend(SeoSuite, Ext.Component, {
         fp.doLayout();
 
         this.renderPreview();
+    },
+    addCounter: function(fieldKey) {
+        var fieldId = this.getFieldId(fieldKey);
+        var field = Ext.getCmp(fieldId);
+
+        if (field) {
+            SeoSuite.record.values[fieldKey] = field.getValue();
+
+            field.on('keyup', function() {
+                SeoSuite.record.values[fieldKey] = field.getValue();
+                SeoSuite.count(fieldKey);
+            });
+
+            field.on('blur', function() {
+                SeoSuite.record.values[fieldKey] = field.getValue();
+            });
+
+            var counterHtml = '<span class="seosuite-counter-wrap seosuite-counter-keywords" id="seosuite-counter-keywords-' + fieldKey + '" title="' + _('seosuite.tab_meta.keywords') + '"><strong>' + _('seosuite.tab_meta.keywords') + ':&nbsp;&nbsp;</strong><span id="seosuite-counter-keywords-' + fieldKey + '-current">0</span></span>';
+            if (fieldKey !== 'content') {
+                var chartHtml = '<svg viewBox="0 0 36 36" class="circular-chart">\n' +
+                                '  <path class="circle" id="seosuite-counter-circle-' + fieldKey + '"\n' +
+                                '    stroke-dasharray="0px, 100px"\n' +
+                                '    d="M18 2.0845\n' +
+                                '      a 15.9155 15.9155 0 0 1 0 31.831\n' +
+                                '      a 15.9155 15.9155 0 0 1 0 -31.831"\n' +
+                                '  />\n' +
+                                '</svg>';
+
+                counterHtml += '<span class="seosuite-counter-wrap seosuite-counter-chars green" id="seosuite-counter-chars-' + fieldKey + '" title="' + _('seosuite.tab_meta.characters.allowed') + '">' + chartHtml + '<span class="current" id="seosuite-counter-chars-' + fieldKey + '-current">1</span>';
+                counterHtml += '<span class="allowed" id="seosuite-counter-chars-' + fieldKey + '-allowed">' + SeoSuite.record.chars[fieldKey]['max'] + '</span></span>';
+            }
+
+            Ext.get('x-form-el-' + fieldId).createChild({
+                tag   : 'div',
+                id    : 'seosuite-resource-' + fieldKey,
+                class : 'seosuite-counter',
+                html  : counterHtml
+            });
+
+            SeoSuite.count(fieldKey);
+        }
     },
     countCharacters: function (fieldKey, overrideCount) {
         var field    = this.getFieldId(fieldKey);
@@ -418,17 +401,6 @@ Ext.extend(SeoSuite, Ext.Component, {
 
         return fieldId;
     },
-    generateUrlHtml: function () {
-        var  html = '<div class="seosuite-preview-url--favicon" style="background-image: url(' + SeoSuite.record.favicon + ')"></div>';
-
-        if (MODx.config['seosuite.preview.searchengine'] === 'yandex' && MODx.config['server_protocol'] === 'https') {
-            html += '<i class="icon icon-lock"></i> ';
-        }
-
-        html += SeoSuite.record.url;
-
-        return html;
-    },
     renderPreview: function () {
         MODx.Ajax.request({
             url     : SeoSuite.config.connector_url,
@@ -453,8 +425,8 @@ Ext.extend(SeoSuite, Ext.Component, {
             listeners: {
                 'success': {
                     fn: function(response) {
-                        Ext.get('seosuite-preview-title').dom.innerHTML       = response.results.output.title;
-                        Ext.get('seosuite-preview-description').dom.innerHTML = response.results.output.description;
+                        Ext.get('seosuite-seo-preview-title').dom.innerHTML       = response.results.output.title;
+                        Ext.get('seosuite-seo-preview-description').dom.innerHTML = response.results.output.description;
                         Ext.get('seosuite-replace-alias').dom.innerHTML       = response.results.output.alias;
 
                         /* Update counters. */
@@ -466,14 +438,65 @@ Ext.extend(SeoSuite, Ext.Component, {
             }
         });
     },
-    onChangeUseDefault: function (checkbox) {
-        if (checkbox.getValue()) {
-            Ext.getCmp('title').hide();
-            Ext.getCmp('description').hide();
-        } else {
-            Ext.getCmp('title').show();
-            Ext.getCmp('description').show();
+    onChangeMetaDefault: function (tf) {
+        var metaTitle       = Ext.getCmp('title');
+        var metaDescription = Ext.getCmp('description');
+
+        if (metaTitle && metaDescription) {
+            if (tf.getValue()) {
+                metaTitle.hide();
+                metaDescription.hide();
+
+                //metaTitle.setValue(SeoSuite.config.meta.default_meta_title);
+                //metaDescription.setValue(SeoSuite.config.meta.default_meta_description);
+            } else {
+                metaTitle.show();
+                metaDescription.show();
+            }
         }
+    },
+    onChangePreview: function(btn) {
+        var preview = Ext.getCmp('seosuite-seo-preview');
+
+        if (preview && btn.ownerCt.items) {
+            btn.ownerCt.items.items.forEach(function (item) {
+                if (item.preview) {
+                    if (item.preview === btn.preview) {
+                        item.addClass('x-btn-active');
+
+                        preview.addClass('seosuite-seo-preview-' + item.preview);
+                    } else {
+                        item.removeClass('x-btn-active');
+
+                        preview.removeClass('seosuite-seo-preview-' + item.preview);
+                    }
+                }
+            });
+        }
+    },
+    onTogglePreviewEditor: function(btn) {
+        var editor = Ext.getCmp('seosuite-preview-editor');
+
+        if (editor.hidden) {
+            btn.addClass('x-btn-active');
+
+            editor.show();
+        } else {
+            btn.removeClass('x-btn-active');
+
+            editor.hide();
+        }
+    },
+    getUrlHTML: function () {
+        var html = '<img src="' + SeoSuite.record.favicon + '" class="favicon" />';
+
+        if (MODx.config.server_protocol === 'https') {
+            html += '<i class="icon icon-lock"></i> ';
+        }
+
+        html += SeoSuite.record.url;
+
+        return html;
     }
 });
 

@@ -31,6 +31,12 @@ $_lang['setting_seosuite.tab_social_twitter_cards']             = 'Twitter card 
 $_lang['setting_seosuite.tab_social_twitter_cards_desc']        = '';
 $_lang['setting_seosuite.default_redirect_type']                = 'Standaard redirect type';
 $_lang['setting_seosuite.default_redirect_type_desc']           = '';
+$_lang['setting_seosuite.meta.searchengine']                    = 'Zoekmachine';
+$_lang['setting_seosuite.meta.searchengine_desc']               = '';
+$_lang['setting_seosuite.meta.default_meta_title']              = 'Standaard meta titel format';
+$_lang['setting_seosuite.meta.default_meta_title_desc']         = '';
+$_lang['setting_seosuite.meta.default_meta_description']        = 'Standaard meta omschrijving format';
+$_lang['setting_seosuite.meta.default_meta_description_desc']   = '';
 
 $_lang['seosuite.url']                                          = '404 URL';
 $_lang['seosuite.urls']                                         = '404 URL\'s';

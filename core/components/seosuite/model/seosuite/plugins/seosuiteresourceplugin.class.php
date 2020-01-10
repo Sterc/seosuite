@@ -300,7 +300,7 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
         $this->record['fields']  = implode(',', array_keys($arrFields));
         $this->record['values']  = [];
         $this->record['chars']   = $arrFields;
-        $this->record['url']     = $this->prepareUrl($resource, $mode);;
+        $this->record['url']     = $this->prepareUrl($resource, $mode);
         $this->record['favicon'] = $this->getFavicon($resource);
 
         $this->loaded[] = 'meta';
@@ -374,7 +374,7 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
     {
         $ctxKey   = !empty($resource) ? $resource->get('context_key') : $this->modx->getOption('default_context');
         $ctx      = $this->modx->getContext($ctxKey);
-        $url      = $ctx ? $ctx->getOption('site_url', '', $this->modx->getOption('site_url')) : $this->modx->getOption('site_url');
+        $url      = rtrim($ctx ? $ctx->getOption('site_url', '', $this->modx->getOption('site_url')) : $this->modx->getOption('site_url'), '/');
 
         if ($mode === 'upd') {
             if ($ctx) {
