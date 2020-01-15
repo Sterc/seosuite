@@ -30,4 +30,4 @@ $_lang['seosuite.tab_social.label_twitter_image_desc']          = 'De afbeelding
 $_lang['seosuite.tab_social.label_twitter_image_alt']           = 'Twitter afbeelding titel';
 $_lang['seosuite.tab_social.label_twitter_image_alt_desc']      = 'De afbeelding titel van de pagina op Twitter.';
 $_lang['seosuite.tab_social.label_twitter_card']                = 'Twitter card';
-$_lang['seosuite.tab_social.label_twitter_card_desc']           = 'De pagina card op Facebook.';
+$_lang['seosuite.tab_social.label_twitter_card_desc']           = 'De pagina card op Twitter.';

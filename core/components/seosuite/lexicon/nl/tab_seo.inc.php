@@ -28,13 +28,13 @@ $_lang['seosuite.tab_seo.label_sitemap_prio_desc']          = 'Geef zoekmachines
 $_lang['seosuite.tab_seo.label_sitemap_changefreq']         = 'Sitemap wijzigings frequentie';
 $_lang['seosuite.tab_seo.label_sitemap_changefreq_desc']    = 'Geef zoekmachines aan hoe vaak de inhoud van de pagina ongeveer verandert.';
 $_lang['seosuite.tab_seo.label_canonical']                  = 'Stel een canonical URL in voor deze pagina';
-$_lang['seosuite.tab_seo.label_canonical_desc']             = 'Indien aangevinkt kun je een canoical URL instellen voor deze pagina.';
+$_lang['seosuite.tab_seo.label_canonical_desc']             = 'Indien aangevinkt kun je een canonical URL instellen voor deze pagina.';
 $_lang['seosuite.tab_seo.label_canonical_uri']              = 'Canonical URL';
 $_lang['seosuite.tab_seo.label_canonical_uri_desc']         = 'Let op, vul alleen het gene achter het domein "[[+site_url]]" in.';
 
 $_lang['seosuite.tab_seo.index_type_index']                 = 'index';
 $_lang['seosuite.tab_seo.index_type_noindex']               = 'noindex';
-$_lang['seosuite.tab_seo.follow_type_follow']               = 'index';
+$_lang['seosuite.tab_seo.follow_type_follow']               = 'follow';
 $_lang['seosuite.tab_seo.follow_type_nofollow']             = 'nofollow';
 $_lang['seosuite.tab_seo.sitemap_prio_high']                = 'Hoog';
 $_lang['seosuite.tab_seo.sitemap_prio_normal']              = 'Normaal';

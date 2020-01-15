@@ -8,11 +8,12 @@ $_lang['seosuite.tab_meta.submit']                          = 'Insert';
 $_lang['seosuite.tab_meta.use_default']                     = 'Use default settings for the SEO title and SEO description.';
 $_lang['seosuite.tab_meta.meta_title']                      = 'SEO Title';
 $_lang['seosuite.tab_meta.meta_title_desc']                 = 'Compose the template to use for the generated SEO Title.';
-$_lang['seosuite.tab_meta.meta_description']                = 'SEO Description';
+$_lang['seosuite.tab_meta.meta_description']                = 'META Description';
 $_lang['seosuite.tab_meta.meta_description_desc']           = 'Compose the template to use for the generated META Description.';
 $_lang['seosuite.tab_meta.prevbox']                         = 'Google Preview';
 $_lang['seosuite.tab_meta.prevbox_yandex']                  = 'Yandex Preview';
-$_lang['seosuite.tab_meta.longtitle']                       = 'Title (Longtitle that defaults to the pagetitle)';
+$_lang['seosuite.tab_meta.longtitle']                       = 'Title';
+$_lang['seosuite.tab_meta.longtitle_desc']                  = 'Longtitle that defaults to the pagetitle.';
 $_lang['seosuite.tab_meta.description']                     = 'META Description';
 $_lang['seosuite.tab_meta.seo']                             = 'SEO';
 

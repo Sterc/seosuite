@@ -13,7 +13,7 @@ SeoSuite.grid.Urls = function(config) {
             handler     : this.removeSelectedUrls,
             scope       : this
         }, '-', {
-            text        : '<i class="x-menu-item-icon icon icon-times"></i>' + _('seosuite.exclude_words'),
+            text        : '<i class="x-menu-item-icon icon icon-times"></i>' + _('seosuite.label_exclude_words'),
             handler     : this.excludeWords,
             scope       : this
         }]
@@ -130,7 +130,7 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
             handler : this.createUrlRedirect,
             scope   : this
         }, '-', {
-            text    : '<i class="x-menu-item-icon icon icon-search"></i>' + _('seosuite.url_suggesstions'),
+            text    : '<i class="x-menu-item-icon icon icon-search"></i>' + _('seosuite.url_suggestions'),
             handler : this.findUrlSuggestions,
             scope   : this
         }, '-', {
