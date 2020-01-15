@@ -1,146 +1,159 @@
 <?php
-
 /**
- * SeoSuite
- *
- * Copyright 2019 by Sterc <modx@sterc.com>
+ * @package seosuite
  */
-
-$xpdo_meta_map['SeoSuiteSocial'] = [
-    'package'       => 'seosuite',
-    'version'       => '1.0',
-    'table'         => 'seosuite_social',
-    'extends'       => 'xPDOSimpleObject',
-    'tableMeta'     => [
-        'engine'        => 'InnoDB'
-    ],
-    'fields'        => [
-        'id'            => null,
-        'resource_id'   => null,
-        'og_title'      => null,
-        'og_description' => null,
-        'og_image'      => null,
-        'og_image_alt'  => null,
-        'og_type'       => null,
-        'twitter_title' => null,
-        'twitter_description' => null,
-        'twitter_image' => null,
-        'twitter_image_alt' => null,
-        'twitter_card'  => 1,
-        'editedon'      => null
-    ],
-    'fieldMeta'     => [
-        'id'            => [
-            'dbtype'        => 'int',
-            'precision'     => '11',
-            'phptype'       => 'integer',
-            'null'          => false,
-            'index'         => 'pk',
-            'generated'     => 'native'
-        ],
-        'resource_id'   => [
-            'dbtype'        => 'int',
-            'precision'     => '1',
-            'phptype'       => 'integer',
-            'null'          => false
-        ],
-        'og_title'      => [
-            'dbtype'        => 'varchar',
-            'precision'     => '255',
-            'phptype'       => 'string',
-            'null'          => true,
-            'default'       => ''
-        ],
-        'og_description' => [
-            'dbtype'        => 'varchar',
-            'precision'     => '255',
-            'phptype'       => 'string',
-            'null'          => true,
-            'default'       => ''
-        ],
-        'og_image'      => [
-            'dbtype'        => 'varchar',
-            'precision'     => '255',
-            'phptype'       => 'string',
-            'null'          => true,
-            'default'       => ''
-        ],
-        'og_image_alt'  => [
-            'dbtype'        => 'varchar',
-            'precision'     => '255',
-            'phptype'       => 'string',
-            'null'          => true,
-            'default'       => ''
-        ],
-        'og_type'       => [
-            'dbtype'        => 'varchar',
-            'precision'     => '40',
-            'phptype'       => 'string',
-            'null'          => true,
-            'default'       => ''
-        ],
-        'twitter_title' => [
-            'dbtype'        => 'varchar',
-            'precision'     => '255',
-            'phptype'       => 'string',
-            'null'          => true,
-            'default'       => ''
-        ],
-        'twitter_description' => [
-            'dbtype'        => 'varchar',
-            'precision'     => '255',
-            'phptype'       => 'string',
-            'null'          => true,
-            'default'       => ''
-        ],
-        'twitter_image' => [
-            'dbtype'        => 'varchar',
-            'precision'     => '255',
-            'phptype'       => 'string',
-            'null'          => true,
-            'default'       => ''
-        ],
-        'twitter_image_alt' => [
-            'dbtype'        => 'varchar',
-            'precision'     => '255',
-            'phptype'       => 'string',
-            'null'          => true,
-            'default'       => ''
-        ],
-        'twitter_card'  => [
-            'dbtype'        => 'varchar',
-            'precision'     => '40',
-            'phptype'       => 'string',
-            'null'          => true,
-            'default'       => ''
-        ],
-        'editedon'      => [
-            'dbtype'        => 'timestamp',
-            'phptype'       => 'timestamp',
-            'attributes'    => 'ON UPDATE CURRENT_TIMESTAMP',
-            'null'          => false
-        ]
-    ],
-    'indexes'       => [
-        'PRIMARY'       => [
-            'alias'         => 'PRIMARY',
-            'primary'       => true,
-            'unique'        => true,
-            'columns'       => [
-                'id'            => [
-                    'collation'     => 'A',
-                    'null'          => false
-                ]
-            ]
-        ]
-    ],
-    'aggregates'    =>  [
-        'Resource'      => [
-            'local'         => 'resource_id',
-            'class'         => 'modResource',
-            'foreign'       => 'id',
-            'owner'         => 'local',
-            'cardinality'   => 'one'
-        ]
-    ]
-];
+$xpdo_meta_map['SeoSuiteSocial']= array (
+  'package' => 'seosuite',
+  'version' => '0.2',
+  'table' => 'seosuite_social',
+  'extends' => 'xPDOSimpleObject',
+  'tableMeta' => 
+  array (
+    'engine' => 'InnoDB',
+  ),
+  'fields' => 
+  array (
+    'resource_id' => 0,
+    'og_title' => '',
+    'og_description' => '',
+    'og_image' => '',
+    'og_image_alt' => '',
+    'og_type' => '',
+    'twitter_title' => '',
+    'twitter_description' => '',
+    'twitter_image' => '',
+    'twitter_image_alt' => '',
+    'twitter_card' => '',
+    'editedon' => NULL,
+  ),
+  'fieldMeta' => 
+  array (
+    'resource_id' => 
+    array (
+      'dbtype' => 'integer',
+      'precision' => '11',
+      'phptype' => 'int',
+      'null' => false,
+      'default' => 0,
+      'index' => 'index',
+    ),
+    'og_title' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'og_description' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'og_image' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'og_image_alt' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'og_type' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '40',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'twitter_title' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'twitter_description' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'twitter_image' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'twitter_image_alt' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'twitter_card' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '40',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'editedon' => 
+    array (
+      'dbtype' => 'timestamp',
+      'phptype' => 'timestamp',
+      'null' => true,
+      'default' => NULL,
+      'attributes' => 'ON UPDATE CURRENT_TIMESTAMP',
+    ),
+  ),
+  'indexes' => 
+  array (
+    'resource_id' => 
+    array (
+      'alias' => 'resource_id',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'resource_id' => 
+        array (
+          'length' => '767',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+  ),
+  'aggregates' => 
+  array (
+    'Resource' => 
+    array (
+      'class' => 'modResource',
+      'local' => 'bundle',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
+    ),
+  ),
+);

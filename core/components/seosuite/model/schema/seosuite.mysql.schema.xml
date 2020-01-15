@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model package="seosuite" baseClass="xPDOObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="seosuite" version="0.2">
+    <object class="SeoSuiteSocial" table="seosuite_social" extends="xPDOSimpleObject">
+        <field key="resource_id" dbtype="integer" precision="11" phptype="int" null="false" default="" index="index"/>
+        <field key="og_title" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="og_description" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="og_image" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="og_image_alt" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="og_type" dbtype="varchar" precision="40" phptype="string" null="false" default=""/>
+        <field key="twitter_title" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="twitter_description" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="twitter_image" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="twitter_image_alt" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="twitter_card" dbtype="varchar" precision="40" phptype="string" null="false" default=""/>
+        <field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" default="NULL" attributes="ON UPDATE CURRENT_TIMESTAMP" />
+
+        <aggregate alias="Resource" class="modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
+            <column key="resource_id" length="767" collation="A" null="false" />
+        </index>
+    </object>
+
     <object class="SeoSuiteUrl" table="seosuite_url" extends="xPDOSimpleObject">
         <field key="context_key" dbtype="varchar" precision="100" phptype="string" null="false" default="" index="index"/>
         <field key="url" dbtype="varchar" precision="2000" phptype="string" null="false" default="" index="index"/>

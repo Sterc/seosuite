@@ -38,6 +38,7 @@ $xpdo_meta_map['SeoSuiteUrl']= array (
       'phptype' => 'string',
       'null' => false,
       'default' => '',
+      'index' => 'index',
     ),
     'suggestions' => 
     array (
@@ -79,6 +80,22 @@ $xpdo_meta_map['SeoSuiteUrl']= array (
       'columns' => 
       array (
         'context_key' => 
+        array (
+          'length' => '767',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'url' => 
+    array (
+      'alias' => 'url',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'url' => 
         array (
           'length' => '767',
           'collation' => 'A',

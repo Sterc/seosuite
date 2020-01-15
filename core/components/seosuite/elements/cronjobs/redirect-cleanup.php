@@ -34,10 +34,10 @@ if (!$service instanceof SeoSuiteCronjob) {
 $options = $_GET;
 if (XPDO_CLI_MODE) {
     $options = getopt('',
-        array(
+        [
             'till::',
             'triggered::'
-        )
+        ]
     );
 } else {
     $options = $_GET;

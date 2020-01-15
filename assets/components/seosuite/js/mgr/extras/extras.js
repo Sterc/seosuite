@@ -199,3 +199,37 @@ SeoSuite.combo.Suggestions = function(config) {
 Ext.extend(SeoSuite.combo.Suggestions, MODx.combo.ComboBox);
 
 Ext.reg('seosuite-combo-suggestions', SeoSuite.combo.Suggestions);
+
+SeoSuite.combo.Contexts = function(config) {
+    config = config || {};
+
+    Ext.applyIf(config, {
+        name         : 'context_key',
+        hiddenName   : 'context_key',
+        displayField : 'name',
+        valueField   : 'key',
+        value        : 'seosuite_all',
+        fields       : ['key', 'name'],
+        pageSize     : 20,
+        url          : SeoSuite.config.connector_url,
+        baseParams : {
+            action  : 'mgr/context/getlist',
+            exclude : config.exclude || 'mgr'
+        },
+        tpl          : new Ext.XTemplate('<tpl for=".">' +
+            '<div class="x-combo-list-item">' +
+                '<span style="font-weight: bold">{name:htmlEncode}</span>' +
+                '<tpl if="key !== \'seosuite_all\'">' +
+                    ' <span style="font-style: italic; font-size: small;">({key:htmlEncode})</span>' +
+                '</tpl>' +
+            '</div>' +
+        '</tpl>')
+    });
+    MODx.combo.Context.superclass.constructor.call(this, config);
+
+    SeoSuite.combo.Contexts.superclass.constructor.call(this, config);
+};
+
+Ext.extend(SeoSuite.combo.Contexts, MODx.combo.ComboBox);
+
+Ext.reg('seosuite-combo-contexts', SeoSuite.combo.Contexts);

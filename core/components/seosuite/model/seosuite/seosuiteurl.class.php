@@ -96,8 +96,7 @@ class SeoSuiteUrl extends xPDOSimpleObject
     {
         $suggestions = [];
 
-        $url   = $this->getUrlSegment($this->get('url'));
-        $words = array_diff($this->getUrlSegmentWords($url), $excludeWords);
+        $words = array_diff($this->getUrlSegmentWords($this->get('url')), $excludeWords);
 
         asort($words);
 
@@ -163,22 +162,6 @@ class SeoSuiteUrl extends xPDOSimpleObject
         }
 
         return $output;
-    }
-
-    /**
-     * @access public.
-     * @param String $url.
-     * @return String.
-     */
-    public function getUrlSegment($url)
-    {
-        $segment = array_reverse(explode('/', $url))[0];
-
-        if (strrpos($segment, '.') !== false) {
-            $segment = substr($segment, 0, strrpos($segment, '.'));
-        }
-
-        return $segment;
     }
 
     /**

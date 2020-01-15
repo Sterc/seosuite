@@ -1,5 +1,5 @@
 ## SEO Suite
-[SEO Suite][1] was introduced by [Sterc][4] as a premium MODX Extra that automatically redirects your 404 URLs to relevant pages on your website. 404 errors are a fairly common issue for anyone who’s transitioning from an old website to a new website. SEO Suite makes sure your visitors are redirected to a relevant page when they’re looking for an old URL.
+[SEO Suite][1] was introduced by [Sterc][3] as a MODX Extra that automatically redirects your 404 URLs to relevant pages on your website. 404 errors are a fairly common issue for anyone who’s transitioning from an old website to a new website. SEO Suite makes sure your visitors are redirected to a relevant page when they’re looking for an old URL.
 
 Through simply uploading a single column .csv file containing your 404 URLs, SEO Suite will look for similar pages on your website and redirect them automatically. This matching process is based on the URL information after the last slash (example.com/**this-information**).
 
@@ -13,8 +13,7 @@ Through simply uploading a single column .csv file containing your 404 URLs, SEO
 
 ## Requirements
 To make sure that SEO Suite functions properly, the following requirements should be met:
--  [SEO Tab][2] (version 2.0 or newer) has to be installed. This is where the redirects of your 404 URLs will be stored.
--  [MODX version 2.5.0 or newer][3] has to be installed. 
+-  [MODX version 2.5.0 or newer][2] has to be installed. 
 
 ## Cronjob
 Inside the `core/components/seosuite/elements/cronjobs/` directory you can find the SeoSuite cronjobs.
@@ -45,10 +44,9 @@ A dashboard widget will be provided which shows the 10 redirects with the most h
 * Automatically import 404's from Google Search Console.
 
 ## Bugs and feature requests
-We greatly value your feedback, feature requests and bug reports. Please issue them on [Bitbucket][5].
+We greatly value your feedback, feature requests and bug reports. Please issue them on [Bitbucket][4].
 
 [1]: https://www.sterc.nl/en/modx-extras/seosuite
-[2]: https://www.sterc.nl/en/modx-extras/seotab
-[3]: https://modx.com/download
-[4]: https://www.sterc.nl/en/
-[5]: https://bitbucket.org/sterc/seosuite/issues?status=new&status=open
+[2]: https://modx.com/download
+[3]: https://www.sterc.nl/en/
+[4]: https://bitbucket.org/sterc/seosuite/issues?status=new&status=open

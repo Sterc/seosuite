@@ -40,15 +40,18 @@ class SeoSuiteExcludeWordsSaveProcessor extends modObjectProcessor
 
         if ($setting) {
             $words = explode(',', strtolower($this->getProperty('exclude_words')));
+            $value = implode(',', array_filter(array_map('trim', $words)));
 
-            $setting->set('value', implode(',', array_filter(array_map('trim', $words))));
+            $setting->set('value', $value);
 
             if ($setting->save()) {
-                return $this->success('GOED');
+                $this->modx->reloadConfig();
+
+                return $this->success('', ['exclude_words' => $value]);
             }
         }
 
-        return $this->failure('FOUT');
+        return $this->failure('');
     }
 }
 

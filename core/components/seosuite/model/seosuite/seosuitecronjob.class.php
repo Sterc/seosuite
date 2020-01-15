@@ -146,11 +146,10 @@ class SeoSuiteCronjob
         $till      = isset($options['till']) && !empty($options['till']) ? $options['till'] : date('Y-m-d H:i:s', strtotime('-1 month'));
         $triggered = isset($options['triggered']) && !empty($options['triggered']) ? $options['triggered'] : 1;
 
-        $removed = $this->modx->removeCollection('SeoSuiteUrl', array(
-            'solved'       => false,
+        $removed = $this->modx->removeCollection('SeoSuiteUrl', [
             'createdon:<=' => $till,
-            'triggered:<=' => $triggered
-        ));
+            'visits:<='    => $triggered
+        ]);
 
         $this->log('Removed redirects: ' . $removed);
         $this->log('Finished cleaning up redirects');

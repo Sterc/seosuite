@@ -38,6 +38,10 @@ class SeoSuiteRedirectCreateProcessor extends modObjectCreateProcessor
             $this->setProperty('active', 0);
         }
 
+        if ($this->getProperty('context_key') === 'seosuite_all') {
+            $this->setProperty('context_key', '');
+        }
+
         return parent::initialize();
     }
 
@@ -48,15 +52,16 @@ class SeoSuiteRedirectCreateProcessor extends modObjectCreateProcessor
     public function beforeSave()
     {
         $criteria = [
-            'id:!='     => $this->object->get('id'),
-            'old_url'   => $this->object->get('old_url')
+            'id:!='       => $this->object->get('id'),
+            'context_key' => $this->object->get('context_key'),
+            'old_url'     => $this->modx->seosuite->formatUrl($this->object->get('old_url'))
         ];
 
         if ($this->doesAlreadyExist($criteria)) {
             $this->addFieldError('old_url', $this->modx->lexicon('seosuite.redirect_error_exists'));
         }
 
-        $this->object->set('new_url', trim($this->getProperty('new_url'), '/'));
+        $this->object->set('new_url', $this->modx->seosuite->formatUrl($this->getProperty('new_url')));
 
         return parent::beforeSave();
     }
