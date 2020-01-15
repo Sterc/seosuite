@@ -56,69 +56,69 @@
         "systemSettings": [{
             "key": "exclude_words",
             "value": "",
-            "area": "general"
+            "area": "seosuite_general"
         },{
           "key": "meta.counter_fields",
           "value": "longtitle:30|70,description:70|155,content",
-          "area": "meta"
+          "area": "seosuite_tab_meta"
         },{
           "key": "meta.disabled_templates",
           "value": "",
-          "area": "meta"
+          "area": "seosuite_tab_meta"
         },{
           "key": "meta.max_keywords_title",
           "value": "4",
-          "area": "meta"
+          "area": "seosuite_tab_meta"
         },{
           "key": "meta.max_keywords_description",
           "value": "8",
-          "area": "meta"
+          "area": "seosuite_tab_meta"
         },{
           "key": "meta.searchengine",
           "value": "google",
-          "area": "meta"
+          "area": "seosuite_tab_meta"
         }, {
           "key": "meta.default_meta_title",
           "value": "[{\"type\":\"placeholder\",\"value\":\"title\"},{\"type\":\"text\",\"value\":\" | \"},{\"type\":\"placeholder\",\"value\":\"site_name\"}]",
-          "area": "meta"
+          "area": "seosuite_tab_meta"
         }, {
           "key": "meta.default_meta_description",
           "value": "[{\"type\":\"placeholder\",\"value\":\"description\"}]",
-          "area": "meta"
+          "area": "seosuite_tab_meta"
         }, {
           "key": "meta.preview.length_desktop_title",
           "value": "70",
-          "area": "meta"
+          "area": "seosuite_tab_meta"
         }, {
           "key": "meta.preview.length_desktop_description",
           "value": "160",
-          "area": "meta"
+          "area": "seosuite_tab_meta"
         },{
           "key": "meta.preview.length_mobile_title",
           "value": "78",
-          "area": "meta"
+          "area": "seosuite_tab_meta"
         }, {
           "key": "meta.preview.length_mobile_description",
           "value": "130",
-          "area": "meta"
+          "area": "seosuite_tab_meta"
         },{
           "key": "sitemap.default_changefreq",
           "value": "weekly",
-          "area": "sitemap"
+          "area": "seosuite_sitemap"
         }, {
           "key": "sitemap.default_priority",
           "value": "0.5",
-          "area": "sitemap"
+          "area": "seosuite_sitemap"
         }, {
           "key": "sitemap.dependent_ultimateparent",
           "type": "combo-boolean",
           "value": "0",
-          "area": "sitemap"
+          "area": "seosuite_sitemap"
         }, {
           "key": "sitemap.babel.add_alternate_links",
           "type": "combo-boolean",
           "value": "1",
-          "area": "sitemap"
+          "area": "seosuite_sitemap"
         }, {
           "key": "tab_social_og_types",
           "value": "website",

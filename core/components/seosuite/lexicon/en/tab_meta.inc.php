@@ -1,9 +1,4 @@
 <?php
-/**
- * SeoSuite
- *
- * Copyright 2019 by Sterc <modx@sterc.com>
- */
 $_lang['seosuite.tab_meta.add_variable']                    = 'Add variable';
 $_lang['seosuite.tab_meta.insert_variable']                 = 'Insert variable';
 $_lang['seosuite.tab_meta.label_variable']                  = 'Variable';
@@ -22,7 +17,7 @@ $_lang['seosuite.tab_meta.description']                     = 'META Description'
 $_lang['seosuite.tab_meta.seo']                             = 'SEO';
 
 /* Keywords. */
-$_lang['seosuite.tab_meta.keywords']                        = 'Trefwoorden';
-$_lang['seosuite.tab_meta.characters.allowed']              = 'Toegestaan aantal karakters';
-$_lang['seosuite.tab_meta.focuskeywords']                   = 'Focus trefwoorden';
-$_lang['seosuite.tab_meta.focuskeywords_desc']              = 'Vul een komma gescheiden lijst van trefwoorden in. Bijvoorbeeld: tafel, stoel.';
+$_lang['seosuite.tab_meta.keywords']                        = 'Keywords';
+$_lang['seosuite.tab_meta.characters.allowed']              = 'Allowed characters';
+$_lang['seosuite.tab_meta.focuskeywords']                   = 'Focus keywords';
+$_lang['seosuite.tab_meta.focuskeywords_desc']              = 'Enter your keywords comma-separated, for example: table, chair.';
