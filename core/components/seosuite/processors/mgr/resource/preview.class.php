@@ -50,6 +50,7 @@ class SeoSuitePreviewProcessor extends modProcessor
 
         $title       = $this->getProperty('title');
         $description = $this->getProperty('description');
+
         if ($this->getProperty('use_default_meta') === 'true') {
             $title       = $this->modx->getOption('seosuite.meta.default_meta_title');
             $description = $this->modx->getOption('seosuite.meta.default_meta_description');
@@ -60,21 +61,19 @@ class SeoSuitePreviewProcessor extends modProcessor
         $renderedTitle       = $this->seosuite->renderMetaValue($title, $fields);
         $renderedDescription = $this->seosuite->renderMetaValue($description, $fields);
 
-        $rendered = [
-            'title'       => $this->truncate($renderedTitle, $this->seosuite->config['meta']['preview.length_' . $this->getProperty('preview_type') . '_title']),
-            'description' => $this->truncate($renderedDescription, $this->seosuite->config['meta']['preview.length_' . $this->getProperty('preview_type') . '_description']),
-            'alias'       => $alias
+        $output = [
+            'output'        => [
+                'title'         => $this->truncate($renderedTitle, $this->seosuite->config['meta']['preview'][$this->getProperty('preview_type')]['title']),
+                'description'   => $this->truncate($renderedDescription, $this->seosuite->config['meta']['preview'][$this->getProperty('preview_type')]['description']),
+                'alias'         => $alias
+            ],
+            'counts'        => [
+                'title'         => strlen($renderedTitle),
+                'description'   => strlen($renderedDescription)
+            ]
         ];
 
-        return $this->outputArray([
-            'output' => $rendered,
-            'counts' => [
-                'title'       => strlen($renderedTitle),
-                'description' => strlen($renderedDescription)
-            ]
-        ],
-        0
-        );
+        return $this->outputArray($output, 0);
     }
 
     /**

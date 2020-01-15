@@ -251,6 +251,7 @@
 }
 
 .seosuite-meta-editor .x-form-text {
+    display: block;
     height: 24px;
     line-height: 24px;
 }
@@ -262,4 +263,5 @@
     font-weight: 600;
     background: #3697cd;
     border-radius: 13px;
+    cursor: pointer;
 }

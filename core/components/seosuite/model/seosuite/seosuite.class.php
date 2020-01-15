@@ -122,18 +122,24 @@ class SeoSuite
                 'image_types'               => 'jpg,jpeg.png,gif'
             ],
             'meta'                      => [
-                'preview.length_desktop_title'       => $this->modx->getOption('seosuite.meta.preview.length_desktop_title', null, null),
-                'preview.length_desktop_description' => $this->modx->getOption('seosuite.meta.preview.length_desktop_description', null, null),
-                'preview.length_mobile_title'        => $this->modx->getOption('seosuite.meta.preview.length_mobile_title', null, null),
-                'preview.length_mobile_description'  => $this->modx->getOption('seosuite.meta.preview.length_mobile_description', null, null),
                 'permission'                         => (bool) $this->modx->hasPermission('seosuite_meta'),
                 'counter_fields'                     => $this->modx->getOption('seosuite.meta.counter_fields', null, 'longtitle:70,description:160,content'),
-                'default_meta_description'           => $this->modx->getOption('seosuite.meta.default_meta_description', null, '[{"type":"placeholder","value":"description"}]'),
-                'default_meta_title'                 => $this->modx->getOption('seosuite.meta.default_meta_title', null, '[{"type":"placeholder","value":"title"},{"type":"text","value":" | "},{"type":"placeholder","value":"site_name"}]'),
+                'default_meta_description'           => $this->modx->getOption('seosuite.meta.default_meta_description', null, '[{"type": "variable", "value": "description"}]'),
+                'default_meta_title'                 => $this->modx->getOption('seosuite.meta.default_meta_title', null, '[{"type": "variable", "value": "title"}, {"type":"text", "value": " | "}, {"type": "variable", "value": "site_name"}]'),
                 'disabled_templates'                 => $this->modx->getOption('seosuite.meta.disabled_templates'),
                 'max_keywords_description'           => (int) $this->modx->getOption('seosuite.meta.max_keywords_description', null, 8),
                 'max_keywords_title'                 => (int) $this->modx->getOption('seosuite.meta.max_keywords_title', null, 4),
-                'search_engine'                      => $this->modx->getOption('seosuite.meta.searchengine', null, 'google')
+                'preview'                   => [
+                    'search_engine'             => $this->modx->getOption('seosuite.meta.searchengine', null, 'google'),
+                    'desktop'                   => [
+                        'title'                     => (int) $this->modx->getOption('seosuite.meta.preview.length_desktop_title', null, 70),
+                        'description'               => (int) $this->modx->getOption('seosuite.meta.preview.length_desktop_description', null, 160),
+                    ],
+                    'mobile'                    => [
+                        'title'                     => (int) $this->modx->getOption('seosuite.meta.preview.length_mobile_title', null, 78),
+                        'description'               => (int) $this->modx->getOption('seosuite.meta.preview.length_mobile_description', null, 130)
+                    ]
+                ],
             ],
             'sitemap'                   => [
                 'babel_add_alternate_links' => (bool) $this->modx->getOption('seosuite.sitemap.babel.add_alternate_links', null, true),
@@ -918,16 +924,17 @@ class SeoSuite
         $output = [];
 
         if (!empty($json)) {
-            $array = json_decode($json, true);
+            $data = json_decode($json, true);
 
-            if (is_array($array) && count($array) > 0) {
-                foreach ($array as $item) {
+            if ($data) {
+                foreach ((array) $data as $item) {
                     if ($item['type'] === 'text') {
                         $output[] = $item['value'];
                     } else {
                         switch ($item['value']) {
                             case 'site_name':
                                 $output[] = $this->modx->getOption($item['value']);
+
                                 break;
                             case 'pagetitle':
                             case 'longtitle':
@@ -936,9 +943,11 @@ class SeoSuite
                                 if (isset($resourceArray[$item['value']])) {
                                     $output[] = $resourceArray[$item['value']];
                                 }
+
                                 break;
                             case 'title':
                                 $output[] = $resourceArray['longtitle'] ?: $resourceArray['pagetitle'];
+
                                 break;
                         }
                     }

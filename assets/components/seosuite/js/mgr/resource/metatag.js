@@ -21,28 +21,11 @@ SeoSuite.panel.MetaTag = function(config) {
             xtype       : 'button',
             cls         : 'seosuite-meta-field-btn',
             text        : '<i class="icon icon-plus"></i> ' + _('seosuite.tab_meta.add_variable'),
-            target_field    : 'seosuite-variables-preview-' + config.id,
-            handler     : function (btn) {
-
-                var type = 'description';
-
-                if (btn.target_field === 'seosuite-variables-preview-title') {
-                    type = 'title';
-                }
-
-                /* Set default position if needed. */
-                if (!SeoSuite.currentCaretPosition[type]) {
-                    SeoSuite.currentCaretPosition[type]             = [];
-                    SeoSuite.currentCaretPosition[type]['element']  = Ext.query('#' + btn.target_field)[0];
-                    SeoSuite.currentCaretPosition[type]['position'] = 0;
-                }
-
-                this.showVariableWindow(btn);
-            },
+            handler     : this.onInsertVariable,
             scope       : this,
         }, {
             cls         : 'seosuite-meta-editor',
-            html        : '<div class="x-form-text" id="seosuite-meta-editor-' + config.id + '" contenteditable="true" spellcheck="false"></div>',
+            html        : '<span class="x-form-text" id="seosuite-meta-editor-' + config.id + '" contenteditable="true" spellcheck="false"></span>',
             listeners   : {
                 afterrender : {
                     fn          : this.onAfterRender,
@@ -145,46 +128,174 @@ SeoSuite.panel.MetaTag = function(config) {
 
 Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
     onAfterRender: function() {
-        this.editor = Ext.get('seosuite-meta-editor-' + this.id);
+        this.editor     = Ext.get('seosuite-meta-editor-' + this.id);
+        this.selection  = null;
 
-        //this.editor.addListener('keyup', function(event) {
-        //    console.log('keyup', event, this);
-        //});
+        this.editor.addListener('click', (function(event, tf) {
+            this.onUpdateEditorSelection(event, 'click');
+        }).bind(this));
 
-        //this.editor.addListener('click', function(event) {
-        //    console.log('click', event);
-        //});
+        this.editor.addListener('keydown', (function(event, tf) {
+            if (event.keyCode >= 49) {
+                var selection = window.getSelection();
+                var range = window.getSelection().getRangeAt(0);
 
+                if (range.startContainer.parentNode.className === 'x-panel-body x-panel-body-noheader') {
+                    if (!range.collapsed) {
+                        range.deleteContents();
+                    }
 
+                    if (newElement = document.createElement('span')) {
+                        newElement.appendChild(document.createTextNode('A'));
+                        newElement.setAttribute('data-type', 'string');
 
-        this.editor.addListener('keydown', function(event, tf) {
+                        range.insertNode(newElement);
+
+                        range.setStartBefore(newElement.childNodes[0]);
+                        range.setEndAfter(newElement.childNodes[0]);
+                    }
+
+                    selection.removeAllRanges();
+
+                    selection.addRange(range);
+                }
+            }
+
+            // If key is enter do nothing.
             if (event.keyCode === 13) {
                 event.preventDefault();
             }
-        });
+
+            // If key is backspace or delete do nothing.
+            //if (event.keyCode === 8 || event.keyCode === 46) {
+            //    var node = window.getSelection().getRangeAt(0).startContainer.parentNode;
+
+            //    if (node.getAttribute('data-type') === 'variable') {
+            //        event.preventDefault();
+            //    }
+            //}
+        }).bind(this));
 
         this.editor.addListener('keyup', (function(event, tf) {
-            var data    = [];
-            var matches = tf.innerHTML.match(/<span[^>]*>*.*?<\/span>/gm);
+            // If key is arrow left or right update selection.
+            //if (event.keyCode === 37 || event.keyCode === 39) {
+                this.onUpdateEditorSelection(event, 'key');
+            //}
 
-            if (matches) {
-                matches.forEach(function (snippet) {
-                    var value = snippet.match(/<span.*?data-type="(.*?)"?.*?>(.*?)<\/span>/);
+            //var data    = [];
+            //var matches = tf.innerHTML.replace(/&nbsp;/g, ' ').match(/(<span.*?data-type="(.*?)".*?>(.*?)<\/span>|([^<]+))/gm);
 
-                    if (value) {
-                        data.push({
-                            type    : value[1],
-                            value   : value[2]
-                        });
-                    }
-                });
-            }
+            //if (matches) {
+            //    matches.forEach(function (snippet) {
+            //        if (snippet.match(/<span.*?>(.*?)<\/span>/)) {
+            //            var value = snippet.match(/<span.*?data-type="(.*?)".*?>(.*?)<\/span>/);
 
-            this.data = data;
+            //            if (value) {
+            //                data.push({
+            //                    type    : value[1],
+            //                    value   : value[2].replace(/&nbsp;/g, ' ')
+            //                });
+            //            }
+            //        } else {
+            //            data.push({
+            //                type    : 'string',
+            //                value   : snippet.replace(/&nbsp;/g, ' ')
+            //            });
+            //        }
+            //    });
+            //}
+
+            //this.data = data;
         }).bind(this));
 
         if (this.value) {
             this.setValue(this.value);
+        }
+    },
+    onUpdateEditorSelection: function (event, type) {
+        if (window.getSelection()) {
+            var selection   = window.getSelection();
+            var range       = window.getSelection().getRangeAt(0);
+            var node        = event.browserEvent.target;
+
+            if (type === 'click') {
+                node = event.browserEvent.target;
+            } else {
+                node = range.startContainer.parentNode;
+            }
+
+            console.log(node);
+
+            var preCaretRange = range.cloneRange();
+            preCaretRange.selectNodeContents(node);
+            preCaretRange.setEnd(range.endContainer, range.endOffset);
+
+            if (node.getAttribute('data-type') === 'variable') {
+                //range.deleteContents();
+
+                //range.selectNodeContents(node);
+                //range.collapse(true);
+
+
+
+                console.log('variable', preCaretRange.toString().length);
+
+                //selection.removeAllRanges();
+
+                //selection.addRange(preCaretRange);
+            } else {
+                console.log('string', preCaretRange.toString().length);
+            }
+
+            //this.selection = range.cloneRange();
+
+            //event.preventDefault();
+        } else {
+            console.log('niks');
+        }
+    },
+    onInsertVariable: function() {
+        console.log('onInsertVariable');
+        //anchorOffset
+        //console.log(range.startContainer.parentNode.innerHTML);
+
+        if (this.selection) {
+            var selection   = window.getSelection();
+
+            var node        = this.selection.startContainer.parentNode;
+            var text1       = node.innerHTML.substring(0, this.selection.startOffset);
+            var text2       = node.innerHTML.substring(this.selection.endOffset, node.innerHTML.length);
+            var snippet     = 'test';
+
+            node.remove();
+
+            if (newElement = document.createElement('span')) {
+                newElement.appendChild(document.createTextNode(text2));
+                newElement.setAttribute('data-type', 'string');
+
+                this.selection.insertNode(newElement);
+            }
+
+            if (newElement2 = document.createElement('span')) {
+                newElement2.appendChild(document.createTextNode(snippet));
+                newElement2.setAttribute('data-type', 'variable');
+
+                this.selection.insertNode(newElement2);
+            }
+
+            if (newElement3 = document.createElement('span')) {
+                newElement3.appendChild(document.createTextNode(text1));
+                newElement3.setAttribute('data-type', 'string');
+
+                this.selection.insertNode(newElement3);
+            }
+
+            this.selection.setStartBefore(newElement2.childNodes[0]);
+            this.selection.setEndAfter(newElement2.childNodes[0]);
+
+            selection.removeAllRanges();
+
+            selection.addRange(this.selection);
         }
     },
     setValue: function(value) {
@@ -205,7 +316,7 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
                 json.forEach(function(item) {
                     data.push({
                         type    : item.type,
-                        value   : item.value || ''
+                        value   : (item.value || '').replace(/&nbsp;/g, ' ')
                     });
                 });
             }
@@ -214,15 +325,16 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
         return data;
     },
     onUpdateHiddenValue: function() {
+        console.log(Ext.encode(this.data));
     },
     onUpdateEditorValue: function() {
         var output = [];
 
         this.data.forEach(function(item) {
-            if (item.type === 'variable' || item.type === 'placeholder') {
-                output.push('<span data-type="variable" contenteditable="false" spellcheck="false">' + item.value.replace(/&nbsp;/g, ' ') + '</span>');
+            if (item.type === 'variable') {
+                output.push('<span data-type="variable">' + item.value.trim() + '</span>');
             } else {
-                output.push('<span data-type="string" spellcheck="false">' + item.value.replace(/&nbsp;/g, ' ') + '</span>');
+                output.push('<span data-type="string">' + item.value + '</span>');
             }
         });
 
@@ -361,7 +473,7 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
                 if (jsonObject.hasOwnProperty(property)) {
                     var uniqueID = SeoSuite.generateUniqueID();
 
-                    if (jsonObject[property].type === 'placeholder') {
+                    if (jsonObject[property].type === 'placeholder' || jsonObject[property].type === 'variable') {
                         output += '<span class="seosuite-snippet-variable" spellcheck="false" id="' + uniqueID + '">' + jsonObject[property].value + '</span>';
                     } else {
                         output += '<span id="' + uniqueID + '">' + jsonObject[property].value + '</span>';
@@ -423,6 +535,8 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
 
             this.data.push(record);
         }
+
+        console.log(this.data);
 
         this.onUpdateEditorValue();
     }
