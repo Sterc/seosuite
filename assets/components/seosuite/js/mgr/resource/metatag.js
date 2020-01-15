@@ -132,7 +132,7 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
         this.selection  = null;
 
         this.editor.addListener('click', (function(event, tf) {
-            this.onUpdateEditorSelection(event, 'click');
+        //    this.onUpdateEditorSelection(event, 'click');
         }).bind(this));
 
         this.editor.addListener('keydown', (function(event, tf) {
@@ -174,12 +174,13 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
             //        event.preventDefault();
             //    }
             //}
+            this.onEditorKeyDown(event);
         }).bind(this));
 
         this.editor.addListener('keyup', (function(event, tf) {
             // If key is arrow left or right update selection.
             //if (event.keyCode === 37 || event.keyCode === 39) {
-                this.onUpdateEditorSelection(event, 'key');
+            //    this.onUpdateEditorSelection(event, 'key');
             //}
 
             //var data    = [];
