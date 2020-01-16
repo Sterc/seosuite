@@ -96,3 +96,5 @@ $_lang['seosuite.time_weeks']                                   = '[[+weeks]] we
 $_lang['seosuite.time_month']                                   = '1 month ago';
 $_lang['seosuite.time_months']                                  = '[[+months]] months ago';
 $_lang['seosuite.time_to_long']                                 = 'More then a half year ago';
+
+$_lang['seosuite.widget_desc']                                  = 'Here you can view the 10 most recently added 404 urls. To view and manage all your 404 urls, please visit the <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager page.</a>';

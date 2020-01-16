@@ -122,7 +122,7 @@ class SeoSuite
                 'image_types'               => 'jpg,jpeg.png,gif'
             ],
             'meta'                      => [
-                'permission'                         => (bool) $this->modx->hasPermission('seosuite_meta'),
+                'permission'                         => (bool) $this->modx->hasPermission('seosuite_tab_meta'),
                 'counter_fields'                     => $this->modx->getOption('seosuite.meta.counter_fields', null, 'longtitle:70,description:160,content'),
                 'default_meta_description'           => $this->modx->getOption('seosuite.meta.default_meta_description', null, '[{"type": "variable", "value": "description"}]'),
                 'default_meta_title'                 => $this->modx->getOption('seosuite.meta.default_meta_title', null, '[{"type": "variable", "value": "title"}, {"type":"text", "value": " | "}, {"type": "variable", "value": "site_name"}]'),

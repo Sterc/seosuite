@@ -90,3 +90,5 @@ $_lang['seosuite.time_weeks']                                   = '[[+weeks]] we
 $_lang['seosuite.time_month']                                   = '1 maand geleden';
 $_lang['seosuite.time_months']                                  = '[[+months]] maanden geleden';
 $_lang['seosuite.time_to_long']                                 = 'Meer dan een half jaar geleden';
+
+$_lang['seosuite.widget_desc']                                  = 'Hier zie je de meest recent toegevoegde 404 URL\'s . Om alle 404 URL\'s te bekijken en beheren, ga je naar de <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager pagina.</a>';
