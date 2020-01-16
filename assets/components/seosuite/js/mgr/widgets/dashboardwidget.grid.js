@@ -17,17 +17,6 @@ SeoSuite.grid.RecentUrls = function(config) {
         autoHeight : true,
         paging     : false,
         remoteSort : true,
-        viewConfig : {
-            forceFit    : true,
-            getRowClass : function (record) {
-                var clsName = 'seosuite-row';
-                if (record.json.solved) {
-                    clsName += ' seosuite-solved';
-                }
-
-                return clsName;
-            }
-        },
         columns: [{
             header    : _('seosuite.label_url_url'),
             dataIndex : 'url',
