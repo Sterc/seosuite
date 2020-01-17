@@ -108,11 +108,11 @@ SeoSuite.panel.SeoTab = function(config) {
             checked     : SeoSuite.record.seosuite_override_uri,
             listeners   : {
                 check       : {
-                    fn          : this.onUpdateFreezeUri,
+                    fn          : this.onToggleFreezeUri,
                     scope       : this
                 },
                 afterrender : {
-                    fn          : this.onUpdateFreezeUri,
+                    fn          : this.onToggleFreezeUri,
                     scope       : this
                 }
             }
@@ -136,13 +136,7 @@ SeoSuite.panel.SeoTab = function(config) {
                 value       : SeoSuite.record.seosuite_uri,
                 listeners   : {
                     change      : {
-                        fn          : function(tf) {
-                            var uri = Ext.getCmp('modx-resource-uri');
-
-                            if (uri) {
-                                uri.setValue(tf.getValue());
-                            }
-                        },
+                        fn          : this.onUpdateFreezeUri,
                         scope       : this
                     }
                 }
@@ -312,17 +306,26 @@ Ext.extend(SeoSuite.panel.SeoTab, Ext.Panel, {
             }
         });
     },
-    onUpdateFreezeUri: function(tf) {
-        var urioverride = Ext.getCmp('modx-resource-uri-override');
+    onToggleFreezeUri: function(tf) {
+        var freezeUri = Ext.getCmp('modx-resource-uri-override');
 
-        if (urioverride) {
-            urioverride.setValue(tf.getValue());
+        if (freezeUri) {
+            freezeUri.setValue(tf.getValue());
+            freezeUri.fireEvent('change', this);
         }
 
         if (tf.getValue()) {
             Ext.getCmp('seosuite-freeze-uri-container').show();
         } else {
             Ext.getCmp('seosuite-freeze-uri-container').hide();
+        }
+    },
+    onUpdateFreezeUri: function(tf) {
+        var uri = Ext.getCmp('modx-resource-uri');
+
+        if (uri) {
+            uri.setValue(tf.getValue());
+            uri.fireEvent('change');
         }
     },
     onUpdateCanonical: function(tf) {

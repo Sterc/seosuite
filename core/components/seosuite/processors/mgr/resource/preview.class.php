@@ -1,35 +1,27 @@
 <?php
+
 /**
- * Get parsed search engine preview.
+ * SeoSuite
  *
- * @package seopro
- * @subpackage processors
+ * Copyright 2019 by Sterc <modx@sterc.com>
  */
-class SeoSuitePreviewProcessor extends modProcessor
+
+class SeoSuiteMetaPreviewProcessor extends modProcessor
 {
-    protected $seosuite;
-
     /**
-     * SeoSuitePreviewProcessor constructor.
-     * @param modX $modx
-     * @param array $properties
+     * @access public.
+     * @return Mixed.
      */
-    public function __construct(modX &$modx, array $properties = array())
+    public function initialize()
     {
-        $modelPath = $modx->getOption(
-                'seosuite.core_path',
-                null,
-                $modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/seosuite/'
-            ) . 'model/seosuite/';
-        $modx->loadClass('SeoSuite', $modelPath, true, true);
+        $this->modx->getService('seosuite', 'SeoSuite', $this->modx->getOption('seosuite.core_path', null, $this->modx->getOption('core_path') . 'components/seosuite/') . 'model/seosuite/');
 
-        $this->seosuite = new SeoSuite($modx);
-
-        parent::__construct($modx, $properties);
+        return parent::initialize();
     }
 
     /**
-     * @return mixed|string
+     * @access public.
+     * @return Mixed.
      */
     public function process()
     {
@@ -52,19 +44,19 @@ class SeoSuitePreviewProcessor extends modProcessor
         $description = $this->getProperty('description');
 
         if ($this->getProperty('use_default_meta') === 'true') {
-            $title       = $this->modx->getOption('seosuite.meta.default_meta_title');
-            $description = $this->modx->getOption('seosuite.meta.default_meta_description');
+            $title       = $this->modx->seosuite->config['meta']['default_meta_title'];
+            $description = $this->modx->seosuite->config['meta']['default_meta_description'];
         }
 
-        $fields   = json_decode($this->getProperty('fields'), true);
+        $fields = json_decode($this->getProperty('fields'), true);
 
-        $renderedTitle       = $this->seosuite->renderMetaValue($title, $fields);
-        $renderedDescription = $this->seosuite->renderMetaValue($description, $fields);
+        $renderedTitle       = $this->modx->seosuite->renderMetaValue($title, $fields);
+        $renderedDescription = $this->modx->seosuite->renderMetaValue($description, $fields);
 
         $output = [
             'output'        => [
-                'title'         => $this->truncate($renderedTitle, $this->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['title']),
-                'description'   => $this->truncate($renderedDescription, $this->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['description']),
+                'title'         => $this->truncate($renderedTitle, $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['title']),
+                'description'   => $this->truncate($renderedDescription, $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['description']),
                 'alias'         => $alias
             ],
             'counts'        => [
@@ -77,13 +69,15 @@ class SeoSuitePreviewProcessor extends modProcessor
     }
 
     /**
-     * @param $output
-     * @param $maxLength
-     * @return string
+     *
+     * @access public.
+     * @param String $output.
+     * @param Integer $maxLength.
+     * @return String.
      */
-    protected function truncate($output, $maxLength)
+    protected function truncate($output, $maxLength = 0)
     {
-        if (strlen($output) > $maxLength) {
+        if ($maxLength !== 0 && strlen($output) > $maxLength) {
             $output = substr($output, 0, $maxLength) . '...';
         }
 
@@ -91,4 +85,4 @@ class SeoSuitePreviewProcessor extends modProcessor
     }
 }
 
-return 'SeoSuitePreviewProcessor';
+return 'SeoSuiteMetaPreviewProcessor';

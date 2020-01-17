@@ -76,6 +76,12 @@
     border-radius: 0 0 3px 3px;
 }
 
+#resource-seosuite-panel .x-toolbar label {
+    color: #555555;
+    font-size: 13px;
+    font-weight: 600;
+}
+
 /* SEO preview Default */
 
 #seosuite-seo-preview {
@@ -256,10 +262,11 @@
     line-height: 24px;
 }
 
-.seosuite-meta-editor .x-form-text [data-type="variable"] {
+.seosuite-meta-editor .x-form-text span[data-type="variable"] {
     display: inline-block;
     padding: 0 8px;
     color: #fff;
+    line-height: 22px;
     font-weight: 600;
     background: #3697cd;
     border-radius: 13px;

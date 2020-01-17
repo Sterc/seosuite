@@ -7,7 +7,6 @@ SeoSuite.panel.MetaTag = function(config) {
         itemCls     : 'seosuite-meta-field',
         items       : [{
             xtype       : 'hidden',
-            description : MODx.expandHelp ? '' : config.description,
             name        : config.name,
             id          : 'seosuite-preview-editor-' + config.id,
             value       : config.value,
@@ -21,7 +20,7 @@ SeoSuite.panel.MetaTag = function(config) {
             xtype       : 'button',
             cls         : 'seosuite-meta-field-btn',
             text        : '<i class="icon icon-plus"></i> ' + _('seosuite.tab_meta.add_variable'),
-            handler     : this.onInsertVariable,
+            handler     : this.insertVariable,
             scope       : this,
         }, {
             cls         : 'seosuite-meta-editor',
@@ -32,92 +31,6 @@ SeoSuite.panel.MetaTag = function(config) {
                     scope       : this
                 }
             }
-        }, {
-            html        : '<div id="seosuite-variables-preview-' + config.id + '"></div>',
-            listeners   : {
-                afterRender: function () {
-                    Ext.get('seosuite-variables-preview-' + config.id).dom.innerHTML = this.renderVariablesPreview(config.value);
-
-                    var self = this;
-                    document.getElementById('seosuite-variables-preview-' + config.id).addEventListener('input', function(event) {
-                        SeoSuite.currentCaretPosition            = [];
-                        SeoSuite.currentCaretPosition[config.id] = self.getCaretPosition();
-
-                        var parent = self.getSelectionBoundaryElement('start');
-                        if (parent.tagName === 'DIV') {
-                            var parts = [];
-                            event.target.innerHTML.split(/<\/span>/gm).forEach(function (value) {
-                                /* If string does not start with span, prepend it with a span element. */
-                                if (!value.startsWith('<span')) {
-                                    /* If the string does include a span, make sure we close the span before. */
-                                    if (value.includes('<span')) {
-                                        value = value.replace('<span', '</span><span');
-                                    }
-
-                                    value = '<span id="' + SeoSuite.generateUniqueID() + '">' + value;
-                                }
-
-                                value += '</span>';
-
-                                parts.push(value);
-                            });
-
-                            var position = self.getCaretPosition(document.getElementById('seosuite-variables-preview-' + config.id))['position'];
-
-                            event.target.innerHTML = parts.join('');
-
-                            self.setCaretPosition('seosuite-variables-preview-' + config.id, position);
-                        }
-
-                        SeoSuite.currentCaretPosition            = [];
-                        SeoSuite.currentCaretPosition[config.id] = self.getCaretPosition();
-
-                        SeoSuite.updateHiddenMetafieldValue(config.id);
-                    }, false);
-
-                    var elements = document.querySelectorAll('.seosuite-snippet-variable');
-                    for (i = 0; i < elements.length; ++i) {
-                        elements[i].addEventListener('click', function (event) {
-                            SeoSuite.selectElementById(event.target.id);
-                        });
-                    }
-
-                    document.getElementById('seosuite-variables-preview-' + config.id).addEventListener('focusin', function() {
-                        /* Make sure to reset current caret position, in case other field is focused upon. */
-                        SeoSuite.currentCaretPosition            = [];
-                        SeoSuite.currentCaretPosition[config.id] = self.getCaretPosition();
-                    });
-
-                    document.getElementById('seosuite-variables-preview-' + config.id).addEventListener('click', function() {
-                        /* Make sure to reset current caret position, in case other field is focused upon. */
-                        SeoSuite.currentCaretPosition            = [];
-                        SeoSuite.currentCaretPosition[config.id] = self.getCaretPosition();
-                    });
-
-                    document.getElementById('seosuite-variables-preview-' + config.id).addEventListener('keyup', function(event) {
-                        /* If left arrow or right arrow. */
-                        if (event.keyCode === 37 || event.keyCode === 39) {
-                            var selection = window.getSelection();
-
-                            /* If arrow cursor is moved by arrow key and cursor is inside seosuite snippet variable, then auto select the element. */
-                            if (selection.anchorNode.parentNode.classList.contains('seosuite-snippet-variable') && selection.type !== 'Range') {
-
-                                /* Ignore if already selected. */
-                                console.log(event);
-                                SeoSuite.selectElementById(selection.anchorNode.parentNode.id);
-                            }
-
-                            SeoSuite.currentCaretPosition            = [];
-                            SeoSuite.currentCaretPosition[config.id] = self.getCaretPosition();
-                        }
-                    });
-                },
-                scope: this
-            }
-        }, {
-            xtype: MODx.expandHelp ? 'label' : 'hidden',
-            html : config.description,
-            cls  : 'desc-under'
         }]
     });
 
@@ -128,21 +41,14 @@ SeoSuite.panel.MetaTag = function(config) {
 
 Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
     onAfterRender: function() {
-        this.editor     = Ext.get('seosuite-meta-editor-' + this.id);
-        this.selection  = null;
-
-
+        this.editor = Ext.get('seosuite-meta-editor-' + this.id);
+        this.range  = null;
 
         this.editor.addListener('keydown', (function(event, tf) {
-            // If key is enter do nothing.
-            if (event.keyCode === 13) {
-                event.preventDefault();
-            }
-
             // If key is backspace or delete do nothing.
-            if (event.keyCode === 8 || event.keyCode === 46) {
+            //if (event.keyCode === 8 || event.keyCode === 46) {
 
-            }
+            //}
 
             // If key is backspace or delete do nothing.
             //if (event.keyCode === 8 || event.keyCode === 46) {
@@ -152,145 +58,302 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
             //        event.preventDefault();
             //    }
             //}
-            this.onEditorKeyDown(event, this.selection);
+            //this.onEditorKeyDown(event, this.selection);
         }).bind(this));
 
         this.editor.addListener('keyup', (function(event, tf) {
             // If key is arrow left or right update selection.
             //if (event.keyCode === 37 || event.keyCode === 39) {
-                this.onEditorUpdateCaret(event, 'key');
+            //    this.onEditorUpdateCaret(event, 'key');
             //}
-
-            //var data    = [];
-            //var matches = tf.innerHTML.replace(/&nbsp;/g, ' ').match(/(<span.*?data-type="(.*?)".*?>(.*?)<\/span>|([^<]+))/gm);
-
-            //if (matches) {
-            //    matches.forEach(function (snippet) {
-            //        if (snippet.match(/<span.*?>(.*?)<\/span>/)) {
-            //            var value = snippet.match(/<span.*?data-type="(.*?)".*?>(.*?)<\/span>/);
-
-            //            if (value) {
-            //                data.push({
-            //                    type    : value[1],
-            //                    value   : value[2].replace(/&nbsp;/g, ' ')
-            //                });
-            //            }
-            //        } else {
-            //            data.push({
-            //                type    : 'string',
-            //                value   : snippet.replace(/&nbsp;/g, ' ')
-            //            });
-            //        }
-            //    });
-            //}
-
-            //this.data = data;
-        }).bind(this));
-
-        this.editor.addListener('keyup', (function(event, tf) {
-            this.onEditorUpdateCaret2(event, 'up');
         }).bind(this));
 
         this.editor.addListener('keydown', (function(event, tf) {
-            this.onEditorUpdateCaret2(event, 'down');
+            this.onEditorUpdate(event);
+        }).bind(this));
+
+        this.editor.addListener('keyup', (function(event, tf) {
+            this.onEditorUpdateNode(event, 'key');
         }).bind(this));
 
         this.editor.addListener('click', (function(event, tf) {
-            this.onEditorUpdateCaret(event, 'click');
+            this.onEditorUpdateNode(event, 'click');
+        }).bind(this));
+
+        this.editor.addListener('blur', (function(event, tf) {
+            this.onEditorUpdateNode(event, 'blur');
+            this.onEditorUpdateHiddenValue(event);
         }).bind(this));
 
         if (this.value) {
-            this.setValue(this.value);
+            this.onEditorParseHiddenValue(this.value);
         }
     },
-    onEditorKeyDown: function(event, caret) {
-        if (caret) {
-            var selection   = window.getSelection();
-            var range       = window.getSelection().getRangeAt(0);
-            var prevNode    = caret.node.previousSibling;
-            var nextNode    = caret.node.nextSibling;
+    setValue: function(value) {
+        this.onEditorParseHiddenValue(value);
+        this.onEditorUpdateHiddenValue();
+    },
+    getValue: function() {
+        var hiddenField = Ext.getCmp('seosuite-preview-editor-' + this.id);
 
-            if (event.browserEvent.key.length === 1) {
-                console.log('onEditorKeyDown');
+        if (hiddenField) {
+            return hiddenField.getValue();
+        }
 
-                if (!this.getEditorElementEditable(caret.node)) {
-                    if (caret.positionType === 'prev') {
-                        console.log('onEditorKeyDown, prev variable');
+        return '';
+    },
+    onEditorUpdate: function(event) {
+        console.log('onEditorUpdate', event.browserEvent, event.browserEvent.key, event.browserEvent.key.length);
 
-                        if (!prevNode || !this.getEditorElementEditable(prevNode)) {
-                            console.log('onEditorKeyDown, prev variable create element');
+        //Enter = 13
+        //Backspace = 8
+        //Delete = 49
+        if (event.browserEvent.key === 'Enter') {
+            event.preventDefault();
+        } else if (event.browserEvent.key === 'Delete' || event.browserEvent.key === 'Backspace') {
+            console.log('DELETE');
 
-                            prevNode = this.getEditorElement();
+            if (window.getSelection()) {
+                var range = window.getSelection().getRangeAt(0);
 
-                            this.editor.dom.insertBefore(prevNode, caret.node);
+                console.log(range);
+
+                if (this.isVariableNode(range.commonAncestorContainer.parentNode)) {
+                    range.setStartBefore(range.commonAncestorContainer.parentNode.childNodes[0]);
+                    range.setEndAfter(range.commonAncestorContainer.parentNode.childNodes[0]);
+
+                    console.log('JA');
+                    //var newRange = range.cloneRange();
+
+                    //newRange.setStartBefore(range.startContainer.parentNode.childNodes[0]);
+                    //newRange.setEndAfter(range.startContainer.parentNode.childNodes[0]);
+
+                    //selection.removeAllRanges();
+                    //selection.addRange(newRange);
+                }
+            }
+        } else if (event.browserEvent.key.length === 1 && !event.browserEvent.ctrlKey) {
+            if (window.getSelection()) {
+                var range       = window.getSelection().getRangeAt(0);
+                var newRange    = range.cloneRange();
+
+                /**
+                 * Check if the node is a variable.
+                 * If yes, then add the text to a new node before or after the variable node.
+                 */
+                if (this.isVariableNode(range.startContainer.parentNode)) {
+                    var sibling = null;
+
+                    if (range.startOffset === 0) {
+                        sibling = range.startContainer.parentNode.previousSibling;
+
+                        if (!this.isVariableNode(sibling)) {
+                            if (sibling = this.getVariableNode(event.browserEvent.key)) {
+                                this.editor.dom.insertBefore(sibling, range.startContainer.parentNode);
+                            }
                         }
 
-                        range.setStartBefore(prevNode.childNodes[0]);
-                        range.setEndAfter(prevNode.childNodes[0]);
-                    } else if (caret.positionType === 'next') {
-                        console.log('onEditorKeyDown, next variable');
-
-                        if (!nextNode || !this.getEditorElementEditable(nextNode)) {
-                            console.log('onEditorKeyDown, next variable create element');
-
-                            nextNode = this.getEditorElement();
-
-                            this.editor.dom.insertBefore(nextNode, caret.node.nextSibling);
-                        }
-
-                        range.setStartBefore(nextNode.childNodes[0]);
-                        range.setEndAfter(nextNode.childNodes[0]);
+                        newRange.setStart(sibling.childNodes[0], 0);
+                        newRange.setEnd(sibling.childNodes[0], 1);
                     }
 
-                    selection.removeAllRanges();
+                    if (range.startOffset === range.startContainer.length) {
+                        sibling = range.startContainer.parentNode.nextSibling;
 
-                    selection.addRange(range);
+                        if (!this.isVariableNode(sibling)) {
+                            if (sibling = this.getVariableNode(event.browserEvent.key)) {
+                                this.editor.dom.insertBefore(sibling, range.startContainer.parentNode.nextSibling);
+                            }
+                        }
+
+                        newRange.setStart(sibling.childNodes[0], 0);
+                        newRange.setEnd(sibling.childNodes[0], 1);
+                    }
+
+                    window.getSelection().removeAllRanges();
+                    window.getSelection().addRange(newRange);
                 }
             }
         }
     },
-    onEditorUpdateCaret2: function(event, method) {
+    onEditorUpdateNode: function(event, method) {
         if (window.getSelection()) {
-            var node        = null;
-            var selection   = window.getSelection();
-            var range       = selection.getRangeAt(0);
+            var range       = window.getSelection().getRangeAt(0);
+            var newRange    = range.cloneRange();
 
-            if (this.isVariableNode(range.startContainer.parentNode)) {
-                //if (range.startOffset !== 0) {
-                //    range.setStart(range.startContainer.parentNode, 0);
-                //}
+            /**
+             * Check if method is a key.
+             * If yes, check if the node is a variable and set the range to the begin and start of the node if the key is an arrow.
+             */
+            if (method === 'key') {
+                if (this.isVariableNode(range.startContainer.parentNode)) {
+                    if (event.browserEvent.key === 'ArrowRight') {
+                        if (range.startOffset < range.startContainer.length) {
+                            newRange.setStartBefore(range.startContainer.parentNode.childNodes[0]);
+                            newRange.setEndAfter(range.startContainer.parentNode.childNodes[0]);
+                        }
+                    }
 
-                if (method === 'down') {
-                    if (event.browserEvent.key === 'ArrowRight' && range.startOffset === 0) {
-                        range.setStartBefore(range.startContainer.parentNode.childNodes[0]);
-                        range.setEndAfter(range.startContainer.parentNode.childNodes[0]);
-                    } else if (event.browserEvent.key === 'ArrowLeft' && range.endOffset === range.endContainer.length) {
-                        range.setStartBefore(range.startContainer.parentNode.childNodes[0]);
-                        range.setEndAfter(range.startContainer.parentNode.childNodes[0]);
+                    if (event.browserEvent.key === 'ArrowLeft') {
+                        if (range.startOffset > 0) {
+                            newRange.setStartBefore(range.startContainer.parentNode.childNodes[0]);
+                            newRange.setEndAfter(range.startContainer.parentNode.childNodes[0]);
+                        }
                     }
                 }
-
-                //if (event.browserEvent.key === 'ArrowRight' && range.endOffset === range.endContainer.length) {
-                //    range.setStart(range.endContainer.parentNode, 1);
-                //}
             }
 
-            if (this.isVariableNode(range.endContainer.parentNode)) {
-                //if (range.endOffset !== range.endContainer.length) {
-                //    range.setEnd(range.endContainer.parentNode, 0);
-                //}
+            /**
+             * Check if method is click.
+             * If yes, check if the start node is a variable and set the range to the begin of the node.
+             * If yes, check if the end node is a variable and set the range to the end of the node.
+             */
+            if (method === 'click') {
+                if (this.isVariableNode(range.startContainer.parentNode)) {
+                    newRange.setStartBefore(range.startContainer.parentNode.childNodes[0]);
+                }
 
-                //if (event.browserEvent.key === 'ArrowRight' && range.endOffset === 0) {
-                //    range.setEnd(range.endContainer.parentNode, 1);
-                //}
+                if (this.isVariableNode(range.endContainer.parentNode)) {
+                    newRange.setEndAfter(range.endContainer.parentNode.childNodes[0]);
+                }
             }
 
-            console.log('onEditorUpdateCaret2 ' + method, event.browserEvent.key, range);
+            if (method === 'blur') {
+                this.range = newRange;
+            } else {
+                window.getSelection().removeAllRanges();
+
+                window.getSelection().addRange(newRange);
+            }
+        }
+    },
+    onEditorInsertNode: function(variable) {
+        if (this.range) {
+            var newRange    = this.range.cloneRange();
+
+            if (newRange.startContainer === newRange.endContainer) {
+                console.log('ZELFDE');
+            } else {
+                console.log('NIET ZELFDE');
+            }
+
+            //var newNode = document.createTextNode(variable);
+
+            //newRange.deleteContents();
+
+            //newRange.insertNode(newNode);
+            //newRange.selectNodeContents(newNode);
+
+
+            //console.log(newRange.toString());
+            //var newNode     = this.getVariableNode(variable);
+
+            //newNode.setAttribute('data-type', 'variable');
+
+            //newRange.deleteContents();
+
+            //newRange.insertNode(newNode);
+            //newRange.selectNode(newNode);
+
+            //window.getSelection().removeAllRanges();
+            //window.getSelection().addRange(newRange);
+
+            this.range = newRange;
         }
     },
     isVariableNode: function(node) {
-        return node.getAttribute('data-type') === 'variable';
+        return node && node.getAttribute('data-type') === 'variable';
     },
+    getVariableNode: function(value) {
+        var element = document.createElement('span');
+
+        if (element) {
+            element.appendChild(document.createTextNode(value || 'a'));
+        }
+
+        return element;
+    },
+    onEditorParseHiddenValue: function(value) {
+        var hiddenField = Ext.getCmp('seosuite-preview-editor-' + this.id);
+
+        if (hiddenField) {
+            var data = [];
+
+            if (!Ext.isEmpty(value)) {
+                var json = Ext.decode(value);
+
+                if (json) {
+                    json.forEach(function(item) {
+                        if (item.type === 'variable') {
+                            data.push('<span data-type="variable">' + (item.value || '') + '</span>');
+                        } else {
+                            data.push('<span>' + (item.value || '') + '</span>');
+                        }
+                    });
+                }
+            }
+
+            this.editor.dom.innerHTML = data.join('');
+        }
+    },
+    onEditorUpdateHiddenValue: function() {
+        var hiddenField = Ext.getCmp('seosuite-preview-editor-' + this.id);
+
+        if (hiddenField) {
+            var data    = [];
+            var matches = this.editor.dom.innerHTML.replace(/&nbsp;/g, ' ').match(/(<span.*?>(.*?)<\/span>|([^<]+))/gm);
+
+            if (matches) {
+                matches.forEach(function (value) {
+                    var string = value.match(/<span>(.*?)<\/span>/);
+                    var variable = value.match(/<span\sdata-type="([a-z]+)">(.*?)<\/span>/);
+
+                    if (string) {
+                        data.push({
+                            type    : 'text',
+                            value   : string[1]
+                        });
+                    } else if (variable) {
+                        data.push({
+                            type    : 'variable',
+                            value   : variable[2]
+                        });
+                    }
+                });
+            }
+
+            hiddenField.setValue(Ext.encode(data));
+            hiddenField.fireEvent('change', this);
+        }
+    },
+    insertVariable: function(btn) {
+        if (this.insertVariableWindow) {
+            this.insertVariableWindow.destroy();
+        }
+
+        this.insertVariableWindow = MODx.load({
+            xtype       : 'seosuite-window-insert-variable',
+            closeAction : 'close',
+            listeners   : {
+                submit      : {
+                    fn          : function(record) {
+                        this.onEditorInsertNode(record.variable);
+                    },
+                    scope       : this
+                }
+            }
+        });
+
+        this.insertVariableWindow.show();
+    },
+    onUpdateValue: function(tf) {
+        console.log('onUpdateValue');
+        this.fireEvent('change', this, tf.getValue());
+    },
+
+
+
+
     onEditorUpdateCaret: function (event, type) {
         var selection   = window.getSelection();
         var range       = selection.getRangeAt(0);
@@ -362,283 +425,6 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
         }
 
         return 0;
-    },
-    onInsertVariable: function() {
-        if (this.selection) {
-            var selection   = window.getSelection();
-            var range       = window.getSelection().getRangeAt(0);
-
-            var text1       = this.selection.node.textContent.substring(0, this.selection.position);
-            var text2       = this.selection.node.textContent.substring(this.selection.position + this.selection.positionOffset, this.selection.node.textContent.length);
-            var snippet     = 'test';
-
-            if (node1 = this.getEditorElement(text1)) {
-                this.editor.dom.insertBefore(node1, this.selection.node);
-            }
-
-            if (node2 = this.getEditorElement(snippet)) {
-                node2.setAttribute('data-type', 'variable');
-
-                this.editor.dom.insertBefore(node2, this.selection.node);
-            }
-
-            if (node3 = this.getEditorElement(text2)) {
-                this.editor.dom.insertBefore(node3, this.selection.node);
-            }
-
-            this.selection.node.remove();
-
-            range.selectNode(node2);
-
-            //range.setStartBefore(node2.childNodes[0]);
-            //range.setEndAfter(node2.childNodes[0]);
-
-            selection.removeAllRanges();
-
-            selection.addRange(range);
-        }
-    },
-    setValue: function(value) {
-        this.data = this.parseEditorData(value);
-
-        this.onUpdateEditorValue();
-    },
-    getValue: function() {
-        return this.data;
-    },
-    parseEditorData: function(value) {
-        var data = [];
-
-        if (!Ext.isEmpty(value)) {
-            var json = Ext.decode(value);
-
-            if (json) {
-                json.forEach(function(item) {
-                    data.push({
-                        type    : item.type,
-                        value   : (item.value || '').replace(/&nbsp;/g, ' ')
-                    });
-                });
-            }
-        }
-
-        return data;
-    },
-    onUpdateHiddenValue: function() {
-        console.log(Ext.encode(this.data));
-    },
-    onUpdateEditorValue: function() {
-        var output = [];
-
-        this.data.forEach(function(item) {
-            if (item.type === 'variable') {
-                output.push('<span data-type="variable">' + item.value.trim() + '</span>');
-            } else {
-                output.push('<span>' + item.value + '</span>');
-            }
-        });
-
-        this.editor.dom.innerHTML = output.join('');
-    },
-    onUpdateValue: function(tf) {
-        this.fireEvent('change', this, tf.getValue());
-    },
-    getSelectionBoundaryElement: function (isStart) {
-        var range, sel, container;
-        if (document.selection) {
-            range = document.selection.createRange();
-            range.collapse(isStart);
-            return range.parentElement();
-        } else {
-            sel = window.getSelection();
-            if (sel.getRangeAt) {
-                if (sel.rangeCount > 0) {
-                    range = sel.getRangeAt(0);
-                }
-            } else {
-                // Old WebKit
-                range = document.createRange();
-                range.setStart(sel.anchorNode, sel.anchorOffset);
-                range.setEnd(sel.focusNode, sel.focusOffset);
-
-                // Handle the case when the selection was selected backwards (from the end to the start in the document)
-                if (range.collapsed !== sel.isCollapsed) {
-                    range.setStart(sel.focusNode, sel.focusOffset);
-                    range.setEnd(sel.anchorNode, sel.anchorOffset);
-                }
-            }
-
-            if (range) {
-                container = range[isStart ? "startContainer" : "endContainer"];
-
-                /* Check if the container is a text node and return its parent if so. */
-                return container.nodeType === 3 ? container.parentNode : container;
-            }
-        }
-    },
-    getCaretPosition: function (element) {
-        if (typeof element === 'undefined') {
-            /* Set element to span element. */
-            var element = this.getSelectionBoundaryElement();
-        }
-
-        var caretOffset = 0;
-        var doc         = element.ownerDocument || element.document;
-        var win         = doc.defaultView || doc.parentWindow;
-        var sel;
-
-        if (typeof win.getSelection != "undefined") {
-            sel = win.getSelection();
-
-            if (sel.rangeCount > 0) {
-                var range         = win.getSelection().getRangeAt(0);
-                var preCaretRange = range.cloneRange();
-
-                preCaretRange.selectNodeContents(element);
-                preCaretRange.setEnd(range.endContainer, range.endOffset);
-
-                caretOffset = preCaretRange.toString().length;
-            }
-        } else if ( (sel = doc.selection) && sel.type != "Control") {
-            var textRange         = sel.createRange();
-            var preCaretTextRange = doc.body.createTextRange();
-
-            preCaretTextRange.moveToElementText(element);
-            preCaretTextRange.setEndPoint("EndToEnd", textRange);
-
-            caretOffset = preCaretTextRange.text.length;
-        }
-
-        return {
-            element : this.getSelectionBoundaryElement('start'),
-            position: caretOffset
-        };
-    },
-    createRange: function (node, chars, range) {
-        if (!range) {
-            range = document.createRange()
-            range.selectNode(node);
-            range.setStart(node, 0);
-        }
-
-        if (chars.count === 0) {
-            range.setEnd(node, chars.count);
-        } else if (node && chars.count > 0) {
-            if (node.nodeType === Node.TEXT_NODE) {
-                if (node.textContent.length < chars.count) {
-                    chars.count -= node.textContent.length;
-                } else {
-                    range.setEnd(node, chars.count);
-                    chars.count = 0;
-                }
-            } else {
-                for (var lp = 0; lp < node.childNodes.length; lp++) {
-                    range = this.createRange(node.childNodes[lp], chars, range);
-
-                    if (chars.count === 0) {
-                        break;
-                    }
-                }
-            }
-        }
-
-        return range;
-    },
-    setCaretPosition: function (elemId, pos) {
-        var selection = window.getSelection();
-
-        var range = this.createRange(document.getElementById(elemId), { count: pos });
-        if (range) {
-            range.collapse(false);
-            selection.removeAllRanges();
-            selection.addRange(range);
-        }
-    },
-    node_walk: function (node, func) {
-        var result = func(node);
-
-        for (node = node.firstChild; result !== false && node; node = node.nextSibling) {
-            result = this.node_walk(node, func);
-        }
-
-        return result;
-    },
-    renderVariablesPreview: function (json) {
-        var output = '<div class="x-form-text" contenteditable="true">';
-
-        if (json && json.length > 0) {
-            var jsonObject = JSON.parse(json);
-
-            for (var property in jsonObject) {
-                if (jsonObject.hasOwnProperty(property)) {
-                    var uniqueID = SeoSuite.generateUniqueID();
-
-                    if (jsonObject[property].type === 'placeholder' || jsonObject[property].type === 'variable') {
-                        output += '<span class="seosuite-snippet-variable" spellcheck="false" id="' + uniqueID + '">' + jsonObject[property].value + '</span>';
-                    } else {
-                        output += '<span id="' + uniqueID + '">' + jsonObject[property].value + '</span>';
-                    }
-                }
-            }
-        }
-
-        output += '</div>';
-
-        return output;
-    },
-    showVariableWindow: function(btn) {
-        if (this.variablesWindow) {
-            this.variablesWindow.destroy();
-        }
-
-        this.variablesWindow = MODx.load({
-            xtype       : 'seosuite-window-insert-variable',
-            closeAction : 'close',
-            listeners   : {
-                submit      : {
-                    fn          : function(record) {
-                        this.insertVariable(record.variable, 'last');
-                    },
-                    scope       : this
-                }
-            }
-        });
-
-        this.variablesWindow.show();
-    },
-    insertVariable: function(variable, position) {
-        var record = {
-            type    : 'variable',
-            value   : variable
-        };
-
-        if (position === 'first') {
-            var prefix = this.data[0];
-
-            if (prefix && prefix.type !== 'string') {
-                this.data.unshift({
-                    type    : 'string',
-                    value   : ' '
-                });
-            }
-
-            this.data.unshift(record);
-        } else if (position === 'last') {
-            var prefix = this.data[this.data.length - 1];
-
-            if (prefix && prefix.type !== 'string') {
-                this.data.push({
-                    type    : 'string',
-                    value   : ' '
-                });
-            }
-
-            this.data.push(record);
-        }
-
-        console.log(this.data);
-
-        this.onUpdateEditorValue();
     }
 });
 

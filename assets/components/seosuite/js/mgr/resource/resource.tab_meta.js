@@ -29,6 +29,8 @@ Ext.extend(SeoSuite, Ext.Component, {
 
                         this.onRenderPreview();
                     }).bind(this));
+
+                    field.on('change', this.onRenderPreview, this);
                 }
             }
         }).bind(this));
@@ -177,8 +179,11 @@ Ext.extend(SeoSuite, Ext.Component, {
                                 }
                             }
                         }, '->', {
+                            xtype       : 'label',
+                            html        : _('seosuite.tab_meta.preview')
+                        }, {
                             cls         : 'x-btn-no-text active',
-                            text        : '<i class="icon icon-google"></i>',
+                            text        : _('seosuite.tab_meta.preview_google'),
                             engine      : 'google',
                             handler     : this.onChangePreviewEngine,
                             scope       : this,
@@ -194,7 +199,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                             }
                         }, {
                             cls         : 'x-btn-no-text',
-                            text        : '<i class="icon icon-yahoo"></i>',
+                            text        : _('seosuite.tab_meta.preview_yandex'),
                             engine      : 'yandex',
                             handler     : this.onChangePreviewEngine,
                             scope       : this,
@@ -230,7 +235,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                         hideLabel   : true,
                         boxLabel    : _('seosuite.tab_meta.use_default'),
                         name        : 'seosuite_use_default_meta',
-                        id          : 'seosuite_use_default_meta',
+                        id          : 'seosuite-field-meta-editor-default',
                         inputValue  : 1,
                         checked     : SeoSuite.record.use_default_meta,
                         listeners   : {
@@ -244,33 +249,46 @@ Ext.extend(SeoSuite, Ext.Component, {
                             }
                         }
                     }, {
-                        xtype       : 'seosuite-field-metatag',
-                        fieldLabel  : _('seosuite.tab_meta.meta_title'),
-                        description : _('seosuite.tab_meta.meta_title_desc'),
-                        anchor      : '100%',
-                        name        : 'seosuite_meta_title',
-                        id          : 'title',
-                        value       : Ext.encode(SeoSuite.record.meta_title),
-                        listeners   : {
-                            change    : {
-                                fn          : this.onRenderPreview,
-                                scope       : this
+                        layout      : 'form',
+                        labelSeparator : '',
+                        id          : 'seosuite-field-meta-editor',
+                        items       : [{
+                            xtype       : 'seosuite-field-metatag',
+                            fieldLabel  : _('seosuite.tab_meta.meta_title'),
+                            description : MODx.expandHelp ? '' : _('seosuite.tab_meta.meta_title_desc'),
+                            anchor      : '100%',
+                            name        : 'seosuite_meta_title',
+                            id          : 'title',
+                            value       : Ext.encode(SeoSuite.record.meta_title),
+                            listeners   : {
+                                change    : {
+                                    fn          : this.onRenderPreview,
+                                    scope       : this
+                                }
                             }
-                        }
-                    }, {
-                        xtype       : 'seosuite-field-metatag',
-                        fieldLabel  : _('seosuite.tab_meta.meta_description'),
-                        description : _('seosuite.tab_meta.meta_description_desc'),
-                        anchor      : '100%',
-                        name        : 'seosuite_meta_description',
-                        id          : 'description',
-                        value       : Ext.encode(SeoSuite.record.meta_description),
-                        listeners   : {
-                            change    : {
-                                fn          : this.onRenderPreview,
-                                scope       : this
+                        }, {
+                            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+                            html        : _('seosuite.tab_meta.meta_title_desc'),
+                            cls         : 'desc-under'
+                        }, {
+                            xtype       : 'seosuite-field-metatag',
+                            fieldLabel  : _('seosuite.tab_meta.meta_description'),
+                            description : _('seosuite.tab_meta.meta_description_desc'),
+                            anchor      : '100%',
+                            name        : 'seosuite_meta_description',
+                            id          : 'description',
+                            value       : Ext.encode(SeoSuite.record.meta_description),
+                            listeners   : {
+                                change    : {
+                                    fn          : this.onRenderPreview,
+                                    scope       : this
+                                }
                             }
-                        }
+                        }, {
+                            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+                            html        : _('seosuite.tab_meta.meta_description_desc'),
+                            cls         : 'desc-under'
+                        }]
                     }]
                 }]
             }]
@@ -445,9 +463,9 @@ Ext.extend(SeoSuite, Ext.Component, {
                 alias               : Ext.getCmp('modx-resource-alias').getValue(),
                 uri                 : Ext.getCmp('modx-resource-uri').getValue(),
                 uri_override        : Ext.getCmp('modx-resource-uri-override').getValue(),
-                use_default_meta    : Ext.getCmp('seosuite_use_default_meta').getValue(),
                 context             : MODx.ctx,
                 resource            : MODx.activePage.resource,
+                use_default_meta    : Ext.getCmp('seosuite-field-meta-editor-default').getValue(),
                 preview_mode        : this.previewMode || SeoSuite.config.meta.preview.mode,
                 preview_engine      : this.previewEngine || SeoSuite.config.meta.preview.engine
             },
@@ -468,21 +486,13 @@ Ext.extend(SeoSuite, Ext.Component, {
         });
     },
     onChangeMetaDefault: function (tf) {
-        console.log('onChangeMetaDefault', tf);
+        var metaEditor = Ext.getCmp('seosuite-field-meta-editor');
 
-        var metaTitle       = Ext.getCmp('title');
-        var metaDescription = Ext.getCmp('description');
-
-        if (metaTitle && metaDescription) {
+        if (metaEditor) {
             if (tf.getValue()) {
-                metaTitle.hide();
-                metaDescription.hide();
-
-                //metaTitle.setValue(SeoSuite.config.meta.default_meta_title);
-                //metaDescription.setValue(SeoSuite.config.meta.default_meta_description);
+                metaEditor.hide();
             } else {
-                metaTitle.show();
-                metaDescription.show();
+                metaEditor.show();
             }
         }
 

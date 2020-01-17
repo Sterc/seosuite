@@ -124,9 +124,9 @@ class SeoSuite
             'meta'                      => [
                 'permission'                         => (bool) $this->modx->hasPermission('seosuite_tab_meta'),
                 'counter_fields'                     => $this->modx->getOption('seosuite.meta.counter_fields', null, 'longtitle:70,description:160,content'),
-                'default_meta_description'           => $this->modx->getOption('seosuite.meta.default_meta_description', null, '[{"type": "variable", "value": "description"}]'),
-                'default_meta_title'                 => $this->modx->getOption('seosuite.meta.default_meta_title', null, '[{"type": "variable", "value": "title"}, {"type":"text", "value": " | "}, {"type": "variable", "value": "site_name"}]'),
                 'disabled_templates'                 => $this->modx->getOption('seosuite.meta.disabled_templates'),
+                'default_meta_title'                 => $this->modx->getOption('seosuite.meta.default_meta_title', null, '[{"type": "variable", "value": "title"}, {"type":"text", "value": " | "}, {"type": "variable", "value": "site_name"}]'),
+                'default_meta_description'           => $this->modx->getOption('seosuite.meta.default_meta_description', null, '[{"type": "variable", "value": "description"}]'),
                 'max_keywords_description'           => (int) $this->modx->getOption('seosuite.meta.max_keywords_description', null, 8),
                 'max_keywords_title'                 => (int) $this->modx->getOption('seosuite.meta.max_keywords_title', null, 4),
                 'preview'                   => [
@@ -893,22 +893,21 @@ class SeoSuite
     /**
      * Renders the meta value from the configuration json to the output string.
      *
-     * @param $json
-     * @param $resourceArray
-     * @return string
+     * @access public.
+     * @param String $value.
+     * @param Array $resource.
+     * @return String.
      */
-    public function renderMetaValue($json, $resourceArray)
+    public function renderMetaValue($value, array $resource = [])
     {
         $output = [];
 
-        if (!empty($json)) {
-            $data = json_decode($json, true);
+        if (!empty($value)) {
+            $data = json_decode($value, true);
 
             if ($data) {
                 foreach ((array) $data as $item) {
-                    if ($item['type'] === 'text') {
-                        $output[] = $item['value'];
-                    } else {
+                    if ($item['type'] === 'variable') {
                         switch ($item['value']) {
                             case 'site_name':
                                 $output[] = $this->modx->getOption($item['value']);
@@ -918,16 +917,18 @@ class SeoSuite
                             case 'longtitle':
                             case 'description':
                             case 'introtext':
-                                if (isset($resourceArray[$item['value']])) {
-                                    $output[] = $resourceArray[$item['value']];
+                                if (isset($resource[$item['value']])) {
+                                    $output[] = $resource[$item['value']];
                                 }
 
                                 break;
                             case 'title':
-                                $output[] = $resourceArray['longtitle'] ?: $resourceArray['pagetitle'];
+                                $output[] = $resource['longtitle'] ?: $resource['pagetitle'];
 
                                 break;
                         }
+                    } else {
+                        $output[] = $item['value'];
                     }
                 }
             }
