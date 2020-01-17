@@ -15,6 +15,8 @@ $_lang['setting_seosuite.default_redirect_type_desc']                   = '';
 /* Meta settings. */
 $_lang['setting_seosuite.meta.counter_fields']                          = 'Fields where the keywords tool will work on';
 $_lang['setting_seosuite.meta.counter_fields_desc']                     = 'Only change these if you know what you\'re doing. Default value: longtitle:30|70,description:70|155,content.';
+$_lang['setting_seosuite.meta.searchmode']                              = 'Search mode used for the preview.';
+$_lang['setting_seosuite.meta.searchmode_desc']                         = 'Possible values: desktop, mobile. Defaults to mobile.';
 $_lang['setting_seosuite.meta.searchengine']                            = 'Search engine used for the preview.';
 $_lang['setting_seosuite.meta.searchengine_desc']                       = 'Possible values: google, yandex. Defaults to google.';
 $_lang['setting_seosuite.meta.disabled_templates']                      = 'Disabled Templates';

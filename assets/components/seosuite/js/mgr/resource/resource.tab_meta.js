@@ -145,41 +145,75 @@ Ext.extend(SeoSuite, Ext.Component, {
                     items       : [{
                         xtype       : 'toolbar',
                         items       : [{
-                            cls         : 'x-btn-no-text',
+                            cls         : 'x-btn-no-text active',
                             text        : '<i class="icon icon-desktop"></i>',
-                            preview     : 'desktop',
-                            handler     : this.onChangePreview,
+                            mode        : 'desktop',
+                            handler     : this.onChangePreviewMode,
                             scope       : this,
-                            listeners    : {
+                            listeners   : {
                                 afterrender : {
-                                    fn          : this.onChangePreview,
+                                    fn          : function(btn) {
+                                        if (btn.mode === SeoSuite.config.meta.preview.mode) {
+                                            btn.addClass('x-btn-active');
+                                        }
+                                    },
                                     scope       : this
                                 }
                             }
                         }, {
                             cls         : 'x-btn-no-text',
                             text        : '<i class="icon icon-mobile"></i>',
-                            preview     : 'mobile',
-                            handler     : this.onChangePreview,
-                            scope       : this
+                            mode        : 'mobile',
+                            handler     : this.onChangePreviewMode,
+                            scope       : this,
+                            listeners   : {
+                                afterrender : {
+                                    fn          : function(btn) {
+                                        if (btn.mode === SeoSuite.config.meta.preview.mode) {
+                                            btn.addClass('x-btn-active');
+                                        }
+                                    },
+                                    scope       : this
+                                }
+                            }
                         }, '->', {
-                            cls         : 'x-btn-no-text',
+                            cls         : 'x-btn-no-text active',
                             text        : '<i class="icon icon-google"></i>',
-                            provider    : 'google',
-                            handler     : this.onChangePreviewProvider,
-                            scope       : this
+                            engine      : 'google',
+                            handler     : this.onChangePreviewEngine,
+                            scope       : this,
+                            listeners   : {
+                                afterrender : {
+                                    fn          : function(btn) {
+                                        if (btn.engine === SeoSuite.config.meta.preview.engine) {
+                                            btn.addClass('x-btn-active');
+                                        }
+                                    },
+                                    scope       : this
+                                }
+                            }
                         }, {
                             cls         : 'x-btn-no-text',
                             text        : '<i class="icon icon-yahoo"></i>',
-                            provider    : 'yandex',
-                            handler     : this.onChangePreviewProvider,
-                            scope       : this
+                            engine      : 'yandex',
+                            handler     : this.onChangePreviewEngine,
+                            scope       : this,
+                            listeners   : {
+                                afterrender : {
+                                    fn          : function(btn) {
+                                        if (btn.engine === SeoSuite.config.meta.preview.engine) {
+                                            btn.addClass('x-btn-active');
+                                        }
+                                    },
+                                    scope       : this
+                                }
+                            }
                         }]
                     }, {
                         xtype       : 'panel',
                         baseCls     : 'seosuite-preview',
                         id          : 'seosuite-seo-preview',
-                        cls         : 'seosuite-seo-preview-' + SeoSuite.config.meta.preview.search_engine,
+                        cls         : 'seosuite-seo-preview-' + SeoSuite.config.meta.preview.mode + ' seosuite-seo-preview-' + SeoSuite.config.meta.preview.engine,
                         items       : [{
                             id          : 'seosuite-seo-preview-favicon',
                             html        : '<img src="' + SeoSuite.record.favicon + '" class="favicon" />'
@@ -414,7 +448,8 @@ Ext.extend(SeoSuite, Ext.Component, {
                 use_default_meta    : Ext.getCmp('seosuite_use_default_meta').getValue(),
                 context             : MODx.ctx,
                 resource            : MODx.activePage.resource,
-                preview_type        : this.previewMode
+                preview_mode        : this.previewMode || SeoSuite.config.meta.preview.mode,
+                preview_engine      : this.previewEngine || SeoSuite.config.meta.preview.engine
             },
             listeners: {
                 'success': {
@@ -453,24 +488,22 @@ Ext.extend(SeoSuite, Ext.Component, {
 
         this.onRenderPreview();
     },
-    onChangePreview: function(btn) {
-        console.log('onChangePreview', btn);
-
-        this.previewMode = btn.preview;
+    onChangePreviewMode: function(btn) {
+        this.previewMode = btn.mode;
 
         var preview = Ext.getCmp('seosuite-seo-preview');
 
         if (preview && btn.ownerCt.items) {
             btn.ownerCt.items.items.forEach(function (item) {
-                if (item.preview) {
-                    if (item.preview === btn.preview) {
+                if (item.mode) {
+                    if (item.mode === btn.mode) {
                         item.addClass('x-btn-active');
 
-                        preview.addClass('seosuite-seo-preview-' + item.preview);
+                        preview.addClass('seosuite-seo-preview-' + item.mode);
                     } else {
                         item.removeClass('x-btn-active');
 
-                        preview.removeClass('seosuite-seo-preview-' + item.preview);
+                        preview.removeClass('seosuite-seo-preview-' + item.mode);
                     }
                 }
             });
@@ -478,26 +511,22 @@ Ext.extend(SeoSuite, Ext.Component, {
 
         this.onRenderPreview();
     },
-    onChangePreviewProvider: function(btn) {
-        console.log('onChangePreviewProvider', btn.provider);
-
-        this.previewProvider = btn.provider;
+    onChangePreviewEngine: function(btn) {
+        this.previewEngine = btn.engine;
 
         var preview = Ext.getCmp('seosuite-seo-preview');
 
         if (preview && btn.ownerCt.items) {
             btn.ownerCt.items.items.forEach(function (item) {
-                if (item.provider) {
-                    if (item.provider === btn.provider) {
+                if (item.engine) {
+                    if (item.engine === btn.engine) {
                         item.addClass('x-btn-active');
 
-                        preview.addClass('seosuite-seo-preview-' + item.provider);
-
-                        console.log('seosuite-seo-preview-' + item.provider);
+                        preview.addClass('seosuite-seo-preview-' + item.engine);
                     } else {
                         item.removeClass('x-btn-active');
 
-                        preview.removeClass('seosuite-seo-preview-' + item.provider);
+                        preview.removeClass('seosuite-seo-preview-' + item.engine);
                     }
                 }
             });

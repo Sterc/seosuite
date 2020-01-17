@@ -130,7 +130,8 @@ class SeoSuite
                 'max_keywords_description'           => (int) $this->modx->getOption('seosuite.meta.max_keywords_description', null, 8),
                 'max_keywords_title'                 => (int) $this->modx->getOption('seosuite.meta.max_keywords_title', null, 4),
                 'preview'                   => [
-                    'search_engine'             => $this->modx->getOption('seosuite.meta.searchengine', null, 'google'),
+                    'mode'                      => $this->modx->getOption('seosuite.meta.searchmode', null, 'mobile'),
+                    'engine'                    => $this->modx->getOption('seosuite.meta.searchengine', null, 'google'),
                     'desktop'                   => [
                         'title'                     => (int) $this->modx->getOption('seosuite.meta.preview.length_desktop_title', null, 70),
                         'description'               => (int) $this->modx->getOption('seosuite.meta.preview.length_desktop_description', null, 160),

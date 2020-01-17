@@ -63,8 +63,8 @@ class SeoSuitePreviewProcessor extends modProcessor
 
         $output = [
             'output'        => [
-                'title'         => $this->truncate($renderedTitle, $this->seosuite->config['meta']['preview'][$this->getProperty('preview_type')]['title']),
-                'description'   => $this->truncate($renderedDescription, $this->seosuite->config['meta']['preview'][$this->getProperty('preview_type')]['description']),
+                'title'         => $this->truncate($renderedTitle, $this->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['title']),
+                'description'   => $this->truncate($renderedDescription, $this->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['description']),
                 'alias'         => $alias
             ],
             'counts'        => [
