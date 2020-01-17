@@ -5,8 +5,16 @@
  * Copyright 2019 by Sterc <modx@sterc.nl>
  */
 $permissions = [[
-    'name'          => 'seosuite_meta',
+    'name'          => 'seosuite_tab_meta',
     'description'   => 'To view the SeoSuite keywords/character counters and search engine meta data.',
+    'templates'     => ['AdministratorTemplate']
+], [
+    'name'          => 'seosuite_tab_seo',
+    'description'   => 'To view the SeoSuite Search Engine tab and manage search engine settings.',
+    'templates'     => ['AdministratorTemplate']
+], [
+    'name'          => 'seosuite_tab_social',
+    'description'   => 'To view the SeoSuite Social tab and manage social settings.',
     'templates'     => ['AdministratorTemplate']
 ]];
 

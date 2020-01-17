@@ -87,7 +87,7 @@ class SeoSuite
 
         $this->config = array_merge([
             'namespace'                 => 'seosuite',
-            'lexicons'                  => ['seosuite:default', 'seosuite:tab_meta', 'seosuite:tab_seo', 'seosuite:tab_social'],
+            'lexicons'                  => ['seosuite:mgr', 'seosuite:default', 'seosuite:tab_meta', 'seosuite:tab_seo', 'seosuite:tab_social'],
             'base_path'                 => $corePath,
             'core_path'                 => $corePath,
             'model_path'                => $corePath . 'model/',
@@ -122,7 +122,7 @@ class SeoSuite
                 'image_types'               => 'jpg,jpeg.png,gif'
             ],
             'meta'                      => [
-                'permission'                         => (bool) $this->modx->hasPermission('seosuite_meta'),
+                'permission'                         => (bool) $this->modx->hasPermission('seosuite_tab_meta'),
                 'counter_fields'                     => $this->modx->getOption('seosuite.meta.counter_fields', null, 'longtitle:70,description:160,content'),
                 'default_meta_description'           => $this->modx->getOption('seosuite.meta.default_meta_description', null, '[{"type": "variable", "value": "description"}]'),
                 'default_meta_title'                 => $this->modx->getOption('seosuite.meta.default_meta_title', null, '[{"type": "variable", "value": "title"}, {"type":"text", "value": " | "}, {"type": "variable", "value": "site_name"}]'),
