@@ -162,6 +162,18 @@ Ext.extend(SeoSuite, Ext.Component, {
                             preview     : 'mobile',
                             handler     : this.onChangePreview,
                             scope       : this
+                        }, '->', {
+                            cls         : 'x-btn-no-text',
+                            text        : '<i class="icon icon-google"></i>',
+                            provider    : 'google',
+                            handler     : this.onChangePreviewProvider,
+                            scope       : this
+                        }, {
+                            cls         : 'x-btn-no-text',
+                            text        : '<i class="icon icon-yahoo"></i>',
+                            provider    : 'yandex',
+                            handler     : this.onChangePreviewProvider,
+                            scope       : this
                         }]
                     }, {
                         xtype       : 'panel',
@@ -459,6 +471,33 @@ Ext.extend(SeoSuite, Ext.Component, {
                         item.removeClass('x-btn-active');
 
                         preview.removeClass('seosuite-seo-preview-' + item.preview);
+                    }
+                }
+            });
+        }
+
+        this.onRenderPreview();
+    },
+    onChangePreviewProvider: function(btn) {
+        console.log('onChangePreviewProvider', btn.provider);
+
+        this.previewProvider = btn.provider;
+
+        var preview = Ext.getCmp('seosuite-seo-preview');
+
+        if (preview && btn.ownerCt.items) {
+            btn.ownerCt.items.items.forEach(function (item) {
+                if (item.provider) {
+                    if (item.provider === btn.provider) {
+                        item.addClass('x-btn-active');
+
+                        preview.addClass('seosuite-seo-preview-' + item.provider);
+
+                        console.log('seosuite-seo-preview-' + item.provider);
+                    } else {
+                        item.removeClass('x-btn-active');
+
+                        preview.removeClass('seosuite-seo-preview-' + item.provider);
                     }
                 }
             });

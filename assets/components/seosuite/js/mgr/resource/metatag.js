@@ -131,39 +131,17 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
         this.editor     = Ext.get('seosuite-meta-editor-' + this.id);
         this.selection  = null;
 
-        this.editor.addListener('click', (function(event, tf) {
-        //    this.onUpdateEditorSelection(event, 'click');
-        }).bind(this));
+
 
         this.editor.addListener('keydown', (function(event, tf) {
-            if (event.keyCode >= 49) {
-                var selection = window.getSelection();
-                var range = window.getSelection().getRangeAt(0);
-
-                if (range.startContainer.parentNode.className === 'x-panel-body x-panel-body-noheader') {
-                    if (!range.collapsed) {
-                        range.deleteContents();
-                    }
-
-                    if (newElement = document.createElement('span')) {
-                        newElement.appendChild(document.createTextNode('A'));
-                        newElement.setAttribute('data-type', 'string');
-
-                        range.insertNode(newElement);
-
-                        range.setStartBefore(newElement.childNodes[0]);
-                        range.setEndAfter(newElement.childNodes[0]);
-                    }
-
-                    selection.removeAllRanges();
-
-                    selection.addRange(range);
-                }
-            }
-
             // If key is enter do nothing.
             if (event.keyCode === 13) {
                 event.preventDefault();
+            }
+
+            // If key is backspace or delete do nothing.
+            if (event.keyCode === 8 || event.keyCode === 46) {
+
             }
 
             // If key is backspace or delete do nothing.
@@ -174,13 +152,13 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
             //        event.preventDefault();
             //    }
             //}
-            this.onEditorKeyDown(event);
+            this.onEditorKeyDown(event, this.selection);
         }).bind(this));
 
         this.editor.addListener('keyup', (function(event, tf) {
             // If key is arrow left or right update selection.
             //if (event.keyCode === 37 || event.keyCode === 39) {
-            //    this.onUpdateEditorSelection(event, 'key');
+                this.onEditorUpdateCaret(event, 'key');
             //}
 
             //var data    = [];
@@ -209,94 +187,215 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
             //this.data = data;
         }).bind(this));
 
+        this.editor.addListener('keyup', (function(event, tf) {
+            this.onEditorUpdateCaret2(event, 'up');
+        }).bind(this));
+
+        this.editor.addListener('keydown', (function(event, tf) {
+            this.onEditorUpdateCaret2(event, 'down');
+        }).bind(this));
+
+        this.editor.addListener('click', (function(event, tf) {
+            this.onEditorUpdateCaret(event, 'click');
+        }).bind(this));
+
         if (this.value) {
             this.setValue(this.value);
         }
     },
-    onUpdateEditorSelection: function (event, type) {
-        if (window.getSelection()) {
+    onEditorKeyDown: function(event, caret) {
+        if (caret) {
             var selection   = window.getSelection();
             var range       = window.getSelection().getRangeAt(0);
-            var node        = event.browserEvent.target;
+            var prevNode    = caret.node.previousSibling;
+            var nextNode    = caret.node.nextSibling;
 
-            if (type === 'click') {
-                node = event.browserEvent.target;
-            } else {
-                node = range.startContainer.parentNode;
+            if (event.browserEvent.key.length === 1) {
+                console.log('onEditorKeyDown');
+
+                if (!this.getEditorElementEditable(caret.node)) {
+                    if (caret.positionType === 'prev') {
+                        console.log('onEditorKeyDown, prev variable');
+
+                        if (!prevNode || !this.getEditorElementEditable(prevNode)) {
+                            console.log('onEditorKeyDown, prev variable create element');
+
+                            prevNode = this.getEditorElement();
+
+                            this.editor.dom.insertBefore(prevNode, caret.node);
+                        }
+
+                        range.setStartBefore(prevNode.childNodes[0]);
+                        range.setEndAfter(prevNode.childNodes[0]);
+                    } else if (caret.positionType === 'next') {
+                        console.log('onEditorKeyDown, next variable');
+
+                        if (!nextNode || !this.getEditorElementEditable(nextNode)) {
+                            console.log('onEditorKeyDown, next variable create element');
+
+                            nextNode = this.getEditorElement();
+
+                            this.editor.dom.insertBefore(nextNode, caret.node.nextSibling);
+                        }
+
+                        range.setStartBefore(nextNode.childNodes[0]);
+                        range.setEndAfter(nextNode.childNodes[0]);
+                    }
+
+                    selection.removeAllRanges();
+
+                    selection.addRange(range);
+                }
             }
-
-            console.log(node);
-
-            var preCaretRange = range.cloneRange();
-            preCaretRange.selectNodeContents(node);
-            preCaretRange.setEnd(range.endContainer, range.endOffset);
-
-            if (node.getAttribute('data-type') === 'variable') {
-                //range.deleteContents();
-
-                //range.selectNodeContents(node);
-                //range.collapse(true);
-
-
-
-                console.log('variable', preCaretRange.toString().length);
-
-                //selection.removeAllRanges();
-
-                //selection.addRange(preCaretRange);
-            } else {
-                console.log('string', preCaretRange.toString().length);
-            }
-
-            //this.selection = range.cloneRange();
-
-            //event.preventDefault();
-        } else {
-            console.log('niks');
         }
     },
-    onInsertVariable: function() {
-        console.log('onInsertVariable');
-        //anchorOffset
-        //console.log(range.startContainer.parentNode.innerHTML);
+    onEditorUpdateCaret2: function(event, method) {
+        if (window.getSelection()) {
+            var node        = null;
+            var selection   = window.getSelection();
+            var range       = selection.getRangeAt(0);
 
+            if (this.isVariableNode(range.startContainer.parentNode)) {
+                //if (range.startOffset !== 0) {
+                //    range.setStart(range.startContainer.parentNode, 0);
+                //}
+
+                if (method === 'down') {
+                    if (event.browserEvent.key === 'ArrowRight' && range.startOffset === 0) {
+                        range.setStartBefore(range.startContainer.parentNode.childNodes[0]);
+                        range.setEndAfter(range.startContainer.parentNode.childNodes[0]);
+                    } else if (event.browserEvent.key === 'ArrowLeft' && range.endOffset === range.endContainer.length) {
+                        range.setStartBefore(range.startContainer.parentNode.childNodes[0]);
+                        range.setEndAfter(range.startContainer.parentNode.childNodes[0]);
+                    }
+                }
+
+                //if (event.browserEvent.key === 'ArrowRight' && range.endOffset === range.endContainer.length) {
+                //    range.setStart(range.endContainer.parentNode, 1);
+                //}
+            }
+
+            if (this.isVariableNode(range.endContainer.parentNode)) {
+                //if (range.endOffset !== range.endContainer.length) {
+                //    range.setEnd(range.endContainer.parentNode, 0);
+                //}
+
+                //if (event.browserEvent.key === 'ArrowRight' && range.endOffset === 0) {
+                //    range.setEnd(range.endContainer.parentNode, 1);
+                //}
+            }
+
+            console.log('onEditorUpdateCaret2 ' + method, event.browserEvent.key, range);
+        }
+    },
+    isVariableNode: function(node) {
+        return node.getAttribute('data-type') === 'variable';
+    },
+    onEditorUpdateCaret: function (event, type) {
+        var selection   = window.getSelection();
+        var range       = selection.getRangeAt(0);
+
+        var node        = event.browserEvent.target;
+
+        if (type === 'click') {
+            node = event.browserEvent.target;
+        } else {
+            node = range.startContainer.parentNode;
+        }
+
+        console.log('onEditorUpdateCaret', range.startContainer.parentNode, range.endContainer.parentNode);
+
+        //var position        = this.getEditorCaretPosition(range, node);
+        var position        = range.startOffset;
+        var positionOffset  = range.endOffset - range.startOffset;
+        var positionType    = '';
+        var nodeEditable    = this.getEditorElementEditable(node);
+        var nodeLength      = node.textContent.length;
+
+        if (position === 0) {
+            positionType = 'prev';
+        } else if (position === nodeLength) {
+            positionType = 'next';
+        }
+
+        //if (!this.getEditorElementEditable(range.startContainer.parentNode)) {
+        //    range.setStart(range.startContainer.parentNode, 0);
+        //}
+
+        //if (!this.getEditorElementEditable(range.endContainer.parentNode)) {
+        //    range.setEnd(range.endContainer.parentNode, 1);
+        //}
+
+        this.selection = {
+            position        : position,
+            positionOffset  : positionOffset,
+            positionType    : positionType,
+            node            : node,
+            nodeEditable    : nodeEditable
+        };
+
+        console.log(this.selection);
+    },
+    getEditorElement: function(value) {
+        var element = document.createElement('span');
+
+        if (element) {
+            element.appendChild(document.createTextNode(value || 'n'));
+        }
+
+        return element;
+    },
+    getEditorElementEditable: function(node) {
+        return node.getAttribute('data-type') !== 'variable';
+    },
+    getEditorCaretPosition: function (range, node) {
+        if (range && node) {
+            var caret = range.cloneRange();
+
+            if (caret) {
+                caret.selectNodeContents(node);
+
+                caret.setEnd(range.endContainer, range.endOffset);
+
+                return caret.toString().length;
+            }
+        }
+
+        return 0;
+    },
+    onInsertVariable: function() {
         if (this.selection) {
             var selection   = window.getSelection();
+            var range       = window.getSelection().getRangeAt(0);
 
-            var node        = this.selection.startContainer.parentNode;
-            var text1       = node.innerHTML.substring(0, this.selection.startOffset);
-            var text2       = node.innerHTML.substring(this.selection.endOffset, node.innerHTML.length);
+            var text1       = this.selection.node.textContent.substring(0, this.selection.position);
+            var text2       = this.selection.node.textContent.substring(this.selection.position + this.selection.positionOffset, this.selection.node.textContent.length);
             var snippet     = 'test';
 
-            node.remove();
-
-            if (newElement = document.createElement('span')) {
-                newElement.appendChild(document.createTextNode(text2));
-                newElement.setAttribute('data-type', 'string');
-
-                this.selection.insertNode(newElement);
+            if (node1 = this.getEditorElement(text1)) {
+                this.editor.dom.insertBefore(node1, this.selection.node);
             }
 
-            if (newElement2 = document.createElement('span')) {
-                newElement2.appendChild(document.createTextNode(snippet));
-                newElement2.setAttribute('data-type', 'variable');
+            if (node2 = this.getEditorElement(snippet)) {
+                node2.setAttribute('data-type', 'variable');
 
-                this.selection.insertNode(newElement2);
+                this.editor.dom.insertBefore(node2, this.selection.node);
             }
 
-            if (newElement3 = document.createElement('span')) {
-                newElement3.appendChild(document.createTextNode(text1));
-                newElement3.setAttribute('data-type', 'string');
-
-                this.selection.insertNode(newElement3);
+            if (node3 = this.getEditorElement(text2)) {
+                this.editor.dom.insertBefore(node3, this.selection.node);
             }
 
-            this.selection.setStartBefore(newElement2.childNodes[0]);
-            this.selection.setEndAfter(newElement2.childNodes[0]);
+            this.selection.node.remove();
+
+            range.selectNode(node2);
+
+            //range.setStartBefore(node2.childNodes[0]);
+            //range.setEndAfter(node2.childNodes[0]);
 
             selection.removeAllRanges();
 
-            selection.addRange(this.selection);
+            selection.addRange(range);
         }
     },
     setValue: function(value) {
@@ -335,7 +434,7 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
             if (item.type === 'variable') {
                 output.push('<span data-type="variable">' + item.value.trim() + '</span>');
             } else {
-                output.push('<span data-type="string">' + item.value + '</span>');
+                output.push('<span>' + item.value + '</span>');
             }
         });
 
