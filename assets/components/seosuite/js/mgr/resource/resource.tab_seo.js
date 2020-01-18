@@ -134,9 +134,18 @@ SeoSuite.panel.SeoTab = function(config) {
                 name        : 'seosuite_uri',
                 anchor      : '100%',
                 value       : SeoSuite.record.seosuite_uri,
+                enableKeyEvents : true,
                 listeners   : {
+                    keyup       : {
+                        fn          : function(tf) {
+                            this.onUpdateFreezeUri(tf, 'keyup');
+                        },
+                        scope       : this
+                    },
                     change      : {
-                        fn          : this.onUpdateFreezeUri,
+                        fn          : function(tf) {
+                            this.onUpdateFreezeUri(tf, 'change');
+                        },
                         scope       : this
                     }
                 }
@@ -320,12 +329,15 @@ Ext.extend(SeoSuite.panel.SeoTab, Ext.Panel, {
             Ext.getCmp('seosuite-freeze-uri-container').hide();
         }
     },
-    onUpdateFreezeUri: function(tf) {
+    onUpdateFreezeUri: function(tf, event) {
         var uri = Ext.getCmp('modx-resource-uri');
 
         if (uri) {
             uri.setValue(tf.getValue());
-            uri.fireEvent('change');
+
+            if (event) {
+                uri.fireEvent(event, uri);
+            }
         }
     },
     onUpdateCanonical: function(tf) {

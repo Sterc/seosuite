@@ -26,19 +26,33 @@ class SeoSuiteMetaPreviewProcessor extends modProcessor
     public function process()
     {
         $this->modx->switchContext($this->getProperty('context', 'web'));
-        $this->modx->resource = $this->modx->getObject('modResource', $this->getProperty('resource'));
 
-        /* If no resource is set, when creating a resource, then temporarily create a new one so the getAliasPath method can be used. */
-        if (!$this->modx->resource) {
-            $this->modx->resource = $this->modx->newObject('modResource');
+        $resource = $this->modx->newObject('modResource');
+
+        $protocol   = $this->modx->getOption('server_protocol', null, 'http');
+        $siteUrl    = trim($this->modx->getOption('site_url'), '/');
+        $baseUrl    = trim($this->modx->getOption('base_url'), '/');
+
+        if (preg_match('/^(http|https)/i', $siteUrl, $matches)) {
+            $protocol   = $matches[0];
+            $siteUrl    = str_replace(['http://', 'https://'], '', $siteUrl);
         }
 
-        $alias = $this->modx->resource->getAliasPath($this->getProperty('alias'), [
-            'content_type' => $this->getProperty('content_type'),
-            'uri'          => $this->getProperty('uri'),
-            'uri_override' => $this->getProperty('uri_override') === 'true' ? true : false,
-            'context_key'  => $this->getProperty('context', 'web')
-        ]);
+        if (!empty($baseUrl)) {
+            $siteUrl    = rtrim($siteUrl, '/' . $baseUrl . '/');
+        }
+
+        if ((int) $this->getProperty('id') === (int) $this->modx->getOption('site_start')) {
+            $alias = '';
+        } else {
+            $alias = $resource->getAliasPath($this->getProperty('alias'), [
+                'context_key'   => $this->getProperty('context', 'web'),
+                'parent'        => $this->getProperty('parent', 0),
+                'content_type'  => $this->getProperty('content_type'),
+                'uri'           => $this->getProperty('uri'),
+                'uri_override'  => $this->getProperty('uri_override') === 'true'
+            ]);
+        }
 
         $title       = $this->getProperty('title');
         $description = $this->getProperty('description');
@@ -55,6 +69,9 @@ class SeoSuiteMetaPreviewProcessor extends modProcessor
 
         $output = [
             'output'        => [
+                'protocol'      => $protocol,
+                'site_url'      => $siteUrl,
+                'base_url'      => $baseUrl,
                 'title'         => $this->truncate($renderedTitle, $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['title']),
                 'description'   => $this->truncate($renderedDescription, $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['description']),
                 'alias'         => $alias

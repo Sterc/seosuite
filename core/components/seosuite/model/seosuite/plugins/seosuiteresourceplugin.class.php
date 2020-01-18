@@ -79,31 +79,6 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
         $resource =& $event->params['resource'];
 
         if ($resource) {
-            //$properties = [
-            //    'keywords'              => '',
-            //    'use_default_meta'      => 0,
-            //    'meta_title'            => '',
-            //    'meta_description'      => '',
-            //    'index_type'            => $this->seosuite->config['tab_seo']['default_index_type'],
-            //    'follow_type'           => $this->seosuite->config['tab_seo']['default_follow_type'],
-            //    'sitemap'               => 0,
-            //    'sitemap_prio'          => 'normal',
-            //    'sitemap_changefreq'    => '',
-            //    'canonical'             => 0,
-            //    'canonical_uri'         => ''
-            //];
-
-            //$seoSuiteResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $resource->get('id')]);
-            //if ($seoSuiteResource) {
-            //    $properties = array_merge($properties, $seoSuiteResource->toArray());
-            //}
-
-            //foreach (array_keys($properties) as $key) {
-            //    if (isset($_POST['seosuite_' . $key])) {
-            //        $properties[$key] = $_POST['seosuite_' . $key];
-            //    }
-            //}
-
             $this->seosuite->setResourceProperties($resource->get('id'), $this->getSeoSuiteFields());
             $this->seosuite->setSocialProperties($resource->get('id'), $this->getSeoSuiteFields());
             $this->seosuite->setRedirectProperties($resource);
@@ -285,6 +260,7 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
         }
 
         $seoSuiteResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $resource->get('id')]);
+
         if ($seoSuiteResource) {
             $this->record['keywords']         = $seoSuiteResource->get('keywords');
             $this->record['use_default_meta'] = $seoSuiteResource->get('use_default_meta');
@@ -300,8 +276,6 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
         $this->record['fields']  = implode(',', array_keys($arrFields));
         $this->record['values']  = [];
         $this->record['chars']   = $arrFields;
-        $this->record['url']     = $this->prepareUrl($resource, $mode);
-        $this->record['favicon'] = $this->getFavicon($resource);
 
         $this->loaded[] = 'meta';
     }
@@ -361,58 +335,5 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
 
         $disabledTemplates = explode(',', $this->modx->seosuite->config['meta']['disabled_templates']);
         return ($override && empty($template)) || ($override && (int) $template === 0) || (!empty($template) && in_array($template, $disabledTemplates, false));
-    }
-
-    /**
-     * Prepare url HTML.
-     *
-     * @param $resource
-     * @param $mode
-     * @return mixed|string|string[]|null
-     */
-    protected function prepareUrl($resource, $mode)
-    {
-        $ctxKey   = !empty($resource) ? $resource->get('context_key') : $this->modx->getOption('default_context');
-        $ctx      = $this->modx->getContext($ctxKey);
-        $url      = rtrim($ctx ? $ctx->getOption('site_url', '', $this->modx->getOption('site_url')) : $this->modx->getOption('site_url'), '/');
-
-        if ($mode === 'upd') {
-            if ($ctx) {
-                if ($resource->get('id') != $ctx->getOption('site_start', '', $this->modx->getOption('site_start'))) {
-                    $url .= $resource->get('uri');
-                }
-            } else {
-                $url = $this->modx->makeUrl($resource->get('id'), '', '', 'full');
-            }
-
-            $url = preg_replace(
-                '/' . $resource->get('alias') . '(.*)/',
-                '<span id="seosuite-replace-alias">' . $resource->get('alias') . '$1</span>',
-                $url
-            );
-
-            if (!strpos($url, 'seosuite-replace-alias')) {
-                $url .= '<span id="seosuite-replace-alias"></span>';
-            }
-        } else {
-            $url .= '<span id="seosuite-replace-alias"></span>';
-        }
-
-        return $url;
-    }
-
-    /**
-     * Retrieve http_host based upon current context.
-     *
-     * @param $resource
-     * @return string
-     */
-    protected function getFavicon($resource)
-    {
-        $result   = $this->modx->query(sprintf('SELECT * FROM %scontext_setting WHERE `context_key`="%s" AND `key` = "http_host" LIMIT 1', $this->modx->getOption(xpdo::OPT_TABLE_PREFIX), $resource->get('context_key')));
-        $row      = $result ? $result->fetch(PDO::FETCH_ASSOC) : null;
-        $httpHost = $row ? $row['value'] : $this->modx->getOption('http_host');
-
-        return 'https://www.google.com/s2/favicons?domain='  . $httpHost;
     }
 }

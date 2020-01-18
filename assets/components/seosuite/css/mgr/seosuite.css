@@ -97,6 +97,11 @@
     background-color: #fff;
 }
 
+#seosuite-seo-preview .seosuite-preview-body .favicon {
+    width: 16px !important;
+    height: 16px !important;
+}
+
 #seosuite-seo-preview .seosuite-preview-body #seosuite-seo-preview-favicon {
     display: none;
 }
@@ -113,6 +118,7 @@
 }
 
 #seosuite-seo-preview .seosuite-preview-body #seosuite-seo-preview-url {
+    color: #3c4043;
     font-size: 13px;
     line-height: 20px;
     white-space: nowrap;
@@ -122,7 +128,22 @@
     order: 1;
 }
 
-#seosuite-seo-preview .seosuite-preview-body #seosuite-seo-preview-url #seosuite-replace-alias:before {
+#seosuite-seo-preview .seosuite-preview-body #seosuite-seo-preview-url:after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin: 2px 0 2px 5px;
+    content: '';
+    border-color: #3c4043 transparent;
+    border-style: solid;
+    border-width: 5px 4px 0 4px;
+}
+
+#seosuite-seo-preview .seosuite-preview-body #seosuite-seo-preview-url .icon {
+    margin: 0 5px 0 0;
+}
+
+#seosuite-seo-preview .seosuite-preview-body #seosuite-seo-preview-url span:before {
     content: ' › ';
 }
 
@@ -150,7 +171,6 @@
 }
 
 #seosuite-seo-preview.seosuite-seo-preview-mobile .seosuite-preview-body #seosuite-seo-preview-url {
-    color: #3c4043;
     font-size: 13px;
     order: 1;
 }
@@ -175,6 +195,10 @@
 #seosuite-seo-preview.seosuite-seo-preview-yandex .seosuite-preview-body #seosuite-seo-preview-title {
     color: #04b;
     order: 1;
+}
+
+#seosuite-seo-preview.seosuite-seo-preview-yandex .seosuite-preview-body #seosuite-seo-preview-url:after {
+    display: none;
 }
 
 #seosuite-seo-preview.seosuite-seo-preview-yandex .seosuite-preview-body #seosuite-seo-preview-url {

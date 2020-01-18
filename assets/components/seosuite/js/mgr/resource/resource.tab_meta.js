@@ -5,14 +5,14 @@ Ext.extend(SeoSuite, Ext.Component, {
 
         var longtitleField = Ext.getCmp('seosuite-longtitle');
 
-        ['modx-resource-pagetitle', 'modx-resource-introtext', 'modx-resource-alias', 'modx-resource-uri', 'seosuite-longtitle', 'seosuite-description', 'modx-resource-uri-override'].forEach((function(key) {
+        ['modx-resource-pagetitle', 'modx-resource-introtext', 'modx-resource-alias', 'modx-resource-uri', 'modx-resource-uri-override', 'modx-resource-parent', 'seosuite-longtitle', 'seosuite-description'].forEach((function(key) {
             var field = Ext.getCmp(key);
 
             if (field) {
                 if (field.xtype === 'xcheckbox') {
                     field.on('check', this.onRenderPreview, this);
                 } else {
-                    field.on('keyup', (function(tf) {
+                    //field.on('keyup', (function(tf) {
                         //if (tf.name === 'pagetitle') {
                             //console.log(tf.name, tf.getValue());
                             //console.log(longtitleField.getValue());
@@ -27,9 +27,10 @@ Ext.extend(SeoSuite, Ext.Component, {
                             //this.count('longtitle');
                         //}
 
-                        this.onRenderPreview();
-                    }).bind(this));
+                        //this.onRenderPreview();
+                    //}).bind(this));
 
+                    field.on('keyup', this.onRenderPreview, this);
                     field.on('change', this.onRenderPreview, this);
                 }
             }
@@ -49,9 +50,6 @@ Ext.extend(SeoSuite, Ext.Component, {
     },
     addPanel: function() {
         var fp = Ext.getCmp('modx-panel-resource');
-
-        console.log(SeoSuite.record);
-        console.log(SeoSuite.config.meta);
 
         fp.insert(2, {
             xtype        : 'panel',
@@ -221,14 +219,26 @@ Ext.extend(SeoSuite, Ext.Component, {
                         cls         : 'seosuite-seo-preview-' + SeoSuite.config.meta.preview.mode + ' seosuite-seo-preview-' + SeoSuite.config.meta.preview.engine,
                         items       : [{
                             id          : 'seosuite-seo-preview-favicon',
-                            html        : '<img src="' + SeoSuite.record.favicon + '" class="favicon" />'
+                            autoEl      : {
+                                tag         : 'img',
+                                src         : 'https://www.google.com/s2/favicons?domain=test',
+                                class       : 'favicon'
+                            }
                         }, {
-                            id          : 'seosuite-seo-preview-title'
+                            id          : 'seosuite-seo-preview-title',
+                            autoEl      : {
+                                tag         : 'div'
+                            }
                         }, {
                             id          : 'seosuite-seo-preview-url',
-                            html        : this.getUrlHTML()
+                            autoEl      : {
+                                tag         : 'div'
+                            }
                         }, {
-                            id          : 'seosuite-seo-preview-description'
+                            id          : 'seosuite-seo-preview-description',
+                            autoEl      : {
+                                tag         : 'div'
+                            }
                         }]
                     }, {
                         xtype       : 'xcheckbox',
@@ -447,43 +457,72 @@ Ext.extend(SeoSuite, Ext.Component, {
     onRenderPreview: function () {
         console.log('onRenderPreview');
 
-        MODx.Ajax.request({
-            url     : SeoSuite.config.connector_url,
-            params  : {
-                action      : 'mgr/resource/preview',
-                title       : Ext.getCmp('seosuite-preview-editor-title').getValue(),
-                description : Ext.getCmp('seosuite-preview-editor-description').getValue(),
-                fields      : Ext.encode({
-                    pagetitle    : Ext.getCmp('modx-resource-pagetitle').getValue(),
-                    longtitle    : Ext.getCmp('modx-resource-longtitle').getValue(),
-                    description  : Ext.getCmp('modx-resource-description').getValue(),
-                    introtext    : Ext.getCmp('modx-resource-introtext').getValue()
-                }),
-                content_type        : Ext.getCmp('modx-resource-content-type').getValue(),
-                alias               : Ext.getCmp('modx-resource-alias').getValue(),
-                uri                 : Ext.getCmp('modx-resource-uri').getValue(),
-                uri_override        : Ext.getCmp('modx-resource-uri-override').getValue(),
-                context             : MODx.ctx,
-                resource            : MODx.activePage.resource,
-                use_default_meta    : Ext.getCmp('seosuite-field-meta-editor-default').getValue(),
-                preview_mode        : this.previewMode || SeoSuite.config.meta.preview.mode,
-                preview_engine      : this.previewEngine || SeoSuite.config.meta.preview.engine
-            },
-            listeners: {
-                'success': {
-                    fn: function(response) {
-                        Ext.get('seosuite-seo-preview-title').dom.innerHTML       = response.results.output.title;
-                        Ext.get('seosuite-seo-preview-description').dom.innerHTML = response.results.output.description;
-                        Ext.get('seosuite-replace-alias').dom.innerHTML       = response.results.output.alias;
+        setTimeout((function() {
+            MODx.Ajax.request({
+                url     : SeoSuite.config.connector_url,
+                params  : {
+                    action          : 'mgr/resource/preview',
+                    id              : Ext.getCmp('modx-resource-id').getValue(),
+                    title           : Ext.getCmp('seosuite-preview-editor-title').getValue(),
+                    description     : Ext.getCmp('seosuite-preview-editor-description').getValue(),
+                    fields          : Ext.encode({
+                        pagetitle       : Ext.getCmp('modx-resource-pagetitle').getValue(),
+                        longtitle       : Ext.getCmp('modx-resource-longtitle').getValue(),
+                        description     : Ext.getCmp('modx-resource-description').getValue(),
+                        introtext       : Ext.getCmp('modx-resource-introtext').getValue()
+                    }),
+                    context         : Ext.getCmp('modx-resource-context-key').getValue(),
+                    parent          : Ext.getCmp('modx-resource-parent-hidden').getValue(),
+                    content_type    : Ext.getCmp('modx-resource-content-type').getValue(),
+                    alias           : Ext.getCmp('modx-resource-alias').getValue(),
+                    uri             : Ext.getCmp('modx-resource-uri').getValue(),
+                    uri_override    : Ext.getCmp('modx-resource-uri-override').getValue(),
+                    use_default_meta : Ext.getCmp('seosuite-field-meta-editor-default').getValue(),
+                    preview_mode    : this.previewMode || SeoSuite.config.meta.preview.mode,
+                    preview_engine  : this.previewEngine || SeoSuite.config.meta.preview.engine
+                },
+                listeners: {
+                    'success': {
+                        fn: function(response) {
+                            if (response.results) {
+                                Ext.get('seosuite-seo-preview').select('.favicon').elements.forEach(function(favicon) {
+                                    favicon.setAttribute('src', 'https://www.google.com/s2/favicons?domain=' + response.results.output.domain);
+                                });
+                            }
 
-                        /* Update counters. */
-                        this.countCharacters('longtitle', response.results.counts.title);
-                        this.countCharacters('description', response.results.counts.description);
-                    },
-                    scope: this
+                            var url = [];
+
+                            url.push('<img src="https://www.google.com/s2/favicons?domain=test" class="favicon" />');
+
+                            if (response.results.output.protocol === 'https') {
+                                url.push('<i class="icon icon-lock"></i>');
+                            }
+
+                            url.push(response.results.output.site_url);
+
+                            if (!Ext.isEmpty(response.results.output.base_url)) {
+                                url.push('<span>' + response.results.output.base_url + '</span>');
+                            }
+
+                            if (!Ext.isEmpty(response.results.output.alias)) {
+                                response.results.output.alias.split('/').forEach(function(path) {
+                                    url.push('<span>' + path + '</span>');
+                                });
+                            }
+
+                            Ext.get('seosuite-seo-preview-title').dom.innerHTML       = response.results.output.title;
+                            Ext.get('seosuite-seo-preview-description').dom.innerHTML = response.results.output.description;
+                            Ext.get('seosuite-seo-preview-url').dom.innerHTML         = url.join('');
+
+                            /* Update counters. */
+                            this.countCharacters('longtitle', response.results.counts.title);
+                            this.countCharacters('description', response.results.counts.description);
+                        },
+                        scope: this
+                    }
                 }
-            }
-        });
+            });
+        }).bind(this), 100);
     },
     onChangeMetaDefault: function (tf) {
         var metaEditor = Ext.getCmp('seosuite-field-meta-editor');
@@ -545,7 +584,7 @@ Ext.extend(SeoSuite, Ext.Component, {
         this.onRenderPreview();
     },
     getUrlHTML: function () {
-        var html = '<img src="' + SeoSuite.record.favicon + '" class="favicon" />';
+        var html = '<img src="https://www.google.com/s2/favicons?domain=test" class="favicon" />';
 
         if (MODx.config.server_protocol === 'https') {
             html += '<i class="icon icon-lock"></i> ';
