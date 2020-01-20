@@ -283,9 +283,19 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
                 var json = Ext.decode(value);
 
                 if (json) {
-                    json.forEach(function(item) {
+                    json.forEach(function(item, index) {
+                        var nextItem = null;
+
+                        if (json[index + 1]) {
+                            nextItem = json[index + 1];
+                        }
+
                         if (item.type === 'variable') {
                             data.push('<span data-type="variable">' + (item.value || '') + '</span>');
+
+                            if (nextItem && nextItem.type === 'variable') {
+                                data.push('<span> </span>');
+                            }
                         } else {
                             data.push('<span>' + (item.value || '') + '</span>');
                         }
@@ -309,15 +319,19 @@ Ext.extend(SeoSuite.panel.MetaTag, MODx.Panel, {
                     var variable = value.match(/<span\sdata-type="([a-z]+)">(.*?)<\/span>/);
 
                     if (string) {
-                        data.push({
-                            type    : 'text',
-                            value   : string[1]
-                        });
+                        if (!Ext.isEmpty(string[1])) {
+                            data.push({
+                                type    : 'text',
+                                value   : string[1]
+                            });
+                        }
                     } else if (variable) {
-                        data.push({
-                            type    : 'variable',
-                            value   : variable[2]
-                        });
+                        if (!Ext.isEmpty(variable[2])) {
+                            data.push({
+                                type    : 'variable',
+                                value   : variable[2]
+                            });
+                        }
                     }
                 });
             }

@@ -20,11 +20,12 @@ $_lang['seosuite.tab_meta.meta_description_desc']           = 'Compose the templ
 $_lang['seosuite.tab_meta.preview']                         = 'Search engine';
 $_lang['seosuite.tab_meta.preview_google']                  = 'Google';
 $_lang['seosuite.tab_meta.preview_yandex']                  = 'Yandex';
-$_lang['seosuite.tab_meta.longtitle']                       = 'Title';
-$_lang['seosuite.tab_meta.longtitle_desc']                  = 'Longtitle that defaults to the pagetitle.';
-$_lang['seosuite.tab_meta.description']                     = 'SEO description';
+$_lang['seosuite.tab_meta.longtitle']                       = 'Longtitle';
+$_lang['seosuite.tab_meta.longtitle_desc']                  = 'Longtitle, if empty the title will be used.';
+$_lang['seosuite.tab_meta.description']                     = 'Description';
 $_lang['seosuite.tab_meta.description_desc']                = '';
 $_lang['seosuite.tab_meta.seo']                             = 'SEO';
+$_lang['seosuite.tab_meta.delimiter']                       = 'Delimiter';
 
 /* Keywords. */
 $_lang['seosuite.tab_meta.keywords']                        = 'Keywords';

@@ -6,7 +6,7 @@
  * Copyright 2019 by Sterc <modx@sterc.com>
  */
 
-class SeoSuiteMetaPreviewProcessor extends modProcessor
+class SeoSuiteMetaPreviewProcessor extends modObjectProcessor
 {
     /**
      * @access public.

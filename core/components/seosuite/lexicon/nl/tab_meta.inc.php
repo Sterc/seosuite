@@ -20,11 +20,12 @@ $_lang['seosuite.tab_meta.meta_description_desc']           = 'De template welke
 $_lang['seosuite.tab_meta.preview']                         = 'Zoekmachine';
 $_lang['seosuite.tab_meta.preview_google']                  = 'Google';
 $_lang['seosuite.tab_meta.preview_yandex']                  = 'Yandex';
-$_lang['seosuite.tab_meta.longtitle']                       = 'Titel';
-$_lang['seosuite.tab_meta.longtitle_desc']                  = 'Lange titel met als standaard waarde de titel.';
+$_lang['seosuite.tab_meta.longtitle']                       = 'Lange titel';
+$_lang['seosuite.tab_meta.longtitle_desc']                  = 'Lange titel, indien leeg zal de titel gebruikt worden.';
 $_lang['seosuite.tab_meta.description']                     = 'Omschrijving';
 $_lang['seosuite.tab_meta.description_desc']                = '';
 $_lang['seosuite.tab_meta.seo']                             = 'SEO';
+$_lang['seosuite.tab_meta.delimiter']                       = 'Scheidingsteken';
 
 /* Keywords. */
 $_lang['seosuite.tab_meta.keywords']                        = 'Trefwoorden';

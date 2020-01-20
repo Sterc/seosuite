@@ -1,67 +1,58 @@
 <?php
-/*
- * This file is part of MODX Revolution.
- *
- * Copyright (c) MODX, LLC. All Rights Reserved.
- *
- * For complete copyright and license information, see the COPYRIGHT and LICENSE
- * files found in the top-level directory of this distribution.
- */
 
 /**
- * Gets a list all snippet variable options.
+ * SeoSuite
  *
- * @package modx
- * @subpackage processors.security.user
+ * Copyright 2019 by Sterc <modx@sterc.com>
  */
-class SeoSuiteVariablesGetListProcessor extends modObjectGetListProcessor
+
+class SeoSuiteMetaVariablesProcessor extends modObjectProcessor
 {
     /**
-     * @return array
+     * @access public.
+     * @var Array.
      */
-    public function getData()
-    {
-        /* Title is a non existing field but translates to longtitle with a default to pagetitle. */
-        $this->modx->lexicon->load('core:resource', 'core:setting');
+    public $languageTopics = ['core:resource', 'core:setting', 'seosuite:default'];
 
-        return [
-            'results' => [
-                [
-                    'key'   => 'title',
-                    'value' => $this->modx->lexicon('seosuite.tab_meta.longtitle')
-                ],
-                [
-                    'key'   => 'pagetitle',
-                    'value' => $this->modx->lexicon('resource_pagetitle')
-                ],
-                [
-                    'key'   => 'longtitle',
-                    'value' => $this->modx->lexicon('resource_longtitle')
-                ],
-                [
-                    'key'   => 'description',
-                    'value' => $this->modx->lexicon('resource_description')
-                ],
-                [
-                    'key'   => 'introtext',
-                    'value' => $this->modx->lexicon('resource_summary')
-                ],
-                [
-                    'key'   => 'site_name',
-                    'value' => $this->modx->lexicon('setting_site_name')
-                ]
-            ]
-        ];
+    /**
+     * @access public.
+     * @return Mixed.
+     */
+    public function initialize()
+    {
+        $this->modx->getService('seosuite', 'SeoSuite', $this->modx->getOption('seosuite.core_path', null, $this->modx->getOption('core_path') . 'components/seosuite/') . 'model/seosuite/');
+
+        return parent::initialize();
     }
 
     /**
-     * @param xPDOObject $array
-     * @return array|xPDOObject
+     * @access public.
+     * @return Mixed.
      */
-    public function prepareRow($array)
+    public function process()
     {
-        return $array;
+        return $this->outputArray([
+            [
+                'key'   => 'pagetitle',
+                'value' => $this->modx->lexicon('resource_pagetitle')
+            ], [
+                'key'   => 'longtitle',
+                'value' => $this->modx->lexicon('seosuite.tab_meta.longtitle')
+            ], [
+                'key'   => 'description',
+                'value' => $this->modx->lexicon('seosuite.tab_meta.description')
+            ], [
+                'key'   => 'introtext',
+                'value' => $this->modx->lexicon('resource_summary')
+            ], [
+                'key'   => 'site_name',
+                'value' => $this->modx->lexicon('setting_site_name')
+            ], [
+                'key'   => 'delimiter',
+                'value' => $this->modx->lexicon('seosuite.tab_meta.delimiter')
+            ]
+        ]);
     }
 }
 
-return 'SeoSuiteVariablesGetListProcessor';
+return 'SeoSuiteMetaVariablesProcessor';
