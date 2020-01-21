@@ -1,13 +1,20 @@
 <?php
+
 /**
- * Default English Lexicon Entries for SEO Suite
+ * SeoSuite
  *
- * @package seosuite
- * @subpackage lexicon
+ * Copyright 2019 by Sterc <modx@sterc.com>
  */
-$_lang['seosuite']                                = 'SEO Suite';
-$_lang['seosuite.menu.seosuite']                  = 'SEO Suite';
-$_lang['seosuite.menu.seosuite_desc']             = 'Manage 404 URLs and redirects.';
+
+$_lang['seosuite']                                              = 'SEO Suite';
+$_lang['seosuite.menu.seosuite']                                = 'SEO Suite';
+$_lang['seosuite.menu.seosuite_desc']                           = 'Manage 404 URLs and redirects.';
+
+$_lang['area_seosuite']                                         = 'SEO Suite';
+$_lang['area_seosuite_tab_meta']                                = 'SEO Suite meta tab';
+$_lang['area_seosuite_tab_seo']                                 = 'SEO Suite search engine tab';
+$_lang['area_seosuite_tab_social']                              = 'SEO Suite social tab';
+$_lang['area_seosuite_sitemap']                                 = 'SEO Suite sitemap';
 
 $_lang['seosuite.urls']                                         = '404 URLs';
 $_lang['seosuite.urls_desc']                                    = 'Fixing your 404 URLs is easy. Simply upload a one-column CSV-file.

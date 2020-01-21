@@ -1,28 +1,28 @@
 <?php
 
 /**
- * The main SeoSuite service class.
+ * SeoSuite
  *
- * @package seosuite
+ * Copyright 2019 by Sterc <modx@sterc.com>
  */
+
 class SeoSuite
 {
     /**
-     * @var modX
+     * @access public.
+     * @var modX.
      */
     public $modx;
 
     /**
-     * @var string
-     */
-    public $namespace = 'seosuite';
-
-    /**
-     * @var array
+     * @access public.
+     * @var Array.
      */
     public $config = [];
 
     /**
+     * @deprecated
+     *
      * @var array
      */
     public $options = [];
@@ -34,41 +34,22 @@ class SeoSuite
      */
     protected $plugins = [];
 
-    public function __construct(modX &$modx, array $options = [])
+    /**
+     * @access public.
+     * @param modX $modx.
+     * @param Array $config.
+     */
+    public function __construct(modX &$modx, array $config = [])
     {
-        $this->modx      =& $modx;
-        $this->namespace = $this->getOption('namespace', $options, 'seosuite');
+        $this->modx =& $modx;
 
-        $corePath = $this->getOption(
-            'core_path',
-            $options,
-            $this->modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/seosuite/'
-        );
-        $assetsPath = $this->getOption(
-            'assets_path',
-            $options,
-            $this->modx->getOption('assets_path', null, MODX_ASSETS_PATH) . 'components/seosuite/'
-        );
-        $assetsUrl = $this->getOption(
-            'assets_url',
-            $options,
-            $this->modx->getOption('assets_url', null, MODX_ASSETS_URL) . 'components/seosuite/'
-        );
-
-        $this->modx->lexicon->load('seosuite:default');
-
-        /* Check for valid version of SeoTab on load */
-        if ($this->getSeoTabVersion() === false) {
-            $seoTabNotice = $this->modx->lexicon('seosuite.seotab.notfound');
-        } else if ($this->getSeoTabVersion() < '2.0.0-pl') {
-            $seoTabNotice = $this->modx->lexicon('seosuite.seotab.versioninvalid');
-        } else {
-            $seoTabNotice = '';
-        }
+        $corePath   = $this->modx->getOption('seosuite.core_path', $config, $this->modx->getOption('core_path') . 'components/seosuite/');
+        $assetsUrl  = $this->modx->getOption('seosuite.assets_url', $config, $this->modx->getOption('assets_url') . 'components/seosuite/');
+        $assetsPath = $this->modx->getOption('seosuite.assets_path', $config, $this->modx->getOption('assets_path') . 'components/seosuite/');
 
         /* Loads some default paths for easier management. */
         $this->options = array_merge([
-            'namespace'     => $this->namespace,
+            'namespace'     => 'seosuite',
             'corePath'      => $corePath,
             'modelPath'     => $corePath . 'model/',
             'chunksPath'    => $corePath . 'elements/chunks/',
@@ -78,12 +59,8 @@ class SeoSuite
             'assetsUrl'     => $assetsUrl,
             'jsUrl'         => $assetsUrl . 'js/',
             'cssUrl'        => $assetsUrl . 'css/',
-            'connectorUrl'  => $assetsUrl . 'connector.php',
-            'seoTabNotice'  => $seoTabNotice,
-        ], $options);
-
-        /* Retrieve all plugin classes. */
-        $this->setPlugins();
+            'connectorUrl'  => $assetsUrl . 'connector.php'
+        ], $config);
 
         $this->config = array_merge([
             'namespace'                 => 'seosuite',
@@ -102,10 +79,11 @@ class SeoSuite
             'css_url'                   => $assetsUrl . 'css/',
             'assets_url'                => $assetsUrl,
             'connector_url'             => $assetsUrl . 'connector.php',
-            'version'                   => '1.0.0',
+            'version'                   => '2.0.0',
             'branding_url'              => $this->modx->getOption('seosuite.branding_url', null, ''),
             'branding_help_url'         => $this->modx->getOption('seosuite.branding_url_help', null, ''),
             'exclude_words'             => array_filter(explode(',', $this->modx->getOption('seosuite.exclude_words', null, ''))),
+            'disabled_templates'        => array_filter(explode(',', $this->modx->getOption('seosuite.meta.disabled_templates'))),
             'default_redirect_type'     => $this->modx->getOption('seosuite.default_redirect_type', null, 'HTTP/1.1 301 Moved Permanently'),
             'tab_seo'                   => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_seo'),
@@ -122,14 +100,12 @@ class SeoSuite
                 'image_types'               => 'jpg,jpeg.png,gif'
             ],
             'meta'                      => [
-                'permission'                         => (bool) $this->modx->hasPermission('seosuite_tab_meta'),
-                'counter_fields'                     => $this->modx->getOption('seosuite.meta.counter_fields', null, 'longtitle:70,description:160,content'),
-                'disabled_templates'                 => $this->modx->getOption('seosuite.meta.disabled_templates'),
-                'default_meta_title'                 => $this->modx->getOption('seosuite.meta.default_meta_title', null, '[{"type": "variable", "value": "longtitle"}, {"type":"variable", "value": "delimiter"}, {"type": "variable", "value": "site_name"}]'),
-                'default_meta_description'           => $this->modx->getOption('seosuite.meta.default_meta_description', null, '[{"type": "variable", "value": "description"}]'),
-                'default_meta_delimiter'             => $this->modx->getOption('seosuite.meta.default_meta_delimiter', null, '|'),
-                'max_keywords_description'           => (int) $this->modx->getOption('seosuite.meta.max_keywords_description', null, 8),
-                'max_keywords_title'                 => (int) $this->modx->getOption('seosuite.meta.max_keywords_title', null, 4),
+                'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_meta'),
+                'field_counters'            => $this->getFieldCounters($this->modx->getOption('seosuite.meta.counter_fields', null, 'longtitle:30|70,description:70|155,content')),
+                'keywords_field_counters'   => $this->getKeywordsFieldCounters($this->modx->getOption('seosuite.meta.keywords_field_counters', null, 'longtitle:4,description:8,content')),
+                'default_meta_title'        => $this->modx->getOption('seosuite.meta.default_meta_title', null, '[{"type": "variable", "value": "longtitle"}, {"type":"variable", "value": "delimiter"}, {"type": "variable", "value": "site_name"}]'),
+                'default_meta_description'  => $this->modx->getOption('seosuite.meta.default_meta_description', null, '[{"type": "variable", "value": "description"}]'),
+                'default_meta_delimiter'    => $this->modx->getOption('seosuite.meta.default_meta_delimiter', null, '|'),
                 'preview'                   => [
                     'mode'                      => $this->modx->getOption('seosuite.meta.searchmode', null, 'mobile'),
                     'engine'                    => $this->modx->getOption('seosuite.meta.searchengine', null, 'google'),
@@ -149,12 +125,9 @@ class SeoSuite
                 'default_changefreq'        => $this->modx->getOption('seosuite.sitemap.default_changefreq', null, 'weekly'),
                 'default_priority'          => $this->modx->getOption('seosuite.sitemap.default_priority', null, '0.5')
             ]
-        ], $options);
+        ], $config);
 
-        $this->modx->addPackage('seosuite', $this->getOption('modelPath'));
-
-        $query = $this->modx->newQuery('SeoSuiteResource');
-        $query->where(['keywords' => 'test']);
+        $this->modx->addPackage('seosuite', $this->config['model_path']);
 
         if (is_array($this->config['lexicons'])) {
             foreach ($this->config['lexicons'] as $lexicon) {
@@ -163,6 +136,9 @@ class SeoSuite
         } else {
             $this->modx->lexicon->load($this->config['lexicons']);
         }
+
+        /* Retrieve all plugin classes. */
+        $this->setPlugins();
     }
 
     /**
@@ -192,28 +168,23 @@ class SeoSuite
     }
 
     /**
-     * Get a local configuration option or a namespaced system setting by key.
-     *
-     * @param string $key The option key to search for.
-     * @param array $options An array of options that override local options.
-     * @param mixed $default The default value returned if the option is not found locally or as a
-     * namespaced system setting; by default this value is null.
-     * @return mixed The option value or the default value specified.
+     * @access public.
+     * @param String $key.
+     * @param Array $options.
+     * @param Mixed $default.
+     * @return Mixed.
      */
-    public function getOption($key, $options = [], $default = null)
+    public function getOption($key, array $options = [], $default = null)
     {
-        $option = $default;
-        if (!empty($key) && is_string($key)) {
-            if ($options != null && array_key_exists($key, $options)) {
-                $option = $options[$key];
-            } elseif (array_key_exists($key, $this->options)) {
-                $option = $this->options[$key];
-            } elseif (array_key_exists("{$this->namespace}.{$key}", $this->modx->config)) {
-                $option = $this->modx->getOption("{$this->namespace}.{$key}");
-            }
+        if (isset($options[$key])) {
+            return $options[$key];
         }
 
-        return $option;
+        if (isset($this->config[$key])) {
+            return $this->config[$key];
+        }
+
+        return $this->modx->getOption($this->config['namespace'] . '.' . $key, $options, $default);
     }
 
     /**
@@ -279,118 +250,6 @@ class SeoSuite
         }
 
         return $filtered;
-    }
-
-    /**
-     * Adds a redirect to SEOTab for a given resource
-     * @deprecated This should be refactored
-     * @param   int $url    The 404 url
-     * @param   int $id     The resource id
-     * @return  int The id of the seoUrl object, or false if seotab is not installed
-     */
-    public function addSeoTabRedirect($url, $id)
-    {
-        $redirect_id = false;
-        $url = urlencode($url);
-
-        /* First check for valid version of SeoTab */
-        if (!$this->checkSeoTab()) {
-            return false;
-        }
-
-        $redirect = $this->modx->getObject('seoUrl', ['url' => $url, 'resource' => $id]);
-        if (!$redirect) {
-            $resource = $this->modx->getObject('modResource', $id);
-            if ($resource) {
-                $redirect = $this->modx->newObject('seoUrl');
-                $data     = [
-                    'url'         => $url,
-                    'resource'    => $id,
-                    'context_key' => $resource->get('context_key'),
-                ];
-
-                $redirect->fromArray($data);
-                $redirect->save();
-
-                $redirect_id = $redirect->get('id');
-            }
-        }
-
-        return $redirect_id;
-    }
-
-    /**
-     * Check if SeoTab is installed and is the minimum correct version
-     * @deprecated This is not needed anymore.
-     * @return  boolean
-     */
-    public function checkSeoTab()
-    {
-        $stercseo = $this->modx->getService(
-            'stercseo',
-            'StercSEO',
-            $this->modx->getOption(
-                'stercseo.core_path',
-                null,
-                $this->modx->getOption('core_path') . 'components/stercseo/'
-            ) . 'model/stercseo/',
-            []
-        );
-
-        if (!($stercseo instanceof StercSEO)) {
-            return false;
-        }
-
-        $version = $this->getSeoTabVersion();
-        if ($version < '2.0.0-pl') {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @deprecated
-     * @return bool|string
-     */
-    public function getSeoTabVersion()
-    {
-        $c = $this->modx->newQuery('transport.modTransportPackage');
-        // Using double where clause to group the OR
-        $c->where([
-            ['package_name' => 'SEO Tab'],
-            ['OR:package_name:=' => 'stercseo']
-        ]);
-        $c->where([
-            'installed:IS NOT' => null
-        ]);
-        $c->sortby('version_major', 'DESC');
-        $c->sortby('version_minor', 'DESC');
-        $c->sortby('version_patch', 'DESC');
-
-        $c->limit(1);
-
-        $stPackage = $this->modx->getObject('transport.modTransportPackage', $c);
-        if ($stPackage) {
-            return $stPackage->get('version_major') . '.' . $stPackage->get('version_minor') . '.' . $stPackage->get('version_patch') . '-' . $stPackage->get('release');
-        }
-
-        $gitpackagemanagement = $this->modx->getService('gitpackagemanagement', 'GitPackageManagement', $this->modx->getOption('gitpackagemanagement.core_path', null, $this->modx->getOption('core_path') . 'components/gitpackagemanagement/') . 'model/gitpackagemanagement/');
-        if (!($gitpackagemanagement instanceof GitPackageManagement)) {
-            return false;
-        }
-
-        $c = $this->modx->newQuery('GitPackage');
-        $c->where([
-            'name' => 'StercSEO'
-        ]);
-
-        $gitStPackage = $this->modx->getObject('GitPackage', $c);
-        if ($gitStPackage) {
-            return $gitStPackage->get('version');
-        }
-
-        return false;
     }
 
     /**
@@ -547,14 +406,15 @@ class SeoSuite
     }
 
     /**
-     * @access public
+     * @access public.
+     * @param String $fields.
      * @return Array.
      */
-    public function getFieldCounters()
+    public function getFieldCounters($fields)
     {
-        $fields = [];
+        $output = [];
 
-        foreach (explode(',', $this->config['meta']['counter_fields']) as $field) {
+        foreach (explode(',', trim($fields)) as $field) {
             list($name, $count) = explode(':', $field);
 
             $min = 0;
@@ -564,13 +424,37 @@ class SeoSuite
                 list($min, $max) = explode('|', $count);
             }
 
-            $fields[$name] = [
-                'min'   => $min,
-                'max'   => $max ?: $min
+            $output[$name] = [
+                'min'   => (int) $min,
+                'max'   => (int) $max ?: $min
             ];
         }
 
-        return $fields;
+        return $output;
+    }
+
+    /**
+     * @access public.
+     * @param String $fields.
+     * @return Array.
+     */
+    public function getKeywordsFieldCounters($fields)
+    {
+        $output = [];
+
+        foreach (explode(',', trim($fields)) as $field) {
+            $field = trim($field);
+
+            if (strpos($field, ':')) {
+                list($field, $max) = explode(':', $field);
+
+                $output[$field] = (int) $max;
+            } else {
+                $output[$field] = 0;
+            }
+        }
+
+        return $output;
     }
 
     /**
@@ -896,10 +780,11 @@ class SeoSuite
      *
      * @access public.
      * @param String $value.
-     * @param Array $resource.
+     * @param Array $fields.
+     * @param Array $skipFields
      * @return String.
      */
-    public function renderMetaValue($value, array $resource = [])
+    public function renderMetaValue($value, array $fields = [], array $skipFields = [])
     {
         $output = [];
 
@@ -909,6 +794,10 @@ class SeoSuite
             if ($data) {
                 foreach ((array) $data as $item) {
                     if ($item['type'] === 'variable') {
+                        if (in_array($item['value'], $skipFields, true)) {
+                            continue;
+                        }
+
                         switch ($item['value']) {
                             case 'site_name':
                                 $output[] = trim($this->modx->getOption($item['value']));
@@ -917,13 +806,13 @@ class SeoSuite
                             case 'pagetitle':
                             case 'description':
                             case 'introtext':
-                                if (isset($resource[$item['value']])) {
-                                    $output[] = trim($resource[$item['value']]);
+                                if (isset($fields[$item['value']])) {
+                                    $output[] = trim($fields[$item['value']]);
                                 }
 
                                 break;
                             case 'longtitle':
-                                $output[] = trim($resource['longtitle'] ?: $resource['pagetitle']);
+                                $output[] = trim($fields['longtitle'] ?: $fields['pagetitle']);
 
                                 break;
                             case 'delimiter':
@@ -944,13 +833,19 @@ class SeoSuite
     /**
      * This strips the domain from the request.
      * For example: domain.tld/path/to/page will become path/to/page.
-     * @param $request
+     *
+     * @access public.
+     * @param String $request.
+     * @return String.
      */
     public function formatUrl($request)
     {
         if (!empty($request)) {
             $parts   = parse_url($request);
-            $request = isset($parts['path']) ? $parts['path'] : $request;
+
+            if (isset($parts['path'])) {
+                $request = $parts['path'];
+            }
         }
 
         return urldecode(trim($request, '/'));

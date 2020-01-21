@@ -36,9 +36,13 @@ Ext.extend(SeoSuite, Ext.Component, {
             }
         }).bind(this));
 
-        Ext.each(SeoSuite.record.fields.split(','), function(field) {
-            SeoSuite.addCounter(field);
-        });
+        Ext.iterate(this.getFieldCounters(), (function(key, length) {
+            this.onAddCounter(key, length.min || 0, length.max || 0);
+        }).bind(this));
+
+        Ext.iterate(this.getFieldKeywordCounters(), (function(key, maxKeywords) {
+            this.onAddKeywordCounter(key, maxKeywords);
+        }).bind(this));
 
         ['modx-resource-longtitle', 'modx-resource-description'].forEach(function(key) {
             var field = Ext.getCmp(key);
@@ -53,7 +57,6 @@ Ext.extend(SeoSuite, Ext.Component, {
 
         fp.insert(2, {
             xtype        : 'panel',
-            anchor       : '100%',
             border       : false,
             layout       : 'form',
             bodyCssClass : 'main-wrapper',
@@ -82,15 +85,13 @@ Ext.extend(SeoSuite, Ext.Component, {
                         value       : SeoSuite.record.keywords,
                         enableKeyEvents : true,
                         listeners   : {
-                            keyup       : function () {
-                                MODx.fireResourceFormChange();
-
-                                Ext.each(SeoSuite.record.fields.split(','), function (field) {
-                                    var Field = Ext.getCmp('modx-resource-' + field);
-                                    if (Field) {
-                                        SeoSuite.count(field);
-                                    }
-                                });
+                            keyup       : {
+                                fn          : function(tf) {
+                                    Ext.iterate(this.getFieldKeywordCounters(), (function(key, maxKeywords) {
+                                        this.onUpdateKeywordCounter(key);
+                                    }).bind(this));
+                                },
+                                scope       : this
                             }
                         }
                     }, {
@@ -306,141 +307,192 @@ Ext.extend(SeoSuite, Ext.Component, {
 
         fp.doLayout();
     },
-    addCounter: function(fieldKey) {
-        var fieldId = this.getFieldId(fieldKey);
-        var field = Ext.getCmp(fieldId);
+    getFieldCounters: function() {
+        var counters = {};
 
-        if (field) {
-            SeoSuite.record.values[fieldKey] = field.getValue();
+        if (SeoSuite.config.meta.field_counters) {
+            Ext.iterate(SeoSuite.config.meta.field_counters, (function(key, length) {
+                counters[this.getFieldAlias(key)] = length;
+            }).bind(this));
+        }
 
-            field.on('keyup', function() {
-                SeoSuite.record.values[fieldKey] = field.getValue();
-                SeoSuite.count(fieldKey);
-            });
+        return counters;
+    },
+    getFieldKeywordCounters: function() {
+        var counters = {};
 
-            field.on('blur', function() {
-                SeoSuite.record.values[fieldKey] = field.getValue();
-            });
+        if (SeoSuite.config.meta.keywords_field_counters) {
+            Ext.iterate(SeoSuite.config.meta.keywords_field_counters, (function(key, maxKeywords) {
+                counters[this.getFieldAlias(key)] = maxKeywords;
+            }).bind(this));
+        }
 
-            var counterHtml = '<span class="seosuite-counter-wrap seosuite-counter-keywords" id="seosuite-counter-keywords-' + fieldKey + '" title="' + _('seosuite.tab_meta.keywords') + '"><strong>' + _('seosuite.tab_meta.keywords') + ':&nbsp;&nbsp;</strong><span id="seosuite-counter-keywords-' + fieldKey + '-current">0</span></span>';
-            if (fieldKey !== 'content') {
-                var chartHtml = '<svg viewBox="0 0 36 36" class="circular-chart">\n' +
-                                '  <path class="circle" id="seosuite-counter-circle-' + fieldKey + '"\n' +
-                                '    stroke-dasharray="0px, 100px"\n' +
-                                '    d="M18 2.0845\n' +
-                                '      a 15.9155 15.9155 0 0 1 0 31.831\n' +
-                                '      a 15.9155 15.9155 0 0 1 0 -31.831"\n' +
-                                '  />\n' +
-                                '</svg>';
+        return counters;
+    },
+    getFieldAlias: function(key) {
+        if (key === 'longtitle') {
+            return 'seosuite-longtitle';
+        }
 
-                counterHtml += '<span class="seosuite-counter-wrap seosuite-counter-chars green" id="seosuite-counter-chars-' + fieldKey + '" title="' + _('seosuite.tab_meta.characters.allowed') + '">' + chartHtml + '<span class="current" id="seosuite-counter-chars-' + fieldKey + '-current">1</span>';
-                counterHtml += '<span class="allowed" id="seosuite-counter-chars-' + fieldKey + '-allowed">' + SeoSuite.record.chars[fieldKey]['max'] + '</span></span>';
+        if (key === 'description') {
+            return 'seosuite-description';
+
+        }
+
+        if (key === 'content') {
+            return 'ta';
+        }
+
+        return 'modx-resource-' + key;
+    },
+    onAddCounter: function(key, minCounterLength, maxCounterLength) {
+        if (minCounterLength !== 0 || maxCounterLength !== 0) {
+            var tf = Ext.getCmp(key);
+
+            if (tf) {
+                tf.minCounterLength = minCounterLength;
+                tf.maxCounterLength = maxCounterLength;
+
+                tf.container.addClass('x-form-seosuite-counter');
+                tf.container.createChild({
+                    tag     : 'div',
+                    class   : 'x-form-seosuite-counter-count ' + (minCounterLength <= 0 ? 'valid' : ''),
+                    html    : maxCounterLength
+                });
+                tf.container.createChild({
+                    tag     : 'div',
+                    class   : 'x-form-seosuite-counter-progress ' + (minCounterLength <= 0 ? 'valid' : ''),
+                    html    : '<span style="width: 0;"></span>'
+                });
+
+                tf.on('keyup', this.onUpdateCounter);
+                tf.on('change', this.onUpdateCounter);
+
+                this.onUpdateCounter(tf);
             }
-
-            Ext.get('x-form-el-' + fieldId).createChild({
-                tag   : 'div',
-                id    : 'seosuite-resource-' + fieldKey,
-                class : 'seosuite-counter',
-                html  : counterHtml
-            });
-
-            SeoSuite.count(fieldKey);
         }
     },
-    countCharacters: function (fieldKey, overrideCount) {
-        var field    = this.getFieldId(fieldKey);
-        var value    = Ext.getCmp(field).getValue();
-        var maxChars = Ext.get('seosuite-counter-chars-' + fieldKey + '-allowed').dom.innerHTML;
-        var tooLong  = false;
-        var tooShort = false;
-        var charCount;
+    onRefreshCounter: function(key, restrictedLength) {
+        var tf = Ext.getCmp(key);
 
-        /* Title and description counts are updated via Ajax request and will contain the overrideCount parameter. */
-        if ((fieldKey === 'longtitle' || fieldKey === 'description') && typeof overrideCount === 'undefined') {
-            return '';
+        if (tf) {
+            tf.restrictedLength = restrictedLength;
+
+            this.onUpdateCounter(tf);
         }
-
-        charCount = overrideCount ? overrideCount : value.length;
-        if (charCount > maxChars) {
-            tooLong = true;
-        } else if (charCount < SeoSuite.record.chars[fieldKey]['min']) {
-            tooShort = true;
-        }
-
-        if (tooLong || tooShort) {
-            if (tooShort && charCount > (SeoSuite.record.chars[fieldKey]['min'] - 10)) {
-                Ext.get('seosuite-counter-chars-' + fieldKey).addClass('orange').removeClass('green').removeClass('red');
-            } else {
-                Ext.get('seosuite-counter-chars-' + fieldKey).addClass('red').removeClass('green').removeClass('orange');
-            }
-        } else {
-            Ext.get('seosuite-counter-chars-' + fieldKey).removeClass('red').removeClass('orange').addClass('green');
-        }
-
-        Ext.get('seosuite-counter-chars-' + fieldKey + '-current').dom.innerHTML = charCount;
-
-        /* Update character count circle. */
-        var percentage = Math.round((charCount / maxChars) * 100);
-        var circle = document.querySelector('#seosuite-counter-circle-' + fieldKey);
-
-        /**
-         * Using animate to support stroke-dasharray in IE.
-         * @see(https://github.com/web-animations/web-animations-js)
-         */
-        circle.animate([{
-            'strokeDasharray': percentage + 'px, 100px',
-            easing           : 'cubic-bezier(0.4, 0, 0.2, 1)',
-            offset           : 0
-        }, {
-            'strokeDasharray': percentage + 'px, 100px',
-            offset           : 1
-        }], {
-            duration: 600,
-            fill    : 'forwards'
-        });
     },
-    countKeywords: function (fieldKey) {
-        var field        = this.getFieldId(fieldKey);
-        var value        = Ext.get(field).getValue();
-        var keywordCount = 0;
+    onUpdateCounter: function(tf) {
+        if (typeof tf !== 'object') {
+            tf = Ext.getCmp(tf);
+        }
 
-        Ext.each(Ext.get('seosuite-keywords').getValue().split(','), function(keyword) {
-            keyword = keyword.replace(/^\s+/, '').toLowerCase();
+        if (tf) {
+            var minCounterLength = tf.minCounterLength;
+            var maxCounterLength = tf.maxCounterLength;
 
-            /* Longtitle has fallback on pagetitle, the keyword count is updated here. */
-            if (fieldKey === 'longtitle' && value.length === 0) {
-                value = Ext.getCmp('modx-resource-pagetitle').getValue();
-            }
+            if (tf.restrictedLength) {
+                minCounterLength -= tf.restrictedLength;
+                maxCounterLength -= tf.restrictedLength;
 
-            if (keyword) {
-                var counter = value.toLowerCase().match(new RegExp("(^|[ \s\n\r\t\.,'\(\"\+;!?:\-])" + keyword + "($|[ \s\n\r\t.,'\)\"\+!?:;\-])", 'gim'));
-                if (counter) {
-                    keywordCount = keywordCount + counter.length;
+                if (minCounterLength < 0) {
+                    minCounterLength = 0;
+                }
+
+                if (maxCounterLength < 0) {
+                    maxCounterLength = 0;
                 }
             }
-        });
 
-        Ext.get('seosuite-counter-keywords-' + fieldKey + '-current').dom.innerHTML = keywordCount;
+            var count   = Math.round(maxCounterLength - tf.getValue().length).toString();
+            var percent = Math.round((maxCounterLength / 100) * tf.getValue().length);
+            var state   = 'valid';
 
-        var maxKeywords = MODx.isEmpty(this.config.meta.max_keywords_title) ? '4' : this.config.meta.max_keywords_title;
-        if (fieldKey === 'description') {
-            /* Use different limit for the description. */
-            maxKeywords = MODx.isEmpty(this.config.meta.max_keywords_description) ? '8' : this.config.meta.max_keywords_description;
-        }
+            if ((maxCounterLength - tf.getValue().length) < 0) {
+                state = 'invalid';
+            } else if (tf.getValue().length < minCounterLength) {
+                state = 'progress';
+            }
 
-        maxKeywords = parseInt(maxKeywords);
-        if (keywordCount > 0 && keywordCount <= maxKeywords) {
-            Ext.get('seosuite-counter-keywords-' + fieldKey).removeClass('red');
-        } else {
-            Ext.get('seosuite-counter-keywords-' + fieldKey).addClass('red');
+            if (percent >= 100) {
+                percent = 100;
+            }
+
+            tf.container.select('.x-form-seosuite-counter-count').elements.forEach(function(element) {
+                var counter = Ext.get(element);
+
+                counter.removeClass('valid').removeClass('invalid').removeClass('progress').addClass(state);
+
+                counter.update(count);
+            });
+
+            tf.container.select('.x-form-seosuite-counter-progress').elements.forEach(function(element) {
+                var counter = Ext.get(element);
+
+                counter.removeClass('valid').removeClass('invalid').removeClass('progress').addClass(state);
+
+                Ext.get(counter.select('span').elements[0]).setStyle('width', percent + '%');
+            });
         }
     },
-    count: function(field, overrideCount) {
-        if (field !== 'content') {
-            this.countCharacters(field, overrideCount);
+    onAddKeywordCounter: function(key, maxKeywords) {
+        var tf = Ext.getCmp(key);
+
+        if (tf) {
+            tf.maxKeywords = maxKeywords;
+
+            tf.container.addClass('x-form-seosuite-keyword-counter');
+
+            tf.container.createChild({
+                tag     : 'div',
+                class   : 'x-form-seosuite-keyword-counter-progress',
+                html    : _('seosuite.tab_meta.keywords') + ': <span>0</span>'
+            });
+
+            tf.on('keyup', this.onUpdateKeywordCounter);
+            tf.on('change', this.onUpdateKeywordCounter);
+
+            this.onUpdateKeywordCounter(tf);
+        }
+    },
+    onUpdateKeywordCounter: function(tf) {
+        if (typeof tf !== 'object') {
+            tf = Ext.getCmp(tf);
         }
 
-        this.countKeywords(field);
+        if (tf) {
+            var count = 0;
+            var keywords = Ext.getCmp('seosuite-keywords');
+
+            if (keywords) {
+                var value = tf.getValue().toLowerCase();
+
+                keywords.getValue().split(',').forEach(function(keyword) {
+                    keyword = keyword.replace(/^\s+/, '').toLowerCase();
+
+                    if (keyword) {
+                        var matches = value.match(new RegExp("(^|[ \s\n\r\t\.,'\(\"\+;!?:\-\>])" + keyword + "($|[ \s\n\r\t.,'\)\"\+!?:;\-\<])", 'gim'));
+
+                        if (matches) {
+                            count += matches.length;
+                        }
+                    }
+                });
+            }
+
+            tf.container.select('.x-form-seosuite-keyword-counter-progress').elements.forEach(function(element) {
+                var counter = Ext.get(element);
+
+                if (tf.maxKeywords >= 0) {
+                    if (tf.maxKeywords >= count) {
+                        counter.removeClass('invalid').addClass('valid');
+                    } else {
+                        counter.addClass('invalid').removeClass('valid');
+                    }
+                }
+
+                Ext.get(counter.select('span').elements[0]).update(count.toString());
+            });
+        }
     },
     getFieldId: function (fieldKey) {
         var fieldId = fieldKey;
@@ -455,12 +507,10 @@ Ext.extend(SeoSuite, Ext.Component, {
         return fieldId;
     },
     onRenderPreview: function () {
-        console.log('onRenderPreview');
-
         setTimeout((function() {
             MODx.Ajax.request({
-                url     : SeoSuite.config.connector_url,
-                params  : {
+                url         : SeoSuite.config.connector_url,
+                params      : {
                     action          : 'mgr/resource/preview',
                     id              : Ext.getCmp('modx-resource-id').getValue(),
                     title           : Ext.getCmp('seosuite-preview-editor-title').getValue(),
@@ -481,44 +531,46 @@ Ext.extend(SeoSuite, Ext.Component, {
                     preview_mode    : this.previewMode || SeoSuite.config.meta.preview.mode,
                     preview_engine  : this.previewEngine || SeoSuite.config.meta.preview.engine
                 },
-                listeners: {
-                    'success': {
-                        fn: function(response) {
+                listeners   : {
+                    'success'   : {
+                        fn          : function(response) {
                             if (response.results) {
                                 Ext.get('seosuite-seo-preview').select('.favicon').elements.forEach(function(favicon) {
                                     favicon.setAttribute('src', 'https://www.google.com/s2/favicons?domain=' + response.results.output.domain);
                                 });
+
+                                var url = [];
+
+                                url.push('<img src="https://www.google.com/s2/favicons?domain=test" class="favicon" />');
+
+                                if (response.results.output.protocol === 'https') {
+                                    url.push('<i class="icon icon-lock"></i>');
+                                }
+
+                                url.push(response.results.output.site_url);
+
+                                if (!Ext.isEmpty(response.results.output.base_url)) {
+                                    url.push('<span>' + response.results.output.base_url + '</span>');
+                                }
+
+                                if (!Ext.isEmpty(response.results.output.alias)) {
+                                    response.results.output.alias.split('/').forEach(function(path) {
+                                        url.push('<span>' + path + '</span>');
+                                    });
+                                }
+
+                                Ext.get('seosuite-seo-preview-title').dom.innerHTML       = response.results.output.title;
+                                Ext.get('seosuite-seo-preview-description').dom.innerHTML = response.results.output.description;
+                                Ext.get('seosuite-seo-preview-url').dom.innerHTML         = url.join('');
+
+                                if (response.results.field_counters) {
+                                    Ext.iterate(response.results.field_counters, (function(key, restrictedLength) {
+                                        this.onRefreshCounter(this.getFieldAlias(key), restrictedLength);
+                                    }).bind(this));
+                                }
                             }
-
-                            var url = [];
-
-                            url.push('<img src="https://www.google.com/s2/favicons?domain=test" class="favicon" />');
-
-                            if (response.results.output.protocol === 'https') {
-                                url.push('<i class="icon icon-lock"></i>');
-                            }
-
-                            url.push(response.results.output.site_url);
-
-                            if (!Ext.isEmpty(response.results.output.base_url)) {
-                                url.push('<span>' + response.results.output.base_url + '</span>');
-                            }
-
-                            if (!Ext.isEmpty(response.results.output.alias)) {
-                                response.results.output.alias.split('/').forEach(function(path) {
-                                    url.push('<span>' + path + '</span>');
-                                });
-                            }
-
-                            Ext.get('seosuite-seo-preview-title').dom.innerHTML       = response.results.output.title;
-                            Ext.get('seosuite-seo-preview-description').dom.innerHTML = response.results.output.description;
-                            Ext.get('seosuite-seo-preview-url').dom.innerHTML         = url.join('');
-
-                            /* Update counters. */
-                            this.countCharacters('longtitle', response.results.counts.title);
-                            this.countCharacters('description', response.results.counts.description);
                         },
-                        scope: this
+                        scope       : this
                     }
                 }
             });
@@ -582,17 +634,6 @@ Ext.extend(SeoSuite, Ext.Component, {
         }
 
         this.onRenderPreview();
-    },
-    getUrlHTML: function () {
-        var html = '<img src="https://www.google.com/s2/favicons?domain=test" class="favicon" />';
-
-        if (MODx.config.server_protocol === 'https') {
-            html += '<i class="icon icon-lock"></i> ';
-        }
-
-        html += SeoSuite.record.url;
-
-        return html;
     }
 });
 

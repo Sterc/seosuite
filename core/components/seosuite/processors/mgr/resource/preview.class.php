@@ -54,6 +54,8 @@ class SeoSuiteMetaPreviewProcessor extends modObjectProcessor
             ]);
         }
 
+        $fields = json_decode($this->getProperty('fields'), true);
+
         $title       = $this->getProperty('title');
         $description = $this->getProperty('description');
 
@@ -62,23 +64,21 @@ class SeoSuiteMetaPreviewProcessor extends modObjectProcessor
             $description = $this->modx->seosuite->config['meta']['default_meta_description'];
         }
 
-        $fields = json_decode($this->getProperty('fields'), true);
-
-        $renderedTitle       = $this->modx->seosuite->renderMetaValue($title, $fields);
-        $renderedDescription = $this->modx->seosuite->renderMetaValue($description, $fields);
+        $maxTitleLength         = $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['title'];
+        $maxDescriptionLength   = $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['description'];
 
         $output = [
             'output'        => [
                 'protocol'      => $protocol,
                 'site_url'      => $siteUrl,
                 'base_url'      => $baseUrl,
-                'title'         => $this->truncate($renderedTitle, $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['title']),
-                'description'   => $this->truncate($renderedDescription, $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['description']),
+                'title'         => $this->truncate($this->modx->seosuite->renderMetaValue($title, $fields), $maxTitleLength),
+                'description'   => $this->truncate($this->modx->seosuite->renderMetaValue($description, $fields), $maxDescriptionLength),
                 'alias'         => $alias
             ],
-            'counts'        => [
-                'title'         => strlen($renderedTitle),
-                'description'   => strlen($renderedDescription)
+            'field_counters' => [
+                'longtitle'     => strlen($this->modx->seosuite->renderMetaValue($title, $fields, ['longtitle'])),
+                'description'   => strlen($this->modx->seosuite->renderMetaValue($description, $fields, ['description']))
             ]
         ];
 

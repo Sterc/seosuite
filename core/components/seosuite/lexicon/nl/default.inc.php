@@ -5,9 +5,16 @@
  *
  * Copyright 2019 by Sterc <modx@sterc.com>
  */
+
 $_lang['seosuite']                                              = 'SEO Suite';
 $_lang['seosuite.menu.seosuite']                                = 'SEO Suite';
 $_lang['seosuite.menu.seosuite_desc']                           = 'Beheer 404 URL\'s en redirects.';
+
+$_lang['area_seosuite']                                         = 'SEO Suite';
+$_lang['area_seosuite_tab_meta']                                = 'SEO Suite meta tab';
+$_lang['area_seosuite_tab_seo']                                 = 'SEO Suite zoekmachine tab';
+$_lang['area_seosuite_tab_social']                              = 'SEO Suite social tab';
+$_lang['area_seosuite_sitemap']                                 = 'SEO Suite sitemap';
 
 $_lang['seosuite.urls']                                         = '404 URLs';
 $_lang['seosuite.urls_desc']                                    = 'Heb je meerdere 404 URL\'s gevonden? Upload hier simpelweg een .csv file en SEO Suite zorgt ervoor dat ze herleid worden op je website. Deze worden gematcht met bestaande pagina\'s op je website, gebaseerd op het laatste deel van de URL (het gedeelte achter de laatste slash). Is er één match, dan wordt deze automatisch geconverteerd naar een 301 redirect. Zijn er meerdere matches, dan kun je de gewenste redirect handmatig kiezen. Zijn er geen matches, dan kun je zelf een URL invoeren.';

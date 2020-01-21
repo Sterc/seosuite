@@ -257,8 +257,84 @@
 .x-form-seosuite-counter .x-form-field {
     width: 100% !important;
     height: auto;
-    padding-right: 60px;
+    padding-right: 50px;
     box-sizing: border-box;
+}
+
+.x-form-seosuite-counter .x-form-seosuite-counter-count {
+    position: absolute;
+    top: 1px;
+    bottom: 13px;
+    right: 0;
+    display: block;
+    width: 45px;
+    font-size: 12px;
+    line-height: 20px;
+    font-weight: 600;
+    color: #f49548;
+    padding: 5px;
+    box-sizing: border-box;
+    text-align: center;
+    border-left: 1px solid #efefef;
+}
+
+.x-form-seosuite-counter .x-form-seosuite-counter-count.valid {
+    color: #6cb24a;
+}
+
+.x-form-seosuite-counter .x-form-seosuite-counter-count.invalid {
+    color: #be0000;
+}
+
+.x-form-seosuite-counter .x-form-seosuite-counter-progress {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 8px;
+    border-radius: 3px;
+    background-color: #fbfbfb;
+    border: 1px solid #efefef;
+    box-sizing: border-box;
+    margin: 4px 0 0;
+    overflow: hidden;
+}
+
+.x-form-seosuite-counter .x-form-seosuite-counter-progress span {
+    display: block;
+    width: 0;
+    height: 100%;
+    background-color: #f49548;
+}
+
+.x-form-seosuite-counter .x-form-seosuite-counter-progress.valid span {
+    background-color: #6cb24a;
+}
+
+.x-form-seosuite-counter .x-form-seosuite-counter-progress.invalid span {
+    background-color: #be0000;
+}
+
+/* Field keywords counter */
+
+.x-form-seosuite-keyword-counter {
+    position: relative;
+}
+
+.x-form-seosuite-keyword-counter .x-form-seosuite-keyword-counter-progress {
+    position: absolute;
+    top: -22px;
+    right: 0;
+    color: #555555;
+    font-weight: 600;
+}
+
+.x-form-seosuite-keyword-counter .x-form-seosuite-keyword-counter-progress.invalid {
+    color: #be0000;
+}
+
+#modx-resource-content .x-form-seosuite-keyword-counter .x-form-seosuite-keyword-counter-progress {
+    top: -48px;
+    right: 30px;
 }
 
 /* Meta field */

@@ -1,26 +1,20 @@
 <?php
-/* Areas. */
-$_lang['area_seosuite_general']                                         = 'SEO Suite: General';
-$_lang['area_seosuite_sitemap']                                         = 'SEO Suite: Sitemap';
-$_lang['area_seosuite_tab_meta']                                        = 'SEO Suite: Meta tab';
-$_lang['area_seosuite_tab_seo']                                         = 'SEO Suite: Search tab';
-$_lang['area_seosuite_tab_social']                                      = 'SEO Suite: Social tab';
 
 /* General settings. */
 $_lang['setting_seosuite.exclude_words']                                = 'Exclude words';
 $_lang['setting_seosuite.exclude_words_desc']                           = 'Comma separated list of words which will be excluded from the suggestions matching system.';
 $_lang['setting_seosuite.default_redirect_type']                        = 'Default redirect type';
 $_lang['setting_seosuite.default_redirect_type_desc']                   = '';
+$_lang['setting_seosuite.disabled_templates']                           = 'Disabled Templates';
+$_lang['setting_seosuite.disabled_templates_desc']                      = 'Comma separated list of disabled template IDs.';
 
 /* Meta settings. */
-$_lang['setting_seosuite.meta.counter_fields']                          = 'Fields where the keywords tool will work on';
-$_lang['setting_seosuite.meta.counter_fields_desc']                     = 'Only change these if you know what you\'re doing. Default value: longtitle:30|70,description:70|155,content.';
+$_lang['setting_seosuite.meta.field_counters']                          = 'Fields where the keywords tool will work on';
+$_lang['setting_seosuite.meta.field_counters_desc']                     = 'Only change these if you know what you\'re doing. Default value: longtitle:30|70,description:70|155,content.';
 $_lang['setting_seosuite.meta.searchmode']                              = 'Search mode used for the preview.';
 $_lang['setting_seosuite.meta.searchmode_desc']                         = 'Possible values: desktop, mobile. Defaults to mobile.';
 $_lang['setting_seosuite.meta.searchengine']                            = 'Search engine used for the preview.';
 $_lang['setting_seosuite.meta.searchengine_desc']                       = 'Possible values: google, yandex. Defaults to google.';
-$_lang['setting_seosuite.meta.disabled_templates']                      = 'Disabled Templates';
-$_lang['setting_seosuite.meta.disabled_templates_desc']                 = 'Comma separated list of disabled template IDs.';
 $_lang['setting_seosuite.meta.default_meta_title']                      = 'Format used for the title.';
 $_lang['setting_seosuite.meta.default_meta_title_desc']                 = 'Here you can specify the format for the title used in Google/Yandex preview.';
 $_lang['setting_seosuite.meta.default_meta_description']                = 'Format used for the META description.';

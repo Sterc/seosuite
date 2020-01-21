@@ -15,6 +15,8 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
     protected $loaded = [];
 
     /**
+     * Check if the user has the right permission.
+     *
      * @access protected.
      * @param String $section.
      * @return Boolean.
@@ -26,6 +28,54 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
         }
 
         return false;
+    }
+
+    /**
+     * Check if the SEO Suite is enabled for the current template.
+     *
+     * @access protected.
+     * @param Object $resource.
+     * @param String $mode.
+     * @return Boolean.
+     */
+    protected function isEnabled($resource, $mode)
+    {
+        $template   = (string) $resource->get('template');
+        $templates  = $this->modx->seosuite->config['disabled_templates'];
+
+        if (isset($_GET['template'])) {
+            $template = (string) $_GET['template'];
+        }
+
+        if ($template === '0') {
+            $template = (string) $this->modx->getOption('default_template', null, '0');
+        }
+
+        if ($template === '0') {
+            return false;
+        }
+
+        if (count($templates) >= 1) {
+            return in_array($template, $templates, true);
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if a section is loaded.
+     *
+     * @access protected.
+     * @param Null|String $section.
+     * @return Boolean.
+     */
+    protected function isLoaded($section = null)
+    {
+        if ($section !== null) {
+            return in_array($section, $this->loaded, true);
+        }
+
+        return count($this->loaded) >= 1;
     }
 
     /**
@@ -93,57 +143,57 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
         $resource =& $event->params['resource'];
         $mode     =& $event->params['mode'];
 
-        if ($this->hasPermission('meta') && !$this->isMetaDisabled($resource)) {
-            $this->loadMeta($resource, $mode);
-        }
+        if ($this->isEnabled($resource, $mode)) {
+            if ($this->hasPermission('meta')) {
+                $this->loadMeta($resource);
+            }
 
-        if ($this->hasPermission('tab_seo')) {
-            $this->loadTabSeo($resource);
-        }
+            if ($this->hasPermission('tab_seo')) {
+                $this->loadTabSeo($resource);
+            }
 
-        if ($this->hasPermission('tab_social')) {
-            $this->loadTabSocial($resource);
-        }
+            if ($this->hasPermission('tab_social')) {
+                $this->loadTabSocial($resource);
+            }
 
-        /* Loading base scripts. */
-        if ($this->isLoaded()) {
-            if (is_array($this->seosuite->config['lexicons'])) {
-                foreach ($this->seosuite->config['lexicons'] as $lexicon) {
-                    $this->modx->controller->addLexiconTopic($lexicon);
+            if ($this->isLoaded()) {
+                if (is_array($this->seosuite->config['lexicons'])) {
+                    foreach ($this->seosuite->config['lexicons'] as $lexicon) {
+                        $this->modx->controller->addLexiconTopic($lexicon);
+                    }
+                } else {
+                    $this->modx->controller->addLexiconTopic($this->seosuite->config['lexicons']);
                 }
-            } else {
-                $this->modx->controller->addLexiconTopic($this->seosuite->config['lexicons']);
-            }
 
-            $this->modx->controller->addHtml('<script type="text/javascript">
-                Ext.onReady(function() {
-                    SeoSuite.config = ' . $this->modx->toJSON($this->seosuite->config) . ';
-                    SeoSuite.record = ' . $this->modx->toJSON($this->record) . ';
-                });
-            </script>');
+                $this->modx->controller->addHtml('<script type="text/javascript">
+                    Ext.onReady(function() {
+                        SeoSuite.config = ' . $this->modx->toJSON($this->seosuite->config) . ';
+                        SeoSuite.record = ' . $this->modx->toJSON($this->record) . ';
+                    });
+                </script>');
 
-            $this->modx->controller->addCss($this->seosuite->config['css_url'] . 'mgr/seosuite.css');
-            $this->modx->controller->addCss($this->seosuite->config['css_url'] . 'mgr.css');
+                $this->modx->controller->addCss($this->seosuite->config['css_url'] . 'mgr/seosuite.css');
+                $this->modx->controller->addCss($this->seosuite->config['css_url'] . 'mgr.css');
 
-            $this->modx->controller->addJavascript($this->seosuite->config['js_url'] . 'mgr/seosuite.js');
-            $this->modx->controller->addJavascript($this->seosuite->config['js_url'] . 'mgr/extras/extras.js');
+                $this->modx->controller->addJavascript($this->seosuite->config['js_url'] . 'mgr/seosuite.js');
+                $this->modx->controller->addJavascript($this->seosuite->config['js_url'] . 'mgr/extras/extras.js');
 
-            /* Loading specific scripts for specific section. */
-            if ($this->isLoaded('meta')) {
-                $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/node_modules/web-animations-js/web-animations.min.js');
-                $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/metatag.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
-                $this->modx->regClientStartupScript($this->seosuite->options['assetsUrl'] . 'js/mgr/resource/resource.tab_meta.js?v=' . $this->modx->getOption('seosuite.version', null, 'v1.0.0'));
-            }
+                /* Loading specific scripts for specific section. */
+                if ($this->isLoaded('meta')) {
+                    $this->modx->regClientStartupScript($this->seosuite->config['js_url'] . 'mgr/resource/metatag.js?v=' . $this->seosuite->config['version']);
+                    $this->modx->regClientStartupScript($this->seosuite->config['js_url'] . 'mgr/resource/resource.tab_meta.js?v=' . $this->seosuite->config['version']);
+                }
 
-            /* Loading specific scripts for specific section. */
-            if ($this->isLoaded('seo')) {
-                $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/redirects.grid.js?v='. $this->seosuite->config['version']);
-                $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/resource.tab_seo.js?v='. $this->seosuite->config['version']);
-            }
+                /* Loading specific scripts for specific section. */
+                if ($this->isLoaded('seo')) {
+                    $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/redirects.grid.js?v='. $this->seosuite->config['version']);
+                    $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/resource.tab_seo.js?v='. $this->seosuite->config['version']);
+                }
 
-            /* Loading specific scripts for specific section. */
-            if ($this->isLoaded('social')) {
-                $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/resource.tab_social.js?v='. $this->seosuite->config['version']);
+                /* Loading specific scripts for specific section. */
+                if ($this->isLoaded('social')) {
+                    $this->modx->controller->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/resource/resource.tab_social.js?v='. $this->seosuite->config['version']);
+                }
             }
         }
     }
@@ -212,52 +262,14 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
     }
 
     /**
-     * Check if a section is loaded.
+     * Load tab Meta.
      *
      * @access protected.
-     * @param Null|String $section.
-     * @return Boolean.
+     * @param Object $resource.
      */
-    protected function isLoaded($section = null)
+    protected function loadMeta($resource)
     {
-        if ($section !== null) {
-            return in_array($section, $this->loaded, true);
-        }
-
-        return count($this->loaded) >= 1;
-    }
-
-    /**
-     * Load section meta.
-     *
-     * @param $resource
-     * @param $mode
-     * @return |null
-     */
-    protected function loadMeta($resource, $mode)
-    {
-        $strFields = $this->modx->seosuite->config['meta']['counter_fields'];
-        $arrFields = [];
-        if (is_array(explode(',', $strFields))) {
-            foreach (explode(',', $strFields) as $field) {
-                list($fieldName, $fieldCount) = explode(':', $field);
-
-                $min = 0;
-                $max = $fieldCount;
-                if (strpos($fieldCount, '|')) {
-                    list($min, $max) = explode('|', $fieldCount);
-                }
-
-                $arrFields[$fieldName]['min'] = $min;
-                $arrFields[$fieldName]['max'] = $max;
-            }
-        } else {
-            return null;
-        }
-
-        if ((int) $_REQUEST['id'] === (int) $this->modx->getOption('site_start')) {
-            unset($arrFields['alias'], $arrFields['menutitle']);
-        }
+        //$properties = $this->seosuite->getResourceProperties($resource->get('id'));
 
         $seoSuiteResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $resource->get('id')]);
 
@@ -272,10 +284,6 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
             $this->record['meta_title']       = json_decode($this->modx->seosuite->config['meta']['default_meta_title'], true);
             $this->record['meta_description'] = json_decode($this->modx->seosuite->config['meta']['default_meta_description'], true);
         }
-
-        $this->record['fields']  = implode(',', array_keys($arrFields));
-        $this->record['values']  = [];
-        $this->record['chars']   = $arrFields;
 
         $this->loaded[] = 'meta';
     }
@@ -312,28 +320,5 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
         }
 
         $this->loaded[] = 'social';
-    }
-
-    /**
-     * Check if Meta is disabled for the current template.
-     *
-     * @param $resource
-     * @return bool
-     */
-    protected function isMetaDisabled($resource)
-    {
-        $template = (string) $resource->get('template');
-        $override = false;
-        if (isset($_REQUEST['template'])) {
-            $template = (string) $_REQUEST['template'];
-            $override = true;
-        }
-
-        if ((int) $template === 0) {
-            $template = $this->modx->getOption('default_template');
-        }
-
-        $disabledTemplates = explode(',', $this->modx->seosuite->config['meta']['disabled_templates']);
-        return ($override && empty($template)) || ($override && (int) $template === 0) || (!empty($template) && in_array($template, $disabledTemplates, false));
     }
 }

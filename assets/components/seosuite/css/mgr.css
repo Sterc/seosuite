@@ -106,15 +106,6 @@
     display: none;
 }
 
-.seosuite-snippet-variable {
-    background: #3697cd;
-    border-radius: 3px;
-    color: #fff;
-    cursor: pointer;
-    font-weight: bold;
-    padding: 5px;
-}
-
 #resource-seosuite-panel {
     margin-bottom: 30px;
 }
@@ -137,12 +128,4 @@
     stroke-width: 5;
     stroke-linecap: round;
     animation: progress 1s ease-out forwards;
-}
-
-.seosuite-counter-wrap.red .circle {
-    stroke: #BE0000;
-}
-
-.seosuite-counter-wrap.orange  .circle {
-    stroke: #F49548;
 }

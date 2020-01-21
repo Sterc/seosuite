@@ -58,25 +58,21 @@
             "value": "",
             "area": "seosuite_general"
         },{
-          "key": "meta.counter_fields",
-          "value": "longtitle:30|70,description:70|155,content",
-          "area": "seosuite_tab_meta"
+            "key": "disabled_templates",
+            "value": "",
+            "area": "seosuite"
         },{
-          "key": "meta.disabled_templates",
-          "value": "",
-          "area": "seosuite_tab_meta"
+            "key": "meta.field_counters",
+            "value": "longtitle:30|70,description:70|155,content",
+            "area": "seosuite_tab_meta"
         },{
-          "key": "meta.max_keywords_title",
-          "value": "4",
-          "area": "seosuite_tab_meta"
+            "key": "meta.keywords_field_counters",
+            "value": "longtitle:4,description:8,content",
+            "area": "seosuite_tab_meta"
         },{
-          "key": "meta.max_keywords_description",
-          "value": "8",
-          "area": "seosuite_tab_meta"
-        },{
-          "key": "meta.searchengine",
-          "value": "google",
-          "area": "seosuite_tab_meta"
+            "key": "meta.searchengine",
+            "value": "google",
+            "area": "seosuite_tab_meta"
         }, {
           "key": "meta.default_meta_title",
           "value": "[{\"type\":\"placeholder\",\"value\":\"title\"},{\"type\":\"text\",\"value\":\" | \"},{\"type\":\"placeholder\",\"value\":\"site_name\"}]",
