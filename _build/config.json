@@ -3,7 +3,7 @@
     "lowCaseName": "seosuite",
     "description": "Fix 404 pages on your site.",
     "author": "Sterc",
-    "version": "1.2.0",
+    "version": "1.2.3",
     "package":{
         "menus": [{
             "text": "seosuite.menu.seosuite",
@@ -33,6 +33,10 @@
         "systemSettings": [{
             "key": "exclude_words",
             "value": "",
+            "area": "general"
+        },{
+            "key": "blocked_words",
+            "value": "admin,insert,select,delete,union,update,whatsapp,debug,manager",
             "area": "general"
         }]
     },

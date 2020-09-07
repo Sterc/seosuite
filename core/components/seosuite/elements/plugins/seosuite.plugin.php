@@ -27,16 +27,20 @@ switch ($modx->event->name) {
         $redirectObject = $modx->getObject('SeoSuiteUrl', array('url' => $url));
         if ($redirectObject) {
             $count = (int) $redirectObject->get('triggered');
-                
+
             $redirectObject->set('last_triggered', time());
             $redirectObject->set('triggered', ++$count);
             $redirectObject->save();
-                
+
             /* Only create redirectUrl when handler is 1 (SeoSuite) */
             if ($redirectObject->get('redirect_to') !== 0 && $redirectObject->get('redirect_handler') === 1) {
                 $redirectUrl = $modx->makeUrl($redirectObject->get('redirect_to'), '', '', 'full');
             }
         } else {
+            if (!$seoSuite->validateUrl($url)) {
+                return;
+            }
+
             /* Create new SeoSuiteUrl object, and try to find matches */
             /* When one redirect match is found, redirect to that page */
             $suggestions      = '';
@@ -67,7 +71,7 @@ switch ($modx->event->name) {
                     {$modx->escape('solved')} = {$modx->quote($solved)},
                     {$modx->escape('triggered')} = 1"
             );
-            
+
             if ($redirect_to) {
                 $redirectUrl = $url;
             }

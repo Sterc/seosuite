@@ -1,3 +1,6 @@
+# Important! Currently we are working on SEOSuite V2 #
+The repo can be found here: https://github.com/Sterc/seosuite
+
 ## SEO Suite
 [SEO Suite][1] was introduced by [Sterc][4] as a premium MODX Extra that automatically redirects your 404 URLs to relevant pages on your website. 404 errors are a fairly common issue for anyone who’s transitioning from an old website to a new website. SEO Suite makes sure your visitors are redirected to a relevant page when they’re looking for an old URL.
 
@@ -16,11 +19,8 @@ To make sure that SEO Suite functions properly, the following requirements shoul
 -  [SEO Tab][2] (version 2.0 or newer) has to be installed. This is where the redirects of your 404 URLs will be stored.
 -  [MODX version 2.5.0 or newer][3] has to be installed. 
 
-## Cronjob
-Inside the `core/components/seosuite/elements/cronjobs/` directory you can find the SeoSuite cronjobs.
-
-### Redirect cleanup ###
-Removes unresolved redirects which are older then 1 month and have been triggered just once.
+## Cleanup cronjob
+Inside the `core/components/seosuite/elements/cronjobs/` directory you can find the SeoSuite cronjob. It removes unresolved redirects which are older then 1 month and have been triggered just once.
    
 Example usage:  
 
@@ -38,6 +38,7 @@ File: redirect-cleanup.php
 * SEO Suite now comes with a Dashboard widget, showing the 10 newest SEO Suite URL's
 * It is possible to import a .csv file containing 404 URL's and then search for redirects inside only one (related) context. This comes in handy for multilingual websites.
 * To get more specific redirect suggestions, you can exclude words from the matching system. **Pay attention:** when you add words to exclude **after** a .csv import, you might need to refresh the suggestions by clicking your right mouse button on the relevant 404 URL and choose 'Find suggestions'. After doing this, it will be refreshed.
+* Block certain redirects from being saved by adding blocking key words to system settings.
 
 ## Future features
 * 301 redirect statistics: SEO Suite will feature a custom manager page containing 301 redirects statistics.
@@ -45,10 +46,9 @@ A dashboard widget will be provided which shows the 10 redirects with the most h
 * Automatically import 404's from Google Search Console.
 
 ## Bugs and feature requests
-We greatly value your feedback, feature requests and bug reports. Please issue them on [Bitbucket][5].
+We greatly value your feedback, feature requests and bug reports. Please email them to modx@sterc.com.
 
-[1]: https://www.sterc.nl/en/modx-extras/seosuite
-[2]: https://www.sterc.nl/en/modx-extras/seotab
+[1]: https://www.sterc.com/modx/extras/seosuite
+[2]: https://www.sterc.com/modx/extras/seotab
 [3]: https://modx.com/download
-[4]: https://www.sterc.nl/en/
-[5]: https://bitbucket.org/sterc/seosuite/issues?status=new&status=open
+[4]: https://www.sterc.com
