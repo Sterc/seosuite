@@ -27,58 +27,49 @@ class SeoSuiteMetaPreviewProcessor extends modObjectProcessor
     {
         $this->modx->switchContext($this->getProperty('context', 'web'));
 
-        $resource = $this->modx->newObject('modResource');
-
-        $protocol   = $this->modx->getOption('server_protocol', null, 'http');
+        $alias      = '';
         $siteUrl    = trim($this->modx->getOption('site_url'), '/');
         $baseUrl    = trim($this->modx->getOption('base_url'), '/');
 
-        if (preg_match('/^(http|https)/i', $siteUrl, $matches)) {
-            $protocol   = $matches[0];
+        if (preg_match('/^(http|https)/i', $siteUrl, $protocol)) {
+            $protocol   = $protocol[0];
             $siteUrl    = str_replace(['http://', 'https://'], '', $siteUrl);
+        } else {
+            $protocol   = $this->modx->getOption('server_protocol', null, 'http');
         }
 
         if (!empty($baseUrl)) {
-            $siteUrl    = rtrim($siteUrl, '/' . $baseUrl . '/');
+            $siteUrl .= '/' . $baseUrl;
         }
 
-        if ((int) $this->getProperty('id') === (int) $this->modx->getOption('site_start')) {
-            $alias = '';
+        if ((int) $this->modx->getOption('friendly_urls') === 1) {
+            if ((int) $this->getProperty('id') !== (int) $this->modx->getOption('site_start')) {
+                $resource = $this->modx->newObject('modResource');
+
+                if ($resource) {
+                    $alias = $resource->getAliasPath($this->getProperty('alias'), $this->getProperties());
+                }
+            }
         } else {
-            $alias = $resource->getAliasPath($this->getProperty('alias'), [
-                'context_key'   => $this->getProperty('context', 'web'),
-                'parent'        => $this->getProperty('parent', 0),
-                'content_type'  => $this->getProperty('content_type'),
-                'uri'           => $this->getProperty('uri'),
-                'uri_override'  => $this->getProperty('uri_override') === 'true'
-            ]);
+            $alias = $this->modx->getOption('request_controller') . '?' . $this->modx->getOption('request_param_id') . '=' . $this->modx->getProperty('id');
         }
 
-        $fields = json_decode($this->getProperty('fields'), true);
+        $fields             = (array) json_decode($this->getProperty('fields'), true);
 
-        $title       = $this->getProperty('title');
-        $description = $this->getProperty('description');
+        $title              = $this->modx->seosuite->config['meta']['default_meta_title'];
+        $description        = $this->modx->seosuite->config['meta']['default_meta_description'];
 
-        if ($this->getProperty('use_default_meta') === 'true') {
-            $title       = $this->modx->seosuite->config['meta']['default_meta_title'];
-            $description = $this->modx->seosuite->config['meta']['default_meta_description'];
-        }
-
-        $maxTitleLength         = $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['title'];
-        $maxDescriptionLength   = $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['description'];
+        $metaTitle          = $this->modx->seosuite->renderMetaValue($title, $fields);
+        $metaDescription    = $this->modx->seosuite->renderMetaValue($description, $fields);
 
         $output = [
             'output'        => [
                 'protocol'      => $protocol,
                 'site_url'      => $siteUrl,
                 'base_url'      => $baseUrl,
-                'title'         => $this->truncate($this->modx->seosuite->renderMetaValue($title, $fields), $maxTitleLength),
-                'description'   => $this->truncate($this->modx->seosuite->renderMetaValue($description, $fields), $maxDescriptionLength),
-                'alias'         => $alias
-            ],
-            'field_counters' => [
-                'longtitle'     => strlen($this->modx->seosuite->renderMetaValue($title, $fields, ['longtitle'])),
-                'description'   => strlen($this->modx->seosuite->renderMetaValue($description, $fields, ['description']))
+                'alias'         => $alias,
+                'title'         => $this->truncate($metaTitle, $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['title']),
+                'description'   => $this->truncate($metaDescription, $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['description']),
             ]
         ];
 

@@ -777,58 +777,36 @@ class SeoSuite
     }
 
     /**
-     * Renders the meta value from the configuration json to the output string.
+     * Renders the meta value.
      *
      * @access public.
      * @param String $value.
      * @param Array $fields.
-     * @param Array $skipFields
      * @return String.
      */
-    public function renderMetaValue($value, array $fields = [], array $skipFields = [])
+    public function renderMetaValue($value, array $fields = [])
     {
-        $output = [];
+        $processedValue = $value;
 
         if (!empty($value)) {
-            $data = json_decode($value, true);
+            $data = array_map('trim', $fields);
 
-            if ($data) {
-                foreach ((array) $data as $item) {
-                    if ($item['type'] === 'variable') {
-                        if (in_array($item['value'], $skipFields, true)) {
-                            continue;
-                        }
+            if (empty($data['longtitle'])) {
+                $data['longtitle'] = $data['pagetitle'];
+            }
 
-                        switch ($item['value']) {
-                            case 'site_name':
-                                $output[] = trim($this->modx->getOption($item['value']));
+            $parser = $this->modx->newObject('modChunk', [
+                'name' => $this->config['namespace'] . uniqid()
+            ]);
 
-                                break;
-                            case 'pagetitle':
-                            case 'description':
-                            case 'introtext':
-                                if (isset($fields[$item['value']])) {
-                                    $output[] = trim($fields[$item['value']]);
-                                }
+            if ($parser) {
+                $parser->setCacheable(false);
 
-                                break;
-                            case 'longtitle':
-                                $output[] = trim($fields['longtitle'] ?: $fields['pagetitle']);
-
-                                break;
-                            case 'delimiter':
-                                $output[] = trim($this->config['meta']['default_meta_delimiter']);
-
-                                break;
-                        }
-                    } else {
-                        $output[] = trim($item['value']);
-                    }
-                }
+                $processedValue = $parser->process($data, $processedValue);
             }
         }
 
-        return implode(' ', $output);
+        return $processedValue;
     }
 
     /**

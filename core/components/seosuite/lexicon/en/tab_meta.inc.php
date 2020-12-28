@@ -20,15 +20,16 @@ $_lang['seosuite.tab_meta.meta_description_desc']           = 'Compose the templ
 $_lang['seosuite.tab_meta.preview']                         = 'Search engine';
 $_lang['seosuite.tab_meta.preview_google']                  = 'Google';
 $_lang['seosuite.tab_meta.preview_yandex']                  = 'Yandex';
-$_lang['seosuite.tab_meta.longtitle']                       = 'Longtitle';
-$_lang['seosuite.tab_meta.longtitle_desc']                  = 'Longtitle, if empty the title will be used.';
-$_lang['seosuite.tab_meta.description']                     = 'Description';
+$_lang['seosuite.tab_meta.longtitle']                       = 'META title';
+$_lang['seosuite.tab_meta.longtitle_desc']                  = 'Longtitle, if empty the default title will be used.';
+$_lang['seosuite.tab_meta.description']                     = 'META description';
 $_lang['seosuite.tab_meta.description_desc']                = '';
+$_lang['seosuite.tab_meta.description_empty']               = 'Add a description. If you don\'t, the search engine will try to find a relevant piece of the page to display in the search results.';
 $_lang['seosuite.tab_meta.seo']                             = 'SEO';
 $_lang['seosuite.tab_meta.delimiter']                       = 'Delimiter';
 
 /* Keywords. */
 $_lang['seosuite.tab_meta.keywords']                        = 'Keywords';
 $_lang['seosuite.tab_meta.characters.allowed']              = 'Allowed characters';
-$_lang['seosuite.tab_meta.focuskeywords']                   = 'Focus keywords';
-$_lang['seosuite.tab_meta.focuskeywords_desc']              = 'Enter your keywords comma-separated, for example: table, chair.';
+$_lang['seosuite.tab_meta.keywords']                        = 'Focus keywords';
+$_lang['seosuite.tab_meta.keywords_desc']                   = 'Enter your keywords comma-separated, for example: table, chair.';
