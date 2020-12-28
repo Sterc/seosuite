@@ -15,6 +15,30 @@ Through simply uploading a single column .csv file containing your 404 URLs, SEO
 To make sure that SEO Suite functions properly, the following requirements should be met:
 -  [MODX version 2.5.0 or newer][2] has to be installed. 
 
+## Seo Suite Meta usage
+Here's an example of all available placeholders of the SeoSuiteMeta snippet when toPlaceholders is turned on. 
+These placeholders are also available by default when the setting `seosuite.placeholder_plugin_enabled` is enabled.
+
+```
+<!-- Set by plugin. -->
+[[!+ss_meta.meta_title]]
+[[!+ss_meta.meta_description]]
+[[!+ss_meta.robots]]
+[[!+ss_meta.canonical]]
+[[!+ss_meta.alternates]]
+[[!+ss_meta.og_title]]
+[[!+ss_meta.og_description]]
+[[!+ss_meta.og_image]]
+[[!+ss_meta.og_image_alt]]
+[[!+ss_meta.og_type]]
+[[!+ss_meta.twitter_site]]
+[[!+ss_meta.twitter_title]]
+[[!+ss_meta.twitter_description]]
+[[!+ss_meta.twitter_image]]
+[[!+ss_meta.twitter_image_alt]]
+[[!+ss_meta.twitter_card]]
+```
+
 ## Cronjob
 Inside the `core/components/seosuite/elements/cronjobs/` directory you can find the SeoSuite cronjobs.
 
