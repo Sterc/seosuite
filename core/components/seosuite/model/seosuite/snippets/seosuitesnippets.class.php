@@ -9,16 +9,23 @@ class SeoSuiteSnippets extends SeoSuite
     const PHS_PREFIX = 'ss_meta';
 
     /**
+     * @var Babel|null $babel Holds Babel class if applicable.
+     */
+    protected $babel;
+
+    /**
      * Snippet for outputting meta data.
      * @param $properties
      * @return string
      */
     public function seosuiteMeta($properties)
     {
-        $id             = $this->modx->getOption('id', $properties, $this->modx->resource->get('id'));
-        $tplTitle       = $this->modx->getOption('tplTitle', $properties, 'tplMetaTitle');
-        $tpl            = $this->modx->getOption('tpl', $properties, 'tplMeta');
-        $toPlaceholders = $this->modx->getOption('toPlaceholders', $properties, false);
+        $id                  = $this->modx->getOption('id', $properties, $this->modx->resource->get('id'));
+        $tplTitle            = $this->modx->getOption('tplTitle', $properties, 'tplMetaTitle');
+        $tpl                 = $this->modx->getOption('tpl', $properties, 'tplMeta');
+        $tplLink             = $this->modx->getOption('tplLink', $properties, 'tplLink');
+        $tplAlternateWrapper = $this->modx->getOption('tplAlternateWrapper', $properties, 'tplAlternateWrapper');
+        $toPlaceholders      = $this->modx->getOption('toPlaceholders', $properties, false);
 
         $meta = [
             'meta_title' => [
@@ -30,19 +37,64 @@ class SeoSuiteSnippets extends SeoSuite
                 'name'  => 'description',
                 'value' => $this->config['meta']['default_meta_description'],
                 'tpl'   => $tpl
+            ],
+            'robots'            => [
+                'name'  => 'robots',
+                'value' => '',
+                'tpl'   => $tpl
+            ],
+            'canonical'         => [
+                'name'   => 'canonical',
+                'value'  => '',
+                'tpl'    => $tplLink
             ]
         ];
 
-        $ssResource = $this->modx->getObject('SeoSuiteResource', $id);
-        if ($ssResource) {
+        if ($ssResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $id])) {
             foreach ($meta as $key => $values) {
                 $meta[$key]['value'] = $ssResource->get($key);
             }
         }
 
+        $ssSocial = $this->modx->getObject('SeoSuiteSocial', ['resource_id' => $id]) ?: $this->modx->newObject('SeoSuiteSocial');
+        foreach ($ssSocial->toArray() as $key => $value) {
+            if (in_array($key, ['id', 'resource_id', 'editedon'], true)) {
+                continue;
+            }
+
+            $meta += [
+                $key => [
+                    'name'  => str_replace('_', ':', $key),
+                    'tpl'   => $tpl,
+                    'value' => $value
+                ]
+            ];
+        }
+
         $resourceArray = [];
         if ($modResource = $this->modx->getObject('modResource', $id)) {
             $resourceArray = $modResource->toArray();
+        }
+
+        if ($alternatives = $this->getAlternateLinks($modResource)) {
+            $values = [];
+            $alternateHTML = '';
+
+            foreach ($alternatives as $alternative) {
+                $values[] = $this->getChunk($tplLink, [
+                    'name'     => 'alternate',
+                    'value'    => $alternative['url'],
+                    'hreflang' => str_replace('_', '-', $alternative['locale'])
+                ]);
+            }
+
+            if ($toPlaceholders) {
+                $this->modx->toPlaceholder('alternates', implode(PHP_EOL, $values), self::PHS_PREFIX);
+            } else {
+                $html[] = $this->modx->getChunk($tplAlternateWrapper, [
+                    'output' => $alternateHTML
+                ]);
+            }
         }
 
         $html = [];
@@ -52,12 +104,33 @@ class SeoSuiteSnippets extends SeoSuite
             /* Unset tpl from placeholders. */
             unset($item['tpl']);
 
-            /* Parse JSON. */
-            $item['value'] = $this->renderMetaValue($item['value'], $resourceArray);
+            switch ($key) {
+                case 'robots':
+                    $values = [];
+
+                    if ($ssResource) {
+                        $values[] = $ssResource->get('index_type') ? 'index' : 'noindex';
+                        $values[] = $ssResource->get('follow_type') ? 'follow' : 'nofollow';
+                    }
+
+                    $item['value'] = implode(',', $values);
+                    break;
+                case 'canonical':
+                    if ($ssResource->get('canonical') && !empty($ssResource->get('canonical_uri'))) {
+                        $item['value'] = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($ssResource->get('canonical_uri'), '/');
+                    }
+
+                    break;
+                case 'meta_title':
+                case 'meta_description':
+                    /* Parse JSON. */
+                    $item['value'] = $this->renderMetaValue(is_array($item['value']) ? json_encode($item['value']) : $item['value'], $resourceArray);
+                    break;
+            }
 
             $rowHtml = $this->getChunk($tpl, $item);
             if ($toPlaceholders) {
-                $this->modx->toPlaceholder($key, $rowHtml,self::PHS_PREFIX);
+                $this->modx->toPlaceholder($key, $rowHtml, self::PHS_PREFIX);
             } else {
                 $html[] = $rowHtml;
             }
@@ -230,17 +303,59 @@ class SeoSuiteSnippets extends SeoSuite
      *
      * @param $resource
      * @param $options
-     * @return string
+     * @return array|string
      */
-    protected function getAlternateLinks($resource, $options)
+    protected function getAlternateLinks($resource, $options = [])
     {
-        /* Return if babel model path does not exist */
-        if (!file_exists($this->modx->getOption('babel.core_path', null, $this->modx->getOption('core_path') . 'components/babel/') . 'model/babel/')) {
+        if (!$this->shouldAddBabelAlternativeLinks()) {
             return '';
         }
 
-        /* Include current resource. */
-        $babel = &$this->modx->getService(
+        $alternates   = [];
+        $html         = [];
+        $translations = $this->getBabel()->getLinkedResources($resource->get('id'));
+        foreach ($translations as $contextKey => $resourceId) {
+            $ctx = $this->modx->getContext($contextKey);
+
+            $alternate = [
+                'cultureKey' => $ctx->getOption('cultureKey', ['context_key' => $contextKey], 'en'),
+                'url'        => $this->modx->makeUrl($resourceId, '', '', 'full'),
+                'locale'     => $ctx->getOption('locale')
+            ];
+
+            if (isset($options['alternateTpl']) && !empty($options['alternateTpl'])) {
+                $html[] =  $this->getChunk($options['alternateTpl'], $alternate);
+            }
+
+            $alternates[] = $alternate;
+        }
+
+        if (isset($options['alternateTpl']) && !empty($options['alternateTpl'])) {
+            return implode(PHP_EOL, $html);
+        }
+
+        return $alternates;
+    }
+
+    /**
+     * Get Babel.
+     * @return mixed
+     */
+    protected function getBabel()
+    {
+        if (!$this->babel) {
+            $this->setBabel();
+        }
+
+        return $this->babel;
+    }
+
+    /**
+     * Set babel.
+     */
+    protected function setBabel()
+    {
+        $this->babel = &$this->modx->getService(
             'babel',
             'Babel',
             $this->modx->getOption(
@@ -249,28 +364,21 @@ class SeoSuiteSnippets extends SeoSuite
                 $this->modx->getOption('core_path') . 'components/babel/'
             ) . 'model/babel/'
         );
+    }
 
-        /* Return if babel is not installed or the alternate links option is set to false or type is index or images. */
-        if (!$babel ||
-            $this->config['babel_add_alternate_links'] === false ||
-            (isset($options['type']) && in_array($options['type'], ['index', 'images'], true))
+    /**
+     * Determine if babel alternative links should be added.
+     * @return bool
+     */
+    protected function shouldAddBabelAlternativeLinks()
+    {
+        if ($this->config['babel_add_alternate_links'] === false ||
+            !file_exists($this->modx->getOption('babel.core_path', null, $this->modx->getOption('core_path') . 'components/babel/') . 'model/babel/')
         ) {
-            return '';
+            return false;
         }
 
-        $alternates   = [];
-        $translations = $babel->getLinkedResources($resource->get('id'));
-        foreach ($translations as $contextKey => $resourceId) {
-            $this->modx->switchContext($contextKey);
-            $alternates[] = $this->getChunk(
-                $options['alternateTpl'], [
-                    'cultureKey' => $this->modx->getOption('cultureKey', ['context_key' => $contextKey], 'en'),
-                    'url'        => $this->modx->makeUrl($resourceId, '', '', 'full')
-                ]
-            );
-        }
-
-        return implode(PHP_EOL, $alternates);
+        return true;
     }
 
     /**

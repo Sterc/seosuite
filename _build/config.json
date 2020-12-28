@@ -43,6 +43,14 @@
                 "name": "tplMeta",
                 "file": "meta.chunk.tpl",
                 "description": "The default chunk used for the meta."
+            }, {
+                "name": "tplLink",
+                "file": "link.chunk.tpl",
+                "description": "The default chunk used for the link."
+            }, {
+              "name": "tplAlternateWrapper",
+              "file": "alternate-wrapper.chunk.tpl",
+              "description": "The default chunk used for wrapping alternate links"
             }],
             "widgets": [{
                 "name": "seosuite",
