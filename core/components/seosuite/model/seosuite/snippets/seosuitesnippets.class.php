@@ -71,10 +71,7 @@ class SeoSuiteSnippets extends SeoSuite
             ];
         }
 
-        $resourceArray = [];
-        if ($modResource = $this->modx->getObject('modResource', $id)) {
-            $resourceArray = $modResource->toArray();
-        }
+        $resourceArray = ($modResource = $this->modx->getObject('modResource', $id)) ? $modResource->toArray() : [];
 
         if ($alternatives = $this->getAlternateLinks($modResource)) {
             $values = [];
