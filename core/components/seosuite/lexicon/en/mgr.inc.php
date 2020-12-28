@@ -3,6 +3,8 @@
 /* General settings. */
 $_lang['setting_seosuite.exclude_words']                                = 'Exclude words';
 $_lang['setting_seosuite.exclude_words_desc']                           = 'Comma separated list of words which will be excluded from the suggestions matching system.';
+$_lang['setting_seosuite.placeholder_plugin_enabled']                   = 'Enable setting meta data placeholders by plugin';
+$_lang['setting_seosuite.placeholder_plugin_enabled_desc']              = 'When enabled the meta data placeholders are set by a plugin and become available for usage in MODX.';
 $_lang['setting_seosuite.default_redirect_type']                        = 'Default redirect type';
 $_lang['setting_seosuite.default_redirect_type_desc']                   = '';
 $_lang['setting_seosuite.disabled_templates']                           = 'Disabled Templates';

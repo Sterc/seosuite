@@ -57,6 +57,11 @@
             "key": "exclude_words",
             "value": "",
             "area": "seosuite_general"
+        }, {
+            "key": "placeholder_plugin_enabled",
+            "type": "combo-boolean",
+            "value": true,
+            "area": "seosuite_general"
         },{
             "key": "disabled_templates",
             "value": "",
