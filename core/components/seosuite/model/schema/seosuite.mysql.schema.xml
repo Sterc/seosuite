@@ -69,6 +69,8 @@
         <field key="new_url" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
         <field key="redirect_type" dbtype="varchar" precision="75" phptype="string" null="false" default="" />
         <field key="active" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
+        <field key="visits" dbtype="integer" precision="11" phptype="int" null="false" default=""/>
+        <field key="last_visit" dbtype="timestamp" phptype="timestamp" null="true" default="0000-00-00 00:00:00"/>
         <field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" default="NULL" attributes="ON UPDATE CURRENT_TIMESTAMP" />
 
         <aggregate alias="Context" class="modContext" local="bundle" foreign="id" cardinality="one" owner="foreign" />

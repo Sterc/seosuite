@@ -123,7 +123,7 @@ class SeoSuiteSnippets extends SeoSuite
                     $item['value'] = implode(',', $values);
                     break;
                 case 'canonical':
-                    if ($ssResource->get('canonical') && !empty($ssResource->get('canonical_uri'))) {
+                    if ($ssResource && $ssResource->get('canonical') && !empty($ssResource->get('canonical_uri'))) {
                         $item['value'] = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($ssResource->get('canonical_uri'), '/');
                     }
 
