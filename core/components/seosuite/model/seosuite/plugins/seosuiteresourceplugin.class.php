@@ -38,7 +38,7 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
      * @param String $mode.
      * @return Boolean.
      */
-    protected function isEnabled($resource, $mode)
+    protected function isEnabled($resource, $mode = 'create')
     {
         $template   = (string) $resource->get('template');
         $templates  = $this->modx->seosuite->config['disabled_templates'];
@@ -234,7 +234,7 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
      */
     public function onLoadWebDocument()
     {
-        if (!$this->isMetaDisabled($this->modx->resource)) {
+        if ($this->isEnabled($this->modx->resource) && $this->modx->seosuite->config['placeholder_plugin_enabled']) {
             $this->modx->runSnippet('seosuiteMeta', [
                 'toPlaceholders' => true
             ]);
