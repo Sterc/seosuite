@@ -20,15 +20,16 @@ $_lang['seosuite.tab_meta.meta_description_desc']           = 'De template welke
 $_lang['seosuite.tab_meta.preview']                         = 'Zoekmachine';
 $_lang['seosuite.tab_meta.preview_google']                  = 'Google';
 $_lang['seosuite.tab_meta.preview_yandex']                  = 'Yandex';
-$_lang['seosuite.tab_meta.longtitle']                       = 'Lange titel';
-$_lang['seosuite.tab_meta.longtitle_desc']                  = 'Lange titel, indien leeg zal de titel gebruikt worden.';
-$_lang['seosuite.tab_meta.description']                     = 'Omschrijving';
+$_lang['seosuite.tab_meta.longtitle']                       = 'META titel';
+$_lang['seosuite.tab_meta.longtitle_desc']                  = 'META titel, indien leeg zal de standaard titel gebruikt worden.';
+$_lang['seosuite.tab_meta.description']                     = 'META omschrijving';
 $_lang['seosuite.tab_meta.description_desc']                = '';
+$_lang['seosuite.tab_meta.description_empty']               = 'Voeg een omschrijving toe. Als je dat niet doet zal de zoekmachine proberen een relevant stukje uit de pagina te vinden om te tonen in de zoekresultaten.';
 $_lang['seosuite.tab_meta.seo']                             = 'SEO';
 $_lang['seosuite.tab_meta.delimiter']                       = 'Scheidingsteken';
 
 /* Keywords. */
 $_lang['seosuite.tab_meta.keywords']                        = 'Trefwoorden';
 $_lang['seosuite.tab_meta.characters.allowed']              = 'Toegestaan aantal karakters';
-$_lang['seosuite.tab_meta.focuskeywords']                   = 'Focus trefwoorden';
-$_lang['seosuite.tab_meta.focuskeywords_desc']              = 'Vul een komma gescheiden lijst van trefwoorden in. Bijvoorbeeld: tafel, stoel.';
+$_lang['seosuite.tab_meta.keywords']                        = 'Focus trefwoorden';
+$_lang['seosuite.tab_meta.keywords_desc']                   = 'Vul een komma gescheiden lijst van trefwoorden in. Bijvoorbeeld: tafel, stoel.';
