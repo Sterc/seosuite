@@ -235,6 +235,11 @@ class SeoSuiteSnippets extends SeoSuite
      */
     protected function getAlternateLinks($resource, $options)
     {
+        /* Return if babel model path does not exist */
+        if (!file_exists($this->modx->getOption('babel.core_path', null, $this->modx->getOption('core_path') . 'components/babel/') . 'model/babel/')) {
+            return '';
+        }
+
         /* Include current resource. */
         $babel = &$this->modx->getService(
             'babel',
