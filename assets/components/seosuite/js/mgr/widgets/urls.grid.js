@@ -12,11 +12,11 @@ SeoSuite.grid.Urls = function(config) {
             text        : '<i class="x-menu-item-icon icon icon-times"></i>' + _('seosuite.urls_remove'),
             handler     : this.removeSelectedUrls,
             scope       : this
-        }, '-', {
-            text        : '<i class="x-menu-item-icon icon icon-times"></i>' + _('seosuite.label_exclude_words'),
-            handler     : this.excludeWords,
-            scope       : this
         }]
+    }, {
+        text        : '<i class="icon icon-times"></i>' + _('seosuite.label_exclude_words'),
+        handler     : this.excludeWords,
+        scope       : this
     }, '->', {
         xtype       : 'textfield',
         name        : 'seosuite-filter-urls-search',
