@@ -44,7 +44,6 @@ $_lang['setting_seosuite.sitemap.dependent_ultimateparent_desc']        = 'If tu
 $_lang['setting_seosuite.sitemap.babel.add_alternate_links']            = 'Add alternate links to XML Sitemap';
 $_lang['setting_seosuite.sitemap.babel.add_alternate_links_desc']       = 'Adds alternate links to XML Sitemap URLs based on Babel translations.';
 
-
 /* SEO settings. */
 $_lang['setting_seosuite.tab_seo_default_index_type']                   = 'Default index pages';
 $_lang['setting_seosuite.tab_seo_default_index_type_desc']              = '';
@@ -59,4 +58,6 @@ $_lang['setting_seosuite.tab_social_og_types_desc']                     = '';
 $_lang['setting_seosuite.tab_social_twitter_cards']                     = 'Twitter card values';
 $_lang['setting_seosuite.tab_social_twitter_cards_desc']                = '';
 
-
+/* Twitter settings. */
+$_lang['setting_seosuite.twitter.site']      = 'Username Twitter Site';
+$_lang['setting_seosuite.twitter.site_desc'] = '@username for the website used in the card footer.';

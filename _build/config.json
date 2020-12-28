@@ -136,6 +136,14 @@
           "key": "tab_social_twitter_cards",
           "value": "summary,summary_large_image,app,player",
           "area": "seosuite_tab_social"
+        }, {
+          "key": "twitter.site",
+          "value": "",
+          "area": "seosuite_twitter"
+        }, {
+          "key": "twitter.site",
+          "value": "",
+          "area": "seosuite_twitter"
         }]
     },
     "database": {

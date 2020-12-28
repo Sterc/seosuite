@@ -11,6 +11,7 @@
         <field key="twitter_description" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
         <field key="twitter_image" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
         <field key="twitter_image_alt" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="twitter_creator" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
         <field key="twitter_card" dbtype="varchar" precision="40" phptype="string" null="false" default=""/>
         <field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" default="NULL" attributes="ON UPDATE CURRENT_TIMESTAMP" />
 

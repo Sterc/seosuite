@@ -62,6 +62,16 @@ class SeoSuiteSnippets extends SeoSuite
                 continue;
             }
 
+            if (strpos($key, 'twitter') !== false && !array_key_exists('twitter_site', $meta)) {
+                $meta += [
+                    'twitter_site' => [
+                        'name'  => 'twitter:site',
+                        'value' => $this->modx->getOption('seosuite.twitter.site', $properties, ''),
+                        'tpl'   => $tpl
+                    ]
+                ];
+            }
+
             $meta += [
                 $key => [
                     'name'  => str_replace('_', ':', $key),
