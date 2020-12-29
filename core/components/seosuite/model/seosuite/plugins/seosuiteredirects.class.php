@@ -32,6 +32,11 @@ class SeoSuiteRedirects extends SeoSuitePlugin
         ]);
 
         if (!$notFound) {
+            /* Check if there is not a redirect that already exists for this. */
+            if ($this->modx->getObject('SeoSuiteRedirect', ['context_key' => $this->modx->context->get('key'), 'old_url' => $this->request, 'active' => true])) {
+                return;
+            }
+
             $notFound = $this->modx->newObject('SeoSuiteUrl');
         }
 
