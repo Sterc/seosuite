@@ -66,6 +66,20 @@ SeoSuite.grid.Redirects = function(config) {
             renderer    : this.renderNewUrl,
             hidden      : config.mode === 'resource'
         }, {
+            header      : _('seosuite.label_url_visits'),
+            dataIndex   : 'visits',
+            fixed       : true,
+            sortable    : false,
+            editable    : false,
+            width       : 100
+        }, {
+            header      : _('seosuite.label_url_last_visit'),
+            dataIndex   : 'last_visit',
+            sortable    : false,
+            editable    : false,
+            width       : 20,
+            renderer    : this.renderDate
+        }, {
             header      : _('seosuite.label_redirect_active'),
             dataIndex   : 'active',
             sortable    : true,
@@ -98,7 +112,7 @@ SeoSuite.grid.Redirects = function(config) {
         },
         autosave    : true,
         save_action : 'mgr/redirects/updatefromgrid',
-        fields      : ['id', 'context_key', 'resource_id', 'old_url', 'new_url', 'redirect_type', 'active', 'editedon', 'new_url_formatted', 'old_site_url', 'new_site_url'],
+        fields      : ['id', 'context_key', 'resource_id', 'old_url', 'new_url', 'redirect_type', 'visits', 'last_visit', 'active', 'editedon', 'new_url_formatted', 'old_site_url', 'new_site_url'],
         paging      : true,
         pageSize    : MODx.config.default_per_page > 30 ? MODx.config.default_per_page : 30,
         emptyText   : config.mode === 'resource' ? _('seosuite.resource_no_redirects') : _('ext_emptymsg'),
