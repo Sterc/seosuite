@@ -24,6 +24,7 @@ A custom panel dedicated to your focus keywords, meta title and description has 
 * SEO Suite comes with a Dashboard widget, showing the 10 newest SEO Suite URL's
 * It is possible to import a .csv file containing 404 URL's and then search for redirects inside only one (related) context. This comes in handy for multilingual websites.
 * To get more specific redirect suggestions, you can exclude words from the matching system. **Pay attention:** when you add words to exclude **after** a .csv import, you might need to refresh the suggestions by clicking your right mouse button on the relevant 404 URL and choose 'Find suggestions'. After doing this, it will be refreshed.
+* Block certain redirects from being saved by adding blocking key words to system settings.
 
 ## Bulk import 404 URLs
 Through simply uploading a single column .csv file containing your 404 URLs, SEO Suite will look for similar pages on your website and redirect them automatically. This matching process is based on the URL information after the last slash (example.com/**this-information**).
@@ -107,7 +108,7 @@ A dashboard widget will be provided which shows the 10 redirects with the most h
 ## Bugs and feature requests
 We greatly value your feedback, feature requests and bug reports. Please issue them on [Github][4].
 
-[1]: https://www.sterc.nl/en/modx-extras/seosuite
-[2]: https://modx.com/download
-[3]: https://www.sterc.nl/en/
+[1]: https://www.sterc.com/modx/extras/seosuite
+[2]: https://www.sterc.com/modx/extras/seotab
+[3]: https://modx.com/download
 [4]: https://github.com/Sterc/seosuite/issues/new
