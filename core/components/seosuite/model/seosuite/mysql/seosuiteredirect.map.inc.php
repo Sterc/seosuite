@@ -50,6 +50,7 @@ $xpdo_meta_map['SeoSuiteRedirect']= array (
       'phptype' => 'string',
       'null' => false,
       'default' => '',
+      'index' => 'index',
     ),
     'new_url' => 
     array (
@@ -75,6 +76,7 @@ $xpdo_meta_map['SeoSuiteRedirect']= array (
       'phptype' => 'boolean',
       'null' => false,
       'default' => 1,
+      'index' => 'index',
     ),
     'visits' => 
     array (
@@ -127,6 +129,38 @@ $xpdo_meta_map['SeoSuiteRedirect']= array (
       'columns' => 
       array (
         'resource_id' => 
+        array (
+          'length' => '767',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'old_url' => 
+    array (
+      'alias' => 'old_url',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'old_url' => 
+        array (
+          'length' => '767',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'active' => 
+    array (
+      'alias' => 'active',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'active' => 
         array (
           'length' => '767',
           'collation' => 'A',

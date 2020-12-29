@@ -402,11 +402,10 @@ class SeoSuiteSnippets extends SeoSuite
         $query->where([
             'Value.contentid:IN'     => $resourceIds,
             'Value.value:!='         => '',
-            'modTemplateVar.type:IN' => ['image', 'migx']
+            'modTemplateVar.type:IN' => ['image', 'migx', 'imagecropper']
         ]);
 
-        $imageTVs = $this->modx->getIterator('modTemplateVar', $query);
-        if ($imageTVs) {
+        if ($imageTVs = $this->modx->getIterator('modTemplateVar', $query)) {
             $query = $this->modx->newQuery('sources.modMediaSourceElement');
             $query->where([
                 'object_class'   => 'modTemplateVar',
@@ -427,6 +426,19 @@ class SeoSuiteSnippets extends SeoSuite
 
                 if ($imageTV['type'] === 'migx') {
                     $this->getImagesValuesFromMIGX($cid, $imageTV, $tvSources);
+                } elseif($imageTV['type'] === 'imagecropper') {
+                    if (($decodedValue = json_decode($imageTV['value'], true)) && isset($decodedValue['image'], $decodedValue['sizes']) && !empty($decodedValue['image']) && count($decodedValue['sizes']) > 0) {
+                        /* Add crops, we don't add the source image because that is not being shown on the webpage. */
+                        if (isset($decodedValue['sizes']) && count($decodedValue['sizes']) > 0) {
+                            foreach ($decodedValue['sizes'] as $size) {
+                                $this->images[$cid][] = [
+                                    'id'     => $imageTV['id'],
+                                    'value'  => $size['image'],
+                                    'source' => $tvSources[$imageTV['tmplvarid']]
+                                ];
+                            }
+                        }
+                    }
                 } else {
                     $this->images[$cid][] = [
                         'id'     => $imageTV['id'],
@@ -445,16 +457,17 @@ class SeoSuiteSnippets extends SeoSuite
         $output = '';
         if ($resources) {
             $mediasources = [];
+
             if (count($usedMediaSourceIds) > 0) {
                 foreach ($usedMediaSourceIds as $mediaSourceId) {
                     $this->modx->loadClass('sources.modMediaSource');
-                    $source = modMediaSource::getDefaultSource($this->modx, $mediaSourceId, false);
-                    if ($source) {
+
+                    if ($source = modMediaSource::getDefaultSource($this->modx, $mediaSourceId, false)) {
                         $source->initialize();
                         /*
                          * CDN TV's are saved with full path, therefore only set full path for modFileMediaSource image tv types.
                          */
-                        $url = ($source->get('class_key') === 'sources.modFileMediaSource') ? rtrim(MODX_SITE_URL, '/') . '/' . ltrim($source->getBaseUrl(), '/') : '';
+                        $url                          = ($source->get('class_key') === 'sources.modFileMediaSource') ? rtrim(MODX_SITE_URL, '/') . '/' . ltrim($source->getBaseUrl(), '/') : '';
                         $mediasources[$mediaSourceId] = array_merge(array('full_url' => $url), $source->toArray());
                     }
                 }
@@ -462,10 +475,11 @@ class SeoSuiteSnippets extends SeoSuite
 
             foreach ($resources as $resource) {
                 $imagesOutput = '';
+
                 if (isset($this->images[$resource->get('id')])) {
                     foreach ($this->images[$resource->get('id')] as $image) {
                         /* Set correct full url for image based on context and mediasource. */
-                        $image = $this->setImageUrl($mediasources, $image);
+                        $image         = $this->setImageUrl($mediasources, $image);
                         $imagesOutput .= $this->getChunk($options['imageTpl'], array(
                             'url' => $image['value']
                         ));
