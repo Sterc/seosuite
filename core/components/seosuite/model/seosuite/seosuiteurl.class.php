@@ -95,10 +95,13 @@ class SeoSuiteUrl extends xPDOSimpleObject
     public function getRedirectSuggestions($context = false, array $excludeWords = [])
     {
         $suggestions = [];
-
-        $words = array_diff($this->getUrlSegmentWords($this->get('url')), $excludeWords);
+        $words       = array_diff($this->getUrlSegmentWords($this->get('url')), $excludeWords);
 
         asort($words);
+
+        if (count($words) === 0) {
+            return [];
+        }
 
         $criteria = $this->xpdo->newQuery('modResource', [
             'published' => 1,
