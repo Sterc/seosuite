@@ -45,7 +45,9 @@ class SeoSuiteRedirects extends SeoSuitePlugin
         $notFound->save();
     }
 
-    //TODO If is int, then make url, else normal redirect
+    /**
+     * Check if there are any redirects set up.
+     */
     protected function redirect()
     {
         $query = $this->modx->newQuery('SeoSuiteRedirect');
@@ -71,7 +73,6 @@ class SeoSuiteRedirects extends SeoSuitePlugin
         $redirect = $this->modx->getObject('SeoSuiteRedirect', $query);
         if ($redirect) {
             $redirectUrl = is_numeric($redirect->get('new_url')) ? $this->modx->makeUrl($redirect->get('new_url'), '', '', 'full') : $redirect->get('new_url');
-
 
             $redirect->set('visits', (int) $redirect->get('visits') + 1);
             $redirect->set('last_visit', date('Y-m-d H:i:s'));
