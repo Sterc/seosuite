@@ -51,8 +51,10 @@ class SeoSuiteSnippets extends SeoSuite
         ];
 
         if ($ssResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $id])) {
-            foreach ($meta as $key => $values) {
-                $meta[$key]['value'] = $ssResource->get($key);
+            foreach (array_values($meta) as $key) {
+                if (!in_array($key, ['meta_title', 'meta_description'], true)) {
+                    $meta[$key]['value'] = $ssResource->get($key);
+                }
             }
         }
 
@@ -105,6 +107,7 @@ class SeoSuiteSnippets extends SeoSuite
         }
 
         $html = [];
+
         foreach ($meta as $key => $item) {
             $tpl = $item['tpl'];
 
@@ -121,6 +124,7 @@ class SeoSuiteSnippets extends SeoSuite
                     }
 
                     $item['value'] = implode(',', $values);
+
                     break;
                 case 'canonical':
                     if ($ssResource && $ssResource->get('canonical') && !empty($ssResource->get('canonical_uri'))) {
@@ -130,12 +134,13 @@ class SeoSuiteSnippets extends SeoSuite
                     break;
                 case 'meta_title':
                 case 'meta_description':
-                    /* Parse JSON. */
-                    $item['value'] = $this->renderMetaValue(is_array($item['value']) ? json_encode($item['value']) : $item['value'], $resourceArray);
+                    $item['value'] = $this->renderMetaValue($item['value'], $resourceArray)['processed'];
+
                     break;
             }
 
             $rowHtml = $this->getChunk($tpl, $item);
+
             if ($toPlaceholders) {
                 $this->modx->toPlaceholder($key, $rowHtml, self::PHS_PREFIX);
             } else {

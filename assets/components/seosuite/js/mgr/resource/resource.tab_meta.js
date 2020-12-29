@@ -277,11 +277,13 @@ Ext.extend(SeoSuite, Ext.Component, {
             }
         }
     },
-    onRefreshCounter: function(key, restrictedLength) {
-        var tf = Ext.getCmp(key);
+    onRefreshCounter: function(tf, length) {
+        if (typeof tf !== 'object') {
+            tf = Ext.getCmp(tf);
+        }
 
         if (tf) {
-            tf.restrictedLength = restrictedLength;
+            tf.restrictedLength = length;
 
             this.onUpdateCounter(tf);
         }
@@ -309,7 +311,7 @@ Ext.extend(SeoSuite, Ext.Component, {
             }
 
             var count   = Math.round(maxCounterLength - tf.getValue().length).toString();
-            var percent = Math.round((maxCounterLength / 100) * tf.getValue().length);
+            var percent = Math.round(tf.getValue().length / (maxCounterLength / 100));
             var state   = 'valid';
 
             if ((maxCounterLength - tf.getValue().length) < 0) {
@@ -454,11 +456,17 @@ Ext.extend(SeoSuite, Ext.Component, {
                                     Ext.get('seosuite-seo-preview-description').dom.innerHTML = _('seosuite.tab_meta.description_empty');
                                 }
 
-                                //if (response.results.field_counters) {
-                                //    Ext.iterate(response.results.field_counters, (function(key, restrictedLength) {
-                                //        this.onRefreshCounter(this.getFieldAlias(key), restrictedLength);
-                                //    }).bind(this));
-                                //}
+                                if (!Ext.isEmpty(response.results.output.counters)) {
+                                    var counters = this.getFieldCounters();
+
+                                    Ext.iterate(response.results.output.counters, (function(key, length) {
+                                        key = this.getFieldAlias(key);
+
+                                        if (counters[key]) {
+                                            this.onRefreshCounter(key, length);
+                                        }
+                                    }).bind(this));
+                                }
                             }
                         },
                         scope       : this

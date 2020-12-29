@@ -59,8 +59,8 @@ class SeoSuiteMetaPreviewProcessor extends modObjectProcessor
         $title              = $this->modx->seosuite->config['meta']['default_meta_title'];
         $description        = $this->modx->seosuite->config['meta']['default_meta_description'];
 
-        $metaTitle          = $this->modx->seosuite->renderMetaValue($title, $fields);
-        $metaDescription    = $this->modx->seosuite->renderMetaValue($description, $fields);
+        $metaTitle          = $this->modx->seosuite->renderMetaValue($title, $fields, ['longtitle']);
+        $metaDescription    = $this->modx->seosuite->renderMetaValue($description, $fields, ['description']);
 
         $output = [
             'output'        => [
@@ -68,8 +68,12 @@ class SeoSuiteMetaPreviewProcessor extends modObjectProcessor
                 'site_url'      => $siteUrl,
                 'base_url'      => $baseUrl,
                 'alias'         => $alias,
-                'title'         => $this->truncate($metaTitle, $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['title']),
-                'description'   => $this->truncate($metaDescription, $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['description']),
+                'title'         => $this->truncate($metaTitle['processed'], $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['title']),
+                'description'   => $this->truncate($metaDescription['processed'], $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['description']),
+                'counters'      => [
+                    'longtitle'     => strlen($metaTitle['unprocessed']),
+                    'description'   => strlen($metaDescription['unprocessed'])
+                ]
             ]
         ];
 

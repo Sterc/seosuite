@@ -781,11 +781,13 @@ class SeoSuite
      * @access public.
      * @param String $value.
      * @param Array $fields.
-     * @return String.
+     * @param String|Array $skip.
+     * @return Array.
      */
-    public function renderMetaValue($value, array $fields = [])
+    public function renderMetaValue($value, array $fields = [], $skip = null)
     {
-        $processedValue = $value;
+        $processedValue     = $value;
+        $unProcessedValue   = $value;
 
         if (!empty($value)) {
             $data = array_map('trim', $fields);
@@ -801,11 +803,22 @@ class SeoSuite
             if ($parser) {
                 $parser->setCacheable(false);
 
-                $processedValue = $parser->process($data, $processedValue);
+                $processedValue     = $parser->process($data, $processedValue);
+
+                if (!empty($skip)) {
+                    foreach ((array) $skip as $key) {
+                        $data[$key] = '';
+                    }
+                }
+
+                $unProcessedValue   = $parser->process($data, $unProcessedValue);
             }
         }
 
-        return $processedValue;
+        return [
+            'processed'     => $processedValue,
+            'unprocessed'   => $unProcessedValue
+        ];
     }
 
     /**
