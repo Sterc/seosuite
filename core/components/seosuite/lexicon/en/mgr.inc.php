@@ -49,11 +49,9 @@ $_lang['setting_seosuite.tab_seo_default_sitemap']                      = 'Inclu
 $_lang['setting_seosuite.tab_seo_default_sitemap_desc']                 = '';
 
 /* Social settings. */
-$_lang['setting_seosuite.tab_social_og_types']                          = 'Facebook type values';
-$_lang['setting_seosuite.tab_social_og_types_desc']                     = '';
-$_lang['setting_seosuite.tab_social_twitter_cards']                     = 'Twitter card values';
-$_lang['setting_seosuite.tab_social_twitter_cards_desc']                = '';
-
-/* Twitter settings. */
-$_lang['setting_seosuite.twitter.site']      = 'Username Twitter Site';
-$_lang['setting_seosuite.twitter.site_desc'] = '@username for the website used in the card footer.';
+$_lang['setting_seosuite.tab_social.og_types']                          = 'Facebook type values';
+$_lang['setting_seosuite.tab_social,og_types_desc']                     = '';
+$_lang['setting_seosuite.tab_social.twitter_cards']                     = 'Twitter card values';
+$_lang['setting_seosuite.tab_social.twitter_cards_desc']                = '';
+$_lang['setting_seosuite.tab_social.twitter_creator_id']                = 'Twitter username';
+$_lang['setting_seosuite.tab_social.twitter_creator_id_desc']           = '@username for the website used in the card footer.';

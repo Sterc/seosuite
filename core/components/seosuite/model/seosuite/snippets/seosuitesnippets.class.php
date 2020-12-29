@@ -21,66 +21,74 @@ class SeoSuiteSnippets extends SeoSuite
     public function seosuiteMeta($properties)
     {
         $id                  = $this->modx->getOption('id', $properties, $this->modx->resource->get('id'));
-        $tplTitle            = $this->modx->getOption('tplTitle', $properties, 'tplMetaTitle');
         $tpl                 = $this->modx->getOption('tpl', $properties, 'tplMeta');
+        $tplTitle            = $this->modx->getOption('tplTitle', $properties, 'tplMetaTitle');
         $tplLink             = $this->modx->getOption('tplLink', $properties, 'tplLink');
         $tplAlternateWrapper = $this->modx->getOption('tplAlternateWrapper', $properties, 'tplAlternateWrapper');
         $toPlaceholders      = $this->modx->getOption('toPlaceholders', $properties, false);
 
         $meta = [
-            'meta_title' => [
-                'name'  => 'title',
-                'value' => $this->config['meta']['default_meta_title'],
-                'tpl'   => $tplTitle
+            'meta_title'        => [
+                'name'              => 'title',
+                'value'             => $this->config['meta']['default_meta_title'],
+                'tpl'               => $tplTitle
             ],
-            'meta_description' => [
-                'name'  => 'description',
-                'value' => $this->config['meta']['default_meta_description'],
-                'tpl'   => $tpl
-            ],
-            'robots'            => [
-                'name'  => 'robots',
-                'value' => '',
-                'tpl'   => $tpl
-            ],
-            'canonical'         => [
-                'name'   => 'canonical',
-                'value'  => '',
-                'tpl'    => $tplLink
+            'meta_description'  => [
+                'name'              => 'description',
+                'value'             => $this->config['meta']['default_meta_description'],
+                'tpl'               => $tpl
             ]
         ];
 
-        if ($ssResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $id])) {
-            foreach (array_values($meta) as $key) {
-                if (!in_array($key, ['meta_title', 'meta_description'], true)) {
-                    $meta[$key]['value'] = $ssResource->get($key);
-                }
+        $ssResource = $this->modx->getObject('SeoSuiteResource', [
+            'resource_id' => $id
+        ]);
+
+        if ($ssResource) {
+            $meta['robots'] = [
+                'name'  => 'robots',
+                'value' => implode(',', [
+                    $ssResource->get('index_type') ? 'index' : 'noindex',
+                    $ssResource->get('follow_type') ? 'follow' : 'nofollow'
+                ]),
+                'tpl'   => $tpl
+            ];
+
+            if ($ssResource->get('canonical') && !empty($ssResource->get('canonical_uri'))) {
+                $meta['canonical'] = [
+                    'name'  => 'canonical',
+                    'value' => rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($ssResource->get('canonical_uri'), '/'),
+                    'tpl'   => $tpl
+                ];
             }
         }
 
-        $ssSocial = $this->modx->getObject('SeoSuiteSocial', ['resource_id' => $id]) ?: $this->modx->newObject('SeoSuiteSocial');
-        foreach ($ssSocial->toArray() as $key => $value) {
-            if (in_array($key, ['id', 'resource_id', 'editedon'], true)) {
-                continue;
-            }
-
-            if (strpos($key, 'twitter') !== false && !array_key_exists('twitter_site', $meta)) {
-                $meta += [
-                    'twitter_site' => [
-                        'name'  => 'twitter:site',
-                        'value' => $this->modx->getOption('seosuite.twitter.site', $properties, ''),
-                        'tpl'   => $tpl
-                    ]
-                ];
-            }
-
-            $meta += [
-                $key => [
-                    'name'  => str_replace('_', ':', $key),
-                    'tpl'   => $tpl,
-                    'value' => $value
-                ]
+        if (!empty($this->config['tab_social']['twitter_creator_id'])) {
+            $meta['twitter_creator_id'] = [
+                'name'  => 'twitter:creator:id',
+                'value' => $this->config['tab_social']['twitter_creator_id'],
+                'tpl'   => $tpl
             ];
+        }
+
+        $ssSocial = $this->modx->getObject('SeoSuiteSocial', [
+            'resource_id' => $id
+        ]);
+
+        if ($ssSocial) {
+            foreach ((array) $ssSocial->toArray() as $key => $value) {
+                if (in_array($key, ['id', 'resource_id', 'editedon'], true)) {
+                    continue;
+                }
+
+                if (!empty($value)) {
+                    $meta[$key] = [
+                        'name'  => str_replace('_', ':', $key),
+                        'tpl'   => $tpl,
+                        'value' => $value
+                    ];
+                }
+            }
         }
 
         $resourceArray = ($modResource = $this->modx->getObject('modResource', $id)) ? $modResource->toArray() : [];
@@ -114,41 +122,16 @@ class SeoSuiteSnippets extends SeoSuite
             /* Unset tpl from placeholders. */
             unset($item['tpl']);
 
-            switch ($key) {
-                case 'robots':
-                    $values = [];
-
-                    if ($ssResource) {
-                        $values[] = $ssResource->get('index_type') ? 'index' : 'noindex';
-                        $values[] = $ssResource->get('follow_type') ? 'follow' : 'nofollow';
-                    }
-
-                    $item['value'] = implode(',', $values);
-
-                    break;
-                case 'canonical':
-                    if ($ssResource && $ssResource->get('canonical') && !empty($ssResource->get('canonical_uri'))) {
-                        $item['value'] = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($ssResource->get('canonical_uri'), '/');
-                    }
-
-                    break;
-                case 'meta_title':
-                case 'meta_description':
-                    $item['value'] = $this->renderMetaValue($item['value'], $resourceArray)['processed'];
-
-                    break;
+            if (in_array($key, ['meta_title', 'meta_description'], true)) {
+                $item['value'] = $this->renderMetaValue($item['value'], $resourceArray)['processed'];
             }
 
-            $rowHtml = $this->getChunk($tpl, $item);
-
-            if ($toPlaceholders) {
-                $this->modx->toPlaceholder($key, $rowHtml, self::PHS_PREFIX);
-            } else {
-                $html[] = $rowHtml;
-            }
+            $html[rtrim(self::PHS_PREFIX,'.') . '.' . $key] = $this->getChunk($tpl, $item);
         }
 
         if ($toPlaceholders) {
+            $this->modx->setPlaceholders($html, '+');
+
             return '';
         }
 

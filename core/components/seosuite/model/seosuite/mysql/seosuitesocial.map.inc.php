@@ -23,7 +23,7 @@ $xpdo_meta_map['SeoSuiteSocial']= array (
     'twitter_description' => '',
     'twitter_image' => '',
     'twitter_image_alt' => '',
-    'twitter_creator' => '',
+    'twitter_creator_id' => '',
     'twitter_card' => '',
     'editedon' => NULL,
   ),
@@ -110,7 +110,7 @@ $xpdo_meta_map['SeoSuiteSocial']= array (
       'null' => false,
       'default' => '',
     ),
-    'twitter_creator' => 
+    'twitter_creator_id' =>
     array (
       'dbtype' => 'varchar',
       'precision' => '255',
