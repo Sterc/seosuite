@@ -198,7 +198,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                             baseCls     : 'seosuite-seo-preview',
                             id          : 'seosuite-seo-preview',
                             cls         : 'seosuite-seo-preview-' + SeoSuite.config.meta.preview.mode + ' seosuite-seo-preview-' + SeoSuite.config.meta.preview.engine,
-                            html        : '<img src="https://www.google.com/s2/favicons?domain=test" class="icon" id="seosuite-seo-preview-favicon" />' +
+                            html        : '<img src="https://www.google.com/s2/favicons?domain=test" class="favicon" id="seosuite-seo-preview-favicon" />' +
                                 '<div id="seosuite-seo-preview-title"></div>' +
                                 '<div id="seosuite-seo-preview-url"></div>' +
                                 '<div id="seosuite-seo-preview-description"></div>'
@@ -437,11 +437,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                                     url.push('<i class="icon icon-lock"></i>');
                                 }
 
-                                url.push(response.results.output.site_url);
-
-                                if (!Ext.isEmpty(response.results.output.base_url)) {
-                                    url.push('<span>' + response.results.output.base_url + '</span>');
-                                }
+                                url.push('<span>' + response.results.output.site_url + '</span>');
 
                                 if (!Ext.isEmpty(response.results.output.alias)) {
                                     response.results.output.alias.split('/').forEach(function(path) {

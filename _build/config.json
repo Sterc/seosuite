@@ -54,10 +54,54 @@
             }]
         },
         "systemSettings": [{
+            "key": "meta.field_counters",
+            "value": "longtitle:30|70,description:70|155,content",
+            "area": "seosuite_tab_meta"
+        },{
+            "key": "meta.default_meta_description",
+            "value": "[[+description]]",
+            "area": "seosuite_tab_meta"
+        },{
+            "key": "meta.default_meta_title",
+            "value": "[[+longtitle]] | [[++site_name]]",
+            "area": "seosuite_tab_meta"
+        },{
+            "key": "meta.disabled_templates",
+            "value": "",
+            "area": "seosuite_tab_meta"
+        },{
+            "key": "meta.keywords_field_counters",
+            "value": "longtitle:4,description:8,content",
+            "area": "seosuite_tab_meta"
+        },{
+            "key": "meta.preview.length_desktop_description",
+            "value": "160",
+            "area": "seosuite_tab_meta"
+        },{
+            "key": "meta.preview.length_desktop_title",
+            "value": "70",
+            "area": "seosuite_tab_meta"
+        },{
+            "key": "meta.preview.length_mobile_description",
+            "value": "130",
+            "area": "seosuite_tab_meta"
+        },{
+            "key": "meta.preview.length_mobile_title",
+            "value": "78",
+            "area": "seosuite_tab_meta"
+        },{
+            "key": "meta.searchengine",
+            "value": "google",
+            "area": "seosuite_tab_meta"
+        },{
+            "key": "meta.searchmode",
+            "value": "desktop",
+            "area": "seosuite_tab_meta"
+        },{
             "key": "exclude_words",
             "value": "",
             "area": "seosuite_general"
-        }, {
+        },{
             "key": "placeholder_plugin_enabled",
             "type": "combo-boolean",
             "value": true,
@@ -66,42 +110,6 @@
             "key": "disabled_templates",
             "value": "",
             "area": "seosuite"
-        },{
-            "key": "meta.field_counters",
-            "value": "longtitle:30|70,description:70|155,content",
-            "area": "seosuite_tab_meta"
-        },{
-            "key": "meta.keywords_field_counters",
-            "value": "longtitle:4,description:8,content",
-            "area": "seosuite_tab_meta"
-        },{
-            "key": "meta.searchengine",
-            "value": "google",
-            "area": "seosuite_tab_meta"
-        }, {
-          "key": "meta.default_meta_title",
-          "value": "[{\"type\":\"placeholder\",\"value\":\"title\"},{\"type\":\"text\",\"value\":\" | \"},{\"type\":\"placeholder\",\"value\":\"site_name\"}]",
-          "area": "seosuite_tab_meta"
-        }, {
-          "key": "meta.default_meta_description",
-          "value": "[{\"type\":\"placeholder\",\"value\":\"description\"}]",
-          "area": "seosuite_tab_meta"
-        }, {
-          "key": "meta.preview.length_desktop_title",
-          "value": "70",
-          "area": "seosuite_tab_meta"
-        }, {
-          "key": "meta.preview.length_desktop_description",
-          "value": "160",
-          "area": "seosuite_tab_meta"
-        },{
-          "key": "meta.preview.length_mobile_title",
-          "value": "78",
-          "area": "seosuite_tab_meta"
-        }, {
-          "key": "meta.preview.length_mobile_description",
-          "value": "130",
-          "area": "seosuite_tab_meta"
         },{
           "key": "sitemap.default_changefreq",
           "value": "weekly",

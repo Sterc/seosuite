@@ -123,9 +123,10 @@ class SeoSuiteSnippets extends SeoSuite
         $outerTpl     = $options['outerTpl'];
         $rowTpl       = $options['rowTpl'];
         $query        = $this->buildQuery($contextKey, $allowSymlinks, $options);
+        $rawResources = $this->modx->getCollection('SeoSuiteResource', $query);
 
         $resources = [];
-        foreach ($this->modx->getIterator('modResource', $query) as $modResource) {
+        foreach ($rawResources as $modResource) {
             $resources[$modResource->get('id')] = $modResource;
         }
 
@@ -234,11 +235,6 @@ class SeoSuiteSnippets extends SeoSuite
      */
     protected function getAlternateLinks($resource, $options)
     {
-        /* Return if babel model path does not exist */
-        if (!file_exists($this->modx->getOption('babel.core_path', null, $this->modx->getOption('core_path') . 'components/babel/') . 'model/babel/')) {
-            return '';
-        }
-
         /* Include current resource. */
         $babel = &$this->modx->getService(
             'babel',
@@ -407,8 +403,8 @@ class SeoSuiteSnippets extends SeoSuite
      */
     protected function buildQuery($contextKey, $allowSymlinks, $options)
     {
-        $query = $this->modx->newQuery('modResource');
-        $query->innerJoin('SeoSuiteResource', 'SeoSuiteResource', 'SeoSuiteResource.resource_id = modResource.id');
+        $query = $this->modx->newQuery('SeoSuiteResource');
+        $query->innerJoin('modResource', 'modResource', 'SeoSuiteResource.resource_id = modResource.id');
 
         $query->select(
             [

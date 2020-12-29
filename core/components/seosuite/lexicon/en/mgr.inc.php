@@ -3,16 +3,16 @@
 /* General settings. */
 $_lang['setting_seosuite.exclude_words']                                = 'Exclude words';
 $_lang['setting_seosuite.exclude_words_desc']                           = 'Comma separated list of words which will be excluded from the suggestions matching system.';
-$_lang['setting_seosuite.placeholder_plugin_enabled']                   = 'Enable setting meta data placeholders by plugin';
-$_lang['setting_seosuite.placeholder_plugin_enabled_desc']              = 'When enabled the meta data placeholders are set by a plugin and become available for usage in MODX.';
 $_lang['setting_seosuite.default_redirect_type']                        = 'Default redirect type';
 $_lang['setting_seosuite.default_redirect_type_desc']                   = '';
 $_lang['setting_seosuite.disabled_templates']                           = 'Disabled Templates';
 $_lang['setting_seosuite.disabled_templates_desc']                      = 'Comma separated list of disabled template IDs.';
 
 /* Meta settings. */
-$_lang['setting_seosuite.meta.field_counters']                          = 'Fields where the keywords tool will work on';
+$_lang['setting_seosuite.meta.field_counters']                          = 'Fields where the chars counter tool will work on';
 $_lang['setting_seosuite.meta.field_counters_desc']                     = 'Only change these if you know what you\'re doing. Default value: longtitle:30|70,description:70|155,content.';
+$_lang['setting_seosuite.meta.keywords_field_counters']                 = 'Fields where the keywords counter tool will work on';
+$_lang['setting_seosuite.meta.keywords_field_counters_desc']            = 'Only change these if you know what you\'re doing. Default value: longtitle:4,description:8,content.';
 $_lang['setting_seosuite.meta.searchmode']                              = 'Search mode used for the preview';
 $_lang['setting_seosuite.meta.searchmode_desc']                         = 'Possible values: desktop, mobile. Defaults to mobile.';
 $_lang['setting_seosuite.meta.searchengine']                            = 'Search engine used for the preview';
@@ -21,10 +21,6 @@ $_lang['setting_seosuite.meta.default_meta_title']                      = 'Forma
 $_lang['setting_seosuite.meta.default_meta_title_desc']                 = 'Here you can specify the format for the META title used in Google/Yandex preview.';
 $_lang['setting_seosuite.meta.default_meta_description']                = 'Format used for the META description';
 $_lang['setting_seosuite.meta.default_meta_description_desc']           = 'Here you can specify the format for the META description used in Google/Yandex preview.';
-$_lang['setting_seosuite.meta.max_keywords_title']                      = 'Max amount of focus keywords allowed in title.';
-$_lang['setting_seosuite.meta.max_keywords_title_desc']                 = 'Use this setting to control the maximum amount of focus keywords that are allowed in the title to get a thumbs-up. It is advised to use no more than 4 keywords in your title.';
-$_lang['setting_seosuite.meta.max_keywords_description']                = 'Max amount of focus keywords allowed in description.';
-$_lang['setting_seosuite.meta.max_keywords_description_desc']           = 'Use this setting to control the maximum amount of focus keywords that are allowed in the description to get a thumbs-up. It is advised to use no more than 8 keywords in your description.';
 $_lang['setting_seosuite.meta.preview.length_desktop_title']            = 'Preview desktop title length';
 $_lang['setting_seosuite.meta.preview.length_desktop_title_desc']       = 'Determines the maximum length as shown in the preview.';
 $_lang['setting_seosuite.meta.preview.length_desktop_description']      = 'Preview desktop description length';
