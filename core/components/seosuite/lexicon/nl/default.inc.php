@@ -54,7 +54,7 @@ $_lang['seosuite.label_url_match_create_redirect_desc']         = 'Indien aangev
 
 $_lang['seosuite.label_import_file']                            = 'Bestand';
 $_lang['seosuite.label_import_file_desc']                       = 'Selecteer een geldig bestand om 404 URL(s) te importeren.';
-$_lang['seosuite.import.instructions']                          = 'Gebruik een .csv, .xls of .xlsx bestand. Zorg ervoor dat je de complete URL\'s hebt ingevuld, inclusief de domeinnaam. Voorbeeld: https://www.seosuite.com in plaats van seosuite.com.';
+$_lang['seosuite.import.instructions']                          = 'Gebruik een .csv, .xls of .xlsx bestand. Zorg ervoor dat je de complete URL\'s hebt ingevuld, inclusief de domeinnaam. Voorbeeld: https://www.seosuite.com in plaats van seosuite.com. Zie ook dit <a href="[[+path]]">voorbeeld import bestand (XLS)</a>.';
 
 $_lang['seosuite.redirect']                                     = 'URL verwijzing';
 $_lang['seosuite.redirects']                                    = 'URL verwijzingen';

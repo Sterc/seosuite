@@ -499,7 +499,7 @@ SeoSuite.window.ImportUrls = function(config) {
             topic       : '/seosuiteimport/'
         },
         fields      : [{
-            html        : '<p>'+_('seosuite.import.instructions')+'</p>',
+            html        : '<p>'+_('seosuite.import.instructions', {'path': SeoSuite.config.assets_url + 'files/import-example.xls'})+'</p>',
             style       : 'paddingTop: 20px'
         }, {
             xtype       : 'fileuploadfield',

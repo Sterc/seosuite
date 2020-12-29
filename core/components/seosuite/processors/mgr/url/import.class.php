@@ -20,6 +20,10 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
 
     public $allowedExtensions = ['csv', 'xls', 'xlsx'];
 
+    /**
+     * Process import file.
+     * @return array|mixed|string
+     */
     public function process()
     {
         $this->modx->log(modX::LOG_LEVEL_INFO, $this->modx->lexicon('seosuite.import.start'));
@@ -104,7 +108,7 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
                         'redirect_type' => 'HTTP/1.1 301 Moved Permanently'
                     ];
 
-                    $seoSuiteRedirect = $this->modx->getObject('SeoSuiteRedirect', $params);
+                        $seoSuiteRedirect = $this->modx->getObject('SeoSuiteRedirect', $params);
                     if (!$seoSuiteRedirect) {
                         $seoSuiteRedirect = $this->modx->newObject('SeoSuiteRedirect');
 
@@ -204,7 +208,11 @@ class SeoSuiteUrlImportProcessor extends modObjectProcessor
         return $data;
     }
 
-
+    /**
+     * @param $file
+     * @param int $checkLines
+     * @return mixed|string
+     */
     private function getCsvFileDelimiter($file, $checkLines = 2)
     {
         $file       = new SplFileObject($file);

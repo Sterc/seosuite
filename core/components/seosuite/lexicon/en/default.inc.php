@@ -61,7 +61,7 @@ $_lang['seosuite.label_url_match_create_redirect_desc']         = 'Will automati
 
 $_lang['seosuite.label_import_file']                            = 'File';
 $_lang['seosuite.label_import_file_desc']                       = 'Select a valid file to import the 404 URL(s).';
-$_lang['seosuite.import.instructions']                          = 'Use a .csv, .xls or .xlsx file. Make sure you’ve entered full URLs, including the domain. Example: https://www.seosuite.com instead of seosuite.com.';
+$_lang['seosuite.import.instructions']                          = 'Use a .csv, .xls or .xlsx file. Make sure you’ve entered full URLs, including the domain. Example: https://www.seosuite.com instead of seosuite.com. You can also view this <a href="[[+path]]">example import file (XLS)</a>.';
 
 $_lang['seosuite.redirect']                                     = 'URL redirect';
 $_lang['seosuite.redirects']                                    = 'URL redirects';
