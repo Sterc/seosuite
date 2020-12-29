@@ -1,5 +1,12 @@
 Changelog for SeoSuite.
 
+SEO Suite 2.0.0
+==============
+- Combined SEO Tab, SEO Pro and SEO Suite v1 into one powerful extra
+- Added a dedicated SEO panel
+- Added Social tab where OG and Twitter meta tags can be managed
+- Improved search engine preview
+
 SeoSuite 1.2.0
 ==============
 - Added redirect created date
