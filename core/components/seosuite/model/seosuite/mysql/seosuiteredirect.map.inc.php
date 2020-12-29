@@ -19,6 +19,8 @@ $xpdo_meta_map['SeoSuiteRedirect']= array (
     'new_url' => '',
     'redirect_type' => '',
     'active' => 1,
+    'visits' => 0,
+    'last_visit' => '0000-00-00 00:00:00',
     'editedon' => NULL,
   ),
   'fieldMeta' => 
@@ -73,6 +75,21 @@ $xpdo_meta_map['SeoSuiteRedirect']= array (
       'phptype' => 'boolean',
       'null' => false,
       'default' => 1,
+    ),
+    'visits' => 
+    array (
+      'dbtype' => 'integer',
+      'precision' => '11',
+      'phptype' => 'int',
+      'null' => false,
+      'default' => 0,
+    ),
+    'last_visit' => 
+    array (
+      'dbtype' => 'timestamp',
+      'phptype' => 'timestamp',
+      'null' => true,
+      'default' => '0000-00-00 00:00:00',
     ),
     'editedon' => 
     array (

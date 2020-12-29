@@ -43,6 +43,14 @@
                 "name": "tplMeta",
                 "file": "meta.chunk.tpl",
                 "description": "The default chunk used for the meta."
+            }, {
+                "name": "tplLink",
+                "file": "link.chunk.tpl",
+                "description": "The default chunk used for the link."
+            }, {
+              "name": "tplAlternateWrapper",
+              "file": "alternate-wrapper.chunk.tpl",
+              "description": "The default chunk used for wrapping alternate links"
             }],
             "widgets": [{
                 "name": "seosuite",
@@ -136,6 +144,14 @@
           "key": "tab_social_twitter_cards",
           "value": "summary,summary_large_image,app,player",
           "area": "seosuite_tab_social"
+        }, {
+          "key": "twitter.site",
+          "value": "",
+          "area": "seosuite_twitter"
+        }, {
+          "key": "twitter.site",
+          "value": "",
+          "area": "seosuite_twitter"
         }]
     },
     "database": {

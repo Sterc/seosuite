@@ -32,6 +32,11 @@ class SeoSuiteRedirects extends SeoSuitePlugin
         ]);
 
         if (!$notFound) {
+            /* Check if there is not a redirect that already exists for this. */
+            if ($this->modx->getObject('SeoSuiteRedirect', ['context_key' => $this->modx->context->get('key'), 'old_url' => $this->request, 'active' => true])) {
+                return;
+            }
+
             $notFound = $this->modx->newObject('SeoSuiteUrl');
         }
 
@@ -45,7 +50,9 @@ class SeoSuiteRedirects extends SeoSuitePlugin
         $notFound->save();
     }
 
-    //TODO If is int, then make url, else normal redirect
+    /**
+     * Check if there are any redirects set up.
+     */
     protected function redirect()
     {
         $query = $this->modx->newQuery('SeoSuiteRedirect');
@@ -71,6 +78,10 @@ class SeoSuiteRedirects extends SeoSuitePlugin
         $redirect = $this->modx->getObject('SeoSuiteRedirect', $query);
         if ($redirect) {
             $redirectUrl = is_numeric($redirect->get('new_url')) ? $this->modx->makeUrl($redirect->get('new_url'), '', '', 'full') : $redirect->get('new_url');
+
+            $redirect->set('visits', (int) $redirect->get('visits') + 1);
+            $redirect->set('last_visit', date('Y-m-d H:i:s'));
+            $redirect->save();
 
             $this->modx->sendRedirect($redirectUrl, ['responseCode' => $redirect->get('redirect_type')]);
         }

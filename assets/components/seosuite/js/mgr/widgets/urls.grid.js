@@ -507,6 +507,7 @@ SeoSuite.window.ImportUrls = function(config) {
             description : MODx.expandHelp ? '' : _('seosuite.label_import_file_desc'),
             name        : 'file',
             allowBlank  : false,
+            anchor      : '100%',
             buttonText  : _('upload.buttons.choose')
         }, {
             xtype       : MODx.expandHelp ? 'label' : 'hidden',

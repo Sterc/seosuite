@@ -158,6 +158,17 @@ SeoSuite.panel.SocialTab = function(config) {
                         }]
                     }]
                 }, {
+                    xtype       : 'textfield',
+                    fieldLabel  : _('seosuite.tab_social.label_twitter_creator'),
+                    description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_creator_desc'),
+                    name        : 'seosuite_twitter_creator',
+                    anchor      : '100%',
+                    value       : SeoSuite.record.seosuite_twitter_creator
+                }, {
+                    xtype       : MODx.expandHelp ? 'label' : 'hidden',
+                    html        : _('seosuite.tab_social.label_twitter_creator_desc'),
+                    cls         : 'desc-under'
+                }, {
                     xtype       : 'seosuite-combo-social-twitter-card',
                     fieldLabel  : _('seosuite.tab_social.label_twitter_card'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_card_desc'),

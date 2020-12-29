@@ -29,5 +29,7 @@ $_lang['seosuite.tab_social.label_twitter_image']               = 'Twitter afbee
 $_lang['seosuite.tab_social.label_twitter_image_desc']          = 'De afbeelding van de pagina op Twitter.';
 $_lang['seosuite.tab_social.label_twitter_image_alt']           = 'Twitter afbeelding titel';
 $_lang['seosuite.tab_social.label_twitter_image_alt_desc']      = 'De afbeelding titel van de pagina op Twitter.';
+$_lang['seosuite.tab_social.label_twitter_creator']             = 'Twitter content maker / auteur';
+$_lang['seosuite.tab_social.label_twitter_creator_desc']        = '@gebruikersnaam voor de maker / auteur van de inhoud.';
 $_lang['seosuite.tab_social.label_twitter_card']                = 'Twitter card';
 $_lang['seosuite.tab_social.label_twitter_card_desc']           = 'De pagina card op Twitter.';

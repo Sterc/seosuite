@@ -15,6 +15,7 @@ $_lang['area_seosuite_tab_meta']                                = 'SEO Suite met
 $_lang['area_seosuite_tab_seo']                                 = 'SEO Suite search engine tab';
 $_lang['area_seosuite_tab_social']                              = 'SEO Suite social tab';
 $_lang['area_seosuite_sitemap']                                 = 'SEO Suite sitemap';
+$_lang['area_seosuite_twitter']                                 = 'SEO Suite Twitter';
 
 $_lang['seosuite.urls']                                         = '404 URLs';
 $_lang['seosuite.urls_desc']                                    = 'Fixing your 404 URLs is easy. Simply upload a one-column CSV-file.

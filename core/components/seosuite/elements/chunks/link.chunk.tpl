@@ -1,0 +1,1 @@
+<link rel="[[+name]]" href="[[+value]]" [[+hreflang:notempty=`hreflang="[[+hreflang]]"`]]/>

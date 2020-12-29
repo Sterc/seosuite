@@ -29,5 +29,7 @@ $_lang['seosuite.tab_social.label_twitter_image']               = 'Twitter image
 $_lang['seosuite.tab_social.label_twitter_image_desc']          = 'The image of the page on Twitter.';
 $_lang['seosuite.tab_social.label_twitter_image_alt']           = 'Twitter image title';
 $_lang['seosuite.tab_social.label_twitter_image_alt_desc']      = 'The image title of the page on Twitter.';
+$_lang['seosuite.tab_social.label_twitter_creator']             = 'Twitter content creator / author';
+$_lang['seosuite.tab_social.label_twitter_creator_desc']        = '@username for the content creator / author.';
 $_lang['seosuite.tab_social.label_twitter_card']                = 'Twitter card';
 $_lang['seosuite.tab_social.label_twitter_card_desc']           = 'The page card on Twitter.';

@@ -110,6 +110,12 @@ class SeoSuiteRedirectGetListProcessor extends modObjectGetListProcessor
             $array['editedon'] = date($this->getProperty('dateFormat'), strtotime($object->get('editedon')));
         }
 
+        if (in_array($object->get('last_visit'), ['-001-11-30 00:00:00', '-1-11-30 00:00:00', '0000-00-00 00:00:00', null], true)) {
+            $array['last_visit'] = '';
+        } else {
+            $array['last_visit'] = date($this->getProperty('dateFormat'), strtotime($object->get('last_visit')));
+        }
+
         return $array;
     }
 }
