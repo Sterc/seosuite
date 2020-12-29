@@ -3,6 +3,14 @@ Ext.extend(SeoSuite, Ext.Component, {
         SeoSuite.config.loaded = true;
         SeoSuite.addPanel();
 
+        /* MODX 3 specific fix. */
+        if (parseInt(MODx.config.version.split('.')[0]) === 3) {
+            /* Fix introtext width when it's supposed to show next to description field. */
+            Ext.getCmp('modx-resource-introtext').findParentByType('panel').columnWidth = 1;
+            Ext.getCmp('modx-resource-introtext').findParentByType('panel').removeClass('x-column');
+            Ext.getCmp('modx-resource-introtext').findParentByType('panel').doLayout();
+        }
+
         ['modx-resource-pagetitle', 'modx-resource-introtext', 'modx-resource-alias', 'modx-resource-uri', 'modx-resource-uri-override', 'modx-resource-parent', 'seosuite-longtitle', 'seosuite-description'].forEach((function(key) {
             var field = Ext.getCmp(key);
 
@@ -347,7 +355,7 @@ Ext.extend(SeoSuite, Ext.Component, {
         if (tf) {
             tf.maxKeywords = maxKeywords;
 
-            tf.container.addClass('x-form-seosuite-keyword-counter');
+            tf.container.addClass('x-form-seosuite-keyword-counter x-form-seosuite-keyword-counter__v' + MODx.config.version.split('.')[0]);
 
             tf.container.createChild({
                 tag     : 'div',

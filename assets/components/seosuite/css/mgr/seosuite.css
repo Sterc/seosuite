@@ -327,7 +327,8 @@
     color: #be0000;
 }
 
-#modx-resource-content .x-form-seosuite-keyword-counter .x-form-seosuite-keyword-counter-progress {
+/* MODX 2 specific styling fix. */
+#modx-resource-content .x-form-seosuite-keyword-counter__v2 .x-form-seosuite-keyword-counter-progress {
     top: -48px;
     right: 30px;
 }
