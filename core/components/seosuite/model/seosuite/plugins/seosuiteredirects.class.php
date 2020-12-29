@@ -24,8 +24,38 @@ class SeoSuiteRedirects extends SeoSuitePlugin
         }
     }
 
+    /**
+     * Determine if page not found should be tracked.
+     * Checks for SQL injection via regex
+     * Checks if url contains words which are set in system_setting
+     */
+    protected function shouldLog404()
+    {
+        $url = $this->modx->getOption('server_protocol').'://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        if (!preg_match('/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+$/', $url)) {
+            return false;
+        }
+
+        if (count($blockedWords = $this->modx->seosuite->config['blocked_words']) > 0) {
+            foreach ($blockedWords as $word) {
+                if (strpos($this->request, $word)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Add 404 url if page not found event is triggered.
+     */
     protected function countVisits()
     {
+        if (!$this->shouldLog404()) {
+            return false;
+        }
+
         $notFound = $this->modx->getObject('SeoSuiteUrl', [
             'context_key' => $this->modx->context->get('key'),
             'url'         => $this->request
@@ -34,7 +64,7 @@ class SeoSuiteRedirects extends SeoSuitePlugin
         if (!$notFound) {
             /* Check if there is not a redirect that already exists for this. */
             if ($this->modx->getObject('SeoSuiteRedirect', ['context_key' => $this->modx->context->get('key'), 'old_url' => $this->request, 'active' => true])) {
-                return;
+                return false;
             }
 
             $notFound = $this->modx->newObject('SeoSuiteUrl');

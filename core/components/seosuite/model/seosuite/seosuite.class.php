@@ -82,6 +82,7 @@ class SeoSuite
             'version'                    => '2.0.0',
             'branding_url'               => $this->modx->getOption('seosuite.branding_url', null, ''),
             'branding_help_url'          => $this->modx->getOption('seosuite.branding_url_help', null, ''),
+            'blocked_words'              => array_filter(explode(',', $this->modx->getOption('seosuite.blocked_words', null, ''))),
             'exclude_words'              => array_filter(explode(',', $this->modx->getOption('seosuite.exclude_words', null, ''))),
             'disabled_templates'         => array_filter(explode(',', $this->modx->getOption('seosuite.disabled_templates'))),
             'default_redirect_type'      => $this->modx->getOption('seosuite.default_redirect_type', null, 'HTTP/1.1 301 Moved Permanently'),
