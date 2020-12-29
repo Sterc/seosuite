@@ -159,14 +159,14 @@ SeoSuite.panel.SocialTab = function(config) {
                     }]
                 }, {
                     xtype       : 'textfield',
-                    fieldLabel  : _('seosuite.tab_social.label_twitter_creator'),
-                    description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_creator_desc'),
-                    name        : 'seosuite_twitter_creator',
+                    fieldLabel  : _('seosuite.tab_social.label_twitter_creator_id'),
+                    description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_creator_id_desc'),
+                    name        : 'seosuite_twitter_creator_id',
                     anchor      : '100%',
-                    value       : SeoSuite.record.seosuite_twitter_creator
+                    value       : SeoSuite.record.seosuite_twitter_creator_id
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
-                    html        : _('seosuite.tab_social.label_twitter_creator_desc'),
+                    html        : _('seosuite.tab_social.label_twitter_creator_id_desc'),
                     cls         : 'desc-under'
                 }, {
                     xtype       : 'seosuite-combo-social-twitter-card',

@@ -62,6 +62,23 @@
             }]
         },
         "systemSettings": [{
+            "key": "disabled_templates",
+            "value": "",
+            "area": "seosuite"
+        },{
+            "key": "exclude_words",
+            "value": "",
+            "area": "seosuite"
+        },{
+            "key": "blocked_words",
+            "value": "",
+            "area": "seosuite"
+        },{
+            "key": "placeholder_plugin_enabled",
+            "type": "combo-boolean",
+            "value": true,
+            "area": "seosuite"
+        },{
             "key": "meta.field_counters",
             "value": "longtitle:30|70,description:70|155,content",
             "area": "seosuite_tab_meta"
@@ -72,10 +89,6 @@
         },{
             "key": "meta.default_meta_title",
             "value": "[[+longtitle]] | [[++site_name]]",
-            "area": "seosuite_tab_meta"
-        },{
-            "key": "meta.disabled_templates",
-            "value": "",
             "area": "seosuite_tab_meta"
         },{
             "key": "meta.keywords_field_counters",
@@ -106,19 +119,6 @@
             "value": "desktop",
             "area": "seosuite_tab_meta"
         },{
-            "key": "exclude_words",
-            "value": "",
-            "area": "seosuite_general"
-        },{
-            "key": "placeholder_plugin_enabled",
-            "type": "combo-boolean",
-            "value": true,
-            "area": "seosuite_general"
-        },{
-            "key": "disabled_templates",
-            "value": "",
-            "area": "seosuite"
-        },{
           "key": "sitemap.default_changefreq",
           "value": "weekly",
           "area": "seosuite_sitemap"
@@ -137,21 +137,17 @@
           "value": "1",
           "area": "seosuite_sitemap"
         }, {
-          "key": "tab_social_og_types",
+          "key": "tab_social.og_types",
           "value": "website",
           "area": "seosuite_tab_social"
         }, {
-          "key": "tab_social_twitter_cards",
+          "key": "tab_social.twitter_cards",
           "value": "summary,summary_large_image,app,player",
           "area": "seosuite_tab_social"
         }, {
-          "key": "twitter.site",
+          "key": "tab_social.twitter_creator_id",
           "value": "",
-          "area": "seosuite_twitter"
-        }, {
-          "key": "twitter.site",
-          "value": "",
-          "area": "seosuite_twitter"
+          "area": "seosuite_tab_social"
         }]
     },
     "database": {

@@ -83,7 +83,7 @@ class SeoSuite
             'branding_url'               => $this->modx->getOption('seosuite.branding_url', null, ''),
             'branding_help_url'          => $this->modx->getOption('seosuite.branding_url_help', null, ''),
             'exclude_words'              => array_filter(explode(',', $this->modx->getOption('seosuite.exclude_words', null, ''))),
-            'disabled_templates'         => array_filter(explode(',', $this->modx->getOption('seosuite.meta.disabled_templates'))),
+            'disabled_templates'         => array_filter(explode(',', $this->modx->getOption('seosuite.disabled_templates'))),
             'default_redirect_type'      => $this->modx->getOption('seosuite.default_redirect_type', null, 'HTTP/1.1 301 Moved Permanently'),
             'placeholder_plugin_enabled' => (bool) $this->modx->getOption('seosuite.placeholder_plugin_enabled', null, true),
             'tab_seo'                    => [
@@ -94,11 +94,12 @@ class SeoSuite
             ],
             'tab_social'                 => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_social'),
-                'og_types'                  => explode(',', $this->modx->getOption('seosuite.tab_social_og_types')),
-                'default_og_type'           => explode(',', $this->modx->getOption('seosuite.tab_social_og_types'))[0],
-                'twitter_cards'             => explode(',', $this->modx->getOption('seosuite.tab_social_twitter_cards')),
-                'default_twitter_card'      => explode(',', $this->modx->getOption('seosuite.tab_social_twitter_cards'))[0],
-                'image_types'               => 'jpg,jpeg.png,gif'
+                'og_types'                  => explode(',', $this->modx->getOption('seosuite.tab_social.og_types', null, 'website')),
+                'default_og_type'           => explode(',', $this->modx->getOption('seosuite.tab_social.og_types', null, 'website'))[0],
+                'twitter_cards'             => explode(',', $this->modx->getOption('seosuite.tab_social.twitter_cards', null, 'summary,summary_large_image,app,player')),
+                'default_twitter_card'      => explode(',', $this->modx->getOption('seosuite.tab_social.twitter_cards', null, 'summary,summary_large_image,app,player'))[0],
+                'twitter_creator_id'        => $this->modx->getOption('seosuite.tab_social.twitter_creator_id'),
+                'image_types'               => 'jpg,jpeg,png,gif'
             ],
             'meta'                       => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_meta'),
@@ -585,16 +586,17 @@ class SeoSuite
     public function getSocialDefaultProperties()
     {
         return [
-            'og_title'             => '',
-            'og_description'       => '',
-            'og_image'             => '',
-            'og_image_alt'         => '',
-            'og_type'              => $this->config['tab_social']['default_og_type'],
-            'twitter_title'        => '',
-            'twitter_description'  => '',
-            'twitter_image'        => '',
-            'twitter_image_alt'    => '',
-            'twitter_card'         => $this->config['tab_social']['default_twitter_card']
+            'og_title'              => '',
+            'og_description'        => '',
+            'og_image'              => '',
+            'og_image_alt'          => '',
+            'og_type'               => $this->config['tab_social']['default_og_type'],
+            'twitter_title'         => '',
+            'twitter_description'   => '',
+            'twitter_image'         => '',
+            'twitter_image_alt'     => '',
+            'twitter_creator_id'    => '',
+            'twitter_card'          => $this->config['tab_social']['default_twitter_card']
         ];
     }
 
