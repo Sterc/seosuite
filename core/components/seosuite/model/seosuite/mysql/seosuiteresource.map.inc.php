@@ -74,6 +74,7 @@ $xpdo_meta_map['SeoSuiteResource']= array (
       'phptype' => 'boolean',
       'null' => false,
       'default' => 1,
+      'index' => 'index',
     ),
     'follow_type' => 
     array (
@@ -83,6 +84,7 @@ $xpdo_meta_map['SeoSuiteResource']= array (
       'phptype' => 'boolean',
       'null' => false,
       'default' => 1,
+      'index' => 'index',
     ),
     'sitemap' => 
     array (
@@ -92,6 +94,7 @@ $xpdo_meta_map['SeoSuiteResource']= array (
       'phptype' => 'boolean',
       'null' => false,
       'default' => 1,
+      'index' => 'index',
     ),
     'sitemap_prio' => 
     array (
@@ -146,6 +149,54 @@ $xpdo_meta_map['SeoSuiteResource']= array (
       'columns' => 
       array (
         'resource_id' => 
+        array (
+          'length' => '767',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'index_type' => 
+    array (
+      'alias' => 'index_type',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'index_type' => 
+        array (
+          'length' => '767',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'follow_type' => 
+    array (
+      'alias' => 'follow_type',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'follow_type' => 
+        array (
+          'length' => '767',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'sitemap' => 
+    array (
+      'alias' => 'sitemap',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'sitemap' => 
         array (
           'length' => '767',
           'collation' => 'A',

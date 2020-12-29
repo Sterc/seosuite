@@ -46,9 +46,9 @@
         <field key="use_default_meta" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
         <field key="meta_title" dbtype="mediumtext" phptype="json" null="true" />
         <field key="meta_description" dbtype="mediumtext" phptype="json" null="true" />
-        <field key="index_type" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
-        <field key="follow_type" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
-        <field key="sitemap" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
+        <field key="index_type" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" index="index"/>
+        <field key="follow_type" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" index="index"/>
+        <field key="sitemap" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" index="index"/>
         <field key="sitemap_prio" dbtype="varchar" precision="10" phptype="string" null="false" default="" />
         <field key="sitemap_changefreq" dbtype="varchar" precision="10" phptype="string" null="false" default="" />
         <field key="canonical" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
@@ -60,15 +60,24 @@
         <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
             <column key="resource_id" length="767" collation="A" null="false" />
         </index>
+        <index alias="index_type" name="index_type" primary="false" unique="false" type="BTREE">
+            <column key="index_type" length="767" collation="A" null="false" />
+        </index>
+        <index alias="follow_type" name="follow_type" primary="false" unique="false" type="BTREE">
+            <column key="follow_type" length="767" collation="A" null="false" />
+        </index>
+        <index alias="sitemap" name="sitemap" primary="false" unique="false" type="BTREE">
+            <column key="sitemap" length="767" collation="A" null="false" />
+        </index>
     </object>
 
     <object class="SeoSuiteRedirect" table="seosuite_redirect" extends="xPDOSimpleObject">
         <field key="context_key" dbtype="varchar" precision="100" phptype="string" null="false" default="" index="index"/>
         <field key="resource_id" dbtype="integer" precision="10" phptype="int" null="false" default="" index="index"/>
-        <field key="old_url" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+        <field key="old_url" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="index"/>
         <field key="new_url" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
         <field key="redirect_type" dbtype="varchar" precision="75" phptype="string" null="false" default="" />
-        <field key="active" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
+        <field key="active" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" index="index"/>
         <field key="visits" dbtype="integer" precision="11" phptype="int" null="false" default=""/>
         <field key="last_visit" dbtype="timestamp" phptype="timestamp" null="true" default="0000-00-00 00:00:00"/>
         <field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" default="NULL" attributes="ON UPDATE CURRENT_TIMESTAMP" />
@@ -77,10 +86,16 @@
         <aggregate alias="Resource" class="modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
 
         <index alias="context_key" name="context_key" primary="false" unique="false" type="BTREE">
-            <column key="context_key" length="767" collation="A" null="false"></column>
+            <column key="context_key" length="767" collation="A" null="false"/>
         </index>
         <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
             <column key="resource_id" length="767" collation="A" null="false" />
+        </index>
+        <index alias="old_url" name="old_url" primary="false" unique="false" type="BTREE">
+            <column key="old_url" length="767" collation="A" null="false"/>
+        </index>
+        <index alias="active" name="active" primary="false" unique="false" type="BTREE">
+            <column key="active" length="767" collation="A" null="false" />
         </index>
     </object>
 </model>
