@@ -63,6 +63,7 @@ class SeoSuiteRedirectCreateProcessor extends modObjectCreateProcessor
                 $this->object->set('old_url', $object->get('url'));
 
                 if (!empty($this->getProperty('suggestion'))) {
+                    $this->object->set('resource_id', $this->getProperty('suggestion'));
                     $this->object->set('new_url', $this->getProperty('suggestion'));
                 }
 
