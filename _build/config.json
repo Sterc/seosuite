@@ -62,6 +62,10 @@
             }]
         },
         "systemSettings": [{
+            "key": "blocked_words",
+            "value": "admin,insert,select,delete,union,update,whatsapp,debug,manager",
+            "area": "seosuite"
+        },{
             "key": "disabled_templates",
             "value": "",
             "area": "seosuite"

@@ -110,7 +110,7 @@ $xpdo_meta_map['SeoSuiteSocial']= array (
       'null' => false,
       'default' => '',
     ),
-    'twitter_creator_id' =>
+    'twitter_creator_id' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '255',
