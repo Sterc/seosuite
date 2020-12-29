@@ -63,6 +63,22 @@ class SeoSuiteSnippets extends SeoSuite
             }
         }
 
+        if (!empty($this->config['tab_social']['default_og_image'])) {
+            $meta['og_image'] = [
+                'name'  => 'og:image',
+                'value' => $this->config['tab_social']['default_og_image'],
+                'tpl'   => $tpl
+            ];
+        }
+
+        if (!empty($this->config['tab_social']['default_twitter_image'])) {
+            $meta['twitter_image'] = [
+                'name'  => 'twitter:image',
+                'value' => $this->config['tab_social']['default_twitter_image'],
+                'tpl'   => $tpl
+            ];
+        }
+
         if (!empty($this->config['tab_social']['twitter_creator_id'])) {
             $meta['twitter_creator_id'] = [
                 'name'  => 'twitter:creator:id',
@@ -124,6 +140,8 @@ class SeoSuiteSnippets extends SeoSuite
 
             if (in_array($key, ['meta_title', 'meta_description'], true)) {
                 $item['value'] = $this->renderMetaValue($item['value'], $resourceArray)['processed'];
+            } else if (in_array($key, ['og_image', 'twitter_image'], true)) {
+                $item['value'] = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($item['value'], '/');
             }
 
             $html[rtrim(self::PHS_PREFIX,'.') . '.' . $key] = $this->getChunk($tpl, $item);

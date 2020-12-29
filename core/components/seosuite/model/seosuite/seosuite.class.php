@@ -99,6 +99,8 @@ class SeoSuite
                 'twitter_cards'             => explode(',', $this->modx->getOption('seosuite.tab_social.twitter_cards', null, 'summary,summary_large_image,app,player')),
                 'default_twitter_card'      => explode(',', $this->modx->getOption('seosuite.tab_social.twitter_cards', null, 'summary,summary_large_image,app,player'))[0],
                 'twitter_creator_id'        => $this->modx->getOption('seosuite.tab_social.twitter_creator_id'),
+                'default_og_image'          => $this->modx->getOption('seosuite.tab_social.default_og_image'),
+                'default_twitter_image'     => $this->modx->getOption('seosuite.tab_social.default_twitter_image'),
                 'image_types'               => 'jpg,jpeg,png,gif'
             ],
             'meta'                       => [

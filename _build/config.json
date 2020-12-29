@@ -119,35 +119,43 @@
             "value": "desktop",
             "area": "seosuite_tab_meta"
         },{
-          "key": "sitemap.default_changefreq",
-          "value": "weekly",
-          "area": "seosuite_sitemap"
-        }, {
-          "key": "sitemap.default_priority",
-          "value": "0.5",
-          "area": "seosuite_sitemap"
-        }, {
-          "key": "sitemap.dependent_ultimateparent",
-          "type": "combo-boolean",
-          "value": "0",
-          "area": "seosuite_sitemap"
-        }, {
-          "key": "sitemap.babel.add_alternate_links",
-          "type": "combo-boolean",
-          "value": "1",
-          "area": "seosuite_sitemap"
-        }, {
-          "key": "tab_social.og_types",
-          "value": "website",
-          "area": "seosuite_tab_social"
-        }, {
-          "key": "tab_social.twitter_cards",
-          "value": "summary,summary_large_image,app,player",
-          "area": "seosuite_tab_social"
-        }, {
-          "key": "tab_social.twitter_creator_id",
-          "value": "",
-          "area": "seosuite_tab_social"
+            "key": "sitemap.default_changefreq",
+            "value": "weekly",
+            "area": "seosuite_sitemap"
+        },{
+            "key": "sitemap.default_priority",
+            "value": "0.5",
+            "area": "seosuite_sitemap"
+        },{
+            "key": "sitemap.dependent_ultimateparent",
+            "type": "combo-boolean",
+            "value": "0",
+            "area": "seosuite_sitemap"
+        },{
+            "key": "sitemap.babel.add_alternate_links",
+            "type": "combo-boolean",
+            "value": "1",
+            "area": "seosuite_sitemap"
+        },{
+            "key": "tab_social.og_types",
+            "value": "website",
+            "area": "seosuite_tab_social"
+        },{
+            "key": "tab_social.twitter_cards",
+            "value": "summary,summary_large_image,app,player",
+            "area": "seosuite_tab_social"
+        },{
+            "key": "tab_social.twitter_creator_id",
+            "value": "",
+            "area": "seosuite_tab_social"
+        },{
+            "key": "tab_social.default_og_image",
+            "value": "",
+            "area": "seosuite_tab_social"
+        },{
+            "key": "tab_social.default_twitter_image",
+            "value": "",
+            "area": "seosuite_tab_social"
         }]
     },
     "database": {
