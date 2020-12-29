@@ -144,10 +144,6 @@
     content: ' › ';
 }
 
-#seosuite-seo-preview .seosuite-seo-preview-body #seosuite-seo-preview-url span + span:last-of-type:before {
-    content: '';
-}
-
 #seosuite-seo-preview .seosuite-seo-preview-body #seosuite-seo-preview-url .favicon {
     float: left;
     margin: 2px 5px 2px 0;

@@ -37,12 +37,12 @@ SeoSuite.panel.SeoTab = function(config) {
                         boxLabel    : _('yes') + ' <em>(' + _('seosuite.tab_seo.index_type_index') + ')</em>',
                         name        : 'seosuite_index_type',
                         inputValue  : 1,
-                        checked     : SeoSuite.record.seosuite_index_type === 1
+                        checked     : SeoSuite.record.seosuite_index_type === true
                     }, {
                         boxLabel    : _('no') + ' <em>(' + _('seosuite.tab_seo.index_type_noindex') + ')</em>',
                         name        : 'seosuite_index_type',
                         inputValue  : 0,
-                        checked     : SeoSuite.record.seosuite_index_type === 0
+                        checked     : SeoSuite.record.seosuite_index_type === false
                     }]
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
@@ -61,12 +61,12 @@ SeoSuite.panel.SeoTab = function(config) {
                         boxLabel    : _('yes') + ' <em>(' + _('seosuite.tab_seo.follow_type_follow') + ')</em>',
                         name        : 'seosuite_follow_type',
                         inputValue  : 1,
-                        checked     : SeoSuite.record.seosuite_follow_type === 1
+                        checked     : SeoSuite.record.seosuite_follow_type === true
                     }, {
                         boxLabel    : _('no') + ' <em>(' + _('seosuite.tab_seo.follow_type_nofollow') + ')</em>',
                         name        : 'seosuite_follow_type',
                         inputValue  : 0,
-                        checked     : SeoSuite.record.seosuite_follow_type === 0
+                        checked     : SeoSuite.record.seosuite_follow_type === false
                     }]
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
