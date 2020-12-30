@@ -173,7 +173,6 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
                 </script>');
 
                 $this->modx->controller->addCss($this->seosuite->config['css_url'] . 'mgr/seosuite.css');
-                $this->modx->controller->addCss($this->seosuite->config['css_url'] . 'mgr.css');
 
                 $this->modx->controller->addJavascript($this->seosuite->config['js_url'] . 'mgr/seosuite.js');
                 $this->modx->controller->addJavascript($this->seosuite->config['js_url'] . 'mgr/extras/extras.js');

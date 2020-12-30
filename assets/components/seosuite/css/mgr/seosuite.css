@@ -48,6 +48,15 @@
     margin: 15px 0 0;
 }
 
+#resource-seosuite-panel {
+    margin: 0 0 20px;
+}
+
+#resource-seosuite-panel .x-panel-header {
+    margin: 0;
+    padding: 15px;
+}
+
 /* Meta SEO preview */
 
 #resource-seosuite-panel .x-toolbar {

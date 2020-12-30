@@ -10,7 +10,7 @@ Ext.onReady(function() {
 
 SeoSuite.panel.SocialTab = function(config) {
     config = config || {};
-    
+
     Ext.applyIf(config, {
         title       : _('seosuite.tab_social'),
         items       : [{

@@ -32,6 +32,8 @@ $_lang['seosuite.url_remove_confirm']                           = 'Weet je zeker
 $_lang['seosuite.url.redirect_to_selected']                     = 'Geselecteerde redirect';
 $_lang['seosuite.suggestions_found']                            = 'Er zijn [[+suggestions]] pagina suggesties gevonden.';
 $_lang['seosuite.suggestion_boost']                             = 'pnt';
+$_lang['seosuite.exclude_words']                                = 'Woorden uitsluiten';
+
 $_lang['seosuite.label_exclude_words']                          = 'Woorden uitsluiten';
 $_lang['seosuite.label_exclude_words_desc']                     = 'Een komma gescheiden lijst van woorden om uit te sluiten van de 404 URL suggesties.';
 

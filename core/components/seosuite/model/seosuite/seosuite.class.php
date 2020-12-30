@@ -21,13 +21,6 @@ class SeoSuite
     public $config = [];
 
     /**
-     * @deprecated
-     *
-     * @var array
-     */
-    public $options = [];
-
-    /**
      * Holds all plugins.
      *
      * @var array $plugins
@@ -46,21 +39,6 @@ class SeoSuite
         $corePath   = $this->modx->getOption('seosuite.core_path', $config, $this->modx->getOption('core_path') . 'components/seosuite/');
         $assetsUrl  = $this->modx->getOption('seosuite.assets_url', $config, $this->modx->getOption('assets_url') . 'components/seosuite/');
         $assetsPath = $this->modx->getOption('seosuite.assets_path', $config, $this->modx->getOption('assets_path') . 'components/seosuite/');
-
-        /* Loads some default paths for easier management. */
-        $this->options = array_merge([
-            'namespace'     => 'seosuite',
-            'corePath'      => $corePath,
-            'modelPath'     => $corePath . 'model/',
-            'chunksPath'    => $corePath . 'elements/chunks/',
-            'snippetsPath'  => $corePath . 'elements/snippets/',
-            'templatesPath' => $corePath . 'templates/',
-            'assetsPath'    => $assetsPath,
-            'assetsUrl'     => $assetsUrl,
-            'jsUrl'         => $assetsUrl . 'js/',
-            'cssUrl'        => $assetsUrl . 'css/',
-            'connectorUrl'  => $assetsUrl . 'connector.php'
-        ], $config);
 
         $this->config = array_merge([
             'namespace'                  => 'seosuite',
@@ -323,7 +301,7 @@ class SeoSuite
     private function getTplChunk($name, $postFix = '.chunk.tpl')
     {
         $chunk = false;
-        $file = $this->options['chunksPath'] . strtolower($name) . $postFix;
+        $file = $this->config['chunksPath'] . strtolower($name) . $postFix;
 
         if (file_exists($file)) {
             $content = file_get_contents($file);
