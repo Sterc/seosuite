@@ -7,6 +7,8 @@ $_lang['setting_seosuite.default_redirect_type']                        = 'Defau
 $_lang['setting_seosuite.default_redirect_type_desc']                   = '';
 $_lang['setting_seosuite.disabled_templates']                           = 'Disabled Templates';
 $_lang['setting_seosuite.disabled_templates_desc']                      = 'Comma separated list of disabled template IDs.';
+$_lang['setting_seosuite.migration_finished']                           = 'Finished migration during setup';
+$_lang['setting_seosuite.migration_finished_desc']                      = 'This setting is used to determine if all required migrations have finished during the installation/update setup.';
 
 /* Meta settings. */
 $_lang['setting_seosuite.meta.field_counters']                          = 'Fields where the chars counter tool will work on';

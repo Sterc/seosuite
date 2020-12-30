@@ -83,6 +83,11 @@
             "value": true,
             "area": "seosuite"
         },{
+          "key": "migration_finished",
+          "type": "combo-boolean",
+          "value": false,
+          "area": "seosuite"
+        },{
             "key": "meta.field_counters",
             "value": "longtitle:30|70,description:70|155,content",
             "area": "seosuite_tab_meta"
@@ -177,8 +182,12 @@
         "resolver": {
             "after": [
                 "resolve.tables.php",
-                "permissions.resolver.php"
+                "permissions.resolver.php",
+                "setupoptions.resolver.php"
             ]
+        },
+        "setupOptions":{
+          "source": "setup.options.php"
         }
     }
 }

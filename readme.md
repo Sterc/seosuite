@@ -10,7 +10,10 @@ SEO Suite 2.0 combines the power of three extras, SEO Pro, SEO Tab and SEO Suite
 
 A custom panel dedicated to your focus keywords, meta title and description has been added, where you can view and switch between Google/Yandex previews or viewing the desktop or mobile preview. All search engine related properties have been gathered in a separate Search engine tab. A new tab "Social" has been added where you can manage the metadata used by Facebook and Twitter.
 
-**Note:** A migration is required when you're upgrading from SEO Suite v1.0 to v2.0.
+### Migration
+In order to migrate data from SEO Suite V1, SEO Tab or SEO Pro please run the migration during the SEO Suite update in the package installer. 
+
+**Note:** Please always backup your data before running any migrations. 
 
 ### Key features
 * Preview Google/Yandex search results on desktop and mobile
