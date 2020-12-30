@@ -23,12 +23,12 @@ class SeoSuiteSnippets extends SeoSuite
         $toPlaceholders      = $this->modx->getOption('toPlaceholders', $properties, false);
 
         $meta = [
-            'meta_title'        => [
+            '_meta_title'       => [
                 'name'              => 'title',
                 'value'             => $this->config['meta']['default_meta_title'],
                 'tpl'               => $tplTitle
             ],
-            'meta_description'  => [
+            '_meta_description' => [
                 'name'              => 'description',
                 'value'             => $this->config['meta']['default_meta_description'],
                 'tpl'               => $tpl
@@ -40,7 +40,7 @@ class SeoSuiteSnippets extends SeoSuite
         ]);
 
         if ($ssResource) {
-            $meta['robots'] = [
+            $meta['_robots'] = [
                 'name'  => 'robots',
                 'value' => implode(',', [
                     $ssResource->get('index_type') ? 'index' : 'noindex',
@@ -50,12 +50,21 @@ class SeoSuiteSnippets extends SeoSuite
             ];
 
             if ($ssResource->get('canonical') && !empty($ssResource->get('canonical_uri'))) {
-                $meta['canonical'] = [
+                $meta['_canonical'] = [
                     'name'  => 'canonical',
                     'value' => rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($ssResource->get('canonical_uri'), '/'),
                     'tpl'   => $tpl
                 ];
             }
+        } else {
+            $meta['_robots'] = [
+                'name'  => 'robots',
+                'value' => implode(',', [
+                    $this->config['tab_seo']['default_index_type'] ? 'index' : 'noindex',
+                    $this->config['tab_seo']['default_follow_type'] ? 'follow' : 'nofollow'
+                ]),
+                'tpl'   => $tpl
+            ];
         }
 
         if (!empty($this->config['tab_social']['default_og_image'])) {
@@ -88,7 +97,7 @@ class SeoSuiteSnippets extends SeoSuite
 
         if ($ssSocial) {
             foreach ((array) $ssSocial->getValues() as $key => $value) {
-                if (in_array($key, ['id', 'resource_id', 'editedon'], true)) {
+                if (in_array($key, ['id', 'resource_id', 'inherit_facebook', 'editedon'], true)) {
                     continue;
                 }
 
@@ -125,6 +134,8 @@ class SeoSuiteSnippets extends SeoSuite
             }
         }
 
+        ksort($meta);
+
         $html = [];
 
         foreach ($meta as $key => $item) {
@@ -139,7 +150,7 @@ class SeoSuiteSnippets extends SeoSuite
                 $item['value'] = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($item['value'], '/');
             }
 
-            $html[$key] = $this->getChunk($tpl, $item);
+            $html[trim($key, '_')] = $this->getChunk($tpl, $item);
         }
 
         if ($toPlaceholders) {
