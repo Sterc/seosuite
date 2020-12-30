@@ -139,11 +139,12 @@ class SeoSuiteSnippets extends SeoSuite
                 $item['value'] = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($item['value'], '/');
             }
 
-            $html[rtrim(self::PHS_PREFIX,'.') . '.' . $key] = $this->getChunk($tpl, $item);
+            $html[$key] = $this->getChunk($tpl, $item);
         }
 
         if ($toPlaceholders) {
-            $this->modx->setPlaceholders($html, '+');
+            $this->modx->toPlaceholders($html, rtrim(self::PHS_PREFIX,'.'));
+            $this->modx->toPlaceholder(rtrim(self::PHS_PREFIX,'.'), implode(PHP_EOL, $html));
 
             return '';
         }
