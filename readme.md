@@ -69,6 +69,11 @@ Here's an example of all available placeholders of the SeoSuiteMeta snippet when
 [[!+ss_meta.twitter_image_alt]]
 [[!+ss_meta.twitter_card]]
 ```
+Or you can use the following placeholder to get all placeholders combined.
+```
+<!-- Set by plugin. -->
+[[!+ss.meta]]
+```
 
 #### Properties
 | Property              | Description                                                                   | Default value         |
