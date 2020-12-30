@@ -88,6 +88,16 @@
           "value": false,
           "area": "seosuite"
         },{
+          "key": "user_name",
+          "type": "textfield",
+          "area": "seosuite",
+          "value": ""
+        }, {
+          "key": "user_email",
+          "type": "textfield",
+          "area": "seosuite",
+          "value": ""
+        },{
             "key": "meta.field_counters",
             "value": "longtitle:30|70,description:70|155,content",
             "area": "seosuite_tab_meta"
@@ -183,7 +193,8 @@
             "after": [
                 "resolve.tables.php",
                 "permissions.resolver.php",
-                "setupoptions.resolver.php"
+                "setupoptions.resolver.php",
+                "stercextra.resolver.php"
             ]
         },
         "setupOptions":{

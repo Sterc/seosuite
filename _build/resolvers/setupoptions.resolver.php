@@ -7,7 +7,7 @@ if (!isset($modx) && isset($object) && isset($object->xpdo)) {
 }
 
 $resolver = new SeoSuiteSetupOptionsResolver($modx, $options);
-$resolver->process();
+return $resolver->process();
 
 class SeoSuiteSetupOptionsResolver
 {
@@ -48,6 +48,13 @@ class SeoSuiteSetupOptionsResolver
      */
     public function process()
     {
+        /* If uninstall, then return true. */
+        if ($this->options[xPDOTransport::PACKAGE_ACTION] === xPDOTransport::ACTION_UNINSTALL) {
+            return true;
+        }
+
+        $this->savePriorityUpdateValues();
+
         /* Check if migration is already finished. */
         if ($this->modx->getOption(self::KEY_MIGRATION_FINISHED, null, false)) {
             return true;
@@ -84,6 +91,27 @@ class SeoSuiteSetupOptionsResolver
             $migrationSetting->save();
         }
     }
+
+    /**
+     * Save priority update values.
+     */
+    protected function savePriorityUpdateValues()
+    {
+        foreach (['user_name', 'user_email'] as $key) {
+            if (isset($this->options[$key])) {
+                $settingObject = $this->modx->getObject(
+                    'modSystemSetting',
+                    ['key' => 'seosuite.' . $key]
+                );
+
+                if ($settingObject) {
+                    $settingObject->set('value', $this->options[$key]);
+                    $settingObject->save();
+                }
+            }
+        }
+    }
+
 
     /**
      * Migrate SEO Suite data.

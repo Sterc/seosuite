@@ -9,6 +9,8 @@ $_lang['setting_seosuite.disabled_templates']                           = 'Disab
 $_lang['setting_seosuite.disabled_templates_desc']                      = 'Comma separated list of disabled template IDs.';
 $_lang['setting_seosuite.migration_finished']                           = 'Finished migration during setup';
 $_lang['setting_seosuite.migration_finished_desc']                      = 'This setting is used to determine if all required migrations have finished during the installation/update setup.';
+$_lang['setting_seosuite.user_name']                                    = 'Priority updates name';
+$_lang['setting_seosuite.user_email']                                   = 'Priority updates email';
 
 /* Meta settings. */
 $_lang['setting_seosuite.meta.field_counters']                          = 'Fields where the chars counter tool will work on';
