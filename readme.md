@@ -67,6 +67,16 @@ Here's an example of all available placeholders of the SeoSuiteMeta snippet when
 [[!+ss_meta.twitter_card]]
 ```
 
+#### Properties
+| Property              | Description                                                                   | Default value         |
+|-----------------------|-------------------------------------------------------------------------------|-----------------------|
+| id                    | ID of the resource to retrieve meta for.                                      | Current resource id.  |
+| tpl                   | Meta tag tpl.                                                                 | tplMeta               |
+| tplTitle              | Title tag tpl.                                                                | tplMetaTitle          |
+| tplLink               | Link tpl.                                                                     | tplLink               |
+| tplAlternateWrapper   | Alternate lang wrapper tpl.                                                   | tplAlternateWrapper   |
+| toPlaceholders        | Set output to placeholders                                                    | false                 |
+
 ### SeoSuiteSitemap
 Create sitemaps with the help of this snippet, by specifying a type, you can create different kinds of sitemaps:
 * Page sitemap (default)
@@ -76,12 +86,28 @@ Create sitemaps with the help of this snippet, by specifying a type, you can cre
     * Image index:  [[!SeoSuiteSitemap? &type=`images`]]
 * Sitemap containing images.
 
-Example usage:
+You have to manually create a resource within MODX, Template: (empty). go to the tab Settings and set Content Type: XML, Cachable and Rich Text should be ticked off. In the content field, use the following code:
 ```
 [[!SeoSuiteSitemap]]
+OR
 [[!SeoSuiteSitemap? &type=`index`]]
+OR
 [[!SeoSuiteSitemap? &type=`images`]]
 ```
+
+| Property          | Description                                                                                                                                                                                       | Default value             |
+|-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|
+| contexts          | Specify one or more contextKey's, separated by a comma.                                                                                                                                           | web                       |
+| allowSymlinks     | Set this to ```1``` if you want to include symlinks in your sitemap.                                                                                                                              | 0                         |
+| outerTpl          | Refer to a chunk here to change the outer template, which contains rows of rowTpl's (see below).                                                                                                  | sitemap/outertpl          |
+| rowTpl            | Refer to a chunk here to change the rowTpl which is repeated for every resource which is included in the sitemap.                                                                                 | sitemap/rowtpl            |
+| type              | Specify a sitemap type to generate a sitemap index page or an images sitemap. Possible values are: index/images.                                                                                  |                           |
+| indexOuterTpl     | Refer to a chunk here to change the outer template, which contains rows of rowTpl's for the sitemap index.                                                                                        | sitemap/index/outertpl    |
+| indexRowTpl       | Refer to a chunk here to change the rowTpl which is repeated for every sitemap which is included in the index sitemap.                                                                            | sitemap/index/rowtpl      |
+| imagesOuterTpl    | Refer to a chunk here to change the outer template, which contains rows of rowTpl's for the images sitemap.                                                                                       | sitemap/images/outertpl   |
+| imagesRowTpl      | Refer to a chunk here to change the rowTpl which is repeated for every resource which is included in the images sitemap which can contain multiple images.                                        | sitemap/images/rowtpl     |
+| imageTpl          | Refer to a chunk here to change the imageTpl which is repeated for every image which is included for a resource.                                                                                  | sitemap/images/imagetpl   |
+| templates         | Comma delimited list of template ID's to generate a template specific sitemap for. Exclude templates from a sitemap by prepending the template ID with an "-". For example: &templates=`-1,2,3`   |                           |
 
 ## Cronjobs
 Inside the `core/components/seosuite/elements/cronjobs/` directory you can find the SeoSuite cronjobs.
