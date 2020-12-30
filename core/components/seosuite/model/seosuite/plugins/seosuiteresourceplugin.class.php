@@ -211,7 +211,7 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
 
         if ($oldResource && $newResource) {
             $this->seosuite->setResourceProperties($newResource->get('id'), $this->seosuite->getResourceProperties($oldResource->get('id')));
-            $this->seosuite->setSocialProperties($newResource->get('id'), $this->seosuite->setSocialProperties($oldResource->get('id')));
+            $this->seosuite->setSocialProperties($newResource->get('id'), $this->seosuite->getSocialProperties($oldResource->get('id')));
         }
     }
 
