@@ -13,7 +13,7 @@ A custom panel dedicated to your focus keywords, meta title and description has 
 ### Migration
 In order to migrate data from SEO Suite V1, SEO Tab or SEO Pro please run the migration during the SEO Suite update in the package installer. 
 
-**Note:** Please always backup your data before running any migrations. 
+**Note:** Please always backup your data before running any migrations and carefully check if the migration was finished succesfully.
 
 ### Key features
 * Preview Google/Yandex search results on desktop and mobile
