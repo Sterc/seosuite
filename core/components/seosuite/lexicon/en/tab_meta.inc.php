@@ -11,6 +11,7 @@ $_lang['seosuite.tab_meta.insert_variable']                 = 'Insert variable';
 $_lang['seosuite.tab_meta.label_variable']                  = 'Variable';
 $_lang['seosuite.tab_meta.label_variable_desc']             = 'Select a variable that you\'d like to use for your dynamically created meta tag.';
 $_lang['seosuite.tab_meta.submit']                          = 'Insert';
+$_lang['seosuite.tab_meta.no_preview']                      = 'Search engines are not allowed to index this page and therefore no preview is possible.';
 
 $_lang['seosuite.tab_meta.use_default']                     = 'Use default settings for the SEO title and SEO description.';
 $_lang['seosuite.tab_meta.meta_title']                      = 'SEO title';

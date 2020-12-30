@@ -63,38 +63,12 @@ SeoSuite.panel.SocialTab = function(config) {
                     items       : [{
                         columnWidth : .5,
                         items       : [{
-                            xtype       : 'modx-combo-browser',
-                            fieldLabel  : _('seosuite.tab_social.label_og_image'),
-                            description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_og_image_desc'),
+                            xtype       : 'seosuite-combo-image',
+                            label       : _('seosuite.tab_social.label_og_image'),
+                            description : _('seosuite.tab_social.label_og_image_desc'),
                             name        : 'seosuite_og_image',
-                            anchor      : '100%',
-                            value       : SeoSuite.record.seosuite_og_image,
-                            source      : MODx.config.default_media_source,
-                            allowedFileTypes : SeoSuite.config.tab_social.image_types,
-                            listeners   : {
-                                'change'    : {
-                                    fn          : function(tf) {
-                                        if (Ext.isEmpty(tf.getValue())) {
-                                            this.setImage('', 'seosuite-og-image');
-                                        }
-                                    },
-                                    scope       : this
-                                },
-                                'select'    : {
-                                    fn          : function(tf) {
-                                        this.setImage(tf.fullRelativeUrl, 'seosuite-og-image');
-                                    },
-                                    scope       : this
-                                }
-                            }
-                        }, {
-                            xtype       : MODx.expandHelp ? 'label' : 'hidden',
-                            html        : _('seosuite.tab_social.label_og_image_desc'),
-                            cls         : 'desc-under'
-                        }, {
-                            xtype       : 'image',
-                            id          : 'seosuite-og-image',
-                            src         : SeoSuite.record.seosuite_og_image
+                            hiddenId    : 'seosuite-og-image',
+                            value       : SeoSuite.record.seosuite_og_image
                         }]
                     }, {
                         columnWidth : .5,
@@ -118,10 +92,29 @@ SeoSuite.panel.SocialTab = function(config) {
                 labelAlign  : 'top',
                 labelSeparator : '',
                 items       : [{
+                    xtype       : 'xcheckbox',
+                    fieldLabel  : _('seosuite.tab_social.label_inherit_facebook'),
+                    boxLabel    : _('seosuite.tab_social.label_inherit_facebook_desc'),
+                    name        : 'seosuite_inherit_facebook',
+                    anchor      : '100%',
+                    inputValue  : 1,
+                    checked     : SeoSuite.record.seosuite_inherit_facebook,
+                    listeners   : {
+                        'check'     : {
+                            fn          : this.onHandleFacebookInherit,
+                            scope       : this
+                        },
+                        'afterrender' : {
+                            fn          : this.onHandleFacebookInherit,
+                            scope       : this
+                        }
+                    }
+                }, {
                     xtype       : 'textfield',
                     fieldLabel  : _('seosuite.tab_social.label_twitter_title'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_title_desc'),
                     name        : 'seosuite_twitter_title',
+                    id          : 'seosuite-twitter-title',
                     anchor      : '100%',
                     value       : SeoSuite.record.seosuite_twitter_title
                 }, {
@@ -133,6 +126,7 @@ SeoSuite.panel.SocialTab = function(config) {
                     fieldLabel  : _('seosuite.tab_social.label_twitter_description'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_description_desc'),
                     name        : 'seosuite_twitter_description',
+                    id          : 'seosuite-twitter-description',
                     anchor      : '100%',
                     value       : SeoSuite.record.seosuite_twitter_description
                 }, {
@@ -185,38 +179,14 @@ SeoSuite.panel.SocialTab = function(config) {
                     items       : [{
                         columnWidth : .5,
                         items       : [{
-                            xtype       : 'modx-combo-browser',
-                            fieldLabel  : _('seosuite.tab_social.label_twitter_image'),
-                            description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_image_desc'),
+                            xtype       : 'seosuite-combo-image',
+                            label       : _('seosuite.tab_social.label_twitter_image'),
+                            description : _('seosuite.tab_social.label_twitter_image_desc'),
                             name        : 'seosuite_twitter_image',
-                            anchor      : '100%',
+                            hiddenId    : 'seosuite-twitter-image',
                             value       : SeoSuite.record.seosuite_twitter_image,
                             source      : MODx.config.default_media_source,
-                            allowedFileTypes : SeoSuite.config.tab_social.image_types,
-                            listeners   : {
-                                'change'    : {
-                                    fn          : function(tf) {
-                                        if (Ext.isEmpty(tf.getValue())) {
-                                            this.setImage('', 'seosuite-twitter-image');
-                                        }
-                                    },
-                                    scope       : this
-                                },
-                                'select'    : {
-                                    fn          : function(tf) {
-                                        this.setImage(tf.fullRelativeUrl, 'seosuite-twitter-image');
-                                    },
-                                    scope       : this
-                                }
-                            }
-                        }, {
-                            xtype       : MODx.expandHelp ? 'label' : 'hidden',
-                            html        : _('seosuite.tab_social.label_twitter_image_desc'),
-                            cls         : 'desc-under'
-                        }, {
-                            xtype       : 'image',
-                            id          : 'seosuite-twitter-image',
-                            src         : SeoSuite.record.seosuite_twitter_image
+                            allowedFileTypes : SeoSuite.config.tab_social.image_types
                         }]
                     }, {
                         columnWidth : .5,
@@ -225,6 +195,7 @@ SeoSuite.panel.SocialTab = function(config) {
                             fieldLabel  : _('seosuite.tab_social.label_twitter_image_alt'),
                             description : MODx.expandHelp ? '' : _('seosuite.tab_social.label_twitter_image_alt_desc'),
                             name        : 'seosuite_twitter_image_alt',
+                            id          : 'seosuite-twitter-image-alt',
                             anchor      : '100%',
                             value       : SeoSuite.record.seosuite_twitter_image_alt
                         }, {
@@ -242,27 +213,99 @@ SeoSuite.panel.SocialTab = function(config) {
 };
 
 Ext.extend(SeoSuite.panel.SocialTab, Ext.Panel, {
-    setImage: function (image, id) {
-        var tf = Ext.getCmp(id);
+    onHandleFacebookInherit: function (tf) {
+        var value = tf.getValue();
 
-        if (tf) {
-            tf.setSrc(image);
-        }
+        ['seosuite-twitter-title', 'seosuite-twitter-description', 'seosuite-twitter-image', 'seosuite-twitter-image-alt'].forEach((function(key) {
+            var tf = Ext.getCmp(key);
+
+            if (tf) {
+                if (value) {
+                    tf.setValue('');
+                    tf.fireEvent('change', tf);
+
+                    tf.setDisabled(true);
+                } else {
+                    tf.setDisabled(false);
+                }
+            }
+        }).bind(this));
     }
 });
 
 Ext.reg('seosuite-panel-social-tab', SeoSuite.panel.SocialTab);
 
-Ext.ux.Image = function(config) {
+SeoSuite.combo.Image = function(config) {
     config = config || {};
 
     Ext.applyIf(config, {
-        src     : Ext.BLANK_IMAGE_URL,
+        layout      : 'form',
+        labelAlign  : 'top',
+        labelSeparator : '',
+        items       : [{
+            xtype       : 'modx-combo-browser',
+            fieldLabel  : config.label,
+            description : config.description,
+            name        : config.name,
+            id          : config.hiddenId,
+            anchor      : '100%',
+            value       : config.value,
+            source      : MODx.config.default_media_source,
+            allowedFileTypes : SeoSuite.config.tab_social.image_types,
+            listeners   : {
+                'change'    : {
+                    fn          : function(tf) {
+                        if (Ext.isEmpty(tf.getValue())) {
+                            this.setImage('');
+                        }
+                    },
+                    scope       : this
+                },
+                'select'    : {
+                    fn          : function(tf) {
+                        this.setImage(tf.fullRelativeUrl);
+                    },
+                    scope       : this
+                }
+            }
+        }, {
+            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+            html        : config.description,
+            cls         : 'desc-under'
+        }, {
+            xtype       : 'image',
+            id          : config.hiddenId + '-placeholder',
+            src         : config.value
+        }]
+    });
+
+    SeoSuite.combo.Image.superclass.constructor.call(this, config);
+};
+
+Ext.extend(SeoSuite.combo.Image, Ext.Panel, {
+    setImage: function (image) {
+        var tf = Ext.getCmp(this.hiddenId + '-placeholder');
+
+        if (tf) {
+            tf.setImage(image);
+        }
+    }
+});
+
+Ext.reg('seosuite-combo-image', SeoSuite.combo.Image);
+
+Ext.ux.Image = function(config) {
+    config = config || {};
+
+    var image = this.getImage(config.src, config.width || 150, config.height || 150);
+
+    Ext.applyIf(config, {
+        hidden  : image === Ext.BLANK_IMAGE_URL,
         autoEl  : {
             tag     : 'img',
             width   : config.width || 150,
             height  : config.height || 150,
-            src     : this.getSrc(config.src, config.width || 150, config.height || 150),
+            src     : image,
             cls     : 'x-field-image'
         }
     });
@@ -271,20 +314,22 @@ Ext.ux.Image = function(config) {
 };
 
 Ext.extend(Ext.ux.Image, Ext.Component, {
-    setSrc: function(src) {
-        this.getEl().setVisibilityMode(Ext.Element.DISPLAY);
+    setImage: function(src) {
+        var el = this.getEl();
 
-        var image = this.getSrc(src, this.autoEl.height, this.autoEl.width);
+        if (el) {
+            var image = this.getImage(src, this.autoEl.height, this.autoEl.width);
 
-        this.getEl().dom.src = image;
+            el.dom.src = image;
 
-        if (image === Ext.BLANK_IMAGE_URL) {
-            this.getEl().hide();
-        } else {
-            this.getEl().show();
+            if (image === Ext.BLANK_IMAGE_URL) {
+                this.hide();
+            } else {
+                this.show();
+            }
         }
     },
-    getSrc: function(src, width, height) {
+    getImage: function(src, width, height) {
         if (src) {
             return MODx.config.connectors_url + 'system/phpthumb.php?h=' + height + '&w=' + width + '&zc=1&src=' + src;
         }

@@ -21,13 +21,6 @@ class SeoSuite
     public $config = [];
 
     /**
-     * @deprecated
-     *
-     * @var array
-     */
-    public $options = [];
-
-    /**
      * Holds all plugins.
      *
      * @var array $plugins
@@ -46,21 +39,6 @@ class SeoSuite
         $corePath   = $this->modx->getOption('seosuite.core_path', $config, $this->modx->getOption('core_path') . 'components/seosuite/');
         $assetsUrl  = $this->modx->getOption('seosuite.assets_url', $config, $this->modx->getOption('assets_url') . 'components/seosuite/');
         $assetsPath = $this->modx->getOption('seosuite.assets_path', $config, $this->modx->getOption('assets_path') . 'components/seosuite/');
-
-        /* Loads some default paths for easier management. */
-        $this->options = array_merge([
-            'namespace'     => 'seosuite',
-            'corePath'      => $corePath,
-            'modelPath'     => $corePath . 'model/',
-            'chunksPath'    => $corePath . 'elements/chunks/',
-            'snippetsPath'  => $corePath . 'elements/snippets/',
-            'templatesPath' => $corePath . 'templates/',
-            'assetsPath'    => $assetsPath,
-            'assetsUrl'     => $assetsUrl,
-            'jsUrl'         => $assetsUrl . 'js/',
-            'cssUrl'        => $assetsUrl . 'css/',
-            'connectorUrl'  => $assetsUrl . 'connector.php'
-        ], $config);
 
         $this->config = array_merge([
             'namespace'                  => 'seosuite',
@@ -89,9 +67,9 @@ class SeoSuite
             'placeholder_plugin_enabled' => (bool) $this->modx->getOption('seosuite.placeholder_plugin_enabled', null, true),
             'tab_seo'                    => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_seo'),
-                'default_index_type'        => (int) $this->modx->getOption('seosuite.tab_seo_default_index_type', null, 1),
-                'default_follow_type'       => (int) $this->modx->getOption('seosuite.tab_seo_default_follow_type', null, 1),
-                'default_sitemap'           => (int) $this->modx->getOption('seosuite.tab_seo_default_sitemap', null, 0),
+                'default_index_type'        => (bool) $this->modx->getOption('seosuite.tab_seo_default_index_type', null, 1),
+                'default_follow_type'       => (bool) $this->modx->getOption('seosuite.tab_seo_default_follow_type', null, 1),
+                'default_sitemap'           => (bool) $this->modx->getOption('seosuite.tab_seo_default_sitemap', null, 0),
             ],
             'tab_social'                 => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_social'),
@@ -102,6 +80,7 @@ class SeoSuite
                 'twitter_creator_id'        => $this->modx->getOption('seosuite.tab_social.twitter_creator_id'),
                 'default_og_image'          => $this->modx->getOption('seosuite.tab_social.default_og_image'),
                 'default_twitter_image'     => $this->modx->getOption('seosuite.tab_social.default_twitter_image'),
+                'default_inherit_facebook'  => true,
                 'image_types'               => 'jpg,jpeg,png,gif'
             ],
             'meta'                       => [
@@ -322,7 +301,7 @@ class SeoSuite
     private function getTplChunk($name, $postFix = '.chunk.tpl')
     {
         $chunk = false;
-        $file = $this->options['chunksPath'] . strtolower($name) . $postFix;
+        $file = $this->config['chunksPath'] . strtolower($name) . $postFix;
 
         if (file_exists($file)) {
             $content = file_get_contents($file);
@@ -599,7 +578,8 @@ class SeoSuite
             'twitter_image'         => '',
             'twitter_image_alt'     => '',
             'twitter_creator_id'    => '',
-            'twitter_card'          => $this->config['tab_social']['default_twitter_card']
+            'twitter_card'          => $this->config['tab_social']['default_twitter_card'],
+            'inherit_facebook'      => $this->config['tab_social']['default_inherit_facebook']
         ];
     }
 

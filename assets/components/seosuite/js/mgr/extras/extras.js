@@ -130,7 +130,8 @@ SeoSuite.combo.SocialOgType = function(config) {
         hiddenName  : 'seosuite_og_type',
         valueField  : 'value',
         displayField : 'label',
-        mode        : 'local'
+        mode        : 'local',
+        value       : SeoSuite.config.tab_social.default_og_type
     });
 
     SeoSuite.combo.SocialOgType.superclass.constructor.call(this,config);

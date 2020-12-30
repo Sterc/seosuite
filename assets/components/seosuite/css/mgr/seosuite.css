@@ -48,6 +48,15 @@
     margin: 15px 0 0;
 }
 
+#resource-seosuite-panel {
+    margin: 0 0 20px;
+}
+
+#resource-seosuite-panel .x-panel-header {
+    margin: 0;
+    padding: 15px;
+}
+
 /* Meta SEO preview */
 
 #resource-seosuite-panel .x-toolbar {
@@ -110,12 +119,28 @@
     height: 16px !important;
 }
 
+#seosuite-seo-preview.disabled .seosuite-seo-preview-body .favicon {
+    display: none !important;
+}
+
+#seosuite-seo-preview .seosuite-seo-preview-body #seosuite-seo-preview-message {
+    display: none;
+}
+
+#seosuite-seo-preview.disabled .seosuite-seo-preview-body #seosuite-seo-preview-message {
+    display: block;
+}
+
 #seosuite-seo-preview .seosuite-seo-preview-body #seosuite-seo-preview-title {
     color: #1a0dab;
     font-size: 20px;
     line-height: 26px;
     margin: 0 0 5px;
     order: 2;
+}
+
+#seosuite-seo-preview.disabled .seosuite-seo-preview-body #seosuite-seo-preview-title {
+    display: none !important;
 }
 
 #seosuite-seo-preview .seosuite-seo-preview-body #seosuite-seo-preview-url {
@@ -127,6 +152,10 @@
     overflow: hidden;
     margin: 0 0 5px;
     order: 1;
+}
+
+#seosuite-seo-preview.disabled .seosuite-seo-preview-body #seosuite-seo-preview-url {
+    display: none !important;
 }
 
 #seosuite-seo-preview .seosuite-seo-preview-body #seosuite-seo-preview-url:after {
@@ -158,6 +187,10 @@
     order: 3;
     font-size: 14px;
     line-height: 22px;
+}
+
+#seosuite-seo-preview.disabled .seosuite-seo-preview-body #seosuite-seo-preview-description {
+    display: none !important;
 }
 
 /* SEO preview Default mobile */

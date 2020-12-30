@@ -38,6 +38,8 @@ $_lang['seosuite.url_remove_confirm']                           = 'Are you sure 
 $_lang['seosuite.url.redirect_to_selected']                     = 'Selected redirect';
 $_lang['seosuite.suggestions_found']                            = '[[+suggestions]] page suggestions have been found.';
 $_lang['seosuite.suggestion_boost']                             = 'pts';
+$_lang['seosuite.exclude_words']                                = 'Exclude words';
+
 $_lang['seosuite.label_exclude_words']                          = 'Exclude words';
 $_lang['seosuite.label_exclude_words_desc']                     = 'A comma delimited list of words to exclude from 404 URL suggestions.';
 

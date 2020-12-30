@@ -14,7 +14,7 @@ SeoSuite.grid.Urls = function(config) {
             scope       : this
         }]
     }, {
-        text        : '<i class="icon icon-times"></i>' + _('seosuite.label_exclude_words'),
+        text        : '<i class="icon icon-eye-slash"></i>' + _('seosuite.exclude_words'),
         handler     : this.excludeWords,
         scope       : this
     }, '->', {
@@ -182,16 +182,16 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
         this.importUrlsWindow.show(e.target);
     },
     excludeWords: function(btn, e) {
-        if (this.importUrlsWindow) {
-            this.importUrlsWindow.destroy();
+        if (this.excludeWordsWindow) {
+            this.excludeWordsWindow.destroy();
         }
 
-        this.importUrlsWindow = MODx.load({
+        this.excludeWordsWindow = MODx.load({
             xtype       : 'seosuite-window-exclude-words',
             closeAction : 'close'
         });
 
-        this.importUrlsWindow.show(e.target);
+        this.excludeWordsWindow.show(e.target);
     },
     createUrlRedirect: function(btn, e) {
         if (this.createUrlRedirectWindow) {
