@@ -9,11 +9,6 @@ class SeoSuiteSnippets extends SeoSuite
     const PHS_PREFIX = 'ss_meta';
 
     /**
-     * @var Babel|null $babel Holds Babel class if applicable.
-     */
-    protected $babel;
-
-    /**
      * Snippet for outputting meta data.
      * @param $properties
      * @return string
@@ -92,7 +87,7 @@ class SeoSuiteSnippets extends SeoSuite
         ]);
 
         if ($ssSocial) {
-            foreach ((array) $ssSocial->toArray() as $key => $value) {
+            foreach ((array) $ssSocial->getValues() as $key => $value) {
                 if (in_array($key, ['id', 'resource_id', 'editedon'], true)) {
                     continue;
                 }

@@ -33,3 +33,5 @@ $_lang['seosuite.tab_social.label_twitter_creator_id']          = 'Twitter conte
 $_lang['seosuite.tab_social.label_twitter_creator_id_desc']     = '@gebruikersnaam voor de maker / auteur van de inhoud.';
 $_lang['seosuite.tab_social.label_twitter_card']                = 'Twitter card';
 $_lang['seosuite.tab_social.label_twitter_card_desc']           = 'De pagina card op Twitter.';
+$_lang['seosuite.tab_social.label_inherit_facebook']            = 'Facebook waardes';
+$_lang['seosuite.tab_social.label_inherit_facebook_desc']       = 'Indien aangevinkt zullen de waardes van Facebook overgenomen worden.';

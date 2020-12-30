@@ -102,6 +102,7 @@ class SeoSuite
                 'twitter_creator_id'        => $this->modx->getOption('seosuite.tab_social.twitter_creator_id'),
                 'default_og_image'          => $this->modx->getOption('seosuite.tab_social.default_og_image'),
                 'default_twitter_image'     => $this->modx->getOption('seosuite.tab_social.default_twitter_image'),
+                'default_inherit_facebook'  => true,
                 'image_types'               => 'jpg,jpeg,png,gif'
             ],
             'meta'                       => [
@@ -599,7 +600,8 @@ class SeoSuite
             'twitter_image'         => '',
             'twitter_image_alt'     => '',
             'twitter_creator_id'    => '',
-            'twitter_card'          => $this->config['tab_social']['default_twitter_card']
+            'twitter_card'          => $this->config['tab_social']['default_twitter_card'],
+            'inherit_facebook'      => $this->config['tab_social']['default_inherit_facebook']
         ];
     }
 

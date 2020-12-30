@@ -25,6 +25,7 @@ $xpdo_meta_map['SeoSuiteSocial']= array (
     'twitter_image_alt' => '',
     'twitter_creator_id' => '',
     'twitter_card' => '',
+    'inherit_facebook' => '',
     'editedon' => NULL,
   ),
   'fieldMeta' => 
@@ -125,6 +126,14 @@ $xpdo_meta_map['SeoSuiteSocial']= array (
       'phptype' => 'string',
       'null' => false,
       'default' => '',
+    ),
+    'inherit_facebook' =>
+     array (
+      'dbtype' => 'int',
+      'precision' => '1',
+      'phptype' => 'integer',
+      'null' => true,
+      'default' => 1
     ),
     'editedon' => 
     array (
