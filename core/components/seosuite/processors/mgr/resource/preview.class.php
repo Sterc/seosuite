@@ -25,7 +25,7 @@ class SeoSuiteMetaPreviewProcessor extends modObjectProcessor
      */
     public function process()
     {
-        $this->modx->switchContext($this->getProperty('context', 'web'));
+        $this->modx->switchContext($this->getProperty('context_key', $this->modx->getOption('default_context')));
 
         $alias      = '';
         $siteUrl    = trim($this->modx->getOption('site_url'), '/');

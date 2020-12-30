@@ -11,6 +11,7 @@ $_lang['seosuite.tab_meta.insert_variable']                 = 'Variabele invoege
 $_lang['seosuite.tab_meta.label_variable']                  = 'Variabele';
 $_lang['seosuite.tab_meta.label_variable_desc']             = 'Selecteer een variabele om te gebruiken in de dynamisch opgebouwde meta tag.';
 $_lang['seosuite.tab_meta.submit']                          = 'Invoegen';
+$_lang['seosuite.tab_meta.no_preview']                      = 'Zoekmachines mogen deze pagina niet indexeren en daarom is er dus geen preview mogelijk.';
 
 $_lang['seosuite.tab_meta.use_default']                     = 'Gebruik de standaard instellingen voor de opbouw van de SEO titel en omschrijving.';
 $_lang['seosuite.tab_meta.meta_title']                      = 'SEO titel';

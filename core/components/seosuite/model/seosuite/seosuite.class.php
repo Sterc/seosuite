@@ -67,9 +67,9 @@ class SeoSuite
             'placeholder_plugin_enabled' => (bool) $this->modx->getOption('seosuite.placeholder_plugin_enabled', null, true),
             'tab_seo'                    => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_seo'),
-                'default_index_type'        => (int) $this->modx->getOption('seosuite.tab_seo_default_index_type', null, 1),
-                'default_follow_type'       => (int) $this->modx->getOption('seosuite.tab_seo_default_follow_type', null, 1),
-                'default_sitemap'           => (int) $this->modx->getOption('seosuite.tab_seo_default_sitemap', null, 0),
+                'default_index_type'        => (bool) $this->modx->getOption('seosuite.tab_seo_default_index_type', null, 1),
+                'default_follow_type'       => (bool) $this->modx->getOption('seosuite.tab_seo_default_follow_type', null, 1),
+                'default_sitemap'           => (bool) $this->modx->getOption('seosuite.tab_seo_default_sitemap', null, 0),
             ],
             'tab_social'                 => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_social'),

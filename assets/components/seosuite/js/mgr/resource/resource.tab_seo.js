@@ -32,6 +32,7 @@ SeoSuite.panel.SeoTab = function(config) {
                     fieldLabel  : _('seosuite.tab_seo.label_index'),
                     description : MODx.expandHelp ? '' : _('seosuite.tab_seo.label_index_desc'),
                     anchor      : '100%',
+                    id          : 'seosuite-seo-index',
                     columns     : 1,
                     items       : [{
                         boxLabel    : _('yes') + ' <em>(' + _('seosuite.tab_seo.index_type_index') + ')</em>',
@@ -43,7 +44,16 @@ SeoSuite.panel.SeoTab = function(config) {
                         name        : 'seosuite_index_type',
                         inputValue  : 0,
                         checked     : SeoSuite.record.seosuite_index_type === false
-                    }]
+                    }],
+                    listeners   : {
+                        'change'    : function (tf) {
+                            var titleField = Ext.getCmp('modx-resource-pagetitle');
+
+                            if (titleField) {
+                                titleField.fireEvent('change', titleField);
+                            }
+                        }
+                    }
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.tab_seo.label_index_desc'),

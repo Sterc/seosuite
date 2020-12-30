@@ -209,7 +209,8 @@ Ext.extend(SeoSuite, Ext.Component, {
                             html        : '<img src="https://www.google.com/s2/favicons?domain=test" class="favicon" id="seosuite-seo-preview-favicon" />' +
                                 '<div id="seosuite-seo-preview-title"></div>' +
                                 '<div id="seosuite-seo-preview-url"></div>' +
-                                '<div id="seosuite-seo-preview-description"></div>'
+                                '<div id="seosuite-seo-preview-description"></div>' +
+                                '<div id="seosuite-seo-preview-message">' + _('seosuite.tab_meta.no_preview') + '</div>'
                         }]
                     }]
                 }]
@@ -422,7 +423,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                         description     : Ext.getCmp('modx-resource-description').getValue(),
                         introtext       : Ext.getCmp('modx-resource-introtext').getValue()
                     }),
-                    context         : Ext.getCmp('modx-resource-context-key').getValue(),
+                    context_key     : Ext.getCmp('modx-resource-context-key').getValue(),
                     parent          : Ext.getCmp('modx-resource-parent-hidden').getValue(),
                     content_type    : Ext.getCmp('modx-resource-content-type').getValue(),
                     alias           : Ext.getCmp('modx-resource-alias').getValue(),
@@ -434,8 +435,22 @@ Ext.extend(SeoSuite, Ext.Component, {
                 listeners   : {
                     'success'   : {
                         fn          : function(response) {
-                            if (response.results) {
-                                Ext.get('seosuite-seo-preview').select('.favicon').elements.forEach(function(favicon) {
+                            var preview = Ext.get('seosuite-seo-preview');
+
+                            if (preview && response.results) {
+                                var index = Ext.getCmp('seosuite-seo-index');
+
+                                if (index) {
+                                    if (parseInt(index.getValue().inputValue) === 0) {
+                                        preview.addClass('disabled');
+                                    } else {
+                                        preview.removeClass('disabled');
+                                    }
+                                } else {
+                                    preview.removeClass('disabled');
+                                }
+
+                                preview.select('.favicon').elements.forEach(function(favicon) {
                                     favicon.setAttribute('src', 'https://www.google.com/s2/favicons?domain=' + response.results.output.domain);
                                 });
 
