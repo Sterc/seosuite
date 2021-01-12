@@ -69,7 +69,7 @@ class SeoSuite
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_seo'),
                 'default_index_type'        => (bool) $this->modx->getOption('seosuite.tab_seo_default_index_type', null, 1),
                 'default_follow_type'       => (bool) $this->modx->getOption('seosuite.tab_seo_default_follow_type', null, 1),
-                'default_sitemap'           => (bool) $this->modx->getOption('seosuite.tab_seo_default_sitemap', null, 0),
+                'default_sitemap'           => (bool) $this->modx->getOption('seosuite.tab_seo_default_sitemap', null, 1),
             ],
             'tab_social'                 => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_social'),
