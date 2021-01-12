@@ -30,7 +30,7 @@ $_lang['seosuite.tab_seo.label_sitemap_changefreq_desc']    = 'Indicate search e
 $_lang['seosuite.tab_seo.label_canonical']                  = 'Set a canonical URL for this page';
 $_lang['seosuite.tab_seo.label_canonical_desc']             = 'If checked you can set a canonical URL for this page.';
 $_lang['seosuite.tab_seo.label_canonical_uri']              = 'Canonical URL';
-$_lang['seosuite.tab_seo.label_canonical_uri_desc']         = 'Please note, only enter the part behind the domain "[[+ site_url]]".';
+$_lang['seosuite.tab_seo.label_canonical_uri_desc']         = 'Please note, only enter the part behind the domain "[[+site_url]]".';
 
 $_lang['seosuite.tab_seo.index_type_index']                 = 'index';
 $_lang['seosuite.tab_seo.index_type_noindex']               = 'noindex';
