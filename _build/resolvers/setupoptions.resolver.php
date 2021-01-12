@@ -65,7 +65,11 @@ class SeoSuiteSetupOptionsResolver
         $migrateSEOTab   = array_key_exists('migrate_seotab', $this->options) ? true : false;
 
         if ($migrateSEOSuite) {
-            $this->migrateSeoSuite();
+            if ($this->modx->query('SELECT * FROM ' . $this->modx->getOption(xPDO::OPT_TABLE_PREFIX) . 'seosuite_urls')) {
+                $this->migrateSeoSuite();
+            } else {
+                $this->log('Cannot migrate data because the SEO Suite V1 is not installed.', 'error');
+            }
         }
 
         if ($migrateSEOPro) {
