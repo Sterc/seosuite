@@ -84,6 +84,7 @@ $_lang['seosuite.error.emptyfile']                              = 'Geen bestand 
 $_lang['seosuite.error.extension_notallowed']                   = 'Bestandstype niet toegestaan. Alleen .csv bestanden zijn toegestaan.';
 $_lang['seosuite.error.ziparchive_notinstalled']                = 'PHP extensie ZipArchive is niet geïnstalleerd, deze is nodig om xls(x) bestanden te importeren. Installeer de ZipArchive extensie of gebruik een .csv bestand.';
 
+$_lang['seosuite.friendly_urls_disabled']                       = 'Zoekmachine vriendelijke URLs staat momenteel niet ingeschakeld in deze MODx installatie, om SEO Suite goed te laten werken dient zoekmachine vriendelijke URLs ingeschakeld te zijn.';
 $_lang['seosuite.find_suggestions']                             = 'Vind suggesties';
 $_lang['seosuite.redirect_error_exists']                        = 'Er bestaat al een URL verwijzing voor deze URL.';
 $_lang['seosuite.resource_no_redirects']                        = 'Er zijn geen URL verwijzingen voor de deze pagina.';

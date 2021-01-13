@@ -56,6 +56,9 @@ Ext.extend(SeoSuite, Ext.Component, {
                 hideMode     : 'offsets',
                 title        : _('seosuite.tab_meta.seo'),
                 items        : [{
+                    html            : parseInt(MODx.config.friendly_urls) === 0 ? '<p>' + _('seosuite.friendly_urls_disabled') + '</p>' : '',
+                    cls             : parseInt(MODx.config.friendly_urls) === 0 ? 'modx-config-error panel-desc' : ''
+                }, {
                     layout      : 'column',
                     defaults    : {
                         layout          : 'form',

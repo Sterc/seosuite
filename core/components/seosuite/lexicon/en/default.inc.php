@@ -90,6 +90,7 @@ $_lang['seosuite.error.emptyfile']                              = 'No file speci
 $_lang['seosuite.error.extension_notallowed']                   = 'Filetype not allowed. Only .csv, .xls or .xlsx files are allowed.';
 $_lang['seosuite.error.ziparchive_notinstalled']                = 'PHP extension ZipArchive is not installed, which is needed to be able to import xls(x) files. Please install the ZipArchive extension or use a .csv file.';
 
+$_lang['seosuite.friendly_urls_disabled']                       = 'Search engine friendly URLs is currently not enabled in this MODx installation, for SEO Suite to work properly search engine friendly URLs must be enabled.';
 $_lang['seosuite.find_suggestions']                             = 'Find suggestions';
 $_lang['seosuite.redirect_error_exists']                        = 'An URL redirect already exists for this URL.';
 $_lang['seosuite.resource_no_redirects']                        = 'There are no URL redirects for this page.';

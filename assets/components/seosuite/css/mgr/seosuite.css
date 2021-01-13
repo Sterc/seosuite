@@ -19,6 +19,24 @@
     color: #555555 !important;
 }
 
+.modx-config-error {
+    margin: 0;
+    padding: 15px 15px 0 !important;
+    background-color: #fff;
+}
+
+.modx-config-error .x-panel-bwrap {
+    color: #856404;
+    padding: 12px 20px;
+    background: #fff3cd !important;
+    border: 1px solid #ffeeba;
+    border-radius: 3px;
+}
+
+#resource-seosuite-panel .modx-config-error {
+    padding: 0 0 15px !important;
+}
+
 .x-grid-span {
     display: inline;
     color: #fff;
