@@ -51,7 +51,7 @@ class SeoSuiteMetaPreviewProcessor extends modObjectProcessor
                 }
             }
         } else {
-            $alias = $this->modx->getOption('request_controller') . '?' . $this->modx->getOption('request_param_id') . '=' . $this->modx->getProperty('id');
+            $alias = $this->modx->getOption('request_controller') . '?' . $this->modx->getOption('request_param_id') . '=' . $this->getProperty('id');
         }
 
         $fields             = (array) json_decode($this->getProperty('fields'), true);
