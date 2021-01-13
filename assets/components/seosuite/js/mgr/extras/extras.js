@@ -222,6 +222,9 @@ SeoSuite.combo.Contexts = function(config) {
                 '<tpl if="key !== \'\'">' +
                     ' <span style="font-style: italic; font-size: small;">({key:htmlEncode})</span>' +
                 '</tpl>' +
+                '<tpl if="key === \'\'">' +
+                    ' <span style="font-style: italic; font-size: small;">(wildcard)</span>' +
+                '</tpl>' +
             '</div>' +
         '</tpl>')
     });

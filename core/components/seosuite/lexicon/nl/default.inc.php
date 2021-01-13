@@ -60,7 +60,7 @@ $_lang['seosuite.import.instructions']                          = 'Gebruik een .
 
 $_lang['seosuite.redirect']                                     = 'URL verwijzing';
 $_lang['seosuite.redirects']                                    = 'URL verwijzingen';
-$_lang['seosuite.redirects_desc']                               = 'Beheer hier alle URL verwijzingen.';
+$_lang['seosuite.redirects_desc']                               = 'Beheer hier alle URL verwijzingen. Een URL verwijzigen met een specifieke context heeft voorrang op een wildcard context.';
 $_lang['seosuite.redirect_create']                              = 'Nieuwe URL verwijzing';
 $_lang['seosuite.redirect_update']                              = 'URL verwijzing wijzigen';
 $_lang['seosuite.redirect_remove']                              = 'URL verwijzing verwijderen';

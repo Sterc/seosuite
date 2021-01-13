@@ -66,7 +66,7 @@ $_lang['seosuite.import.instructions']                          = 'Use a .csv, .
 
 $_lang['seosuite.redirect']                                     = 'URL redirect';
 $_lang['seosuite.redirects']                                    = 'URL redirects';
-$_lang['seosuite.redirects_desc']                               = 'Manage all your URL redirects here.';
+$_lang['seosuite.redirects_desc']                               = 'Manage all your URL redirects here. A URL redirect with a specific context takes precedence over a wildcard context.';
 $_lang['seosuite.redirect_create']                              = 'New URL redirect';
 $_lang['seosuite.redirect_update']                              = 'Update URL redirect';
 $_lang['seosuite.redirect_remove']                              = 'Remove URL redirect';

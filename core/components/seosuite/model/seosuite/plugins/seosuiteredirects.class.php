@@ -29,7 +29,7 @@ class SeoSuiteRedirects extends SeoSuitePlugin
      */
     protected function redirect($request)
     {
-        $redirect = $this->modx->getObject('SeoSuiteRedirect', [
+        $criteria = $this->modx->newQuery('SeoSuiteRedirect', [
             'old_url'       => $request,
             'active'        => 1,
             [
@@ -38,7 +38,9 @@ class SeoSuiteRedirects extends SeoSuitePlugin
             ]
         ]);
 
-        if ($redirect) {
+        $criteria->sortby('context_key', 'DESC');
+
+        foreach ($this->modx->getIterator('SeoSuiteRedirect', $criteria) as $redirect) {
             $redirect->set('visits', (int) $redirect->get('visits') + 1);
             $redirect->set('last_visit', date('Y-m-d H:i:s'));
 
