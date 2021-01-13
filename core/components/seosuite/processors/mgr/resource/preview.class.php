@@ -38,10 +38,6 @@ class SeoSuiteMetaPreviewProcessor extends modObjectProcessor
             $protocol   = $this->modx->getOption('server_protocol', null, 'http');
         }
 
-        if (!empty($baseUrl)) {
-            $siteUrl .= '/' . $baseUrl;
-        }
-
         if ((int) $this->modx->getOption('friendly_urls') === 1) {
             if ((int) $this->getProperty('id') !== (int) $this->modx->getOption('site_start')) {
                 $resource = $this->modx->newObject('modResource');
