@@ -282,11 +282,14 @@ SeoSuite.window.CreateRedirect = function(config) {
         }, {
             layout      : 'column',
             defaults    : {
-                layout      : 'form',
-                labelSeparator : ''
+                layout          : 'form',
+                labelSeparator  : ''
             },
             items       : [{
                 columnWidth : .85,
+                defaults    : {
+                    msgTarget       : 'under'
+                },
                 items       : [{
                     xtype       : 'textfield',
                     fieldLabel  : _('seosuite.label_redirect_old_url'),
@@ -315,9 +318,12 @@ SeoSuite.window.CreateRedirect = function(config) {
                 }]
             }]
         }, {
-            layout      : 'form',
-            labelSeparator : '',
-            hidden      : config.mode === 'resource',
+            layout          : 'form',
+            labelSeparator  : '',
+            hidden          : config.mode === 'resource',
+            defaults        : {
+                msgTarget       : 'under'
+            },
             items       : [{
                 xtype       : 'textfield',
                 fieldLabel  : _('seosuite.label_redirect_new_url'),
