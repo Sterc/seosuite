@@ -99,7 +99,7 @@
           "value": ""
         },{
             "key": "meta.field_counters",
-            "value": "longtitle:30|70,description:70|155,content",
+            "value": "longtitle:30|70,description:70|155",
             "area": "seosuite_tab_meta"
         },{
             "key": "meta.default_meta_description",

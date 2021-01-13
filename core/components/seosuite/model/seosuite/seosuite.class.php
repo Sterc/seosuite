@@ -85,7 +85,7 @@ class SeoSuite
             ],
             'meta'                       => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_meta'),
-                'field_counters'            => $this->getFieldCounters($this->modx->getOption('seosuite.meta.field_counters', null, 'longtitle:30|70,description:70|155,content')),
+                'field_counters'            => $this->getFieldCounters($this->modx->getOption('seosuite.meta.field_counters', null, 'longtitle:30|70,description:70|155')),
                 'keywords_field_counters'   => $this->getKeywordsFieldCounters($this->modx->getOption('seosuite.meta.keywords_field_counters', null, 'longtitle:4,description:8,content')),
                 'default_meta_title'        => $this->modx->getOption('seosuite.meta.default_meta_title', null, '[[+longtitle]] | [[++site_name]]'),
                 'default_meta_description'  => $this->modx->getOption('seosuite.meta.default_meta_description', null, '[[+description]]'),
