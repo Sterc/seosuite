@@ -301,7 +301,7 @@ class SeoSuite
     private function getTplChunk($name, $postFix = '.chunk.tpl')
     {
         $chunk = false;
-        $file = $this->config['chunksPath'] . strtolower($name) . $postFix;
+        $file = $this->config['chunks_path'] . strtolower($name) . $postFix;
 
         if (file_exists($file)) {
             $content = file_get_contents($file);

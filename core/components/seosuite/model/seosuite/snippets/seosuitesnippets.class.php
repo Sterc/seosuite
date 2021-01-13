@@ -163,6 +163,10 @@ class SeoSuiteSnippets extends SeoSuite
         return implode(PHP_EOL, $html);
     }
 
+    /**
+     * @param array $scriptProperties
+     * @return string
+     */
     public function seosuiteSitemap(array $scriptProperties = [])
     {
         $allowSymlinks  = $this->modx->getOption('allowSymlinks', $scriptProperties, 0);
