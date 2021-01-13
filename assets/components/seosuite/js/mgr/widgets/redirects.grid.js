@@ -303,7 +303,8 @@ SeoSuite.window.CreateRedirect = function(config) {
                     description : MODx.expandHelp ? '' : _('seosuite.label_redirect_old_url_desc'),
                     name        : 'old_url',
                     anchor      : '100%',
-                    allowBlank  : false
+                    allowBlank  : false,
+                    msgTarget   : 'under'
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.label_redirect_old_url_desc'),
@@ -405,7 +406,8 @@ SeoSuite.window.UpdateRedirect = function(config) {
                     description : MODx.expandHelp ? '' : _('seosuite.label_redirect_old_url_desc'),
                     name        : 'old_url',
                     anchor      : '100%',
-                    allowBlank  : false
+                    allowBlank  : false,
+                    msgTarget   : 'under'
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.label_redirect_old_url_desc'),
