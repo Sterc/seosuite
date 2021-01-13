@@ -69,11 +69,7 @@ class SeoSuiteMetaPreviewProcessor extends modObjectProcessor
                 'base_url'      => $baseUrl,
                 'alias'         => $alias,
                 'title'         => $this->truncate($metaTitle['processed'], $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['title']),
-                'description'   => $this->truncate($metaDescription['processed'], $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['description']),
-                'counters'      => [
-                    'longtitle'     => strlen($metaTitle['unprocessed']),
-                    'description'   => strlen($metaDescription['unprocessed'])
-                ]
+                'description'   => $this->truncate($metaDescription['processed'], $this->modx->seosuite->config['meta']['preview'][$this->getProperty('preview_mode')]['description'])
             ]
         ];
 

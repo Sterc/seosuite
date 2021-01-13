@@ -788,7 +788,7 @@ class SeoSuite
             if ($parser) {
                 $parser->setCacheable(false);
 
-                $processedValue     = $parser->process($data, $processedValue);
+                $processedValue = $parser->process($data, $processedValue);
 
                 if (!empty($skip)) {
                     foreach ((array) $skip as $key) {
@@ -796,13 +796,13 @@ class SeoSuite
                     }
                 }
 
-                $unProcessedValue   = $parser->process($data, $unProcessedValue);
+                $unProcessedValue = $parser->process($data, $unProcessedValue);
             }
         }
 
         return [
-            'processed'     => $processedValue,
-            'unprocessed'   => $unProcessedValue
+            'processed'     => strip_tags($processedValue),
+            'unprocessed'   => strip_tags($unProcessedValue)
         ];
     }
 

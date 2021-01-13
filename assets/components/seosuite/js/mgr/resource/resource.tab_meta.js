@@ -379,6 +379,8 @@ Ext.extend(SeoSuite, Ext.Component, {
             var count = 0;
             var keywords = Ext.getCmp('seosuite-keywords');
 
+            /* Remove html tags. */
+            tf.setValue(tf.getValue().replace(/(<([^>]+)>)/gi, ''));
             if (keywords) {
                 var value = tf.getValue().toLowerCase();
 
@@ -394,6 +396,8 @@ Ext.extend(SeoSuite, Ext.Component, {
                     }
                 });
             }
+
+
 
             tf.container.select('.x-form-seosuite-keyword-counter-progress').elements.forEach(function(element) {
                 var counter = Ext.get(element);
