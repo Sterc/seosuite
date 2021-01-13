@@ -32,6 +32,7 @@ class SeoSuiteRedirects extends SeoSuitePlugin
     protected function shouldLog404()
     {
         $url = $this->modx->getOption('server_protocol').'://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
         if (!preg_match('/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+$/', $url)) {
             return false;
         }
@@ -112,6 +113,10 @@ class SeoSuiteRedirects extends SeoSuitePlugin
             $redirect->set('visits', (int) $redirect->get('visits') + 1);
             $redirect->set('last_visit', date('Y-m-d H:i:s'));
             $redirect->save();
+
+            if (strpos($redirectUrl, 'www') === 0) {
+                $redirectUrl = 'http://' . $redirectUrl;
+            }
 
             $this->modx->sendRedirect($redirectUrl, ['responseCode' => $redirect->get('redirect_type')]);
         }

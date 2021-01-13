@@ -8,48 +8,65 @@
 
 class SeoSuiteContextGetListProcessor extends modObjectGetListProcessor
 {
+    /**
+     * @access public.
+     * @var String.
+     */
     public $classKey = 'modContext';
+
+    /**
+     * @access public.
+     * @var Array.
+     */
+    public $languageTopics = ['seosuite:default'];
+
+    /**
+     * @access public.
+     * @var String.
+     */
     public $defaultSortField = 'key';
 
     /**
-     * {@inheritDoc}
-     * @return boolean
+     * @access public.
+     * @return Mixed.
      */
     public function initialize()
     {
-        $initialized = parent::initialize();
+        $this->modx->getService('seosuite', 'SeoSuite', $this->modx->getOption('seosuite.core_path', null, $this->modx->getOption('core_path') . 'components/seosuite/') . 'model/seosuite/');
 
         $this->setDefaultProperties([
             'search'  => '',
-            'exclude' => '',
+            'exclude' => ''
         ]);
 
-        return $initialized;
+        return parent::initialize();
     }
 
     /**
-     * {@inheritDoc}
-     * @param xPDOQuery $query
-     * @return xPDOQuery
+     * @access public.
+     * @param xPDOQuery $criteria.
+     * @return xPDOQuery.
      */
-    public function prepareQueryBeforeCount(xPDOQuery $query)
+    public function prepareQueryBeforeCount(xPDOQuery $criteria)
     {
         $search = $this->getProperty('search');
+
         if (!empty($search)) {
-            $query->where([
+            $criteria->where([
                 'key:LIKE'            => '%' . $search . '%',
                 'OR:description:LIKE' => '%' . $search . '%',
             ]);
         }
 
         $exclude = $this->getProperty('exclude');
+
         if (!empty($exclude)) {
-            $query->where([
+            $criteria->where([
                 'key:NOT IN' => is_string($exclude) ? explode(',', $exclude) : $exclude,
             ]);
         }
 
-        return $query;
+        return $criteria;
     }
 
     /**
@@ -70,9 +87,9 @@ class SeoSuiteContextGetListProcessor extends modObjectGetListProcessor
     }
 
     /**
-     * {@inheritDoc}
-     * @param xPDOObject $object
-     * @return array
+     * @access public.
+     * @param xPDOObject $object.
+     * @return Array.
      */
     public function prepareRow(xPDOObject $object)
     {
@@ -80,13 +97,16 @@ class SeoSuiteContextGetListProcessor extends modObjectGetListProcessor
     }
 
     /**
-     * Can be used to insert a row before iteration
-     * @param array $list
-     * @return array
+     * @access public.
+     * @param Array $list;
+     * @return Array.
      */
     public function afterIteration(array $list)
     {
-        array_unshift($list, ['name' => $this->modx->lexicon('seosuite.use_redirect_across_domains'), 'key' => 'seosuite_all']);
+        array_unshift($list, [
+            'key'   => '',
+            'name'  => $this->modx->lexicon('seosuite.use_redirect_across_domains')
+        ]);
 
         return $list;
     }

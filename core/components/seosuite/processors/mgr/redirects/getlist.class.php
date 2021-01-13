@@ -40,12 +40,6 @@ class SeoSuiteRedirectGetListProcessor extends modObjectGetListProcessor
 
     /**
      * @access public.
-     * @var Array.
-     */
-    public $contexts = [];
-
-    /**
-     * @access public.
      * @return Mixed.
      */
     public function initialize()

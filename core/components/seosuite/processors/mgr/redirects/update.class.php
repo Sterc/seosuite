@@ -38,10 +38,6 @@ class SeoSuiteRedirectUpdateProcessor extends modObjectUpdateProcessor
             $this->setProperty('active', 0);
         }
 
-        if ($this->getProperty('context_key') === 'seosuite_all') {
-            $this->setProperty('context_key', '');
-        }
-
         return parent::initialize();
     }
 
