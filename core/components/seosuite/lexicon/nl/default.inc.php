@@ -17,7 +17,6 @@ $_lang['area_seosuite_tab_social']                              = 'SEO Suite soc
 $_lang['area_seosuite_sitemap']                                 = 'SEO Suite sitemap';
 
 $_lang['seosuite.urls']                                         = '404 URLs';
-$_lang['seosuite.urls_desc']                                    = 'Heb je meerdere 404 URL\'s gevonden? Upload hier simpelweg een .csv file en SEO Suite zorgt ervoor dat ze herleid worden op je website. Deze worden gematcht met bestaande pagina\'s op je website, gebaseerd op het laatste deel van de URL (het gedeelte achter de laatste slash). Is er één match, dan wordt deze automatisch geconverteerd naar een 301 redirect. Zijn er meerdere matches, dan kun je de gewenste redirect handmatig kiezen. Zijn er geen matches, dan kun je zelf een URL invoeren.';
 $_lang['seosuite.urls_import']                                  = 'Importeer 404 url(s)';
 $_lang['seosuite.urls_remove']                                  = '404 URL(s) verwijderen';
 $_lang['seosuite.urls_remove_confirm']                          = 'Weet je zeker dat je de geselecteerde 404 URL(s) wilt verwijderen?';
@@ -60,7 +59,7 @@ $_lang['seosuite.import.instructions']                          = 'Gebruik een .
 
 $_lang['seosuite.redirect']                                     = 'URL verwijzing';
 $_lang['seosuite.redirects']                                    = 'URL verwijzingen';
-$_lang['seosuite.redirects_desc']                               = 'Beheer hier alle URL verwijzingen. Een URL verwijzigen met een specifieke context heeft voorrang op een wildcard context.';
+$_lang['seosuite.redirects_desc']                               = 'Beheer hier alle URL verwijzingen. Een URL verwijzining is bedoelt om een niet (meer) bestaande pagina door te verwijzen naar de nieuwe pagina. Een URL verwijziging kun je maken voor een specifieke context of voor alle contexten tegelijk en word hieronder aangeduid als "*/". URL verwijzigen met een specifieke context heeft voorrang op een URL verwijzing voor alle contexten.';
 $_lang['seosuite.redirect_create']                              = 'Nieuwe URL verwijzing';
 $_lang['seosuite.redirect_update']                              = 'URL verwijzing wijzigen';
 $_lang['seosuite.redirect_remove']                              = 'URL verwijzing verwijderen';
