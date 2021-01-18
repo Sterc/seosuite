@@ -1,0 +1,385 @@
+/* Should be moved to default theme. */
+.x-menu-item-icon {
+    left: 7px !important;
+    font-size: 14px !important;
+    line-height: 16px !important;
+    text-align: center !important;
+}
+
+/* Should be moved to default theme. */
+.x-btn-text .icon,
+.x-tab-strip-text  .icon {
+    margin-right: 8px;
+}
+
+#modx-action-buttons .x-btn-branding {
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    color: #555555 !important;
+}
+
+.modx-config-error {
+    margin: 0;
+    padding: 15px 15px 0 !important;
+    background-color: #fff;
+}
+
+.modx-config-error .x-panel-bwrap {
+    color: #856404;
+    padding: 12px 20px;
+    background: #fff3cd !important;
+    border: 1px solid #ffeeba;
+    border-radius: 3px;
+}
+
+#resource-seosuite-panel .modx-config-error {
+    padding: 0 0 15px !important;
+}
+
+.x-grid-span {
+    display: inline;
+    color: #fff;
+    padding: 3px 5px;
+    border-radius: 10px;
+    background-color: #1a7Fb8;
+}
+
+.x-combo-list-item .x-combo-list-item-block {
+    display: block;
+    margin-top: 5px;
+}
+
+.x-combo-list-item.x-combo-list-item-boost {
+    position: relative;
+}
+
+.x-combo-list-item.x-combo-list-item-boost .x-combo-list-item-booster {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: small;
+    font-weight: bold;
+}
+
+.x-field-image {
+    margin: 15px 0 0;
+}
+
+#resource-seosuite-panel {
+    margin: 0 0 20px;
+}
+
+#resource-seosuite-panel .x-panel-header {
+    margin: 0;
+    padding: 15px;
+}
+
+/* Meta SEO preview */
+
+#resource-seosuite-panel .x-toolbar {
+    margin: 0 0 10px;
+    border: 0;
+    background-color: transparent;
+}
+
+#resource-seosuite-panel .x-toolbar .x-btn-no-text .icon {
+    margin-right: 0;
+}
+
+#resource-seosuite-panel .x-toolbar .x-btn {
+    position: relative;
+}
+
+#resource-seosuite-panel .x-toolbar .x-btn .icon {
+    font-size: 16px;
+}
+
+#resource-seosuite-panel .x-toolbar .x-btn.x-btn-active:after {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: block;
+    width: 100%;
+    height: 4px;
+    content: ' ';
+    background-color: #3697cd;
+    border-radius: 0 0 3px 3px;
+}
+
+#resource-seosuite-panel .x-toolbar label {
+    color: #555555;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* SEO preview Default */
+
+#seosuite-seo-preview {
+    margin: 20px 0;
+}
+
+#seosuite-seo-preview .seosuite-seo-preview-body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: auto !important;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #fbfbfb;
+    padding: 10px;
+    border: 1px solid #e4e4e4;
+    border-radius: 3px;
+}
+
+#seosuite-seo-preview .seosuite-seo-preview-body .favicon {
+    display: none;
+    width: 16px !important;
+    height: 16px !important;
+}
+
+#seosuite-seo-preview.disabled .seosuite-seo-preview-body .favicon {
+    display: none !important;
+}
+
+#seosuite-seo-preview .seosuite-seo-preview-body #seosuite-seo-preview-message {
+    display: none;
+}
+
+#seosuite-seo-preview.disabled .seosuite-seo-preview-body #seosuite-seo-preview-message {
+    display: block;
+}
+
+#seosuite-seo-preview .seosuite-seo-preview-body #seosuite-seo-preview-title {
+    color: #1a0dab;
+    font-size: 20px;
+    line-height: 26px;
+    margin: 0 0 5px;
+    order: 2;
+}
+
+#seosuite-seo-preview.disabled .seosuite-seo-preview-body #seosuite-seo-preview-title {
+    display: none !important;
+}
+
+#seosuite-seo-preview .seosuite-seo-preview-body #seosuite-seo-preview-url {
+    color: #5f6368;
+    font-size: 14px;
+    line-height: 18px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0 0 5px;
+    order: 1;
+}
+
+#seosuite-seo-preview.disabled .seosuite-seo-preview-body #seosuite-seo-preview-url {
+    display: none !important;
+}
+
+#seosuite-seo-preview .seosuite-seo-preview-body #seosuite-seo-preview-url:after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin: 2px 0 2px 5px;
+    content: '';
+    border-color: #5f6368 transparent;
+    border-style: solid;
+    border-width: 5px 4px 0 4px;
+}
+
+#seosuite-seo-preview .seosuite-seo-preview-body #seosuite-seo-preview-url span:first-of-type {
+    color: #202124;
+}
+
+#seosuite-seo-preview .seosuite-seo-preview-body #seosuite-seo-preview-url span + span:before {
+    content: ' › ';
+}
+
+#seosuite-seo-preview .seosuite-seo-preview-body #seosuite-seo-preview-url .favicon {
+    float: left;
+    margin: 2px 5px 2px 0;
+}
+
+#seosuite-seo-preview .seosuite-seo-preview-body #seosuite-seo-preview-description {
+    color: #4d5156;
+    order: 3;
+    font-size: 14px;
+    line-height: 22px;
+}
+
+#seosuite-seo-preview.disabled .seosuite-seo-preview-body #seosuite-seo-preview-description {
+    display: none !important;
+}
+
+/* SEO preview Default mobile */
+
+#seosuite-seo-preview.seosuite-seo-preview-mobile .seosuite-seo-preview-body #seosuite-seo-preview-title {
+    color: #1558d6;
+    order: 2;
+}
+
+#seosuite-seo-preview.seosuite-seo-preview-mobile .seosuite-seo-preview-body #seosuite-seo-preview-url {
+    color: #70757a;
+    font-size: 12px;
+    order: 1;
+}
+
+#seosuite-seo-preview.seosuite-seo-preview-mobile .seosuite-seo-preview-body #seosuite-seo-preview-url .favicon {
+    display: block;
+}
+
+/* SEO preview Yandex */
+
+#seosuite-seo-preview.seosuite-seo-preview-yandex .seosuite-seo-preview-body {
+    padding-left: 34px;
+}
+
+#seosuite-seo-preview.seosuite-seo-preview-yandex .seosuite-seo-preview-body #seosuite-seo-preview-favicon {
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    display: block;
+}
+
+#seosuite-seo-preview.seosuite-seo-preview-yandex .seosuite-seo-preview-body #seosuite-seo-preview-title {
+    color: navy;
+    font-size: 18px;
+    line-height: 24px;
+    order: 1;
+}
+
+#seosuite-seo-preview.seosuite-seo-preview-yandex .seosuite-seo-preview-body #seosuite-seo-preview-url:after {
+    display: none;
+}
+
+#seosuite-seo-preview.seosuite-seo-preview-yandex .seosuite-seo-preview-body #seosuite-seo-preview-url {
+    color: #070;
+    font-size: 14px;
+    order: 2;
+}
+
+#seosuite-seo-preview.seosuite-seo-preview-yandex .seosuite-seo-preview-body #seosuite-seo-preview-url span:first-of-type {
+    color: #070;
+    font-weight: 600;
+}
+
+#seosuite-seo-preview.seosuite-seo-preview-yandex .seosuite-seo-preview-body #seosuite-seo-preview-url .favicon {
+    display: none;
+}
+
+#seosuite-seo-preview.seosuite-seo-preview-yandex .seosuite-seo-preview-body #seosuite-seo-preview-description {
+    font-size: 13px;
+    line-height: 17px;
+}
+
+/* SEO preview Yandex mobile */
+
+#seosuite-seo-preview.seosuite-seo-preview-yandex.seosuite-seo-preview-mobile .seosuite-seo-preview-body {
+    padding-left: 10px;
+}
+
+#seosuite-seo-preview.seosuite-seo-preview-yandex.seosuite-seo-preview-mobile .seosuite-seo-preview-body #seosuite-seo-preview-favicon {
+    display: none;
+}
+
+#seosuite-seo-preview.seosuite-seo-preview-yandex.seosuite-seo-preview-mobile .seosuite-seo-preview-body #seosuite-seo-preview-title {
+    order: 1;
+}
+
+#seosuite-seo-preview.seosuite-seo-preview-yandex.seosuite-seo-preview-mobile .seosuite-seo-preview-body #seosuite-seo-preview-url {
+    order: 2;
+}
+
+#seosuite-seo-preview.seosuite-seo-preview-yandex.seosuite-seo-preview-mobile .seosuite-seo-preview-body #seosuite-seo-preview-url .favicon {
+    display: block;
+}
+
+/* Field counters */
+
+.x-form-seosuite-counter {
+    position: relative;
+}
+
+.x-form-seosuite-counter .x-form-field {
+    width: 100% !important;
+    height: auto;
+    padding-right: 50px;
+    box-sizing: border-box;
+}
+
+.x-form-seosuite-counter .x-form-seosuite-counter-count {
+    position: absolute;
+    top: 1px;
+    bottom: 13px;
+    right: 0;
+    display: block;
+    width: 45px;
+    font-size: 12px;
+    line-height: 20px;
+    font-weight: 600;
+    color: #f49548;
+    padding: 5px;
+    box-sizing: border-box;
+    text-align: center;
+    border-left: 1px solid #efefef;
+}
+
+.x-form-seosuite-counter .x-form-seosuite-counter-count.valid {
+    color: #6cb24a;
+}
+
+.x-form-seosuite-counter .x-form-seosuite-counter-count.invalid {
+    color: #be0000;
+}
+
+.x-form-seosuite-counter .x-form-seosuite-counter-progress {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 8px;
+    border-radius: 3px;
+    background-color: #fbfbfb;
+    border: 1px solid #efefef;
+    box-sizing: border-box;
+    margin: 4px 0 0;
+    overflow: hidden;
+}
+
+.x-form-seosuite-counter .x-form-seosuite-counter-progress span {
+    display: block;
+    width: 0;
+    height: 100%;
+    background-color: #f49548;
+}
+
+.x-form-seosuite-counter .x-form-seosuite-counter-progress.valid span {
+    background-color: #6cb24a;
+}
+
+.x-form-seosuite-counter .x-form-seosuite-counter-progress.invalid span {
+    background-color: #be0000;
+}
+
+/* Field keywords counter */
+
+.x-form-seosuite-keyword-counter {
+    position: relative;
+}
+
+.x-form-seosuite-keyword-counter .x-form-seosuite-keyword-counter-progress {
+    position: absolute;
+    top: -22px;
+    right: 0;
+    color: #555555;
+    font-weight: 600;
+}
+
+.x-form-seosuite-keyword-counter .x-form-seosuite-keyword-counter-progress.invalid {
+    color: #be0000;
+}
+
+/* MODX 2 specific styling fix. */
+#modx-resource-content .x-form-seosuite-keyword-counter__v2 .x-form-seosuite-keyword-counter-progress {
+    top: -48px;
+    right: 30px;
+}

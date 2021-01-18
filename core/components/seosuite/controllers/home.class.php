@@ -1,29 +1,42 @@
 <?php
-require_once dirname(dirname(__FILE__)) . '/index.class.php';
+
 /**
- * Loads the home page.
+ * SeoSuite
  *
- * @package seosuite
- * @subpackage controllers
+ * Copyright 2019 by Sterc <modx@sterc.com>
  */
-class SeoSuiteHomeManagerController extends SeoSuiteBaseManagerController
+
+require_once dirname(__DIR__) . '/index.class.php';
+
+class SeoSuiteHomeManagerController extends SeoSuiteManagerController
 {
-    public function process(array $scriptProperties = array())
+    /**
+     * @access public.
+     */
+    public function loadCustomCssJs()
     {
+        $this->addJavascript($this->modx->seosuite->config['js_url'] . 'mgr/extras/extras.js');
+        $this->addJavascript($this->modx->seosuite->config['js_url'] . 'mgr/widgets/home.panel.js');
+        $this->addJavascript($this->modx->seosuite->config['js_url'] . 'mgr/widgets/urls.grid.js');
+        $this->addJavascript($this->modx->seosuite->config['js_url'] . 'mgr/widgets/redirects.grid.js');
+        $this->addLastJavascript($this->modx->seosuite->config['js_url'] . 'mgr/sections/home.js');
     }
+
+    /**
+     * @access public.
+     * @return String.
+     */
     public function getPageTitle()
     {
         return $this->modx->lexicon('seosuite');
     }
-    public function loadCustomCssJs()
-    {
-        $this->addJavascript($this->seosuite->getOption('jsUrl').'mgr/widgets/urls.grid.js');
-        $this->addJavascript($this->seosuite->getOption('jsUrl').'mgr/widgets/home.panel.js');
-        $this->addLastJavascript($this->seosuite->getOption('jsUrl').'mgr/sections/home.js');
-    }
 
+    /**
+     * @access public.
+     * @return String.
+     */
     public function getTemplateFile()
     {
-        return $this->seosuite->getOption('templatesPath').'home.tpl';
+        return $this->modx->seosuite->config['templates_path'] . 'home.tpl';
     }
 }

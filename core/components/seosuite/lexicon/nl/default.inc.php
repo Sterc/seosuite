@@ -1,73 +1,103 @@
 <?php
+
 /**
- * Default Dutch Lexicon Entries for SEO Suite
+ * SeoSuite
  *
- * @package seosuite
- * @subpackage lexicon
+ * Copyright 2019 by Sterc <modx@sterc.com>
  */
 
-$_lang['seosuite'] = 'SEO Suite';
+$_lang['seosuite']                                              = 'SEO Suite';
+$_lang['seosuite.menu.seosuite']                                = 'SEO Suite';
+$_lang['seosuite.menu.seosuite_desc']                           = 'Beheer 404 URL\'s en redirects.';
 
-$_lang['seosuite.menu.seosuite']      = 'SEO Suite';
-$_lang['seosuite.menu.seosuite_desc'] = 'Beheer je 404 URL\'s.';
+$_lang['area_seosuite']                                         = 'SEO Suite';
+$_lang['area_seosuite_tab_meta']                                = 'SEO Suite meta tab';
+$_lang['area_seosuite_tab_seo']                                 = 'SEO Suite zoekmachine tab';
+$_lang['area_seosuite_tab_social']                              = 'SEO Suite social tab';
+$_lang['area_seosuite_sitemap']                                 = 'SEO Suite sitemap';
 
-$_lang['seosuite.global.search'] = 'Zoeken';
+$_lang['seosuite.urls']                                         = '404 URLs';
+$_lang['seosuite.urls_import']                                  = 'Importeer 404 url(s)';
+$_lang['seosuite.urls_remove']                                  = '404 URL(s) verwijderen';
+$_lang['seosuite.urls_remove_confirm']                          = 'Weet je zeker dat je de geselecteerde 404 URL(s) wilt verwijderen?';
+$_lang['seosuite.url_update']                                   = '404 URL wijzigen';
+$_lang['seosuite.url_suggestions']                              = '404 URL suggesties';
+$_lang['seosuite.url.found_suggestions']                        = 'Er is een suggestie gevonden! De suggestie is nu verbonden met deze URL.';
+$_lang['seosuite.url.found_suggestions_multiple']               = 'Er is meer dan 1 suggestie gevonden. Voeg a.u.b. handmatig een redirect toe.';
+$_lang['seosuite.url.notfound_suggestions']                     = 'Er zijn geen suggesties gevonden voor deze URL.';
+$_lang['seosuite.url.found_suggestions.redirect_exists']        = 'Er bestaat al een redirect voor deze 404 pagina, we hebben de 404 URL verwijderd.';
+$_lang['seosuite.url_remove']                                   = 'Verwijder URL';
+$_lang['seosuite.url_remove_confirm']                           = 'Weet je zeker dat je de geselecteerde 404 URL(s) wilt verwijderen?';
+$_lang['seosuite.url.redirect_to_selected']                     = 'Geselecteerde redirect';
+$_lang['seosuite.suggestions_found']                            = 'Er zijn [[+suggestions]] pagina suggesties gevonden.';
+$_lang['seosuite.suggestion_boost']                             = 'pnt';
+$_lang['seosuite.exclude_words']                                = 'Woorden uitsluiten';
 
-$_lang['seosuite.url.urls']      = '404 URL\'s';
-$_lang['seosuite.url.intro_msg'] = '404 errors zijn ontzettend vervelend, voor zowel de gebruiker en Google, en kunnen relevant verkeer van je website weghouden. 
- Met de MODX Extra \'SEO Suite\' kunnen 404 errors gemakkelijk opgelost worden. Upload simpelweg een bestand met alle errors en SEO Suite zoekt matches met bestaande pagina’s:<br/><br/>
-1. Als er één match is gevonden zal SEO Suite de pagina automatisch redirecten naar deze functionerende pagina<br/>
-2. Als er meerdere matched gevonden zijn, geeft SEO Suite suggesties en kun jij kiezen naar welke pagina geredirect wordt<br/>
-3. Als er geen matches gevonden zijn, kun jij handmatig de juiste URL invoeren.';
-$_lang['seosuite.url.import']          = 'Importeer bestand';
-$_lang['seosuite.url.file']            = 'Bestand';
-$_lang['seosuite.import.start']        = 'Starten met importeren van de URL\'s, dit kan even duren afhankelijk van de grootte van je bestand.';
-$_lang['seosuite.import.instructions'] = 'Gebruik een .csv, .xls of .xlsx bestand. Zorg ervoor dat je de complete URL\'s hebt ingevuld, inclusief de domeinnaam. Voorbeeld: https://www.seosuite.com in plaats van seosuite.com.';
+$_lang['seosuite.label_exclude_words']                          = 'Woorden uitsluiten';
+$_lang['seosuite.label_exclude_words_desc']                     = 'Een komma gescheiden lijst van woorden om uit te sluiten van de 404 URL suggesties.';
 
-$_lang['seosuite.url.url']                        = '404 URL';
-$_lang['seosuite.url.solved']                     = 'Opgelost';
-$_lang['seosuite.url.position']                   = 'Positie';
-$_lang['seosuite.url.redirect_to']                = 'Redirect naar';
-$_lang['seosuite.url.suggestions']                = 'Redirect suggesties';
-$_lang['seosuite.url.triggered']                  = '404 Aanroepen';
-$_lang['seosuite.url.createdon']                  = '404 Aanmaakdatum';
-$_lang['seosuite.url.find_suggestions']           = 'Vind suggesties';
-$_lang['seosuite.url.found_suggestions']          = 'Er is een suggestie gevonden! De suggestie is nu verbonden met deze URL.';
-$_lang['seosuite.url.found_suggestions_multiple'] = 'Er is meer dan 1 suggestie gevonden. Voeg a.u.b. handmatig een redirect toe.';
-$_lang['seosuite.url.notfound_suggestions']       = 'Er zijn geen suggesties gevonden voor deze URL.';
-$_lang['seosuite.url.update']                     = 'Update URL';
-$_lang['seosuite.url.remove']                     = 'Verwijder URL';
-$_lang['seosuite.url.remove_confirm']             = 'Weet je zeker dat je deze URL wil verwijderen?';
-$_lang['seosuite.url.choose_suggestion']          = 'Kies uit suggesties';
-$_lang['seosuite.url.choose_manually']            = 'Kies handmatig een pagina';
-$_lang['seosuite.url.redirect_to_selected']       = 'Geselecteerde redirect';
+$_lang['seosuite.label_url_url']                                = 'Url';
+$_lang['seosuite.label_url_url_desc']                           = '';
+$_lang['seosuite.label_url_visits']                             = 'Hits';
+$_lang['seosuite.label_url_visits_desc']                        = '';
+$_lang['seosuite.label_url_last_visit']                         = 'Laatste hit';
+$_lang['seosuite.label_url_last_visit_desc']                    = '';
+$_lang['seosuite.label_url_suggestion']                         = 'Suggestie';
+$_lang['seosuite.label_url_suggestion_desc']                    = 'De suggestie waar de URL verwijzing heen wijst.';
+$_lang['seosuite.label_url_suggestions']                        = 'Suggesties';
+$_lang['seosuite.label_url_suggestions_desc']                   = '';
+$_lang['seosuite.label_url_createdon']                          = 'Aangemaakt op';
+$_lang['seosuite.label_url_createdon_desc']                     = '';
+$_lang['seosuite.label_url_match_context']                      = 'Matchen op domein [[+domain]]';
+$_lang['seosuite.label_url_match_context_desc']                 = 'Indien aangevinkt zal het matchen gebeuren met pagina\'s binnen het domein [[+domain]] . Handig voor wanneer u een meertalige website hebt in meerdere contexten met veel dezelfde pagina\'s.';
+$_lang['seosuite.label_url_match_create_redirect']              = 'Automatisch URL verwijzing maken';
+$_lang['seosuite.label_url_match_create_redirect_desc']         = 'Indien aangevinkt zal er automatisch een URL verwijzing aangemaakt worden aan de hand van de eerste gevonden match.';
 
-$_lang['seosuite.error.url_alreadyexists']       = 'Deze URL bestaat al.';
-$_lang['seosuite.error.url_notfound']            = 'Item niet gevonden.';
-$_lang['seosuite.err.item_name_ae']              = 'Item niet gevonden.';
-$_lang['seosuite.error.url_notspecified']        = 'URL is niet gedefinieerd.';
-$_lang['seosuite.err.item_name_ns']              = 'Waarde is niet gedefinieerd.';
-$_lang['seosuite.error.url_remove']              = 'Er is een fout opgetreden tijdens het verwijderen van de URL.';
-$_lang['seosuite.error.url_save']                = 'Er is een fout opgetreden tijdens het opslaan van de URL.';
-$_lang['seosuite.error.emptyfile']               = 'Geen bestand opgegeve.';
-$_lang['seosuite.error.extension_notallowed']    = 'Bestandstype niet toegestaan. Alleen .csv bestanden zijn toegestaan.';
-$_lang['seosuite.error.ziparchive_notinstalled'] = 'PHP extensie ZipArchive is niet geïnstalleerd, 
-deze is nodig om xls(x) bestanden te importeren. Installeer de ZipArchive extensie of gebruik een .csv bestand.';
+$_lang['seosuite.label_import_file']                            = 'Bestand';
+$_lang['seosuite.label_import_file_desc']                       = 'Selecteer een geldig bestand om 404 URL(s) te importeren.';
+$_lang['seosuite.import.instructions']                          = 'Gebruik een .csv, .xls of .xlsx bestand. Zorg ervoor dat je de complete URL\'s hebt ingevuld, inclusief de domeinnaam. Voorbeeld: https://www.seosuite.com in plaats van seosuite.com. Zie ook dit <a href="[[+path]]">voorbeeld import bestand (XLS)</a>.';
 
-$_lang['seosuite.import.seoUrl.error'] = 'De gevonden suggestie kon niet automatisch worden toegevoegd als redirect. Voeg deze a.u.b. handmatig toe.';
-$_lang['seosuite.import.seoUrl.error'] = 'De suggestie kon niet worden verbonden met de SEO Tab URL. Verbind deze a.u.b. handmatig.';
-$_lang['seosuite.seotab.notfound']     = 'SEO Tab is niet geïnstalleerd of de versie is ongeldig. 
-Installeer a.u.b. SEO Tab (versie 2.0 of hoger) om SEO Suite in staat te stellen
- om redirects automatisch te koppelen aan 404 URL\'s.';
-$_lang['seosuite.seotab.versioninvalid'] = 'De geinstalleerde versie van Seo Tab is verouderd. 
-Installeer Seo Tab versie 2 (of hoger) om een redirect te kunnen toevoegen.';
+$_lang['seosuite.redirect']                                     = 'URL verwijzing';
+$_lang['seosuite.redirects']                                    = 'URL verwijzingen';
+$_lang['seosuite.redirects_desc']                               = 'Beheer hier alle URL verwijzingen. Een URL verwijzining is bedoelt om een niet (meer) bestaande pagina door te verwijzen naar de nieuwe pagina. Een URL verwijziging kun je maken voor een specifieke context of voor alle contexten tegelijk en word hieronder aangeduid als "*/". URL verwijzigen met een specifieke context heeft voorrang op een URL verwijzing voor alle contexten.';
+$_lang['seosuite.redirect_create']                              = 'Nieuwe URL verwijzing';
+$_lang['seosuite.redirect_update']                              = 'URL verwijzing wijzigen';
+$_lang['seosuite.redirect_remove']                              = 'URL verwijzing verwijderen';
+$_lang['seosuite.redirect_remove_confirm']                      = 'Weet je zeker dat je deze URL verwijzing wilt verwijderen?';
+$_lang['seosuite.redirects_remove']                             = 'URL verwijzing(en) verwijderen';
+$_lang['seosuite.redirects_remove_confirm']                     = 'Weet je zeker dat je de geselecteerde URL verwijzing(en) wilt verwijderen?';
+$_lang['seosuite.use_redirect_across_domains']                  = 'Gebruik redirect voor alle domeinen';
 
-$_lang['seosuite.widget_desc'] = 'Hier zie je de meest recent toegevoegde 404 URL\'s. Om alle 404 URL\'s te bekijken en beheren, 
- ga je naar de <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager pagina.</a>';
+$_lang['seosuite.label_redirect_old_url']                       = 'Oude URL';
+$_lang['seosuite.label_redirect_old_url_desc']                  = 'De oude URL van de URL verwijzing.';
+$_lang['seosuite.label_redirect_new_url']                       = 'Nieuwe URL';
+$_lang['seosuite.label_redirect_new_url_desc']                  = 'De nieuwe URL van de URL verwijzing. Dit kan met of zonder domein, maar kan ook een ID van een pagina zijn.';
+$_lang['seosuite.label_redirect_active']                        = 'Actief';
+$_lang['seosuite.label_redirect_active_desc']                   = '';
+$_lang['seosuite.label_redirect_match_context']                 = 'Context';
+$_lang['seosuite.label_redirect_match_context_desc']            = 'Match de redirect aan een specifieke context of gebruik de redirect als een wildcard voor alle websites.';
+$_lang['seosuite.label_redirect_type']                          = 'Verwijzingstype';
+$_lang['seosuite.label_redirect_type_desc']                     = 'De verwijzingstype van de URL verwijzing.';
 
-$_lang['seosuite.match_site_url']      = 'Match op basis van de context site url';
-$_lang['seosuite.match_site_url_desc'] = 'Vink aan als het matching systeem alleen pagina\'s moet matches op basis van dezelfde context. 
- Dit is vooral handig als je een meertalige website hebt waarbij meerdere contexten veel dezelfde pagina\'s hebben.';
+$_lang['seosuite.error.emptyfile']                              = 'Geen bestand opgegeven.';
+$_lang['seosuite.error.extension_notallowed']                   = 'Bestandstype niet toegestaan. Alleen .csv bestanden zijn toegestaan.';
+$_lang['seosuite.error.ziparchive_notinstalled']                = 'PHP extensie ZipArchive is niet geïnstalleerd, deze is nodig om xls(x) bestanden te importeren. Installeer de ZipArchive extensie of gebruik een .csv bestand.';
 
-$_lang['setting_seosuite.exclude_words']      = 'Uitgesloten woorden';
-$_lang['setting_seosuite.exclude_words_desc'] = 'Komma gescheiden lijst van woorden welke dienen te worden uitgesloten van de gevonden suggesties.';
+$_lang['seosuite.friendly_urls_disabled']                       = 'Zoekmachine vriendelijke URLs staat momenteel niet ingeschakeld in deze MODx installatie, om SEO Suite goed te laten werken dient zoekmachine vriendelijke URLs ingeschakeld te zijn.';
+$_lang['seosuite.find_suggestions']                             = 'Vind suggesties';
+$_lang['seosuite.redirect_error_exists']                        = 'Er bestaat al een URL verwijzing voor deze URL.';
+$_lang['seosuite.resource_no_redirects']                        = 'Er zijn geen URL verwijzingen voor de deze pagina.';
+$_lang['seosuite.time_seconds']                                 = 'Minder dan 1 minuut geleden';
+$_lang['seosuite.time_minute']                                  = '1 minuut geleden';
+$_lang['seosuite.time_minutes']                                 = '[[+minutes]] minuten geleden';
+$_lang['seosuite.time_hour']                                    = '1 uur geleden';
+$_lang['seosuite.time_hours']                                   = '[[+hours]] uren geleden';
+$_lang['seosuite.time_day']                                     = '1 dag geleden';
+$_lang['seosuite.time_days']                                    = '[[+days]] dagen geleden';
+$_lang['seosuite.time_week']                                    = '1 week geleden';
+$_lang['seosuite.time_weeks']                                   = '[[+weeks]] weken geleden';
+$_lang['seosuite.time_month']                                   = '1 maand geleden';
+$_lang['seosuite.time_months']                                  = '[[+months]] maanden geleden';
+$_lang['seosuite.time_to_long']                                 = 'Meer dan een half jaar geleden';
+
+$_lang['seosuite.widget_desc']                                  = 'Hier zie je de meest recent toegevoegde 404 URL\'s . Om alle 404 URL\'s te bekijken en beheren, ga je naar de <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager pagina.</a>';

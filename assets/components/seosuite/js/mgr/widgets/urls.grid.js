@@ -1,488 +1,539 @@
 SeoSuite.grid.Urls = function(config) {
     config = config || {};
-    if (!config.id) {
-        config.id = 'seosuite-grid-urls';
-    }
-    Ext.applyIf(config,{
-        id: config.id
-        ,url: SeoSuite.config.connectorUrl
-        ,baseParams: {
-            action: 'mgr/url/getlist'
-        }
-        ,fields: ['id','url','solved','redirect_to','redirect_to_text','suggestions','suggestions_text','triggered','createdon']
-        ,autoHeight: true
-        ,paging: true
-        ,remoteSort: true
-        ,viewConfig: {
-            forceFit: true,
-            getRowClass: function (record, index, rowParams, store)
-            {
-                var clsName = 'seosuite-row';
-                if (record.json.solved) {
-                    clsName += ' seosuite-solved';
-                }
-                return clsName;
-            }
-        }
-        ,columns: [{
-            header: _('seosuite.url.url')
-            ,dataIndex: 'url'
-            ,width: 300
-        },{
-            header: _('seosuite.url.triggered')
-            ,dataIndex: 'triggered'
-            ,width: 70
-            ,sortable: true
-        },{
-            header: _('seosuite.url.createdon')
-            ,dataIndex: 'createdon'
-            ,width: 80
-            ,sortable: true
-        },{
-            header: _('seosuite.url.suggestions')
-            ,dataIndex: 'suggestions_text'
-            ,width: 100
-        },{
-            header: _('seosuite.url.redirect_to')
-            ,dataIndex: 'redirect_to_text'
-            ,width: 160
-        },{
-            header: _('seosuite.url.solved')
-            ,dataIndex: 'solved'
-            ,renderer: this.renderBoolean
-            ,width: 60
+
+    config.tbar = [{
+        text        : '<i class="icon icon-upload"></i>' + _('seosuite.urls_import'),
+        cls         : 'primary-button',
+        handler     : this.importUrls,
+        scope       : this
+    }, {
+        text        : _('bulk_actions'),
+        menu        : [{
+            text        : '<i class="x-menu-item-icon icon icon-times"></i>' + _('seosuite.urls_remove'),
+            handler     : this.removeSelectedUrls,
+            scope       : this
         }]
-        ,tbar: [{
-            xtype: 'button',
-            text: '<i class="icon icon-upload"></i>&nbsp;&nbsp;' + _('seosuite.url.import'),
-            handler: function(btn, e){
-                this.importUrls = MODx.load({
-                    xtype: 'seosuite-window-import',
-                    hideUpload: false,
-                    title: _('seosuite.url.import'),
-                    listeners: {
-                        'beforeSubmit': {fn:function() {
-                            var topic = '/seosuiteimport/';
-                            var register = 'mgr';
-                            this.console = MODx.load({
-                                xtype: 'modx-console',
-                                register: register,
-                                topic: topic,
-                                show_filename: 0
-                            });
-                            this.console.show(Ext.getBody());
-                        },scope:this},
-                        'success': {fn:function(data) {
-                            this.refresh();
-                        },scope:this}
-
-                    }
-                });
-
-                this.importUrls.fp.getForm().reset();
-                this.importUrls.show(e.target);
+    }, {
+        text        : '<i class="icon icon-eye-slash"></i>' + _('seosuite.exclude_words'),
+        handler     : this.excludeWords,
+        scope       : this
+    }, '->', {
+        xtype       : 'textfield',
+        name        : 'seosuite-filter-urls-search',
+        id          : 'seosuite-filter-urls-search',
+        emptyText   : _('search') + '...',
+        listeners   : {
+            'change'    : {
+                fn          : this.filterSearch,
+                scope       : this
             },
-            cls: 'container'
-        },'->',{
-            xtype: 'modx-combo'
-            ,width: 130
-            ,name: "solved"
-            ,id: config.id + '-solved-field'
-            ,hiddenName: "solved"
-            ,store: new Ext.data.SimpleStore({
-                data: [
-                    ['1', _('yes')],
-                    ['0', _('no')]
-                ],
-                id: 0,
-                fields: ["value", "text"]
-            })
-            ,valueField: "value"
-            ,displayField: "text"
-            ,forceSelection: true
-            ,triggerAction: "all"
-            ,editable: true
-            ,mode: "local"
-            ,emptyText: _('seosuite.url.solved')
-            ,listeners: {
-                'select': {
-                    fn:this.filter,scope: this
-                }
-            }
-        },{
-            xtype: 'textfield'
-            ,width: 180
-            ,name: "query"
-            ,id: config.id + '-search-field'
-            ,emptyText: _('search') + '...'
-            ,listeners: {
-                'change': {fn:this.filter,scope:this}
-                ,'render': {fn: function(cmp) {
+            'render'    : {
+                fn          : function(cmp) {
                     new Ext.KeyMap(cmp.getEl(), {
-                        key: Ext.EventObject.ENTER
-                        ,fn: function() {
-                            this.fireEvent('change',this);
-                            this.blur();
-                            return true;
-                        }
-                        ,scope: cmp
+                        key     : Ext.EventObject.ENTER,
+                        fn      : this.blur,
+                        scope   : cmp
                     });
-                },scope:this}
+                },
+                scope       : this
             }
-        },{
-            xtype: 'button',
-            id: config.id + '-search-clear',
-            text: '<i class="icon icon-times"></i>',
-            listeners: {
-                click: {
-                    fn: this.clearFilter, scope: this
+        }
+    }, {
+        xtype       : 'button',
+        cls         : 'x-form-filter-clear',
+        id          : 'seosuite-filter-urls-clear',
+        text        : _('filter_clear'),
+        listeners   : {
+            'click'     : {
+                fn          : this.clearFilter,
+                scope       : this
+            }
+        }
+    }];
+
+    var sm = new Ext.grid.CheckboxSelectionModel();
+
+    var columns = new Ext.grid.ColumnModel({
+        columns     : [sm, {
+            header      : _('seosuite.label_url_url'),
+            dataIndex   : 'url',
+            sortable    : true,
+            editable    : false,
+            width       : 250,
+            renderer    : this.renderUrl
+        }, {
+            header      : _('seosuite.label_url_suggestions'),
+            dataIndex   : 'suggestions',
+            sortable    : false,
+            editable    : false,
+            width       : 100,
+            fixed       : true,
+            renderer    : this.renderSuggestions
+        }, {
+            header      : _('seosuite.label_url_visits'),
+            dataIndex   : 'visits',
+            sortable    : false,
+            editable    : false,
+            width       : 100,
+            fixed       : true
+        }, {
+            header      : _('seosuite.label_url_last_visit'),
+            dataIndex   : 'time_ago',
+            sortable    : false,
+            editable    : false,
+            width       : 200,
+            fixed       : true
+        }, {
+            header      : _('seosuite.label_url_createdon'),
+            dataIndex   : 'createdon',
+            sortable    : true,
+            editable    : false,
+            fixed       : true,
+            width       : 200,
+            renderer    : this.renderDate
+        }]
+    });
+
+    Ext.applyIf(config, {
+        sm          : sm,
+        cm          : columns,
+        id          : 'seosuite-grid-urls',
+        url         : SeoSuite.config.connector_url,
+        baseParams  : {
+            action      : 'mgr/urls/getlist'
+        },
+        fields      : ['id', 'context_key', 'url', 'suggestions', 'visits', 'last_visit', 'createdon', 'time_ago', 'site_url'],
+        paging      : true,
+        pageSize    : MODx.config.default_per_page > 30 ? MODx.config.default_per_page : 30,
+        refreshGrid : []
+    });
+
+    SeoSuite.grid.Urls.superclass.constructor.call(this, config);
+};
+
+Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
+    filterSearch: function(tf, nv, ov) {
+        this.getStore().baseParams.query = tf.getValue();
+
+        this.getBottomToolbar().changePage(1);
+    },
+    clearFilter: function() {
+        this.getStore().baseParams.query = '';
+
+        Ext.getCmp('seosuite-filter-urls-search').reset();
+
+        this.getBottomToolbar().changePage(1);
+    },
+    getMenu: function() {
+        return [{
+            text    : '<i class="x-menu-item-icon icon icon-edit"></i>' + _('seosuite.redirect_create'),
+            handler : this.createUrlRedirect,
+            scope   : this
+        }, '-', {
+            text    : '<i class="x-menu-item-icon icon icon-search"></i>' + _('seosuite.url_suggestions'),
+            handler : this.findUrlSuggestions,
+            scope   : this
+        }, '-', {
+            text    : '<i class="x-menu-item-icon icon icon-times"></i>' + _('seosuite.url_remove'),
+            handler : this.removeUrl,
+            scope   : this
+        }];
+    },
+    refreshGrids: function() {
+        if (typeof this.config.refreshGrid === 'string') {
+            Ext.getCmp(this.config.refreshGrid).refresh();
+        } else {
+            this.config.refreshGrid.forEach(function(grid) {
+                Ext.getCmp(grid).refresh();
+            });
+        }
+    },
+    importUrls: function(btn, e) {
+        if (this.importUrlsWindow) {
+            this.importUrlsWindow.destroy();
+        }
+
+        this.importUrlsWindow = MODx.load({
+            xtype       : 'seosuite-window-import-urls',
+            closeAction : 'close',
+            listeners   : {
+                'beforeSubmit': {
+                    fn: function() {
+                        this.console = MODx.load({
+                             xtype         : 'modx-console',
+                             register      : 'mgr',
+                             topic         : '/seosuiteimport/',
+                             show_filename : 0
+                        });
+
+                        this.console.show(Ext.getBody());
+                    },
+                    scope: this
+                },
+                'success': {
+                    fn: function() {
+                        this.refresh();
+                    },
+                    scope: this
                 }
             }
-        }]
-    });
-    SeoSuite.grid.Urls.superclass.constructor.call(this,config);
-};
-Ext.extend(SeoSuite.grid.Urls,MODx.grid.Grid,{
-    windows: {}
-
-    ,getMenu: function() {
-        var m = [];
-        m.push({
-            text: _('seosuite.url.update')
-            ,handler: this.updateUrl
         });
-        m.push({
-            text: _('seosuite.url.find_suggestions')
-            ,handler: this.findSuggestions
-        });
-        m.push('-');
-        m.push({
-            text: _('seosuite.url.remove')
-            ,handler: this.removeUrl
-        });
-        this.addContextMenuItem(m);
-    }
 
-    ,updateUrl: function(btn,e,isUpdate) {
-        if (!this.menu.record || !this.menu.record.id) return false;
+        this.importUrlsWindow.show(e.target);
+    },
+    excludeWords: function(btn, e) {
+        if (this.excludeWordsWindow) {
+            this.excludeWordsWindow.destroy();
+        }
 
-        var updateUrl = MODx.load({
-            xtype: 'seosuite-window-url'
-            ,title: _('seosuite.url.update')
-            ,action: 'mgr/url/update'
-            ,record: this.menu.record
-            ,listeners: {
-                'success': {fn:function() { this.refresh(); },scope:this}
+        this.excludeWordsWindow = MODx.load({
+            xtype       : 'seosuite-window-exclude-words',
+            closeAction : 'close'
+        });
+
+        this.excludeWordsWindow.show(e.target);
+    },
+    createUrlRedirect: function(btn, e) {
+        if (this.createUrlRedirectWindow) {
+            this.createUrlRedirectWindow.destroy();
+        }
+
+        this.createUrlRedirectWindow = MODx.load({
+            xtype       : 'seosuite-window-url-create-redirect',
+            closeAction : 'close',
+            record      : this.menu.record,
+            listeners   : {
+                'success'   : {
+                    fn          : function() {
+                        this.refreshGrids();
+                        this.refresh();
+                    },
+                    scope       : this
+                }
             }
         });
-        updateUrl.fp.getForm().reset();
-        updateUrl.fp.getForm().setValues(this.menu.record);
-        updateUrl.show(e.target);
-    }
 
-    ,removeUrl: function(btn,e) {
-        if (!this.menu.record) return false;
-
+        this.createUrlRedirectWindow.setValues(this.menu.record);
+        this.createUrlRedirectWindow.show(e.target);
+    },
+    removeUrl: function() {
         MODx.msg.confirm({
-            title: _('seosuite.url.remove')
-            ,text: _('seosuite.url.remove_confirm')
-            ,url: this.config.url
-            ,params: {
-                action: 'mgr/url/remove'
-                ,id: this.menu.record.id
-            }
-            ,listeners: {
-                'success': {fn:function(r) { this.refresh(); },scope:this}
-            }
-        });
-    }
-
-    ,findSuggestions: function(btn,e) {
-        if (!this.menu.record) return false;
-
-        var suggestionsWindow = MODx.load({
-            xtype: 'seosuite-window-suggestions'
-            ,title: _('seosuite.url.find_suggestions')
-            ,action: 'mgr/url/find_suggestions'
-            ,record: this.menu.record
-            ,listeners: {
-                'success': {fn:function(r) {
-                    var count = 0;
-                    if (r.a.result.object.suggestions) {
-                        var result = r.a.result.object.suggestions;
-                        count = Object.keys(result).length;
-                    }
-                    if (count == 0) {
-                        Ext.Msg.alert(_('seosuite.url.find_suggestions'), _('seosuite.url.notfound_suggestions'));
-                    } else if (count == 1) {
-                        Ext.Msg.alert(_('seosuite.url.find_suggestions'), _('seosuite.url.found_suggestions'));
-                    } else {
-                        Ext.Msg.alert(_('seosuite.url.find_suggestions'), _('seosuite.url.found_suggestions_multiple'));
-                    }
-                    this.refresh();
-                }, scope: this }
+            title       : _('seosuite.url_remove'),
+            text        : _('seosuite.url_remove_confirm'),
+            url         : SeoSuite.config.connector_url,
+            params      : {
+                action      : 'mgr/urls/remove',
+                id          : this.menu.record.id
+            },
+            listeners   : {
+                'success'   : {
+                    fn          : this.refresh,
+                    scope       : this
+                }
             }
         });
+    },
+    removeSelectedUrls: function(btn, e) {
+        MODx.msg.confirm({
+            title       : _('seosuite.urls_remove'),
+            text        : _('seosuite.urls_remove_confirm'),
+            url         : SeoSuite.config.connector_url,
+            params      : {
+                action      : 'mgr/urls/removemultiple',
+                id          : this.getSelectedAsList()
+            },
+            listeners   : {
+                'success'   : {
+                    fn          : this.refresh,
+                    scope       : this
+                }
+            }
+        });
+    },
+    findUrlSuggestions: function(btn,e) {
+        if (this.urlSuggestionsWindow) {
+            this.urlSuggestionsWindow.destroy();
+        }
 
-        suggestionsWindow.fp.getForm().reset();
-        suggestionsWindow.fp.getForm().setValues(this.menu.record);
-        suggestionsWindow.show(e.target);
-    }
+        this.urlSuggestionsWindow = MODx.load({
+            xtype       : 'seosuite-window-url-suggestions',
+            closeAction : 'close',
+            record      : this.menu.record,
+            listeners   : {
+                'success'   : {
+                    fn          : function(record) {
+                        MODx.msg.status({
+                            title   : _('success'),
+                            message : record.a.result.message,
+                            delay   : 4
+                        });
 
-    ,filter: function (tf, nv, ov) {
-        var store = this.getStore();
-        var key = tf.getName();
-        var value = tf.getValue();
-        store.baseParams[key] = value;
-        this.getBottomToolbar().changePage(1);
-        this.refresh();
-    }
+                        this.refresh();
+                    },
+                    scope       : this
+                }
+            }
+        });
 
-    ,clearFilter: function (btn, e) {
-        var baseParams = this.getStore().baseParams;
-        delete baseParams.query;
-        delete baseParams.solved;
-        this.getStore().baseParams = baseParams;
-        Ext.getCmp(this.config.id + '-search-field').setValue('');
-        Ext.getCmp(this.config.id + '-solved-field').setValue('');
-        this.getBottomToolbar().changePage(1);
-        this.refresh();
-    }
+        this.urlSuggestionsWindow.setValues(this.menu.record);
+        this.urlSuggestionsWindow.show(e.target);
+    },
+    renderUrl: function(d, c, e) {
+        if (!Ext.isEmpty(e.json.site_url)) {
+            return '<span class="x-grid-span">' + e.json.site_url + '</span>' + d;
+        }
 
-    ,renderBoolean: function (value, props, row) {
-        return value
-            ? String.format('<span class="green"><i class="icon icon-check"></i>&nbsp;&nbsp;{0}</span>', _('yes'))
-            : String.format('<span class="red"><i class="icon icon-ban"></i>&nbsp;&nbsp;{0}</span>', _('no'));
-    }
+        return d;
+    },
+    renderSuggestions: function(d, c) {
+        if (d) {
+            var count = Object.keys(d).length;
 
-});
-Ext.reg('seosuite-grid-urls',SeoSuite.grid.Urls);
+            if (count >= 1) {
+                c.css = 'green';
 
-SeoSuite.window.Url = function(config) {
-    config = config || {};
-    Ext.applyIf(config,{
-        title: _('seosuite.url.create')
-        ,closeAction: 'close'
-        ,url: SeoSuite.config.connectorUrl
-        ,action: 'mgr/url/create'
-        ,height: 340
-        ,width: 600
-        ,fields: [{
-            xtype: 'textfield'
-            ,name: 'id'
-            ,hidden: true
-        },{
-            xtype: 'textfield'
-            ,fieldLabel: _('seosuite.url.url')
-            ,name: 'url'
-            ,anchor: '100%'
-        },{
-            layout: 'column',
-            items: [{
-                columnWidth: 0.5,
-                layout: 'form',
-                items: [{
-                    xtype: 'modx-combo'
-                    ,id: 'cmb_suggestions'
-                    ,fieldLabel: _('seosuite.url.choose_suggestion')
-                    ,tpl: '<tpl for="."><div class="x-combo-list-item" >{pagetitle_id} ({context_key})<br><small>{resource_url}</small></div></tpl>'
-                    ,name: "cmb_suggestions"
-                    ,hiddenName: "cmb_suggestions_value"
-                    ,url: SeoSuite.config.connectorUrl
-                    ,fields: [{
-                        name: 'id',
-                        type: 'string'
-                    },{
-                        name: 'pagetitle_id',
-                        type: 'string'
-                    },{
-                        name: 'context_key',
-                        type: 'string'
-                    },{
-                        name: 'resource_url',
-                        type: 'string'
-                    }]
-                    ,displayField: 'pagetitle_id'
-                    ,baseParams: {
-                        action: 'mgr/resource/getlist'
-                        ,limit: 20
-                        ,sort: 'pagetitle'
-                        ,dir: 'asc'
-                        ,ids: JSON.stringify(config.record.suggestions)
-                    }
-                    ,typeAhead: true
-                    ,typeAheadDelay: 250
-                    ,editable: true
-                    ,forceSelection: true
-                    ,emptyText: _('resource')
-                    ,anchor: '100%'
-                    ,allowBlank: true
-                    ,paging: true
-                    ,pageSize: 20
-                    ,listeners: {
-                        'select': {
-                            fn:this.setRedirectTo,scope: this
-                        }
-                    }
-                }]
-            },{
-                columnWidth: 0.5,
-                layout: 'form',
-                items: [{
-                    xtype: 'modx-combo'
-                    ,id: 'cmb_redirect_to'
-                    ,fieldLabel: _('seosuite.url.choose_manually')
-                    ,tpl: '<tpl for="."><div class="x-combo-list-item" >{pagetitle_id} ({context_key})<br><small>{resource_url}</small></div></tpl>'
-                    ,name: "cmb_redirect_to"
-                    ,hiddenName: "redirect_to_value"
-                    ,url: SeoSuite.config.connectorUrl
-                    ,fields: [{
-                        name: 'id',
-                        type: 'string'
-                    },{
-                        name: 'pagetitle_id',
-                        type: 'string'
-                    },{
-                        name: 'context_key',
-                        type: 'string'
-                    },{
-                        name: 'resource_url',
-                        type: 'string'
-                    }]
-                    ,displayField: 'pagetitle_id'
-                    ,baseParams: {
-                        action: 'mgr/resource/getlist'
-                        ,limit: 20
-                        ,sort: 'pagetitle'
-                        ,dir: 'asc'
-                    }
-                    ,typeAhead: true
-                    ,typeAheadDelay: 250
-                    ,editable: true
-                    ,forceSelection: true
-                    ,emptyText: _('resource')
-                    ,anchor: '100%'
-                    ,allowBlank: true
-                    ,paging: true
-                    ,pageSize: 20
-                    ,listeners: {
-                        'select': {
-                            fn:this.setRedirectTo,scope: this
-                        }
-                    }
-                }]
-            }]
-        },{
-            xtype: 'hidden'
-            ,name: 'redirect_to'
-            ,id: 'redirect_to_value'
-        },{
-            xtype: 'label'
-            ,text: _('seosuite.url.redirect_to_selected')+': '
-            ,cls: 'text-label text-normal first'
-        },{
-            xtype: 'label'
-            ,id: 'redirect_to_text_value'
-            ,html: config.record.redirect_to_text
-            ,cls: 'text-label'
-        }]
-    });
-    SeoSuite.window.Url.superclass.constructor.call(this,config);
+                return _('yes') + ' (' + count + ')';
+            } else {
+                c.css = 'red';
 
-    /* Dirty fix to set the combobox value to empty, when value from request = 0 */
-    var cmb_redirect = Ext.getCmp('cmb_redirect_to');
-    var redirect_to = cmb_redirect.getValue();
-    if (!redirect_to) {
-        cmb_redirect.setValue('');
-    }
-};
-Ext.extend(SeoSuite.window.Url,MODx.Window,{
-    setRedirectTo: function (tf, nv, ov) {
-        var key = tf.getName();
-        var redirect_field = Ext.getCmp('redirect_to_value');
-        redirect_field.setValue(tf.getValue());
-        var redirect_text = Ext.getCmp('redirect_to_text_value');
-        redirect_text.setText(tf.getRawValue());
+                return _('no');
+            }
+        }
+
+        return '-';
+    },
+    renderBoolean: function(d, c) {
+        c.css = parseInt(d) === 1 || d ? 'green' : 'red';
+
+        return parseInt(d) === 1 || d ? _('yes') : _('no');
+    },
+    renderDate: function(a) {
+        if (Ext.isEmpty(a)) {
+            return '—';
+        }
+
+        return a;
     }
 });
-Ext.reg('seosuite-window-url',SeoSuite.window.Url);
 
-SeoSuite.window.Import = function(config) {
+Ext.reg('seosuite-grid-urls', SeoSuite.grid.Urls);
+
+SeoSuite.window.ExcludeWords = function(config) {
     config = config || {};
-    var fieldWidth = 450;
-    this.ident = config.ident || 'site-mecitem'+Ext.id();
-    Ext.applyIf(config,{
-        id: this.ident,
-        autoHeight: true,
-        width: fieldWidth+30,
-        modal: true,
-        closeAction: 'close',
-        url: SeoSuite.config.connector_url,
-        baseParams: {
-            action: 'mgr/url/import',
-            register: 'mgr',
-            topic: '/seosuiteimport/'
+
+    Ext.applyIf(config, {
+        autoHeight  : true,
+        title       : _('seosuite.exclude_words'),
+        url         : SeoSuite.config.connector_url,
+        baseParams  : {
+            action      : 'mgr/exclude_words/save'
         },
-        fileUpload: true,
-        fields: [{
-            html: '<p>'+_('seosuite.import.instructions')+'</p>',
-            style: 'paddingTop: 20px'
-        },{
-            xtype: 'textfield',
-            fieldLabel: _('seosuite.url.file'),
-            buttonText: _('seosuite.url.import_choose'),
-            name: 'file',
-            inputType: 'file'
-        },{
-            xtype: 'checkbox',
-            name: 'match_site_url',
-            boxLabel: _('seosuite.match_site_url'),
-            inputValue: 1
-        },{
-            xtype: 'label'
-            ,text: _('seosuite.match_site_url_desc')
-            ,cls: 'desc-under'
-        }]
+        fields      : [{
+            xtype       : 'textarea',
+            fieldLabel  : _('seosuite.label_exclude_words'),
+            description : MODx.expandHelp ? '' : _('seosuite.label_exclude_words_desc'),
+            name        : 'exclude_words',
+            anchor      : '100%',
+            value       : SeoSuite.config['exclude_words'].join(', ')
+        }, {
+            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+            html        : _('seosuite.label_exclude_words_desc'),
+            cls         : 'desc-under'
+        }],
+        listeners: {
+            success: function (response) {
+                SeoSuite.config['exclude_words'] = response.a.result.object.exclude_words.split(',');
+            }
+        }
     });
-    SeoSuite.window.Import.superclass.constructor.call(this,config);
-};
-Ext.extend(SeoSuite.window.Import,MODx.Window);
-Ext.reg('seosuite-window-import',SeoSuite.window.Import);
 
-SeoSuite.window.Suggestions = function(config) {
+    SeoSuite.window.ExcludeWords.superclass.constructor.call(this, config);
+};
+
+Ext.extend(SeoSuite.window.ExcludeWords, MODx.Window);
+
+Ext.reg('seosuite-window-exclude-words', SeoSuite.window.ExcludeWords);
+
+SeoSuite.window.UrlCreateRedirect = function(config) {
     config = config || {};
-    var fieldWidth = 450;
-    this.ident = config.ident || 'site-mecitem'+Ext.id();
-    Ext.applyIf(config,{
-        id: this.ident,
-        autoHeight: true,
-        width: fieldWidth+30,
-        modal: true,
-        closeAction: 'close',
-        saveBtnText: _('seosuite.url.find_suggestions'),
-        cancelBtnText: _('cancel'),
-        url: SeoSuite.config.connector_url,
-        fields: [{
-            xtype: 'textfield'
-            ,name: 'id'
-            ,hidden: true
-        },{
-            xtype: 'textfield'
-            ,name: 'url'
-            ,hidden: true
-        },{
-            xtype: 'checkbox',
-            name: 'match_site_url',
-            boxLabel: _('seosuite.match_site_url'),
-            inputValue: 1
-        },{
-            xtype: 'label'
-            ,text: _('seosuite.match_site_url_desc')
-            ,cls: 'desc-under'
+
+    Ext.applyIf(config, {
+        autoHeight  : true,
+        title       : _('seosuite.redirect_create'),
+        url         : SeoSuite.config.connector_url,
+        baseParams  : {
+            action      : 'mgr/urls/redirects/create'
+        },
+        fields      : [{
+            xtype       : 'hidden',
+            name        : 'id'
+        }, {
+            xtype       : 'statictextfield',
+            fieldLabel  : _('seosuite.label_redirect_old_url'),
+            description : MODx.expandHelp ? '' : _('seosuite.label_redirect_old_url_desc'),
+            name        : 'url',
+            anchor      : '100%'
+        }, {
+            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+            html        : _('seosuite.label_redirect_old_url_desc'),
+            cls         : 'desc-under'
+        }, {
+            xtype       : 'seosuite-combo-suggestions',
+            fieldLabel  : _('seosuite.label_url_suggestion'),
+            description : MODx.expandHelp ? '' : _('seosuite.label_url_suggestion_desc'),
+            hiddenName  : 'suggestion',
+            anchor      : '100%',
+            suggestions : config.record.suggestions,
+            listeners   : {
+                change      : {
+                    fn          : this.onHandleSuggestion,
+                    scope       : this
+                }
+            }
+        }, {
+            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+            html        : _('seosuite.label_url_suggestion_desc'),
+            cls         : 'desc-under'
+        }, {
+            xtype       : 'textfield',
+            fieldLabel  : _('seosuite.label_redirect_new_url'),
+            description : MODx.expandHelp ? '' : _('seosuite.label_redirect_new_url_desc'),
+            hiddenName  : 'new_url',
+            anchor      : '100%',
+            id          : 'seosuite-redirect-create-new-url'
+        }, {
+            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+            html        : _('seosuite.label_redirect_new_url_desc'),
+            cls         : 'desc-under'
+        }, {
+            xtype       : 'seosuite-combo-redirect-type',
+            fieldLabel  : _('seosuite.label_redirect_type'),
+            description : MODx.expandHelp ? '' : _('seosuite.label_redirect_type_desc'),
+            name        : 'redirect_type',
+            anchor      : '100%',
+            allowBlank  : false
+        }, {
+            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+            html        : _('seosuite.label_redirect_type_desc'),
+            cls         : 'desc-under'
         }]
     });
-    SeoSuite.window.Suggestions.superclass.constructor.call(this,config);
-};
-Ext.extend(SeoSuite.window.Suggestions,MODx.Window);
-Ext.reg('seosuite-window-suggestions',SeoSuite.window.Suggestions);
 
+    SeoSuite.window.UrlCreateRedirect.superclass.constructor.call(this,config);
+};
+
+Ext.extend(SeoSuite.window.UrlCreateRedirect, MODx.Window, {
+    onHandleSuggestion: function(tf) {
+        var newUrl = Ext.getCmp('seosuite-redirect-create-new-url');
+
+        if (newUrl) {
+            newUrl.setValue(tf.getValue());
+        }
+    }
+});
+
+Ext.reg('seosuite-window-url-create-redirect', SeoSuite.window.UrlCreateRedirect);
+
+SeoSuite.window.UrlSuggestions = function(config) {
+    config = config || {};
+
+    Ext.applyIf(config,{
+        autoHeight  : true,
+        width       : 500,
+        title       : _('seosuite.url_suggesstions'),
+        url         : SeoSuite.config.connector_url,
+        baseParams  : {
+            action      : 'mgr/urls/suggestions/find'
+        },
+        fields      : [{
+            xtype       : 'hidden',
+            name        : 'id'
+        }, {
+            xtype       : 'checkbox',
+            hideLabel   : true,
+            boxLabel    : _('seosuite.label_url_match_context', {
+                domain      : config.record.site_url
+            }),
+            name        : 'match_context',
+            inputValue  : 1,
+            checked     : true
+        }, {
+            xtype       : 'label',
+            html        : _('seosuite.label_url_match_context_desc', {
+                domain      : config.record.site_url
+            }),
+            cls         : 'desc-under'
+        }, {
+            xtype       : 'checkbox',
+            hideLabel   : true,
+            boxLabel    : _('seosuite.label_url_match_create_redirect'),
+            name        : 'create_redirect',
+            inputValue  : 1
+        }, {
+            xtype       : 'label',
+            html        : _('seosuite.label_url_match_create_redirect_desc'),
+            cls         : 'desc-under'
+        }],
+        saveBtnText: _('seosuite.find_suggestions'),
+    });
+
+    SeoSuite.window.UrlSuggestions.superclass.constructor.call(this, config);
+};
+
+Ext.extend(SeoSuite.window.UrlSuggestions,MODx.Window);
+
+Ext.reg('seosuite-window-url-suggestions', SeoSuite.window.UrlSuggestions);
+
+SeoSuite.window.ImportUrls = function(config) {
+    config = config || {};
+
+    Ext.applyIf(config,{
+        autoHeight  : true,
+        title       : _('seosuite.urls_import'),
+        hideUpload  : false,
+        fileUpload  : true,
+        url         : SeoSuite.config.connector_url,
+        baseParams  : {
+            action      : 'mgr/url/import',
+            register    : 'mgr',
+            topic       : '/seosuiteimport/'
+        },
+        fields      : [{
+            html        : '<p>'+_('seosuite.import.instructions', {'path': SeoSuite.config.assets_url + 'files/import-example.xls'})+'</p>',
+            style       : 'paddingTop: 20px'
+        }, {
+            xtype       : 'fileuploadfield',
+            fieldLabel  : _('seosuite.label_import_file'),
+            description : MODx.expandHelp ? '' : _('seosuite.label_import_file_desc'),
+            name        : 'file',
+            allowBlank  : false,
+            anchor      : '100%',
+            buttonText  : _('upload.buttons.choose')
+        }, {
+            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+            html        : _('tinymce.label_import_file_desc'),
+            cls         : 'desc-under'
+        }, {
+            xtype       : 'checkbox',
+            hideLabel   : true,
+            boxLabel    : _('seosuite.label_url_match_context', {
+                domain      : ''
+            }),
+            name        : 'match_context',
+            inputValue  : 1,
+            checked     : true
+        }, {
+            xtype       : 'label',
+            html        : _('seosuite.label_url_match_context_desc', {
+                domain      : ''
+            }),
+            cls         : 'desc-under'
+        }]
+    });
+
+    SeoSuite.window.ImportUrls.superclass.constructor.call(this, config);
+};
+
+Ext.extend(SeoSuite.window.ImportUrls, MODx.Window);
+
+Ext.reg('seosuite-window-import-urls', SeoSuite.window.ImportUrls);

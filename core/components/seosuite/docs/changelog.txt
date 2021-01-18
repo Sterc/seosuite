@@ -1,35 +1,42 @@
 Changelog for SeoSuite.
 
-SeoSuite 1.2.3
+SEO Suite 2.0.0
+==============
+- Combined SEO Tab, SEO Pro and SEO Suite v1 into one powerful extra
+- Added a dedicated SEO panel
+- Added Social tab where OG and Twitter meta tags can be managed
+- Improved search engine preview
+
+SEO Suite 1.2.3
 ==============
 - Removed license check
 
-SeoSuite 1.2.2
+SEO Suite 1.2.2
 ==============
 - Added some missing Dutch translations
 - Fixed issue with incorrect redirect-cleanup script path
 - Improved Dutch/English descriptions
 
-SeoSuite 1.2.1
+SEO Suite 1.2.1
 ==============
 - validate URL's before saving them
 - Able to block URL's from being saved as redirect by system setting
 
-SeoSuite 1.2.0
+SEO Suite 1.2.0
 ==============
 - Added redirect created date
 - Added redirect triggerd count & last time triggerd date
 - Added cleanup cronjob which removes unresolved redirects which are older then 1 month and have been triggered just once
 
-SeoSuite 1.1.2
+SEO Suite 1.1.2
 ==============
 - Added indexes for improved performance
 
-SeoSuite 1.1.1
+SEO Suite 1.1.1
 ==============
 - Modstore/modmore compatibility
 
-SeoSuite 1.1.0
+SEO Suite 1.1.0
 ==============
 - Add limit to redirect suggestions shown in grid
 - Add SeoSuiteUrl and try to find matches when OnPageNotFound is triggered and no SeoSuiteUrl object is found
@@ -41,13 +48,13 @@ SeoSuite 1.1.0
 - Add system setting (and cmp field) for excluding words from suggestion matching
 - Add suggestions combobox to update url window
 
-SeoSuite 1.0.1
+SEO Suite 1.0.1
 ==============
 - Fix find-suggestions response message to notify if more than one redirect match
 - Fix getSeoTabVersion function to check for correct package_name
 - Fix grid getlist to show only first 10 redirect suggestions to prevent processor timeouts
 - Fix url update processor to not break when not using SEO Tab as redirect handler
 
-SeoSuite 1.0.0
+SEO Suite 1.0.0
 ==============
 - Initial release.
