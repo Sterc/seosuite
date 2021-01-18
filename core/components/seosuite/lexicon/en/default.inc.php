@@ -66,7 +66,7 @@ $_lang['seosuite.import.instructions']                          = 'Use a .csv, .
 
 $_lang['seosuite.redirect']                                     = 'URL redirect';
 $_lang['seosuite.redirects']                                    = 'URL redirects';
-$_lang['seosuite.redirects_desc']                               = 'Manage all your URL redirects here.';
+$_lang['seosuite.redirects_desc']                               = 'Manage all your URL redirects here. A URL redirect is used to redirect a non existing page to the new page. A URL redirect can be made for a specific context or for all contexts at once and will displayed below as "* /". URL redirects with a specific context takes precedence over a URL redirect for all contexts.';
 $_lang['seosuite.redirect_create']                              = 'New URL redirect';
 $_lang['seosuite.redirect_update']                              = 'Update URL redirect';
 $_lang['seosuite.redirect_remove']                              = 'Remove URL redirect';
@@ -90,6 +90,7 @@ $_lang['seosuite.error.emptyfile']                              = 'No file speci
 $_lang['seosuite.error.extension_notallowed']                   = 'Filetype not allowed. Only .csv, .xls or .xlsx files are allowed.';
 $_lang['seosuite.error.ziparchive_notinstalled']                = 'PHP extension ZipArchive is not installed, which is needed to be able to import xls(x) files. Please install the ZipArchive extension or use a .csv file.';
 
+$_lang['seosuite.friendly_urls_disabled']                       = 'Search engine friendly URLs is currently not enabled in this MODx installation, for SEO Suite to work properly search engine friendly URLs must be enabled.';
 $_lang['seosuite.find_suggestions']                             = 'Find suggestions';
 $_lang['seosuite.redirect_error_exists']                        = 'An URL redirect already exists for this URL.';
 $_lang['seosuite.resource_no_redirects']                        = 'There are no URL redirects for this page.';

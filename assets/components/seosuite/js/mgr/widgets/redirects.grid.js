@@ -233,7 +233,12 @@ Ext.extend(SeoSuite.grid.Redirects, MODx.grid.Grid, {
         });
     },
     renderOldUrl: function(d, c, e) {
+        if (/^(((http|https|ftp):\/\/)|www\.)/.test(d)) {
+            return d;
+        }
+
         var url = '*/';
+
         if (!Ext.isEmpty(e.json.old_site_url)) {
             url = e.json.old_site_url;
         }
@@ -241,7 +246,12 @@ Ext.extend(SeoSuite.grid.Redirects, MODx.grid.Grid, {
         return '<span class="x-grid-span">' + url + '</span>' + d;
     },
     renderNewUrl: function(d, c, e) {
+        if (/^(((http|https|ftp):\/\/)|www\.)/.test(d)) {
+            return d;
+        }
+
         var url = '*/';
+
         if (!Ext.isEmpty(e.json.new_site_url)) {
             if (!/^(((http|https|ftp):\/\/)|www\.)/.test(d)) {
                 url = e.json.new_site_url;
@@ -296,7 +306,8 @@ SeoSuite.window.CreateRedirect = function(config) {
                     description : MODx.expandHelp ? '' : _('seosuite.label_redirect_old_url_desc'),
                     name        : 'old_url',
                     anchor      : '100%',
-                    allowBlank  : false
+                    allowBlank  : false,
+                    msgTarget   : 'under'
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.label_redirect_old_url_desc'),
@@ -374,10 +385,6 @@ Ext.reg('seosuite-window-redirect-create', SeoSuite.window.CreateRedirect);
 SeoSuite.window.UpdateRedirect = function(config) {
     config = config || {};
 
-    if (config.record.context_key === '') {
-        config.record.context_key = 'seosuite_all';
-    }
-
     Ext.applyIf(config, {
         autoHeight  : true,
         title       : _('seosuite.redirect_update'),
@@ -405,7 +412,8 @@ SeoSuite.window.UpdateRedirect = function(config) {
                     description : MODx.expandHelp ? '' : _('seosuite.label_redirect_old_url_desc'),
                     name        : 'old_url',
                     anchor      : '100%',
-                    allowBlank  : false
+                    allowBlank  : false,
+                    msgTarget   : 'under'
                 }, {
                     xtype       : MODx.expandHelp ? 'label' : 'hidden',
                     html        : _('seosuite.label_redirect_old_url_desc'),

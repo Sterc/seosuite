@@ -8,112 +8,111 @@
 
 class SeoSuiteRedirects extends SeoSuitePlugin
 {
-    protected $request = '';
-
     /**
      * @access public.
      * @return Mixed.
      */
     public function onPageNotFound()
     {
-        $this->request = $this->seosuite->formatUrl($_SERVER['REQUEST_URI']);
+        $request = urldecode(trim($_GET[$this->modx->getOption('request_param_alias', null, 'q')], '/'));
 
-        if ($this->request !== '') {
-            $this->countVisits();
-            $this->redirect();
+        if (!empty($request)) {
+            $this->redirect($request);
         }
     }
 
     /**
-     * Determine if page not found should be tracked.
-     * Checks for SQL injection via regex
-     * Checks if url contains words which are set in system_setting
+     * Redirect or log the 404 request.
+     *
+     * @access protected.
+     * @param String $request.
      */
-    protected function shouldLog404()
+    protected function redirect($request)
+    {
+        $criteria = $this->modx->newQuery('SeoSuiteRedirect', [
+            'old_url'       => $request,
+            'active'        => 1,
+            [
+                'context_key'       => '',
+                'OR:context_key:='  => $this->modx->context->get('key')
+            ]
+        ]);
+
+        $criteria->sortby('context_key', 'DESC');
+
+        foreach ($this->modx->getIterator('SeoSuiteRedirect', $criteria) as $redirect) {
+            $redirect->set('visits', (int) $redirect->get('visits') + 1);
+            $redirect->set('last_visit', date('Y-m-d H:i:s'));
+
+            if ($redirect->save()) {
+                if (is_numeric($redirect->get('new_url'))) {
+                    $url = $this->modx->makeUrl($redirect->get('new_url'), '', '', 'full');
+                } else {
+                    $url = $redirect->get('new_url');
+                }
+
+                if (strpos($url, 'www') === 0) {
+                    $url = 'http://' . $url;
+                }
+
+                if (!empty($url)) {
+                    $this->modx->sendRedirect($url, [
+                        'responseCode' => $redirect->get('redirect_type')
+                    ]);
+                }
+            }
+        }
+
+        if ($this->shouldLog404($request)) {
+            $url = $this->modx->getObject('SeoSuiteUrl', [
+                'url' => $request
+            ]);
+
+            if (!$url) {
+                $url = $this->modx->newObject('SeoSuiteUrl');
+            }
+
+            if ($url) {
+                $url->fromArray([
+                    'context_key' => $this->modx->context->get('key'),
+                    'url'         => $request,
+                    'visits'      => (int) $url->get('visits') + 1,
+                    'last_visit'  => date('Y-m-d H:i:s')
+                ]);
+
+                $url->save();
+            }
+        }
+    }
+
+    /**
+     * Check if the 404 request should be logged.
+     *
+     * Checks for SQL injection via regex.
+     * Checks if url contains words which are set in system_setting.
+     *
+     * @access protected.
+     * @param String $request.
+     * @return Bool.
+     */
+    protected function shouldLog404($request)
     {
         $url = $this->modx->getOption('server_protocol').'://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
         if (!preg_match('/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+$/', $url)) {
             return false;
         }
 
-        if (count($blockedWords = $this->modx->seosuite->config['blocked_words']) > 0) {
+        $blockedWords = $this->modx->seosuite->config['blocked_words'];
+
+        if (count($blockedWords) > 0) {
             foreach ($blockedWords as $word) {
-                if (strpos($this->request, $word)) {
+                if (strpos($request, $word)) {
                     return false;
                 }
             }
         }
 
         return true;
-    }
-
-    /**
-     * Add 404 url if page not found event is triggered.
-     */
-    protected function countVisits()
-    {
-        if (!$this->shouldLog404()) {
-            return false;
-        }
-
-        $notFound = $this->modx->getObject('SeoSuiteUrl', [
-            'context_key' => $this->modx->context->get('key'),
-            'url'         => $this->request
-        ]);
-
-        if (!$notFound) {
-            /* Check if there is not a redirect that already exists for this. */
-            if ($this->modx->getObject('SeoSuiteRedirect', ['context_key' => $this->modx->context->get('key'), 'old_url' => $this->request, 'active' => true])) {
-                return false;
-            }
-
-            $notFound = $this->modx->newObject('SeoSuiteUrl');
-        }
-
-        $notFound->fromArray([
-            'context_key' => $this->modx->context->get('key'),
-            'url'         => $this->request,
-            'visits'      => (int) $notFound->get('visits') + 1,
-            'last_visit'  => date('Y-m-d H:i:s')
-        ]);
-
-        $notFound->save();
-    }
-
-    /**
-     * Check if there are any redirects set up.
-     */
-    protected function redirect()
-    {
-        $query = $this->modx->newQuery('SeoSuiteRedirect');
-        $query->where([
-            'active'  => 1,
-            'old_url' => $this->request
-        ]);
-
-        $query->where([
-            [
-                'context_key' => $this->modx->context->key,
-            ], [
-                'context_key' => ''
-            ]
-        ], xPDOQuery::SQL_OR);
-
-        /**
-         * This is to ensure that if a redirect is available for this specific context it has priority over general redirects.
-         * Because redirects tied to a specific context are now being returned first.
-        */
-        $query->sortby('context_key', 'desc');
-
-        $redirect = $this->modx->getObject('SeoSuiteRedirect', $query);
-        if ($redirect) {
-            $redirectUrl = is_numeric($redirect->get('new_url')) ? $this->modx->makeUrl($redirect->get('new_url'), '', '', 'full') : $redirect->get('new_url');
-
-            $redirect->set('visits', (int) $redirect->get('visits') + 1);
-            $redirect->set('last_visit', date('Y-m-d H:i:s'));
-            $redirect->save();
-
-            $this->modx->sendRedirect($redirectUrl, ['responseCode' => $redirect->get('redirect_type')]);
-        }
     }
 }

@@ -15,6 +15,9 @@ SeoSuite.panel.Home = function(config) {
                     html        : '<p>' + _('seosuite.urls_desc') + '</p>',
                     bodyCssClass : 'panel-desc'
                 }, {
+                    html            : parseInt(MODx.config.friendly_urls) === 0 ? '<p>' + _('seosuite.friendly_urls_disabled') + '</p>' : '',
+                    cls             : parseInt(MODx.config.friendly_urls) === 0 ? 'modx-config-error panel-desc' : ''
+                }, {
                     xtype       : 'seosuite-grid-urls',
                     cls         : 'main-wrapper',
                     preventRender : true,
@@ -25,6 +28,9 @@ SeoSuite.panel.Home = function(config) {
                 items       : [{
                     html        : '<p>' + _('seosuite.redirects_desc') + '</p>',
                     bodyCssClass : 'panel-desc'
+                }, {
+                    html            : parseInt(MODx.config.friendly_urls) === 0 ? '<p>' + _('seosuite.friendly_urls_disabled') + '</p>' : '',
+                    cls             : parseInt(MODx.config.friendly_urls) === 0 ? 'modx-config-error panel-desc' : ''
                 }, {
                     xtype       : 'seosuite-grid-redirects',
                     cls         : 'main-wrapper',

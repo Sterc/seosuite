@@ -140,6 +140,7 @@ class SeoSuiteSnippets extends SeoSuite
 
         foreach ($meta as $key => $item) {
             $tpl = $item['tpl'];
+            $key = trim($key, '_');
 
             /* Unset tpl from placeholders. */
             unset($item['tpl']);
@@ -150,7 +151,7 @@ class SeoSuiteSnippets extends SeoSuite
                 $item['value'] = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($item['value'], '/');
             }
 
-            $html[trim($key, '_')] = $this->getChunk($tpl, $item);
+            $html[$key] = $this->getChunk($tpl, $item);
         }
 
         if ($toPlaceholders) {
