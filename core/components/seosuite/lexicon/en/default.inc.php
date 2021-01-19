@@ -76,7 +76,7 @@ $_lang['seosuite.redirects_remove_confirm']                     = 'Are you sure 
 $_lang['seosuite.use_redirect_across_domains']                  = 'Use redirect for all domains';
 
 $_lang['seosuite.label_redirect_old_url']                       = 'Old URL';
-$_lang['seosuite.label_redirect_old_url_desc']                  = 'The old URL of the URL redirect.';
+$_lang['seosuite.label_redirect_old_url_desc']                  = 'The old URL of the URL redirect without the domain name. For example: "/example".';
 $_lang['seosuite.label_redirect_new_url']                       = 'New URL';
 $_lang['seosuite.label_redirect_new_url_desc']                  = 'The new URL of the URL redirection. This can be with or without a domain, but can also contain the ID of the resource.';
 $_lang['seosuite.label_redirect_active']                        = 'Active';
