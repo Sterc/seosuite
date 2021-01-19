@@ -39,6 +39,7 @@ class SeoSuiteSnippets extends SeoSuite
             'resource_id' => $id
         ]);
 
+        $canonicalUrl = $this->modx->makeUrl($id, null, null, 'full');
         if ($ssResource) {
             $meta['_robots'] = [
                 'name'  => 'robots',
@@ -50,11 +51,7 @@ class SeoSuiteSnippets extends SeoSuite
             ];
 
             if ($ssResource->get('canonical') && !empty($ssResource->get('canonical_uri'))) {
-                $meta['_canonical'] = [
-                    'name'  => 'canonical',
-                    'value' => rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($ssResource->get('canonical_uri'), '/'),
-                    'tpl'   => $tpl
-                ];
+                $canonicalUrl = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($ssResource->get('canonical_uri'), '/');
             }
         } else {
             $meta['_robots'] = [
@@ -66,6 +63,12 @@ class SeoSuiteSnippets extends SeoSuite
                 'tpl'   => $tpl
             ];
         }
+
+        $meta['_canonical'] = [
+            'name'  => 'canonical',
+            'value' => $canonicalUrl,
+            'tpl'   => $tpl
+        ];
 
         if (!empty($this->config['tab_social']['default_og_image'])) {
             $meta['og_image'] = [
@@ -125,13 +128,12 @@ class SeoSuiteSnippets extends SeoSuite
                 ]);
             }
 
-            if ($toPlaceholders) {
-                $this->modx->toPlaceholder('alternates', implode(PHP_EOL, $values), self::PHS_PREFIX);
-            } else {
-                $html[] = $this->modx->getChunk($tplAlternateWrapper, [
-                    'output' => $alternateHTML
-                ]);
-            }
+            $meta['_alternates'] = [
+                'name'  => 'alternates',
+                'value' => $this->modx->getChunk($tplAlternateWrapper, [
+                    'output' => implode($values, PHP_EOL)
+                ])
+            ];
         }
 
         ksort($meta);
@@ -139,7 +141,7 @@ class SeoSuiteSnippets extends SeoSuite
         $html = [];
 
         foreach ($meta as $key => $item) {
-            $tpl = $item['tpl'];
+            $tpl = $item['tpl'] ?: null;
             $key = trim($key, '_');
 
             /* Unset tpl from placeholders. */
@@ -151,7 +153,7 @@ class SeoSuiteSnippets extends SeoSuite
                 $item['value'] = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($item['value'], '/');
             }
 
-            $html[$key] = $this->getChunk($tpl, $item);
+            $html[$key] = $tpl ? $this->getChunk($tpl, $item) : $item['value'];
         }
 
         if ($toPlaceholders) {
@@ -345,11 +347,11 @@ class SeoSuiteSnippets extends SeoSuite
             $alternate = [
                 'cultureKey' => $ctx->getOption('cultureKey', ['context_key' => $contextKey], 'en'),
                 'url'        => $this->modx->makeUrl($resourceId, '', '', 'full'),
-                'locale'     => $ctx->getOption('locale')
+                'locale'     => $this->config['meta']['default_alternate_context'] === $ctx->get('key') ? 'x-default' : $ctx->getOption('locale')
             ];
 
             if (isset($options['alternateTpl']) && !empty($options['alternateTpl'])) {
-                $html[] =  $this->getChunk($options['alternateTpl'], $alternate);
+                $html[] = $this->getChunk($options['alternateTpl'], $alternate);
             }
 
             $alternates[] = $alternate;
@@ -397,7 +399,7 @@ class SeoSuiteSnippets extends SeoSuite
      */
     protected function shouldAddBabelAlternativeLinks()
     {
-        if ($this->config['babel_add_alternate_links'] === false ||
+        if ($this->config['sitemap']['babel_add_alternate_links'] === false ||
             !file_exists($this->modx->getOption('babel.core_path', null, $this->modx->getOption('core_path') . 'components/babel/') . 'model/babel/')
         ) {
             return false;

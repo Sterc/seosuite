@@ -398,6 +398,7 @@ SeoSuite.window.UrlCreateRedirect = function(config) {
             xtype       : 'textfield',
             fieldLabel  : _('seosuite.label_redirect_new_url'),
             description : MODx.expandHelp ? '' : _('seosuite.label_redirect_new_url_desc'),
+            name        : 'new_url',
             hiddenName  : 'new_url',
             anchor      : '100%',
             id          : 'seosuite-redirect-create-new-url'

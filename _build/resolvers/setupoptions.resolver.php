@@ -275,16 +275,22 @@ class SeoSuiteSetupOptionsResolver
         $this->modx->loadClass('seoUrl', $corePath . 'model/stercseo/');
         foreach ($this->modx->getIterator('seoUrl') as $seoUrl) {
             /* Create redirect if not exists. */
+            $oldUrlArray = parse_url(urldecode($seoUrl->get('url')));
+            if (!isset($oldUrlArray['path'])) {
+                continue;
+            }
+
+            $oldUrl = trim($oldUrlArray['path'], '/');
             if (!$this->modx->getObject('SeoSuiteRedirect', [
                 'resource_id' => $seoUrl->get('resource'),
                 'context_key' => $seoUrl->get('context_key'),
-                'old_url'     => $seoUrl->get('url')
+                'old_url'     => $oldUrl
             ])) {
                 $redirect = $this->modx->newObject('SeoSuiteRedirect');
                 $redirect->fromArray([
                     'context_key' => $seoUrl->get('context_key'),
                     'resource_id' => $seoUrl->get('resource'),
-                    'old_url'     => $seoUrl->get('url'),
+                    'old_url'     => $oldUrl,
                     'new_url'     => $seoUrl->get('resource'),
                     'active'      => true
                 ]);
