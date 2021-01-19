@@ -344,7 +344,7 @@ class SeoSuiteSnippets extends SeoSuite
             $alternate = [
                 'cultureKey' => $ctx->getOption('cultureKey', ['context_key' => $contextKey], 'en'),
                 'url'        => $this->modx->makeUrl($resourceId, '', '', 'full'),
-                'locale'     => $ctx->getOption('locale')
+                'locale'     => $this->config['meta']['default_alternate_context'] === $ctx->get('key') ? 'x-default' : $ctx->getOption('locale')
             ];
 
             if (isset($options['alternateTpl']) && !empty($options['alternateTpl'])) {

@@ -110,6 +110,10 @@
             "value": "[[+longtitle]] | [[++site_name]]",
             "area": "seosuite_tab_meta"
         },{
+          "key": "meta.default_alternate_context",
+          "value": "web",
+          "area": "seosuite_tab_meta"
+        },{
             "key": "meta.keywords_field_counters",
             "value": "longtitle:4,description:8,content",
             "area": "seosuite_tab_meta"

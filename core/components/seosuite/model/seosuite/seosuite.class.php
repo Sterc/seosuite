@@ -89,6 +89,7 @@ class SeoSuite
                 'keywords_field_counters'   => $this->getKeywordsFieldCounters($this->modx->getOption('seosuite.meta.keywords_field_counters', null, 'longtitle:4,description:8,content')),
                 'default_meta_title'        => $this->modx->getOption('seosuite.meta.default_meta_title', null, '[[+longtitle]] | [[++site_name]]'),
                 'default_meta_description'  => $this->modx->getOption('seosuite.meta.default_meta_description', null, '[[+description]]'),
+                'default_alternate_context' => $this->modx->getOption('seosuite.meta.default_alternate_context', null, ''),
                 'preview'                   => [
                     'mode'                      => $this->modx->getOption('seosuite.meta.searchmode', null, 'mobile'),
                     'engine'                    => $this->modx->getOption('seosuite.meta.searchengine', null, 'google'),
@@ -100,7 +101,7 @@ class SeoSuite
                         'title'                     => (int) $this->modx->getOption('seosuite.meta.preview.length_mobile_title', null, 78),
                         'description'               => (int) $this->modx->getOption('seosuite.meta.preview.length_mobile_description', null, 130)
                     ]
-                ],
+                ]
             ],
             'sitemap'                   => [
                 'babel_add_alternate_links' => (bool) $this->modx->getOption('seosuite.sitemap.babel.add_alternate_links', null, true),

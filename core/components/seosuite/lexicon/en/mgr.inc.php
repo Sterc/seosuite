@@ -33,6 +33,8 @@ $_lang['setting_seosuite.meta.preview.length_mobile_title']             = 'Previ
 $_lang['setting_seosuite.meta.preview.length_mobile_title_desc']        = 'Determines the maximum length as shown in the preview.';
 $_lang['setting_seosuite.meta.preview.length_mobile_description']       = 'Preview mobile description length';
 $_lang['setting_seosuite.meta.preview.length_mobile_description_desc']  = 'Determines the maximum length as shown in the preview.';
+$_lang['setting_seosuite.meta.default_alternate_context']               = 'Default alternate context';
+$_lang['setting_seosuite.meta.default_alternate_context_desc']          = 'Specify the context to be marked as default alternate link (x-default).';
 
 /* Sitemap settings. */
 $_lang['setting_seosuite.sitemap.default_changefreq']                   = 'Default resource setting: update frequency';
