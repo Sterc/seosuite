@@ -27,8 +27,8 @@ $_lang['seosuite.tab_seo.label_sitemap_prio']               = 'Sitemap prioritei
 $_lang['seosuite.tab_seo.label_sitemap_prio_desc']          = 'Geef zoekmachines een indicatie van het belang van deze pagina door de prioriteit in te stellen. Let op: je prioriteit wordt niet blindelings overgenomen door zoekmachines!';
 $_lang['seosuite.tab_seo.label_sitemap_changefreq']         = 'Sitemap wijzigings frequentie';
 $_lang['seosuite.tab_seo.label_sitemap_changefreq_desc']    = 'Geef zoekmachines aan hoe vaak de inhoud van de pagina ongeveer verandert.';
-$_lang['seosuite.tab_seo.label_canonical']                  = 'Stel een canonical URL in voor deze pagina';
-$_lang['seosuite.tab_seo.label_canonical_desc']             = 'Indien aangevinkt kun je een canonical URL instellen voor deze pagina.';
+$_lang['seosuite.tab_seo.label_canonical']                  = 'Overschrijf standaard canonical.';
+$_lang['seosuite.tab_seo.label_canonical_desc']             = 'Indien aangevinkt, kun je een alternatieve canonical URL instellen.';
 $_lang['seosuite.tab_seo.label_canonical_uri']              = 'Canonical URL';
 $_lang['seosuite.tab_seo.label_canonical_uri_desc']         = 'Let op, vul alleen het gene achter het domein "[[+site_url]]" in.';
 

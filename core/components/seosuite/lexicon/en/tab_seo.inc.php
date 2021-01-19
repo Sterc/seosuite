@@ -27,8 +27,8 @@ $_lang['seosuite.tab_seo.label_sitemap_prio']               = 'Sitemap priority'
 $_lang['seosuite.tab_seo.label_sitemap_prio_desc']          = 'Give search engines an indication of the resource importance by defining the priority. Note: the Let op: your priority is not blindly taken over by search engines!';
 $_lang['seosuite.tab_seo.label_sitemap_changefreq']         = 'Sitemap change frequency';
 $_lang['seosuite.tab_seo.label_sitemap_changefreq_desc']    = 'Indicate search engines how often the content of the page changes.';
-$_lang['seosuite.tab_seo.label_canonical']                  = 'Set a canonical URL for this page';
-$_lang['seosuite.tab_seo.label_canonical_desc']             = 'If checked you can set a canonical URL for this page.';
+$_lang['seosuite.tab_seo.label_canonical']                  = 'Overwrite default canonical.';
+$_lang['seosuite.tab_seo.label_canonical_desc']             = 'If checked you can set an alternative canonical URL.';
 $_lang['seosuite.tab_seo.label_canonical_uri']              = 'Canonical URL';
 $_lang['seosuite.tab_seo.label_canonical_uri_desc']         = 'Please note, only enter the part behind the domain "[[+site_url]]".';
 

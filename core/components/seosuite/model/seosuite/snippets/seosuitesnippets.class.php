@@ -39,6 +39,7 @@ class SeoSuiteSnippets extends SeoSuite
             'resource_id' => $id
         ]);
 
+        $canonicalUrl = $this->modx->makeUrl($id, null, null, 'full');
         if ($ssResource) {
             $meta['_robots'] = [
                 'name'  => 'robots',
@@ -50,11 +51,7 @@ class SeoSuiteSnippets extends SeoSuite
             ];
 
             if ($ssResource->get('canonical') && !empty($ssResource->get('canonical_uri'))) {
-                $meta['_canonical'] = [
-                    'name'  => 'canonical',
-                    'value' => rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($ssResource->get('canonical_uri'), '/'),
-                    'tpl'   => $tpl
-                ];
+                $canonicalUrl = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($ssResource->get('canonical_uri'), '/');
             }
         } else {
             $meta['_robots'] = [
@@ -66,6 +63,12 @@ class SeoSuiteSnippets extends SeoSuite
                 'tpl'   => $tpl
             ];
         }
+
+        $meta['_canonical'] = [
+            'name'  => 'canonical',
+            'value' => $canonicalUrl,
+            'tpl'   => $tpl
+        ];
 
         if (!empty($this->config['tab_social']['default_og_image'])) {
             $meta['og_image'] = [
