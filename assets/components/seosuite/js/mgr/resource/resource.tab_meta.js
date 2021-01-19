@@ -80,7 +80,11 @@ Ext.extend(SeoSuite, Ext.Component, {
                                 keyup       : {
                                     fn          : function(tf) {
                                         Ext.iterate(this.getFieldKeywordCounters(), (function(key) {
-                                            this.onUpdateKeywordCounter(key);
+                                            var tf = Ext.getCmp(key);
+
+                                            if (tf) {
+                                                this.onUpdateKeywordCounter.call(tf, tf);
+                                            }
                                         }).bind(this));
                                     },
                                     scope       : this
@@ -367,31 +371,33 @@ Ext.extend(SeoSuite, Ext.Component, {
                 html    : _('seosuite.tab_meta.keywords') + ': <span>0</span>'
             });
 
-            tf.on('keyup', this.onUpdateKeywordCounter);
-            tf.on('change', this.onUpdateKeywordCounter);
+            tf.on('keyup', this.onUpdateKeywordCounter, tf);
+            tf.on('change', this.onUpdateKeywordCounter, tf);
 
-            this.onUpdateKeywordCounter(tf);
+            this.onUpdateKeywordCounter.call(tf, tf);
         }
     },
     onUpdateKeywordCounter: function(tf) {
-        if (typeof tf !== 'object') {
-            tf = Ext.getCmp(tf);
-        }
+        var tf = this;
 
         if (tf) {
-            var count = 0;
-            var keywords = Ext.getCmp('seosuite-keywords');
+            var count       = 0;
+            var keywords    = Ext.getCmp('seosuite-keywords');
+            var value       = tf.getValue().replace(/(<([^>]+)>)/gi, '');
+
+            if (tf.originalValue) {
+                value       = tf.originalValue.replace(/(<([^>]+)>)/gi, '');
+            }
 
             /* Remove html tags. */
-            tf.setValue(tf.getValue().replace(/(<([^>]+)>)/gi, ''));
-            if (keywords) {
-                var value = tf.getValue().toLowerCase();
+            tf.setValue(value);
 
+            if (keywords) {
                 keywords.getValue().split(',').forEach(function(keyword) {
                     keyword = keyword.replace(/^\s+/, '').toLowerCase();
 
                     if (keyword) {
-                        var matches = value.match(new RegExp("(^|[ \s\n\r\t\.,'\(\"\+;!?:\-\>])" + keyword + "($|[ \s\n\r\t.,'\)\"\+!?:;\-\<])", 'gim'));
+                        var matches = value.toLowerCase().match(new RegExp("(^|[ \s\n\r\t\.,'\(\"\+;!?:\-\>])" + keyword + "($|[ \s\n\r\t.,'\)\"\+!?:;\-\<])", 'gim'));
 
                         if (matches) {
                             count += matches.length;
@@ -400,12 +406,10 @@ Ext.extend(SeoSuite, Ext.Component, {
                 });
             }
 
-
-
             tf.container.select('.x-form-seosuite-keyword-counter-progress').elements.forEach(function(element) {
                 var counter = Ext.get(element);
 
-                if (tf.maxKeywords >= 0) {
+                if (tf.maxKeywords > 0) {
                     if (tf.maxKeywords >= count) {
                         counter.removeClass('invalid').addClass('valid');
                     } else {
