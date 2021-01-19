@@ -1,5 +1,13 @@
 Changelog for SeoSuite.
 
+SEO Suite 2.0.1
+==============
+- Fixed issue which didn't set the alternate placeholders properly
+- Fixed keyword counter issue in combination with Ace
+- Fixed issue which didn't save the new url when creating a new redirect
+- Fixed incorrect formatted URL during SEO Tab migration
+- Added system setting for marking alternate link as x-default
+
 SEO Suite 2.0.0
 ==============
 - Combined SEO Tab, SEO Pro and SEO Suite v1 into one powerful extra
