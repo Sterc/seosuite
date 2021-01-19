@@ -125,13 +125,12 @@ class SeoSuiteSnippets extends SeoSuite
                 ]);
             }
 
-            if ($toPlaceholders) {
-                $this->modx->toPlaceholder('alternates', implode(PHP_EOL, $values), self::PHS_PREFIX);
-            } else {
-                $html[] = $this->modx->getChunk($tplAlternateWrapper, [
-                    'output' => $alternateHTML
-                ]);
-            }
+            $meta['_alternates'] = [
+                'name'  => 'alternates',
+                'value' => $this->modx->getChunk($tplAlternateWrapper, [
+                    'output' => implode($values, PHP_EOL)
+                ])
+            ];
         }
 
         ksort($meta);
@@ -139,7 +138,7 @@ class SeoSuiteSnippets extends SeoSuite
         $html = [];
 
         foreach ($meta as $key => $item) {
-            $tpl = $item['tpl'];
+            $tpl = $item['tpl'] ?: null;
             $key = trim($key, '_');
 
             /* Unset tpl from placeholders. */
@@ -151,7 +150,7 @@ class SeoSuiteSnippets extends SeoSuite
                 $item['value'] = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($item['value'], '/');
             }
 
-            $html[$key] = $this->getChunk($tpl, $item);
+            $html[$key] = $tpl ? $this->getChunk($tpl, $item) : $item['value'];
         }
 
         if ($toPlaceholders) {
@@ -349,7 +348,7 @@ class SeoSuiteSnippets extends SeoSuite
             ];
 
             if (isset($options['alternateTpl']) && !empty($options['alternateTpl'])) {
-                $html[] =  $this->getChunk($options['alternateTpl'], $alternate);
+                $html[] = $this->getChunk($options['alternateTpl'], $alternate);
             }
 
             $alternates[] = $alternate;
@@ -397,7 +396,7 @@ class SeoSuiteSnippets extends SeoSuite
      */
     protected function shouldAddBabelAlternativeLinks()
     {
-        if ($this->config['babel_add_alternate_links'] === false ||
+        if ($this->config['sitemap']['babel_add_alternate_links'] === false ||
             !file_exists($this->modx->getOption('babel.core_path', null, $this->modx->getOption('core_path') . 'components/babel/') . 'model/babel/')
         ) {
             return false;
