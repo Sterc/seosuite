@@ -802,8 +802,8 @@ class SeoSuite
         }
 
         return [
-            'processed'     => strip_tags($processedValue),
-            'unprocessed'   => strip_tags($unProcessedValue)
+            'processed'     => htmlentities($processedValue),
+            'unprocessed'   => htmlentities($unProcessedValue)
         ];
     }
 
