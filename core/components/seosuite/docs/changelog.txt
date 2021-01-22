@@ -1,5 +1,9 @@
 Changelog for SeoSuite.
 
+SEO Suite 2.0.2
+==============
+- Fixed issue which caused rich text content fields to break #4 #5
+
 SEO Suite 2.0.1
 ==============
 - Fixed issue which didn't set the alternate placeholders properly

@@ -383,14 +383,11 @@ Ext.extend(SeoSuite, Ext.Component, {
         if (tf) {
             var count       = 0;
             var keywords    = Ext.getCmp('seosuite-keywords');
-            var value       = tf.getValue().replace(/(<([^>]+)>)/gi, '');
+            var value       = tf.getValue();
 
             if (tf.originalValue) {
-                value       = tf.originalValue.replace(/(<([^>]+)>)/gi, '');
+                value       = tf.originalValue;
             }
-
-            /* Remove html tags. */
-            tf.setValue(value);
 
             if (keywords) {
                 keywords.getValue().split(',').forEach(function(keyword) {
