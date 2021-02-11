@@ -776,7 +776,10 @@ class SeoSuite
         $unProcessedValue   = $value;
 
         if (!empty($value)) {
-            $data = array_map('trim', $fields);
+            
+            $data = array_map(function ($value) {
+                return is_string($value) ? trim($value) : $value;
+            }, $fields);
 
             if (empty($data['longtitle'])) {
                 $data['longtitle'] = $data['pagetitle'];
