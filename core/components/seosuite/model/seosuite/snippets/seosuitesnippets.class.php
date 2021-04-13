@@ -50,7 +50,7 @@ class SeoSuiteSnippets extends SeoSuite
                 'tpl'   => $tpl
             ];
 
-            $meta['keywords'] = [
+            $meta['_keywords'] = [
                 'name'  => 'keywords',
                 'value' => $ssResource->get('keywords'),
                 'tpl'   => $tpl
