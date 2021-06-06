@@ -82,7 +82,7 @@ class SeoSuiteMetaPreviewProcessor extends modObjectProcessor
     protected function truncate($output, $maxLength = 0)
     {
         if ($maxLength !== 0 && strlen($output) > $maxLength) {
-            $output = substr($output, 0, $maxLength) . '...';
+            $output = mb_substr($output, 0, $maxLength) . '...';
         }
 
         return $output;
