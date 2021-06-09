@@ -43,6 +43,10 @@
                 "name": "tplMeta",
                 "file": "meta.chunk.tpl",
                 "description": "The default chunk used for the meta."
+            },{
+                "name": "tplMetaSocial",
+                "file": "metasocial.chunk.tpl",
+                "description": "The default chunk used for the social meta."
             }, {
                 "name": "tplLink",
                 "file": "link.chunk.tpl",

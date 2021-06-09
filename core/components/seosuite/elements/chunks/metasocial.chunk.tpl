@@ -1,0 +1,1 @@
+<meta property="[[+name]]" content="[[+value:escape]]" />
