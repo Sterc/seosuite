@@ -3,7 +3,7 @@
     "lowCaseName": "seosuite",
     "description": "Fix 404 pages on your site.",
     "author": "Sterc",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "package":{
         "menus": [{
             "text": "seosuite.menu.seosuite",
@@ -43,6 +43,10 @@
                 "name": "tplMeta",
                 "file": "meta.chunk.tpl",
                 "description": "The default chunk used for the meta."
+            },{
+                "name": "tplMetaSocial",
+                "file": "metasocial.chunk.tpl",
+                "description": "The default chunk used for the social meta."
             }, {
                 "name": "tplLink",
                 "file": "link.chunk.tpl",

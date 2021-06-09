@@ -80,6 +80,7 @@ Or you can use the following placeholder to get all placeholders combined.
 |-----------------------|-------------------------------------------------------------------------------|-----------------------|
 | id                    | ID of the resource to retrieve meta for.                                      | Current resource id.  |
 | tpl                   | Meta tag tpl.                                                                 | tplMeta               |
+| tplSocial             | Social Meta tag tpl.                                                          | tplMetaSocial         |
 | tplTitle              | Title tag tpl.                                                                | tplMetaTitle          |
 | tplLink               | Link tpl.                                                                     | tplLink               |
 | tplAlternateWrapper   | Alternate lang wrapper tpl.                                                   | tplAlternateWrapper   |

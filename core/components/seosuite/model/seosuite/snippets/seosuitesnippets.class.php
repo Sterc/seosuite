@@ -17,6 +17,7 @@ class SeoSuiteSnippets extends SeoSuite
     {
         $id                  = $this->modx->getOption('id', $properties, $this->modx->resource->get('id'));
         $tpl                 = $this->modx->getOption('tpl', $properties, 'tplMeta');
+        $tplSocial           = $this->modx->getOption('tplSocial', $properties, 'tplMetaSocial');
         $tplTitle            = $this->modx->getOption('tplTitle', $properties, 'tplMetaTitle');
         $tplLink             = $this->modx->getOption('tplLink', $properties, 'tplLink');
         $tplAlternateWrapper = $this->modx->getOption('tplAlternateWrapper', $properties, 'tplAlternateWrapper');
@@ -50,6 +51,12 @@ class SeoSuiteSnippets extends SeoSuite
                 'tpl'   => $tpl
             ];
 
+            $meta['_keywords'] = [
+                'name'  => 'keywords',
+                'value' => $ssResource->get('keywords'),
+                'tpl'   => $tpl
+            ];
+
             if ($ssResource->get('canonical') && !empty($ssResource->get('canonical_uri'))) {
                 $canonicalUrl = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($ssResource->get('canonical_uri'), '/');
             }
@@ -74,7 +81,7 @@ class SeoSuiteSnippets extends SeoSuite
             $meta['og_image'] = [
                 'name'  => 'og:image',
                 'value' => $this->config['tab_social']['default_og_image'],
-                'tpl'   => $tpl
+                'tpl'   => $tplSocial
             ];
         }
 
@@ -82,7 +89,7 @@ class SeoSuiteSnippets extends SeoSuite
             $meta['twitter_image'] = [
                 'name'  => 'twitter:image',
                 'value' => $this->config['tab_social']['default_twitter_image'],
-                'tpl'   => $tpl
+                'tpl'   => $tplSocial
             ];
         }
 
@@ -90,7 +97,7 @@ class SeoSuiteSnippets extends SeoSuite
             $meta['twitter_creator_id'] = [
                 'name'  => 'twitter:creator:id',
                 'value' => $this->config['tab_social']['twitter_creator_id'],
-                'tpl'   => $tpl
+                'tpl'   => $tplSocial
             ];
         }
 
@@ -107,7 +114,7 @@ class SeoSuiteSnippets extends SeoSuite
                 if (!empty($value)) {
                     $meta[$key] = [
                         'name'  => str_replace('_', ':', $key),
-                        'tpl'   => $tpl,
+                        'tpl'   => $tplSocial,
                         'value' => $value
                     ];
                 }
