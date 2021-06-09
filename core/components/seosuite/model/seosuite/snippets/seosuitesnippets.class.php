@@ -51,6 +51,12 @@ class SeoSuiteSnippets extends SeoSuite
                 'tpl'   => $tpl
             ];
 
+            $meta['_keywords'] = [
+                'name'  => 'keywords',
+                'value' => $ssResource->get('keywords'),
+                'tpl'   => $tpl
+            ];
+
             if ($ssResource->get('canonical') && !empty($ssResource->get('canonical_uri'))) {
                 $canonicalUrl = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($ssResource->get('canonical_uri'), '/');
             }
