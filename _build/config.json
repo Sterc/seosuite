@@ -23,6 +23,7 @@
                     "OnLoadWebDocument",
                     "OnMODXInit",
                     "OnPageNotFound",
+                    "OnResourceBeforeSort",
                     "OnResourceDuplicate"
                 ]
             }],
