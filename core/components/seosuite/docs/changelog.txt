@@ -1,5 +1,9 @@
 Changelog for SeoSuite.
 
+SEO Suite 2.0.4
+==============
+- Automatically add a 301 redirect when a resource is moved
+
 SEO Suite 2.0.3
 ==============
 - Skip arrays to avoid tons message in the logs #15
