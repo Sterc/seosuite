@@ -157,7 +157,10 @@ class SeoSuiteSnippets extends SeoSuite
             if (in_array($key, ['meta_title', 'meta_description'], true)) {
                 $item['value'] = $this->renderMetaValue($item['value'], $resourceArray)['processed'];
             } else if (in_array($key, ['og_image', 'twitter_image'], true)) {
-                $item['value'] = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($item['value'], '/');
+                $ms_default_id = $this->modx->getOption('default_media_source', $properties, $this->modx->getOption('default_media_source', null, 1));
+            	$ms_default = $this->modx->getObject('modMediaSource', $ms_default_id);
+            	$ms_base_url = $ms_default->get('properties')['baseUrl']['value'];
+                $item['value'] = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . ltrim($ms_base_url, '/') . '/' . ltrim($item['value'], '/');
             }
 
             $html[$key] = $tpl ? $this->getChunk($tpl, $item) : $item['value'];
