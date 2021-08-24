@@ -1,5 +1,9 @@
 Changelog for SeoSuite.
 
+SEO Suite 2.0.5
+==============
+- Automatically add a 301 redirect when a resource is moved
+
 SEO Suite 2.0.4
 ==============
 - Fix wrong image URL in custom media source #35
