@@ -252,7 +252,74 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
 
     public function onResourceBeforeSort()
     {
+        list($sourceCtx, $resource) = explode('_', $this->modx->getOption('source', $_POST));
+        list($targetCtx, $target) = explode('_', $this->modx->getOption('target', $_POST));
 
+        switch ($this->modx->getOption('point', $_POST)) {
+            case 'above':
+            case 'below':
+                $tmpRes = $this->modx->getObject('modResource', $target);
+                if ($tmpRes) {
+                    $target = $tmpRes->get('parent');
+                    unset($tmpRes);
+                }
+                break;
+        }
+
+        $oldResource = $this->modx->getObject('modResource', $resource);
+        $modResource = $this->modx->getObject('modResource', $resource);
+        if ($oldResource && $modResource) {
+            $modResource->set('parent', $target);
+            $modResource->set('uri', '');
+
+            $uriChanged = false;
+            if ($oldResource->get('uri') != $modResource->get('uri') && $oldResource->get('uri') != '') {
+                $uriChanged = true;
+            }
+
+            if ($oldResource->get('alias') != $modResource->get('alias') && $oldResource->get('alias') != '') {
+                $newProperties['urls'][] = ['url' => $oldResource->get('uri')];
+                $uriChanged              = true;
+            }
+
+            /* Recursive set redirects for drag/dropped resource, and its children (where uri_override is not set) . */
+            if ($uriChanged && (int) $this->modx->getOption('use_alias_path') === 1) {
+                $oldResource->set('isfolder', true);
+                $resourceOldBasePath = $oldResource->getAliasPath(
+                    $oldResource->get('alias'),
+                    $oldResource->toArray()
+                );
+
+                $query = $this->modx->newQuery('modResource');
+                $query->where([
+                    [
+                        'uri:LIKE'  => $resourceOldBasePath . '%',
+                        'OR:id:='   => $oldResource->id
+                    ],
+                    'uri_override'  => false,
+                    'published'     => true,
+                    'deleted'       => false,
+                    'context_key'   => $modResource->get('context_key')
+                ]);
+
+                $childResources = $this->modx->getIterator('modResource', $query);
+                foreach ($childResources as $childResource) {
+                    if (!$this->modx->getCount('SeoSuiteRedirect', ['old_url' => $childResource->get('uri'), 'context_key' => $childResource->get('context_key')])) {
+                        $data = [
+                            'old_url'       => $childResource->get('uri'),
+                            'resource_id'   => $childResource->get('id'),
+                            'context_key'   => $sourceCtx,
+                            'new_url'       => $childResource->get('id'),
+                            'redirect_type' => 'HTTP/1.1 301 Moved Permanently'
+                        ];
+
+                        $redirect = $this->modx->newObject('SeoSuiteRedirect');
+                        $redirect->fromArray($data);
+                        $redirect->save();
+                    }
+                }
+            }
+        }
     }
 
     public function onManagerPageBeforeRender()
