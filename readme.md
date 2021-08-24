@@ -72,7 +72,7 @@ Here's an example of all available placeholders of the SeoSuiteMeta snippet when
 Or you can use the following placeholder to get all placeholders combined.
 ```
 <!-- Set by plugin. -->
-[[!+ss.meta]]
+[[!+ss_meta]]
 ```
 
 #### Properties
