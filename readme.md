@@ -1,5 +1,5 @@
 # SeoSuite
-![SEO Suite version](https://img.shields.io/badge/version-2.0.2-brightgreen.svg)
+![SEO Suite version](https://img.shields.io/badge/version-2.0.5-brightgreen.svg)
 ![MODX Extra by Sterc](https://img.shields.io/badge/extra%20by-sterc-ff69b4.svg)
 ![MODX version requirements](https://img.shields.io/badge/modx%20version%20requirement-2.5%2B-blue.svg)
 
