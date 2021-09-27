@@ -212,6 +212,7 @@ SeoSuite.panel.SeoTab = function(config) {
     tabs.push({
         title       : _('seosuite.tab_seo.tab_sitemap'),
         layout      : 'form',
+        hideMode: 'offsets',
         labelAlign  : 'top',
         labelSeparator : '',
         items       : [{
@@ -219,6 +220,7 @@ SeoSuite.panel.SeoTab = function(config) {
             hideLabel   : true,
             boxLabel    : _('seosuite.tab_seo.label_sitemap'),
             name        : 'seosuite_sitemap',
+            deferredRender : false,
             anchor      : '100%',
             inputValue  : 1,
             checked     : SeoSuite.record.seosuite_sitemap,
@@ -302,6 +304,7 @@ SeoSuite.panel.SeoTab = function(config) {
         title       : _('seosuite.tab_seo'),
         items       : [{
             xtype       : 'modx-vtabs',
+            deferredRender : false,
             items       : tabs
         }],
         listeners   : {
