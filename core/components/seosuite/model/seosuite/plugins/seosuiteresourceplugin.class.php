@@ -268,7 +268,7 @@ class SeoSuiteResourcePlugin extends SeoSuitePlugin
 
         $oldResource = $this->modx->getObject('modResource', $resource);
         $modResource = $this->modx->getObject('modResource', $resource);
-        if ($oldResource && $modResource) {
+        if ($oldResource && $modResource && $target !== $oldResource->get('parent')) {
             $modResource->set('parent', $target);
             $modResource->set('uri', '');
 
