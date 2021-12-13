@@ -1,6 +1,9 @@
 <?php
 require_once dirname(__DIR__) . '/seosuite.class.php';
 
+use MODX\Revolution\Sources\modMediaSource;
+use MODX\Revolution\Sources\modMediaSourceElement;
+
 /**
  * Class SeoSuiteSnippets.
  */
@@ -158,7 +161,7 @@ class SeoSuiteSnippets extends SeoSuite
                 $item['value'] = $this->renderMetaValue($item['value'], $resourceArray)['processed'];
             } else if (in_array($key, ['og_image', 'twitter_image'], true)) {
                 $ms_default_id = $this->modx->getOption('seosuite.default_media_source', null, $this->modx->getOption('default_media_source', null, 1));
-                $ms_default = $this->modx->getObject('modMediaSource', $ms_default_id);
+                $ms_default = $this->modx->getObject(modMediaSource::class, $ms_default_id);
                 $ms_base_url = $ms_default->get('properties')['baseUrl']['value'];
                 $imageUrl = trim($ms_base_url, '/') . '/' . trim($item['value'], '/');
                 $item['value'] = rtrim($this->modx->makeUrl($this->modx->getOption('site_start'), null, null, 'full'), '/') . '/' . trim($imageUrl, '/');
@@ -449,13 +452,13 @@ class SeoSuiteSnippets extends SeoSuite
         ]);
 
         if ($imageTVs = $this->modx->getIterator('modTemplateVar', $query)) {
-            $query = $this->modx->newQuery('sources.modMediaSourceElement');
+            $query = $this->modx->newQuery(modMediaSourceElement::class);
             $query->where([
                 'object_class'   => 'modTemplateVar',
                 'context_key:IN' => $contextKey
             ]);
 
-            $getTVSources = $this->modx->getIterator('sources.modMediaSourceElement', $query);
+            $getTVSources = $this->modx->getIterator(modMediaSourceElement::class, $query);
             $tvSources    = [];
             if ($getTVSources) {
                 foreach ($getTVSources as $tvSource) {
@@ -503,7 +506,7 @@ class SeoSuiteSnippets extends SeoSuite
 
             if (count($usedMediaSourceIds) > 0) {
                 foreach ($usedMediaSourceIds as $mediaSourceId) {
-                    $this->modx->loadClass('sources.modMediaSource');
+                    $this->modx->loadClass(modMediaSource::class);
 
                     if ($source = modMediaSource::getDefaultSource($this->modx, $mediaSourceId, false)) {
                         $source->initialize();

@@ -1,5 +1,9 @@
 Changelog for SeoSuite.
 
+SEO Suite 3.0.0
+==============
+- Fix MODX 3 compatibility
+
 SEO Suite 2.0.6
 ==============
 - Fix creating redirect when sorting within same parent
