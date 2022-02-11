@@ -108,7 +108,8 @@ class SeoSuite
                 'dependent_ultimateparent'  => (bool) $this->modx->getOption('seosuite.sitemap.dependent_ultimateparent', null, false),
                 'default_changefreq'        => $this->modx->getOption('seosuite.sitemap.default_changefreq', null, 'weekly'),
                 'default_priority'          => $this->modx->getOption('seosuite.sitemap.default_priority', null, '0.5')
-            ]
+            ],
+            'debug'                     => false,
         ], $config);
 
         $this->modx->addPackage('seosuite', $this->config['model_path']);
