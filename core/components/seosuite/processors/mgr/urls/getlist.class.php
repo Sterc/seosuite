@@ -56,12 +56,28 @@ class SeoSuiteUrlGetListProcessor extends modObjectGetListProcessor
             'dateFormat' => $this->modx->getOption('manager_date_format') . ', ' .  $this->modx->getOption('manager_time_format')
         ]);
 
-        if ($this->getProperty('sortby')) {
-            $this->defaultSortField = $this->getProperty('sortby');
+        $sortby = $this->getProperty('sort');
+        if ($sortby) {
+            switch ($sortby) {
+                case 'time_ago':
+                    $this->setProperty('sort', 'last_visit');
+                    break;
+                default:
+                    $this->setProperty('sort', $sortby);
+                    break;
+            }
         }
 
-        if ($this->getProperty('sortdir')) {
-            $this->defaultSortDirection = $this->getProperty('sortdir');
+        $sortdir = $this->getProperty('dir');
+        if ($sortdir) {
+            switch ($sortby) {
+                case 'time_ago':
+                    $this->setProperty('dir', ($sortdir == 'ASC' ? 'DESC' : 'ASC'));
+                    break;
+                default:
+                    $this->setProperty('dir', $sortdir);
+                    break;
+            }
         }
 
         return parent::initialize();

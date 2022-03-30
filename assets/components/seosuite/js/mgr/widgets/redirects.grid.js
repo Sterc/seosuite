@@ -60,7 +60,7 @@ SeoSuite.grid.Redirects = function(config) {
         }, {
             header      : _('seosuite.label_redirect_new_url'),
             dataIndex   : 'new_url_formatted',
-            sortable    : false,
+            sortable    : true,
             editable    : false,
             width       : 50,
             renderer    : this.renderNewUrl,
@@ -69,13 +69,13 @@ SeoSuite.grid.Redirects = function(config) {
             header      : _('seosuite.label_url_visits'),
             dataIndex   : 'visits',
             fixed       : true,
-            sortable    : false,
+            sortable    : true,
             editable    : false,
             width       : 100
         }, {
             header      : _('seosuite.label_url_last_visit'),
             dataIndex   : 'last_visit',
-            sortable    : false,
+            sortable    : true,
             editable    : false,
             width       : 20,
             renderer    : this.renderDate
@@ -116,7 +116,8 @@ SeoSuite.grid.Redirects = function(config) {
         paging      : true,
         pageSize    : MODx.config.default_per_page > 30 ? MODx.config.default_per_page : 30,
         emptyText   : config.mode === 'resource' ? _('seosuite.resource_no_redirects') : _('ext_emptymsg'),
-        mode        : 'component'
+        mode        : 'component',
+        remoteSort  : true
     });
 
     SeoSuite.grid.Redirects.superclass.constructor.call(this, config);
