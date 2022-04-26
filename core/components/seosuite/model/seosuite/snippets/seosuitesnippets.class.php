@@ -134,7 +134,7 @@ class SeoSuiteSnippets extends SeoSuite
                 $values[] = $this->getChunk($tplLink, [
                     'name'     => 'alternate',
                     'value'    => $alternative['url'],
-                    'hreflang' => str_replace('_', '-', $alternative['locale'])
+                    'hreflang' => str_replace(['_', '.utf8'], ['-', ''], $alternative['locale'])
                 ]);
             }
 
