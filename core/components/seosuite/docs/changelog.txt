@@ -1,5 +1,9 @@
 Changelog for SeoSuite.
 
+SEO Suite 3.0.3
+==============
+- Fix blocked_words usage
+
 SEO Suite 3.0.2
 ==============
 - Fix hreflang attribute in alternate tag
