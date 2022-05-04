@@ -77,7 +77,7 @@ class SeoSuiteSnippets extends SeoSuite
         $meta['_canonical'] = [
             'name'  => 'canonical',
             'value' => $canonicalUrl,
-            'tpl'   => $tplLink
+            'tpl'   => $tpl
         ];
 
         if (!empty($this->config['tab_social']['default_og_image'])) {
