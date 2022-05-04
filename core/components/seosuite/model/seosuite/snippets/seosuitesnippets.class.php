@@ -134,7 +134,7 @@ class SeoSuiteSnippets extends SeoSuite
                 $values[] = $this->getChunk($tplLink, [
                     'name'     => 'alternate',
                     'value'    => $alternative['url'],
-                    'hreflang' => str_replace('_', '-', $alternative['locale'])
+                    'hreflang' => str_replace(['_', '.utf8'], ['-', ''], $alternative['locale'])
                 ]);
             }
 
@@ -260,6 +260,19 @@ class SeoSuiteSnippets extends SeoSuite
 
         $output = [];
         foreach ($resources as $resource) {
+            $priority = !empty($resource->get('SeoSuiteResource.sitemap_prio')) ? $resource->get('SeoSuiteResource.sitemap_prio') : $this->config['sitemap']['default_priority'];
+            switch ($priority) {
+                case 'high':
+                    $priority = '1.0';
+                    break;
+                case 'normal':
+                    $priority = '0.5';
+                    break;
+                case 'low':
+                    $priority = '0.25';
+                    break;
+            }
+
             $output[] = $this->getChunk(
                 $rowTpl,
                 array_merge(
@@ -269,7 +282,7 @@ class SeoSuiteSnippets extends SeoSuite
                         'alternates' => $this->getAlternateLinks($resource, $options),
                         'lastmod'    => date('c', $this->getLastModTime($options['type'], $resource)),
                         'changefreq' => !empty($resource->get('SeoSuiteResource.sitemap_changefreq')) ? $resource->get('SeoSuiteResource.sitemap_changefreq') : $this->config['sitemap']['default_changefreq'],
-                        'priority'   => !empty($resource->get('SeoSuiteResource.sitemap_prio')) ? $resource->get('SeoSuiteResource.sitemap_prio') : $this->config['sitemap']['default_priority'],
+                        'priority'   => $priority,
                     ]
                 )
             );

@@ -1,5 +1,18 @@
 Changelog for SeoSuite.
 
+SEO Suite 3.0.3
+==============
+- Fix blocked_words usage
+
+SEO Suite 3.0.2
+==============
+- Fix hreflang attribute in alternate tag
+
+SEO Suite 3.0.1
+==============
+- Fix sorting in CMP
+- Fix prority in sitemap
+
 SEO Suite 3.0.0
 ==============
 - Fix MODX 3 compatibility

@@ -72,14 +72,14 @@ SeoSuite.grid.Urls = function(config) {
         }, {
             header      : _('seosuite.label_url_visits'),
             dataIndex   : 'visits',
-            sortable    : false,
+            sortable    : true,
             editable    : false,
             width       : 100,
             fixed       : true
         }, {
             header      : _('seosuite.label_url_last_visit'),
             dataIndex   : 'time_ago',
-            sortable    : false,
+            sortable    : true,
             editable    : false,
             width       : 200,
             fixed       : true
@@ -105,7 +105,8 @@ SeoSuite.grid.Urls = function(config) {
         fields      : ['id', 'context_key', 'url', 'suggestions', 'visits', 'last_visit', 'createdon', 'time_ago', 'site_url'],
         paging      : true,
         pageSize    : MODx.config.default_per_page > 30 ? MODx.config.default_per_page : 30,
-        refreshGrid : []
+        refreshGrid : [],
+        remoteSort  : true
     });
 
     SeoSuite.grid.Urls.superclass.constructor.call(this, config);

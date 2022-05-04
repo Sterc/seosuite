@@ -107,7 +107,7 @@ class SeoSuiteRedirects extends SeoSuitePlugin
 
         if (count($blockedWords) > 0) {
             foreach ($blockedWords as $word) {
-                if (strpos($request, $word)) {
+                if (strpos($request, $word) !== false) {
                     return false;
                 }
             }

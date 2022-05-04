@@ -50,6 +50,18 @@ class SeoSuiteRedirectGetListProcessor extends modObjectGetListProcessor
             'dateFormat' => $this->modx->getOption('manager_date_format') . ', ' .  $this->modx->getOption('manager_time_format')
         ]);
 
+        $sortby = $this->getProperty('sort');
+        if ($sortby) {
+            switch ($sortby) {
+                case 'new_url_formatted':
+                    $this->setProperty('sort', 'new_url');
+                    break;
+                default:
+                    $this->setProperty('sort', $sortby);
+                    break;
+            }
+        }
+
         return parent::initialize();
     }
 
@@ -61,6 +73,7 @@ class SeoSuiteRedirectGetListProcessor extends modObjectGetListProcessor
     public function prepareQueryBeforeCount(xPDOQuery $criteria)
     {
         $criteria->setClassAlias('Redirect');
+        $this->setProperty('sortAlias', 'Redirect');
 
         $criteria->select($this->modx->getSelectColumns('SeoSuiteRedirect', 'Redirect'));
         $criteria->select($this->modx->getSelectColumns('modResource', 'Resource', 'resource_', ['id', 'context_key']));

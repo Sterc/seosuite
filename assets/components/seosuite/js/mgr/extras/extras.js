@@ -27,9 +27,9 @@ SeoSuite.combo.SitemapPrio = function(config) {
             mode        : 'local',
             fields      : ['type', 'label', 'index'],
             data        : [
-                ['high', _('seosuite.tab_seo.sitemap_prio_high'), '1.0'],
-                ['normal', _('seosuite.tab_seo.sitemap_prio_normal'), '0.5'],
-                ['low', _('seosuite.tab_seo.sitemap_prio_low'), '0.25']
+                ['1.0',  _('seosuite.tab_seo.sitemap_prio_high'), '1.0'],
+                ['0.5',  _('seosuite.tab_seo.sitemap_prio_normal'), '0.5'],
+                ['0.25', _('seosuite.tab_seo.sitemap_prio_low'), '0.25']
             ]
         }),
         remoteSort  : ['label', 'asc'],
