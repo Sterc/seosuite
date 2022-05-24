@@ -31,11 +31,12 @@ $_lang['seosuite.url_remove_confirm']                           = 'Weet je zeker
 $_lang['seosuite.url.redirect_to_selected']                     = 'Geselecteerde redirect';
 $_lang['seosuite.suggestions_found']                            = 'Er zijn [[+suggestions]] pagina suggesties gevonden.';
 $_lang['seosuite.suggestion_boost']                             = 'pnt';
-$_lang['seosuite.exclude_words']                                = 'Woorden uitsluiten';
-
-$_lang['seosuite.label_exclude_words']                          = 'Woorden uitsluiten';
+$_lang['seosuite.exclude_words']                                = 'Suggestions uitsluiten';
+$_lang['seosuite.label_exclude_words']                          = 'Woorden uitsluiten van URL suggesties';
 $_lang['seosuite.label_exclude_words_desc']                     = 'Een komma gescheiden lijst van woorden om uit te sluiten van de 404 URL suggesties.';
-
+$_lang['seosuite.blocked_words']                                = 'Logging uitsluiten';
+$_lang['seosuite.label_blocked_words']                          = 'Exclude words from 404 page logging';
+$_lang['seosuite.label_blocked_words_desc']                     = 'Een komma gescheiden lijst van woorden om uit te sluiten van de 404 pagina logging.';
 $_lang['seosuite.label_url_url']                                = 'Url';
 $_lang['seosuite.label_url_url_desc']                           = '';
 $_lang['seosuite.label_url_visits']                             = 'Hits';

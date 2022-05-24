@@ -14,8 +14,12 @@ SeoSuite.grid.Urls = function(config) {
             scope       : this
         }]
     }, {
-        text        : '<i class="icon icon-eye-slash"></i>' + _('seosuite.exclude_words'),
+        text        : '<i class="icon icon-search-minus"></i>' + _('seosuite.exclude_words'),
         handler     : this.excludeWords,
+        scope       : this
+    }, {
+        text        : '<i class="icon icon-eye-slash"></i>' + _('seosuite.blocked_words'),
+        handler     : this.blockedWords,
         scope       : this
     }, '->', {
         xtype       : 'textfield',
@@ -194,6 +198,18 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
 
         this.excludeWordsWindow.show(e.target);
     },
+    blockedWords: function(btn, e) {
+        if (this.blockedWordsWindow) {
+            this.blockedWordsWindow.destroy();
+        }
+
+        this.blockedWordsWindow = MODx.load({
+            xtype       : 'seosuite-window-blocked-words',
+            closeAction : 'close'
+        });
+
+        this.blockedWordsWindow.show(e.target);
+    },
     createUrlRedirect: function(btn, e) {
         if (this.createUrlRedirectWindow) {
             this.createUrlRedirectWindow.destroy();
@@ -354,6 +370,42 @@ SeoSuite.window.ExcludeWords = function(config) {
 Ext.extend(SeoSuite.window.ExcludeWords, MODx.Window);
 
 Ext.reg('seosuite-window-exclude-words', SeoSuite.window.ExcludeWords);
+
+SeoSuite.window.BlockedWords = function(config) {
+    config = config || {};
+
+    Ext.applyIf(config, {
+        autoHeight  : true,
+        title       : _('seosuite.blocked_words'),
+        url         : SeoSuite.config.connector_url,
+        baseParams  : {
+            action      : 'mgr/blocked_words/save'
+        },
+        fields      : [{
+            xtype       : 'textarea',
+            fieldLabel  : _('seosuite.label_blocked_words'),
+            description : MODx.expandHelp ? '' : _('seosuite.label_blocked_words_desc'),
+            name        : 'blocked_words',
+            anchor      : '100%',
+            value       : SeoSuite.config['blocked_words'].join(', ')
+        }, {
+            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+            html        : _('seosuite.label_blocked_words_desc'),
+            cls         : 'desc-under'
+        }],
+        listeners: {
+            success: function (response) {
+                SeoSuite.config['blocked_words'] = response.a.result.object.blocked_words.split(',');
+            }
+        }
+    });
+
+    SeoSuite.window.BlockedWords.superclass.constructor.call(this, config);
+};
+
+Ext.extend(SeoSuite.window.BlockedWords, MODx.Window);
+
+Ext.reg('seosuite-window-blocked-words', SeoSuite.window.BlockedWords);
 
 SeoSuite.window.UrlCreateRedirect = function(config) {
     config = config || {};

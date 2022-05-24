@@ -1,5 +1,9 @@
 Changelog for SeoSuite.
 
+SEO Suite 3.0.4
+==============
+- Add buttons `Suggestions excludes` and `Logging excludes`
+
 SEO Suite 3.0.3
 ==============
 - Fix blocked_words usage

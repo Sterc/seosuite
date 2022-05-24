@@ -39,10 +39,11 @@ $_lang['seosuite.url.redirect_to_selected']                     = 'Выбран�
 $_lang['seosuite.suggestions_found']                            = '[[+suggestions]] найдены варианты страниц.';
 $_lang['seosuite.suggestion_boost']                             = 'баллы';
 $_lang['seosuite.exclude_words']                                = 'Исключить слова';
-
-$_lang['seosuite.label_exclude_words']                          = 'Исключить слова';
+$_lang['seosuite.label_exclude_words']                          = 'Исключить слова из предложений для редиректа';
 $_lang['seosuite.label_exclude_words_desc']                     = 'Разделенный запятыми список слов, исключаемых из предложений URL 404.';
-
+$_lang['seosuite.blocked_words']                                = 'Блокировать слова';
+$_lang['seosuite.label_blocked_words']                          = 'Слова, исключающие логгирование 404 страниц';
+$_lang['seosuite.label_blocked_words_desc']                     = 'Разделенный запятыми список слов, исключаемых из логгирования URL 404.';
 $_lang['seosuite.label_url_url']                                = 'URL';
 $_lang['seosuite.label_url_url_desc']                           = '';
 $_lang['seosuite.label_url_visits']                             = 'Попадания';
