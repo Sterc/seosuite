@@ -39,9 +39,7 @@ class SeoSuiteSnippets extends SeoSuite
             ]
         ];
 
-        if (!$ssResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $id])) {
-            return false;   
-        }
+        $ssResource = $this->modx->getObject('SeoSuiteResource', ['resource_id' => $id]);
 
         $canonicalUrl = $this->modx->makeUrl($id, null, null, 'full');
         if ($ssResource) {
