@@ -1,6 +1,7 @@
 <?php
 namespace Sterc\SeoSuite\Processors\Mgr\Urls;
 
+use MODX\Revolution\modContext;
 use MODX\Revolution\Processors\Model\GetListProcessor;
 use Sterc\SeoSuite\Model\SeoSuiteUrl;
 use xPDO\Om\xPDOQuery;
@@ -134,7 +135,7 @@ class GetList extends GetListProcessor
     private function getSiteUrl($key)
     {
         if (!isset($this->contexts[$key])) {
-            $object = $this->modx->getObject('modContext', [
+            $object = $this->modx->getObject(modContext::class, [
                 'key' => $key
             ]);
 

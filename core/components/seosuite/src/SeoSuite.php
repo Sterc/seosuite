@@ -5,6 +5,9 @@ use MODX\Revolution\modX;
 use MODX\Revolution\modSystemEvent;
 use MODX\Revolution\modChunk;
 use MODX\Revolution\modResource;
+use Sterc\SeoSuite\Model\SeoSuiteRedirect;
+use Sterc\SeoSuite\Model\SeoSuiteResource;
+use Sterc\SeoSuite\Model\SeoSuiteSocial;
 use xPDO;
 
 class SeoSuite
@@ -262,11 +265,11 @@ class SeoSuite
         $chunk = null;
         if (substr($name, 0, 6) === '@CODE:') {
             $content = substr($name, 6);
-            $chunk = $this->modx->newObject('modChunk');
+            $chunk = $this->modx->newObject(modChunk::class);
             $chunk->setContent($content);
         } elseif (!isset($this->chunks[$name])) {
             if (!$this->config['debug']) {
-                $chunk = $this->modx->getObject('modChunk', ['name' => $name], true);
+                $chunk = $this->modx->getObject(modChunk::class, ['name' => $name], true);
             }
 
             if (empty($chunk)) {
@@ -282,7 +285,7 @@ class SeoSuite
             $this->chunks[$name] = $chunk->getContent();
         } else {
             $content = $this->chunks[$name];
-            $chunk   = $this->modx->newObject('modChunk');
+            $chunk   = $this->modx->newObject(modChunk::class);
             $chunk->setContent($content);
         }
 
@@ -490,7 +493,7 @@ class SeoSuite
             $defaultProperties['override_uri'] = $resource->get('uri_override') ? 1 : 0;
             $defaultProperties['uri']          = $resource->get('uri');
 
-            $object = $this->modx->getObject('SeoSuiteResource', [
+            $object = $this->modx->getObject(SeoSuiteResource::class, [
                 'resource_id' => $resource->get('id')
             ]);
 
@@ -521,12 +524,12 @@ class SeoSuite
         if ($resource) {
             $properties = array_merge($this->getResourceProperties($id), $values);
 
-            $object = $this->modx->getObject('SeoSuiteResource', [
+            $object = $this->modx->getObject(SeoSuiteResource::class, [
                 'resource_id' => $resource->get('id')
             ]);
 
             if (!$object) {
-                $object = $this->modx->newObject('SeoSuiteResource', [
+                $object = $this->modx->newObject(SeoSuiteResource::class, [
                     'resource_id' => $resource->get('id')
                 ]);
             }
@@ -552,7 +555,7 @@ class SeoSuite
      */
     public function removeResourceProperties($id)
     {
-        $object = $this->modx->getObject('SeoSuiteResource', [
+        $object = $this->modx->getObject(SeoSuiteResource::class, [
             'resource_id' => $id
         ]);
 
@@ -600,7 +603,7 @@ class SeoSuite
 
         $resource = $this->modx->getObject(modResource::class, ['id' => $id]);
         if ($resource) {
-            $object = $this->modx->getObject('SeoSuiteSocial', [
+            $object = $this->modx->getObject(SeoSuiteSocial::class, [
                 'resource_id' => $resource->get('id')
             ]);
 
@@ -630,12 +633,12 @@ class SeoSuite
         if ($resource) {
             $properties = array_merge($this->getSocialProperties($id), $values);
 
-            $object = $this->modx->getObject('SeoSuiteSocial', [
+            $object = $this->modx->getObject(SeoSuiteSocial::class, [
                 'resource_id' => $resource->get('id')
             ]);
 
             if (!$object) {
-                $object = $this->modx->newObject('SeoSuiteSocial', [
+                $object = $this->modx->newObject(SeoSuiteSocial::class, [
                     'resource_id' => $resource->get('id')
                 ]);
             }
@@ -661,7 +664,7 @@ class SeoSuite
      */
     public function removeSocialProperties($id)
     {
-        $object = $this->modx->getObject('SeoSuiteSocial', [
+        $object = $this->modx->getObject(SeoSuiteSocial::class, [
             'resource_id' => $id
         ]);
 
@@ -690,7 +693,7 @@ class SeoSuite
 
                 if ($oldUrl !== $newUrl && $oldUrl !== '' && $newUrl !== '') {
                     if ($this->handleRedirect($oldUrl, $newUrl)) {
-                        $object = $this->modx->newObject('SeoSuiteRedirect');
+                        $object = $this->modx->newObject(SeoSuiteRedirect::class);
 
                         if ($object) {
                             $object->fromArray([
@@ -698,7 +701,7 @@ class SeoSuite
                                 'old_url'       => $oldUrl,
                                 'new_url'       => $newUrl,
                                 'redirect_type' => $this->config['default_redirect_type'],
-                                'active'        => 1
+                                'active'        => 1,
                             ]);
 
                             $object->save();
@@ -781,7 +784,7 @@ class SeoSuite
                 $data['longtitle'] = $data['pagetitle'];
             }
 
-            $parser = $this->modx->newObject('modChunk', [
+            $parser = $this->modx->newObject(modChunk::class, [
                 'name' => $this->config['namespace'] . uniqid()
             ]);
 
