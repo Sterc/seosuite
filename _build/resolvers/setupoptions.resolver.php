@@ -320,7 +320,7 @@ class SeoSuiteSetupOptionsResolver
                     'follow_type'        => isset($oldProperties['follow']) ? $oldProperties['follow'] : 1,
                     'sitemap'            => isset($oldProperties['sitemap']) ? $oldProperties['sitemap'] : 1,
                     'sitemap_prio'       => isset($oldProperties['priority']) ? str_replace(['0.25', '0.5', '1.0'], ['low', 'normal', 'high'], $oldProperties['priority']) : 'normal',
-                    'sitemap_changefreq' => isset($oldProperties['changefreq']) ? str_replace(['always', 'hourly'], ['high', 'normal'], $oldProperties['changefreq']) : 'normal'
+                    'sitemap_changefreq' => isset($oldProperties['changefreq']) ? str_replace(['high', 'normal'], ['always', 'hourly'], $oldProperties['changefreq']) : 'hourly'
                 ]);
 
                 $ssResource->save();
