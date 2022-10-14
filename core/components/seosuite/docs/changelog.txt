@@ -1,5 +1,13 @@
 Changelog for SeoSuite.
 
+SEO Suite 3.0.5
+==============
+- Fix changefreq values #60
+- Render meta tags on resources created before seosuit was installed #63
+- Make sure redirects are 301 by default #73
+- Fix error when user have no access to some context #73
+- Disable seoTab in install #73
+
 SEO Suite 3.0.4
 ==============
 - Add buttons `Suggestions excludes` and `Logging excludes`
