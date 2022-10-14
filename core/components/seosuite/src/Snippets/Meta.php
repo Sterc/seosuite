@@ -37,9 +37,7 @@ class Meta extends Base
             ]
         ];
 
-        if (!$ssResource = $this->modx->getObject(SeoSuiteResource::class, ['resource_id' => $id])) {
-            return false;
-        }
+        $ssResource = $this->modx->getObject(SeoSuiteResource::class, ['resource_id' => $id]);
 
         $canonicalUrl = $this->modx->makeUrl($id, null, null, 'full');
         if ($ssResource) {
