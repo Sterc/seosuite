@@ -56,6 +56,7 @@ class Create extends CreateProcessor
         }
 
         $this->object->set('new_url', $seosuite->formatUrl($this->getProperty('new_url')));
+        $this->object->set('last_visit', null);
 
         return parent::beforeSave();
     }

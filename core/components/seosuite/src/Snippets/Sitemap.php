@@ -1,6 +1,8 @@
 <?php
 namespace Sterc\SeoSuite\Snippets;
 
+use MODX\Revolution\modSymLink;
+use Sterc\SeoSuite\Model\SeoSuiteResource;
 use Sterc\SeoSuite\Snippets\Base;
 use MODX\Revolution\modResource;
 use MODX\Revolution\modTemplateVar;
@@ -332,7 +334,7 @@ class Sitemap extends Base
     protected function buildQuery($contextKey, $allowSymlinks, $options)
     {
         $query = $this->modx->newQuery(modResource::class);
-        $query->innerJoin('SeoSuiteResource', 'SeoSuiteResource', 'SeoSuiteResource.resource_id = modResource.id');
+        $query->innerJoin(SeoSuiteResource::class, 'SeoSuiteResource', 'SeoSuiteResource.resource_id = modResource.id');
 
         $query->select(
             [
@@ -367,7 +369,7 @@ class Sitemap extends Base
         }
 
         if (!$allowSymlinks) {
-            $query->where(['modResource.class_key:!=' => 'modSymLink']);
+            $query->where(['modResource.class_key:!=' => modSymLink::class]);
         }
 
         if ($options['type'] === 'index') {

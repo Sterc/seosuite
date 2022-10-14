@@ -61,7 +61,7 @@ class Resource extends Base
         }
 
         if (count($templates) >= 1) {
-            return in_array($template, $templates, true);
+            return !in_array($template, $templates, true);
         }
 
         return true;
@@ -349,8 +349,8 @@ class Resource extends Base
         } else {
             $this->record['keywords']         = '';
             $this->record['use_default_meta'] = 1;
-            $this->record['meta_title']       = json_decode($this->modx->seosuite->config['meta']['default_meta_title'], true);
-            $this->record['meta_description'] = json_decode($this->modx->seosuite->config['meta']['default_meta_description'], true);
+            $this->record['meta_title']       = json_decode($this->seosuite->config['meta']['default_meta_title'], true);
+            $this->record['meta_description'] = json_decode($this->seosuite->config['meta']['default_meta_description'], true);
         }
 
         $this->loaded[] = 'meta';
