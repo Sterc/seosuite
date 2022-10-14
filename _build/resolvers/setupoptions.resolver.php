@@ -288,11 +288,12 @@ class SeoSuiteSetupOptionsResolver
             ])) {
                 $redirect = $this->modx->newObject('SeoSuiteRedirect');
                 $redirect->fromArray([
-                    'context_key' => $seoUrl->get('context_key'),
-                    'resource_id' => $seoUrl->get('resource'),
-                    'old_url'     => $oldUrl,
-                    'new_url'     => $seoUrl->get('resource'),
-                    'active'      => true
+                    'context_key'   => $seoUrl->get('context_key'),
+                    'resource_id'   => $seoUrl->get('resource'),
+                    'old_url'       => $oldUrl,
+                    'new_url'       => $seoUrl->get('resource'),
+                    'redirect_type' => 'HTTP/1.1 301 Moved Permanently',
+                    'active'        => true
                 ]);
 
                 $redirect->save();
