@@ -327,6 +327,15 @@ class SeoSuiteSetupOptionsResolver
             }
         }
 
+        if ($plugin = $this->modx->getObject('modPlugin', ['name' => 'StercSEO'])) {
+            if (!$plugin->disabled) {
+                $plugin->set('disabled', true);
+                $plugin->save();
+
+                $this->log('Plugin StercSEO disabled');
+            }
+        }
+
         $this->log('Finished migrating SEO Tab data');
     }
 
