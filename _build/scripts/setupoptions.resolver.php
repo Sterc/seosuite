@@ -6,13 +6,10 @@ use MODX\Revolution\modResource;
 use Sterc\SeoSuite\Model\SeoSuiteUrl;
 use Sterc\SeoSuite\Model\SeoSuiteResource;
 use Sterc\SeoSuite\Model\SeoSuiteRedirect;
-use xPDO;
 
 // Convenience
 /** @var modX $modx */
-if (!isset($modx) && isset($object) && isset($transport->xpdo)) {
-    $modx = $transport->xpdo;
-}
+$modx = $transport->xpdo;
 
 $resolver = new SeoSuiteSetupOptionsResolver($modx, $options);
 return $resolver->process();
@@ -73,7 +70,7 @@ class SeoSuiteSetupOptionsResolver
         $migrateSEOTab   = array_key_exists('migrate_seotab', $this->options) ? true : false;
 
         if ($migrateSEOSuite) {
-            if ($this->modx->query('SELECT * FROM ' . $this->modx->getOption(xPDO::OPT_TABLE_PREFIX) . 'seosuite_urls')) {
+            if ($this->modx->query('SELECT * FROM ' . $this->modx->getOption(\xPDO::OPT_TABLE_PREFIX) . 'seosuite_urls')) {
                 $this->migrateSeoSuite();
             } else {
                 $this->log('Cannot migrate data because the SEO Suite V1 is not installed.', 'error');
@@ -130,7 +127,7 @@ class SeoSuiteSetupOptionsResolver
         $this->log('Start migration SEO Suite data...');
 
         /* Migrate redirects. */
-        $results = $this->modx->query('SELECT * FROM ' . $this->modx->getOption(xPDO::OPT_TABLE_PREFIX) . 'seosuite_urls WHERE solved = 1');
+        $results = $this->modx->query('SELECT * FROM ' . $this->modx->getOption(\xPDO::OPT_TABLE_PREFIX) . 'seosuite_urls WHERE solved = 1');
         while ($record = $results->fetch(PDO::FETCH_ASSOC)) {
             if (!$context = $this->getContextByUrl($record['url'])) {
                 $this->log('Could not import redirect. Failed to find context for url: ' . $record['url'], 'error');
@@ -159,7 +156,7 @@ class SeoSuiteSetupOptionsResolver
         }
 
         /* Migrate 404 urls. */
-        $results = $this->modx->query('SELECT * FROM ' . $this->modx->getOption(xPDO::OPT_TABLE_PREFIX) . 'seosuite_urls WHERE solved = 0');
+        $results = $this->modx->query('SELECT * FROM ' . $this->modx->getOption(\xPDO::OPT_TABLE_PREFIX) . 'seosuite_urls WHERE solved = 0');
         while ($record = $results->fetch(PDO::FETCH_ASSOC)) {
             if (!$context = $this->getContextByUrl($record['url'])) {
                 $this->log('Could not import url. Failed to find context for url: ' . $record['url'], 'error');
@@ -350,13 +347,13 @@ class SeoSuiteSetupOptionsResolver
      */
     protected function log($message = '', $level = 'info')
     {
-        $logLevel = xPDO::LOG_LEVEL_INFO;
+        $logLevel = \xPDO::LOG_LEVEL_INFO;
         switch ($level) {
             case 'warning':
-                $logLevel = xPDO::LOG_LEVEL_WARN;
+                $logLevel = \xPDO::LOG_LEVEL_WARN;
                 break;
             case 'error':
-                $logLevel = xPDO::LOG_LEVEL_ERROR;
+                $logLevel = \xPDO::LOG_LEVEL_ERROR;
                 break;
         }
         $this->modx->log($logLevel, '[SEO SUITE] ' . $message);

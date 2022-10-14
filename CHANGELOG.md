@@ -1,5 +1,9 @@
 Changelog for SeoSuite.
 
+SEO Suite 3.1.1
+==============
+- Fix resolvers for install on MODX3
+
 SEO Suite 3.1.0
 ==============
 - Full refactoring for MODX3 #67

@@ -7,7 +7,7 @@ $package = 'SEO Suite';
 $url     = 'https://extras.sterc.nl/api/v1/packagedata';
 $params  = [];
 
-$modx =& $object->xpdo;
+$modx =& $transport->xpdo;
 $c = $modx->newQuery(modTransportPackage::class);
 $c->where(
     [
