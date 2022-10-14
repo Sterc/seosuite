@@ -5,8 +5,8 @@
 
 [SEO Suite][1] was introduced by [Sterc][3] as a MODX Extra that automatically redirects your 404 URLs to relevant pages on your website. 404 errors are a fairly common issue for anyone who’s transitioning from an old website to a new website. SEO Suite makes sure your visitors are redirected to a relevant page when they’re looking for an old URL.
 
-## SEO Suite v2.0
-SEO Suite 2.0 combines the power of three extras, SEO Pro, SEO Tab and SEO Suite v1 into one powerful SEO extra. Not only have these three extra's been combined into one, but the codebase has gone through a large refactor and some great new features have been added. 
+## SEO Suite v3.0
+SEO Suite 2.0 combines the power of three extras, SEO Pro, SEO Tab and SEO Suite v1 into one powerful SEO extra. Not only have these three extra's been combined into one, but the codebase has gone through a large refactor and some great new features have been added. New SEO Suite 3.0 has been optimized to run on MODX3.
 
 A custom panel dedicated to your focus keywords, meta title and description has been added, where you can view and switch between Google/Yandex previews or viewing the desktop or mobile preview. All search engine related properties have been gathered in a separate Search engine tab. A new tab "Social" has been added where you can manage the metadata used by Facebook and Twitter.
 

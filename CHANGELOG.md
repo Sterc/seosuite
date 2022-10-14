@@ -1,5 +1,9 @@
 Changelog for SeoSuite.
 
+SEO Suite 3.1.0
+==============
+- Full refactoring for MODX3 #67
+
 SEO Suite 3.0.5
 ==============
 - Fix changefreq values #60

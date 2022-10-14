@@ -3,7 +3,7 @@ lowCaseName: seosuite
 namespace: Sterc\SeoSuite
 description: Fix 404 pages on your site.
 author: Sterc
-version: 3.0.5-beta
+version: 3.1.0-rc
 
 build:
   setupOptions: "setup.options.php"
