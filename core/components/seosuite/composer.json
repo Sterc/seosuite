@@ -1,4 +1,15 @@
 {
+    "name": "sterc/seosuite",
+    "description": "Fix 404 pages on your site.",
+    "keywords": [
+      "modx",
+      "SeoSuite"
+    ],
+    "autoload": {
+      "psr-4": {
+        "Sterc\\SeoSuite\\": "src/"
+      }
+    },
     "require": {
         "phpoffice/phpexcel": "^1.8"
     }

@@ -423,7 +423,7 @@ Ext.extend(SeoSuite, Ext.Component, {
             MODx.Ajax.request({
                 url         : SeoSuite.config.connector_url,
                 params      : {
-                    action          : 'mgr/resource/preview',
+                    action          : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Resource\\Preview',
                     id              : Ext.getCmp('modx-resource-id').getValue(),
                     fields          : Ext.encode({
                         pagetitle       : Ext.getCmp('modx-resource-pagetitle').getValue(),

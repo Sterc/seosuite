@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model package="seosuite" baseClass="xPDOObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="seosuite" version="0.2">
+<model package="Sterc\SeoSuite\Model\" baseClass="xPDO\Om\xPDOSimpleObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="seosuite" version="0.2">
     <object class="SeoSuiteSocial" table="seosuite_social" extends="xPDOSimpleObject">
         <field key="resource_id" dbtype="integer" precision="11" phptype="int" null="false" default="" index="index"/>
         <field key="og_title" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>

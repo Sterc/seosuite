@@ -177,7 +177,7 @@ SeoSuite.combo.Suggestions = function(config) {
     Ext.applyIf(config, {
         url         : SeoSuite.config.connector_url,
         baseParams  : {
-            action      : 'mgr/urls/suggestions/getlist',
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\Suggestions\\GetList',
             combo       : true,
             suggestions : Ext.encode(config.suggestions)
         },
@@ -207,7 +207,7 @@ SeoSuite.combo.Contexts = function(config) {
     Ext.applyIf(config, {
         url          : SeoSuite.config.connector_url,
         baseParams : {
-            action  : 'mgr/context/getlist',
+            action  : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Context\\GetList',
             exclude : config.exclude || 'mgr'
         },
         name         : 'context_key',

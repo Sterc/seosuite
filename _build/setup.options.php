@@ -1,5 +1,8 @@
 <?php
 
+use xPDO\Transport\xPDOTransport;
+use MODX\Revolution\modSystemSetting;
+
 $settings = [
     [
         'key'   => 'user_name',
@@ -37,7 +40,7 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
         }
 
         foreach ($settings as $key => $setting) {
-            $settingObject = $modx->getObject('modSystemSetting', ['key' => 'seosuite.' . $setting['key']]
+            $settingObject = $modx->getObject(modSystemSetting::class, ['key' => 'seosuite.' . $setting['key']]
             );
             if ($settingObject) {
                 $settings[$key]['value'] = $settingObject->get('value');

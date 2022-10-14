@@ -104,7 +104,7 @@ SeoSuite.grid.Urls = function(config) {
         id          : 'seosuite-grid-urls',
         url         : SeoSuite.config.connector_url,
         baseParams  : {
-            action      : 'mgr/urls/getlist'
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\GetList'
         },
         fields      : ['id', 'context_key', 'url', 'suggestions', 'visits', 'last_visit', 'createdon', 'time_ago', 'site_url'],
         paging      : true,
@@ -239,7 +239,7 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
             text        : _('seosuite.url_remove_confirm'),
             url         : SeoSuite.config.connector_url,
             params      : {
-                action      : 'mgr/urls/remove',
+                action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\Remove',
                 id          : this.menu.record.id
             },
             listeners   : {
@@ -256,7 +256,7 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
             text        : _('seosuite.urls_remove_confirm'),
             url         : SeoSuite.config.connector_url,
             params      : {
-                action      : 'mgr/urls/removemultiple',
+                action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\RemoveMultiple',
                 id          : this.getSelectedAsList()
             },
             listeners   : {
@@ -343,7 +343,7 @@ SeoSuite.window.ExcludeWords = function(config) {
         title       : _('seosuite.exclude_words'),
         url         : SeoSuite.config.connector_url,
         baseParams  : {
-            action      : 'mgr/exclude_words/save'
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\ExcludeWords\\Save'
         },
         fields      : [{
             xtype       : 'textarea',
@@ -379,7 +379,7 @@ SeoSuite.window.BlockedWords = function(config) {
         title       : _('seosuite.blocked_words'),
         url         : SeoSuite.config.connector_url,
         baseParams  : {
-            action      : 'mgr/blocked_words/save'
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\BlockedWords\\Save'
         },
         fields      : [{
             xtype       : 'textarea',
@@ -415,7 +415,7 @@ SeoSuite.window.UrlCreateRedirect = function(config) {
         title       : _('seosuite.redirect_create'),
         url         : SeoSuite.config.connector_url,
         baseParams  : {
-            action      : 'mgr/urls/redirects/create'
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\Redirects\\Create'
         },
         fields      : [{
             xtype       : 'hidden',
@@ -497,7 +497,7 @@ SeoSuite.window.UrlSuggestions = function(config) {
         title       : _('seosuite.url_suggesstions'),
         url         : SeoSuite.config.connector_url,
         baseParams  : {
-            action      : 'mgr/urls/suggestions/find'
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\Suggestions\\Find'
         },
         fields      : [{
             xtype       : 'hidden',
@@ -548,7 +548,7 @@ SeoSuite.window.ImportUrls = function(config) {
         fileUpload  : true,
         url         : SeoSuite.config.connector_url,
         baseParams  : {
-            action      : 'mgr/url/import',
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Url\\Import',
             register    : 'mgr',
             topic       : '/seosuiteimport/'
         },
