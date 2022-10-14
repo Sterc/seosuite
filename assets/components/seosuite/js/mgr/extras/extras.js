@@ -59,8 +59,8 @@ SeoSuite.combo.SitemapChangeFreq = function(config) {
             mode        : 'local',
             fields      : ['type', 'label'],
             data        : [
-                ['high', _('seosuite.tab_seo.sitemap_changefreq_always')],
-                ['normal', _('seosuite.tab_seo.sitemap_changefreq_hourly')],
+                ['always', _('seosuite.tab_seo.sitemap_changefreq_always')],
+                ['hourly', _('seosuite.tab_seo.sitemap_changefreq_hourly')],
                 ['daily', _('seosuite.tab_seo.sitemap_changefreq_daily')],
                 ['weekly', _('seosuite.tab_seo.sitemap_changefreq_weekly')],
                 ['monthly', _('seosuite.tab_seo.sitemap_changefreq_monthly')],

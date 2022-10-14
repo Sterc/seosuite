@@ -57,7 +57,7 @@ class SeoSuiteRedirects extends SeoSuitePlugin
 
                 if (!empty($url)) {
                     $this->modx->sendRedirect($url, [
-                        'responseCode' => $redirect->get('redirect_type')
+                        'responseCode' => $redirect->get('redirect_type') ?: 'HTTP/1.1 301 Moved Permanently'
                     ]);
                 }
             }
