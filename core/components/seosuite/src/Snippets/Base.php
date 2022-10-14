@@ -53,19 +53,19 @@ class Base extends SeoSuite
         $html         = [];
         $translations = $this->getBabel()->getLinkedResources($resource->get('id'));
         foreach ($translations as $contextKey => $resourceId) {
-            $ctx = $this->modx->getContext($contextKey);
+            if ($ctx = $this->modx->getContext($contextKey)) {
+                $alternate = [
+                    'cultureKey' => $ctx->getOption('cultureKey', ['context_key' => $contextKey], 'en'),
+                    'url'        => $this->modx->makeUrl($resourceId, '', '', 'full'),
+                    'locale'     => $this->config['meta']['default_alternate_context'] === $ctx->get('key') ? 'x-default' : $ctx->getOption('locale')
+                ];
 
-            $alternate = [
-                'cultureKey' => $ctx->getOption('cultureKey', ['context_key' => $contextKey], 'en'),
-                'url'        => $this->modx->makeUrl($resourceId, '', '', 'full'),
-                'locale'     => $this->config['meta']['default_alternate_context'] === $ctx->get('key') ? 'x-default' : $ctx->getOption('locale')
-            ];
+                if (isset($options['alternateTpl']) && !empty($options['alternateTpl'])) {
+                    $html[] = $this->getChunk($options['alternateTpl'], $alternate);
+                }
 
-            if (isset($options['alternateTpl']) && !empty($options['alternateTpl'])) {
-                $html[] = $this->getChunk($options['alternateTpl'], $alternate);
+                $alternates[] = $alternate;
             }
-
-            $alternates[] = $alternate;
         }
 
         if (isset($options['alternateTpl']) && !empty($options['alternateTpl'])) {
