@@ -268,7 +268,7 @@ class SeoSuite
             $chunk = $this->modx->newObject(modChunk::class);
             $chunk->setContent($content);
         } elseif (!isset($this->chunks[$name])) {
-            if (!$this->config['debug']) {
+            if (!isset($this->config['debug']) || (isset($this->config['debug']) && (bool) $this->config['debug'] === false)) {
                 $chunk = $this->modx->getObject(modChunk::class, ['name' => $name], true);
             }
 

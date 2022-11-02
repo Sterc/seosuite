@@ -133,7 +133,7 @@ class Meta extends Base
             $meta['_alternates'] = [
                 'name'  => 'alternates',
                 'value' => $this->modx->getChunk($tplAlternateWrapper, [
-                    'output' => implode($values, PHP_EOL)
+                    'output' => implode(PHP_EOL, $values)
                 ])
             ];
         }
@@ -142,7 +142,7 @@ class Meta extends Base
 
         $html = [];
         foreach ($meta as $key => $item) {
-            $tpl = $item['tpl'] ?: null;
+            $tpl = isset($item['tpl']) && !empty($item['tpl']) ? $item['tpl'] : null;
             $key = trim($key, '_');
 
             /* Unset tpl from placeholders. */

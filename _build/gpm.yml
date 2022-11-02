@@ -1,9 +1,9 @@
 name: SEO Suite
 lowCaseName: seosuite
 namespace: Sterc\SeoSuite
-description: Fix 404 pages on your site.
+description: Toolset for optimising your websites online presence.
 author: Sterc
-version: 3.1.1-rc
+version: 3.1.1-rc2
 
 build:
   setupOptions: "setup.options.php"

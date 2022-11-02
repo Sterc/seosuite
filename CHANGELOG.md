@@ -3,6 +3,7 @@ Changelog for SeoSuite.
 SEO Suite 3.1.1
 ==============
 - Fix resolvers for install on MODX3
+- PHP8 compatibility fixes
 
 SEO Suite 3.1.0
 ==============
