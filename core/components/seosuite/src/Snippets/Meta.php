@@ -133,7 +133,7 @@ class Meta extends Base
             $meta['_alternates'] = [
                 'name'  => 'alternates',
                 'value' => $this->modx->getChunk($tplAlternateWrapper, [
-                    'output' => implode($values, PHP_EOL)
+                    'output' => implode(PHP_EOL, $values)
                 ])
             ];
         }
