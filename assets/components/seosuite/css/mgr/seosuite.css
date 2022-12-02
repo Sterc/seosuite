@@ -7,8 +7,7 @@
 }
 
 /* Should be moved to default theme. */
-.x-btn-text .icon,
-.x-tab-strip-text  .icon {
+.x-tab-panel-header .x-btn-text .icon, .x-tab-panel-header .x-tab-strip-text .icon {
     margin-right: 8px;
 }
 
