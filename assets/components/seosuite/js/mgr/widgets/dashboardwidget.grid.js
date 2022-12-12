@@ -7,7 +7,7 @@ SeoSuite.grid.RecentUrls = function(config) {
     Ext.applyIf(config, {
         url        : SeoSuite.config.connector_url,
         baseParams : {
-            action  : 'mgr/urls/getlist',
+            action  : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\GetList',
             sortby  : 'createdon',
             sortdir : 'desc',
             limit   : 10
