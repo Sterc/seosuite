@@ -4,6 +4,8 @@ SEO Suite 3.1.1
 ==============
 - Fix resolvers for install on MODX3
 - PHP8 compatibility fixes
+- Add german translation (PR#75)
+- Fix spacing in trash icon (fixes #48)
 
 SEO Suite 3.1.0
 ==============
