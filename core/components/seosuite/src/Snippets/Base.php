@@ -45,7 +45,7 @@ class Base extends SeoSuite
      */
     protected function getAlternateLinks($resource, $options = [])
     {
-        if (!$this->shouldAddBabelAlternativeLinks()) {
+        if (!$this->shouldAddBabelAlternativeLinks($resource)) {
             return '';
         }
 
@@ -77,12 +77,14 @@ class Base extends SeoSuite
 
        /**
      * Determine if babel alternative links should be added.
+     * @param modResource|null $resource
      * @return bool
      */
-    protected function shouldAddBabelAlternativeLinks()
+    protected function shouldAddBabelAlternativeLinks($resource)
     {
         if ($this->config['sitemap']['babel_add_alternate_links'] === false ||
-            !file_exists($this->modx->getOption('babel.core_path', null, $this->modx->getOption('core_path') . 'components/babel/') . 'model/babel/')
+            !file_exists($this->modx->getOption('babel.core_path', null, $this->modx->getOption('core_path') . 'components/babel/') . 'model/babel/') ||
+            !$resource
         ) {
             return false;
         }
