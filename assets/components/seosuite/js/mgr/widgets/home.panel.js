@@ -36,6 +36,14 @@ SeoSuite.panel.Home = function(config) {
                     cls         : 'main-wrapper',
                     preventRender : true
                 }]
+            }, {
+                title       : 'Tools', // TODO
+                items       : [{
+                    html        : '<p>' + _('seosuite.tools_desc') + '</p>',
+                    bodyCssClass : 'panel-desc'
+                }, {
+                    html            : '<p>Migrate from SeoSuite v1, Seo Pro and Seo Tab'
+                }]
             }]
         }]
     });
