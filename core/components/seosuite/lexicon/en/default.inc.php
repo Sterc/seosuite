@@ -109,3 +109,6 @@ $_lang['seosuite.time_months']                                  = '[[+months]] m
 $_lang['seosuite.time_to_long']                                 = 'More then a half year ago';
 
 $_lang['seosuite.widget_desc']                                  = 'Here you can view the 10 most recently added 404 urls. To view and manage all your 404 urls, please visit the <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager page.</a>';
+
+$_lang['seosuite.migration']                                    = 'Migration';
+$_lang['seosuite.migration_desc']                               = 'Upgrading from SEO Suite V1, SEO Pro or SEO Tab requires a data migration. Here you can run the migrations for these extras.';

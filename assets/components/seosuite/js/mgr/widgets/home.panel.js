@@ -37,12 +37,19 @@ SeoSuite.panel.Home = function(config) {
                     preventRender : true
                 }]
             }, {
-                title       : 'Tools', // TODO
+                title       : _('seosuite.migration'),
                 items       : [{
-                    html        : '<p>' + _('seosuite.tools_desc') + '</p>',
+                    html        : '<p>' + _('seosuite.migration_desc') + '</p>',
                     bodyCssClass : 'panel-desc'
                 }, {
-                    html            : '<p>Migrate from SeoSuite v1, Seo Pro and Seo Tab'
+                    html            : '<h3>SEO Suite V1</h3>',
+                    bodyCssClass    : 'panel-desc'
+                }, {
+                    html            : '<h3>SEO Pro</h3>',
+                    bodyCssClass    : 'panel-desc'
+                }, {
+                    html            : '<h3>SEO Tab</h3>',
+                    bodyCssClass    : 'panel-desc'
                 }]
             }]
         }]
