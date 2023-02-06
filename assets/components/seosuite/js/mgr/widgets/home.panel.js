@@ -9,6 +9,7 @@ SeoSuite.panel.Home = function(config) {
             cls         : 'modx-page-header'
         }, {
             xtype       : 'modx-tabs',
+            deferredRender : false,
             items       : [{
                 title       : _('seosuite.urls'),
                 items       : [{
@@ -42,14 +43,7 @@ SeoSuite.panel.Home = function(config) {
                     html        : '<p>' + _('seosuite.migration_desc') + '</p>',
                     bodyCssClass : 'panel-desc'
                 }, {
-                    html            : '<h3>SEO Suite V1</h3>',
-                    bodyCssClass    : 'panel-desc'
-                }, {
-                    html            : '<h3>SEO Pro</h3>',
-                    bodyCssClass    : 'panel-desc'
-                }, {
-                    html            : '<h3>SEO Tab</h3>',
-                    bodyCssClass    : 'panel-desc'
+                    xtype: 'seosuite-panel-migration'
                 }]
             }]
         }]

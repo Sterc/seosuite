@@ -112,3 +112,10 @@ $_lang['seosuite.widget_desc']                                  = 'Here you can 
 
 $_lang['seosuite.migration']                                    = 'Migration';
 $_lang['seosuite.migration_desc']                               = 'Upgrading from SEO Suite V1, SEO Pro or SEO Tab requires a data migration. Here you can run the migrations for these extras.';
+$_lang['seosuite.migration.seosuitev1.results']                 = '<b>[[+redirects]]</b> Redirects and <b>[[+urls]]</b> urls for SEO Suite V1 found.';
+$_lang['seosuite.migration.seosuitev1.empty']                   = '<i>No data found for SEO Suite V1 migration.</i>';
+$_lang['seosuite.migration.seopro.results']                     = '<b>[[+count]]</b> SEO Pro keyword resources found.';
+$_lang['seosuite.migration.seopro.empty']                       = '<i>No data found for SEO Pro migration.</i>';
+$_lang['seosuite.migration.seotab.results']                     = '<b>[[+urls]]</b> Redirects and <b>[[+resources]]</b> resources for SEO Tab found.';
+$_lang['seosuite.migration.seotab.empty']                       = '<i>No data found for SEO Tab migration.</i>';
+$_lang['seosuite.migration.migrate']                            = 'Migrate';
