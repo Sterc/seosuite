@@ -128,18 +128,6 @@ Ext.extend(SeoSuite.panel.Migration, MODx.Panel, {
                             Ext.getCmp('seosuite-migration-status-' + source).show();
                             Ext.getCmp('seosuite-migration-status-' + source).update(response.results.message);
                         }
-
-                        // if (response.total) {
-                        //     var message;
-                        //     if (r.total == 0) {
-                        //         message = '<p>'+_('formit.migrate_success_msg')+'</p>';
-                        //     } else {
-                        //         // Processing redirects
-                        //         message = '<p>'+_('formit.migrate_running')+'</p>';
-                        //         Ext.getCmp('formit-migrate-panel').fireEvent('render');
-                        //     }
-                        //     Ext.getCmp('formit-migrate-panel-status').update(message);
-                        // }
                     },
                     scope: this
                 }
