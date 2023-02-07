@@ -135,7 +135,7 @@ class SeoSuiteSetupOptionsResolver
                 continue;
             }
 
-            $formattedUrl = $this->modx->seosuite->formatUrl($record['url']);
+            $formattedUrl = $this->formatUrl($record['url']);
             if (!$ssRedirect = $this->modx->getObject(SeoSuiteRedirect::class, ['context_key' => $context, 'old_url' => $formattedUrl, 'resource_id' => $record['redirect_to']])) {
                 $ssRedirect = $this->modx->newObject(SeoSuiteRedirect::class);
             }
@@ -164,7 +164,7 @@ class SeoSuiteSetupOptionsResolver
                 continue;
             }
 
-            $formattedUrl = $this->modx->seosuite->formatUrl($record['url']);
+            $formattedUrl = $this->formatUrl($record['url']);
             if (!$ssUrl = $this->modx->getObject(SeoSuiteUrl::class, ['context_key' => $context, 'url' => $formattedUrl])) {
                 $ssUrl = $this->modx->newObject(SeoSuiteUrl::class);
             }
@@ -206,6 +206,27 @@ class SeoSuiteSetupOptionsResolver
         $url = str_replace('www.', '', $url);
 
         return $url;
+    }
+
+    /**
+     * This strips the domain from the request.
+     * For example: domain.tld/path/to/page will become path/to/page.
+     *
+     * @access public.
+     * @param String $request.
+     * @return String.
+     */
+    public function formatUrl($request)
+    {
+        if (!empty($request)) {
+            $parts   = parse_url($request);
+
+            if (isset($parts['path'])) {
+                $request = $parts['path'];
+            }
+        }
+
+        return urldecode(trim($request, '/'));
     }
 
     /**

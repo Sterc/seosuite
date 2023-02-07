@@ -30,9 +30,9 @@ class SeoSuiteRedirect extends \xPDOSimpleObject
         if (is_numeric($this->get('new_url'))) {
             $object = $this->xpdo->getObject(modResource::class, ['id' => $this->get('resource_id')]);
             if ($object) {
-                $this->xpdo->switchContext($object->get('context_key'));
-
-                return $this->xpdo->makeUrl($this->get('new_url'));
+                if ($this->xpdo->switchContext($object->get('context_key'))) {
+                    return $this->xpdo->makeUrl($this->get('new_url'));
+                }
             }
         }
 

@@ -7,6 +7,7 @@ SEO Suite 3.1.1
 - Add german translation (PR#75)
 - Fix spacing in trash icon (fixes #48)
 - Fix dashboard widget error (fixes #80)
+- Add migration tools to CMP for migrating V1, SEO Pro and SEO Tab. 
 
 SEO Suite 3.1.0
 ==============
