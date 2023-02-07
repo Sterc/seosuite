@@ -120,7 +120,7 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 array (
                     'context_key' =>
                     array (
-                        'length' => '767',
+                        'length' => '',
                         'collation' => 'A',
                         'null' => false,
                     ),
@@ -136,7 +136,7 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 array (
                     'resource_id' =>
                     array (
-                        'length' => '767',
+                        'length' => '',
                         'collation' => 'A',
                         'null' => false,
                     ),
@@ -152,7 +152,7 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 array (
                     'old_url' =>
                     array (
-                        'length' => '767',
+                        'length' => '',
                         'collation' => 'A',
                         'null' => false,
                     ),
@@ -168,7 +168,7 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 array (
                     'active' =>
                     array (
-                        'length' => '767',
+                        'length' => '',
                         'collation' => 'A',
                         'null' => false,
                     ),

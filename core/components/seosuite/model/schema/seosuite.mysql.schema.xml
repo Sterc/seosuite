@@ -19,7 +19,7 @@
         <aggregate alias="Resource" class="modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
 
         <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
-            <column key="resource_id" length="767" collation="A" null="false" />
+            <column key="resource_id" length="" collation="A" null="false" />
         </index>
     </object>
 
@@ -34,10 +34,10 @@
         <aggregate alias="Context" class="modContext" local="bundle" foreign="id" cardinality="one" owner="foreign" />
 
         <index alias="context_key" name="context_key" primary="false" unique="false" type="BTREE">
-            <column key="context_key" length="767" collation="A" null="false"></column>
+            <column key="context_key" length="" collation="A" null="false"></column>
         </index>
         <index alias="url" name="url" primary="false" unique="false" type="BTREE">
-            <column key="url" length="767" collation="A" null="false" />
+            <column key="url" length="" collation="A" null="false" />
         </index>
     </object>
 
@@ -59,16 +59,16 @@
         <aggregate alias="Resource" class="modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
 
         <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
-            <column key="resource_id" length="767" collation="A" null="false" />
+            <column key="resource_id" length="" collation="A" null="false" />
         </index>
         <index alias="index_type" name="index_type" primary="false" unique="false" type="BTREE">
-            <column key="index_type" length="767" collation="A" null="false" />
+            <column key="index_type" length="" collation="A" null="false" />
         </index>
         <index alias="follow_type" name="follow_type" primary="false" unique="false" type="BTREE">
-            <column key="follow_type" length="767" collation="A" null="false" />
+            <column key="follow_type" length="" collation="A" null="false" />
         </index>
         <index alias="sitemap" name="sitemap" primary="false" unique="false" type="BTREE">
-            <column key="sitemap" length="767" collation="A" null="false" />
+            <column key="sitemap" length="" collation="A" null="false" />
         </index>
     </object>
 
@@ -87,16 +87,16 @@
         <aggregate alias="Resource" class="modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
 
         <index alias="context_key" name="context_key" primary="false" unique="false" type="BTREE">
-            <column key="context_key" length="767" collation="A" null="false"/>
+            <column key="context_key" length="" collation="A" null="false"/>
         </index>
         <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
-            <column key="resource_id" length="767" collation="A" null="false" />
+            <column key="resource_id" length="" collation="A" null="false" />
         </index>
         <index alias="old_url" name="old_url" primary="false" unique="false" type="BTREE">
-            <column key="old_url" length="767" collation="A" null="false"/>
+            <column key="old_url" length="" collation="A" null="false"/>
         </index>
         <index alias="active" name="active" primary="false" unique="false" type="BTREE">
-            <column key="active" length="767" collation="A" null="false" />
+            <column key="active" length="" collation="A" null="false" />
         </index>
     </object>
 </model>

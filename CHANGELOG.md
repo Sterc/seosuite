@@ -1,13 +1,15 @@
 Changelog for SeoSuite.
 
-SEO Suite 3.1.1
+SEO Suite 3.1.1-rc6
 ==============
 - Fix resolvers for install on MODX3
 - PHP8 compatibility fixes
 - Add german translation (PR#75)
 - Fix spacing in trash icon (fixes #48)
 - Fix dashboard widget error (fixes #80)
-- Add migration tools to CMP for migrating V1, SEO Pro and SEO Tab. 
+- Add migration tools to CMP for migrating V1, SEO Pro and SEO Tab.
+- Fix table indexes
+- Add listener for 'OnBabelDuplicate'
 
 SEO Suite 3.1.0
 ==============

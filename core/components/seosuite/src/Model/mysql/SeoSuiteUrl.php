@@ -86,7 +86,7 @@ class SeoSuiteUrl extends \Sterc\SeoSuite\Model\SeoSuiteUrl
                 array (
                     'context_key' =>
                     array (
-                        'length' => '767',
+                        'length' => '',
                         'collation' => 'A',
                         'null' => false,
                     ),
@@ -102,7 +102,7 @@ class SeoSuiteUrl extends \Sterc\SeoSuite\Model\SeoSuiteUrl
                 array (
                     'url' =>
                     array (
-                        'length' => '767',
+                        'length' => '',
                         'collation' => 'A',
                         'null' => false,
                     ),

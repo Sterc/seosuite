@@ -221,6 +221,23 @@ class Resource extends Base
     }
 
     /**
+     * When creating a duplicate resource with Babels 'Create Translation'.
+     *
+     * @param Object $event
+     * @return void
+     */
+    public function onBabelDuplicate($event)
+    {
+        $oldResource =& $event->params['original_resource'];
+        $newResource =& $event->params['duplicate_resource'];
+
+        if ($oldResource && $newResource) {
+            $this->seosuite->setResourceProperties($newResource->get('id'), $this->seosuite->getResourceProperties($oldResource->get('id')));
+            $this->seosuite->setSocialProperties($newResource->get('id'), $this->seosuite->getSocialProperties($oldResource->get('id')));
+        }
+    }
+
+    /**
      * @access public.
      * @param Object $event.
      * @return void.

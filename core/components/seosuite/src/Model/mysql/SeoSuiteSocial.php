@@ -161,7 +161,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 array (
                     'resource_id' =>
                     array (
-                        'length' => '767',
+                        'length' => '',
                         'collation' => 'A',
                         'null' => false,
                     ),

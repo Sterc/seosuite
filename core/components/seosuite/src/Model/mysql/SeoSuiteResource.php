@@ -155,7 +155,7 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 array (
                     'resource_id' =>
                     array (
-                        'length' => '767',
+                        'length' => '',
                         'collation' => 'A',
                         'null' => false,
                     ),
@@ -171,7 +171,7 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 array (
                     'index_type' =>
                     array (
-                        'length' => '767',
+                        'length' => '',
                         'collation' => 'A',
                         'null' => false,
                     ),
@@ -187,7 +187,7 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 array (
                     'follow_type' =>
                     array (
-                        'length' => '767',
+                        'length' => '',
                         'collation' => 'A',
                         'null' => false,
                     ),
@@ -203,7 +203,7 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 array (
                     'sitemap' =>
                     array (
-                        'length' => '767',
+                        'length' => '',
                         'collation' => 'A',
                         'null' => false,
                     ),
