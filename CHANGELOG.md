@@ -6,6 +6,7 @@ SEO Suite 3.1.1
 - PHP8 compatibility fixes
 - Add german translation (PR#75)
 - Fix spacing in trash icon (fixes #48)
+- Add migration tools to CMP for migrating V1, SEO Pro and SEO Tab. 
 
 SEO Suite 3.1.0
 ==============

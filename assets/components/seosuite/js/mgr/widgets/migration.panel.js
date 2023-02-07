@@ -5,50 +5,62 @@ SeoSuite.panel.Migration = function(config) {
         id          : 'seosuite-panel-migration',
         items       : [{
             xtype: 'modx-panel',
-            defaults: { border: false ,autoHeight: true, style: 'margin: 5px 0;' },
+            defaults: { border: false ,autoHeight: true, style: 'margin: 8px 0;' },
             border: true,
             hideMode: 'offsets',
             cls: 'x-tab-panel-bwrap main-wrapper',
             items: [{
                 html: '<h3>SEO Suite V1</h3>'
             },{
+                id: 'seosuite-migration-seosuitev1'
+            },{
                 id: 'seosuite-migration-status-seosuitev1',
-                html: '',
+                cls: 'seosuite-migration-status',
+                hidden: true
             },{
                 xtype: 'button',
-                id: 'seosuite-migration-seosuitev1',
                 text: _('seosuite.migration.migrate') + ' ' + 'SEO Suite V1',
                 cls: 'primary-button',
                 minWidth: 75,
-                handler: this.migrateSeosuiteV1,
+                handler: function () {
+                    this.runMigration('seosuitev1');
+                },
                 scope: this
             },{
                 html: '<h3>SEO Pro</h3>',
                 style: 'margin-top: 25px;'
             },{
+                id: 'seosuite-migration-seopro'
+            },{
                 id: 'seosuite-migration-status-seopro',
-                html: ''
+                cls: 'seosuite-migration-status',
+                hidden: true
             },{
                 xtype: 'button',
-                id: 'seosuite-migration-seopro',
                 text: _('seosuite.migration.migrate') + ' ' + 'SEO Pro',
                 cls: 'primary-button',
                 minWidth: 75,
-                handler: this.migrateSeoPro,
+                handler: function () {
+                    this.runMigration('seopro');
+                },
                 scope: this
             },{
                 html: '<h3>SEO Tab</h3>',
                 style: 'margin-top: 25px;'
             },{
+                id: 'seosuite-migration-seotab'
+            },{
                 id: 'seosuite-migration-status-seotab',
-                html: ''
+                cls: 'seosuite-migration-status',
+                hidden: true
             },{
                 xtype: 'button',
-                id: 'seosuite-migration-seotab',
                 text: _('seosuite.migration.migrate') + ' ' + 'SEO Tab',
                 cls: 'primary-button',
                 minWidth: 75,
-                handler: this.migrateSeoTab,
+                handler: function () {
+                    this.runMigration('seotab');
+                },
                 scope: this
             }]
         }],
@@ -88,70 +100,16 @@ Ext.extend(SeoSuite.panel.Migration, MODx.Panel, {
                             }
                         }
 
-                        Ext.getCmp('seosuite-migration-status-seosuitev1').update(seosuiteV1Status);
-                        Ext.getCmp('seosuite-migration-status-seopro').update(seoproStatus);
-                        Ext.getCmp('seosuite-migration-status-seotab').update(seotabStatus);
+                        Ext.getCmp('seosuite-migration-seosuitev1').update(seosuiteV1Status);
+                        Ext.getCmp('seosuite-migration-seopro').update(seoproStatus);
+                        Ext.getCmp('seosuite-migration-seotab').update(seotabStatus);
                     },
                     scope       : this
                 }
             }
         });
     },
-    migrateSeosuiteV1: function() {
-        MODx.Ajax.request({
-            url         : SeoSuite.config.connector_url,
-            params      : {
-                action  : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Migration\\Migrate',
-                source  : 'seosuitev1'
-            },
-            listeners   : {
-                'success': {
-                    fn: function (response) {
-                        if (response.total) {
-                            var message;
-                            if (r.total == 0) {
-                                message = '<p>'+_('formit.migrate_success_msg')+'</p>';
-                            } else {
-                                // Processing redirects
-                                message = '<p>'+_('formit.migrate_running')+'</p>';
-                                Ext.getCmp('formit-migrate-panel').fireEvent('render');
-                            }
-                            Ext.getCmp('formit-migrate-panel-status').update(message);
-                        }
-                    },
-                    scope: this
-                }
-            }
-        });
-    },
-    migrateSeoPro: function() {
-        MODx.Ajax.request({
-            url         : SeoSuite.config.connector_url,
-            params      : {
-                action  : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Migration\\Migrate',
-                source  : 'seopro'
-            },
-            listeners   : {
-                'success': {
-                    fn: function (response) {
-                        if (response.total) {
-                            var message;
-                            if (r.total == 0) {
-                                message = '<p>'+_('formit.migrate_success_msg')+'</p>';
-                            } else {
-                                // Processing redirects
-                                message = '<p>'+_('formit.migrate_running')+'</p>';
-                                Ext.getCmp('formit-migrate-panel').fireEvent('render');
-                            }
-                            Ext.getCmp('formit-migrate-panel-status').update(message);
-                        }
-                    },
-                    scope: this
-                }
-            }
-        });
-    },
-    migrateSeoTab: function() {
+    runMigration: function(source) {
         this.mask = new Ext.LoadMask(Ext.get('seosuite-panel-migration'), {msg:_('loading')});
         this.mask.show();
 
@@ -159,24 +117,29 @@ Ext.extend(SeoSuite.panel.Migration, MODx.Panel, {
             url         : SeoSuite.config.connector_url,
             params      : {
                 action  : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Migration\\Migrate',
-                source  : 'seotab'
+                source  : source
             },
             listeners   : {
                 'success': {
                     fn: function (response) {
                         this.mask.hide();
 
-                        if (response.total) {
-                            var message;
-                            if (r.total == 0) {
-                                message = '<p>'+_('formit.migrate_success_msg')+'</p>';
-                            } else {
-                                // Processing redirects
-                                message = '<p>'+_('formit.migrate_running')+'</p>';
-                                Ext.getCmp('formit-migrate-panel').fireEvent('render');
-                            }
-                            Ext.getCmp('formit-migrate-panel-status').update(message);
+                        if (response.results && response.results.message) {
+                            Ext.getCmp('seosuite-migration-status-' + source).show();
+                            Ext.getCmp('seosuite-migration-status-' + source).update(response.results.message);
                         }
+
+                        // if (response.total) {
+                        //     var message;
+                        //     if (r.total == 0) {
+                        //         message = '<p>'+_('formit.migrate_success_msg')+'</p>';
+                        //     } else {
+                        //         // Processing redirects
+                        //         message = '<p>'+_('formit.migrate_running')+'</p>';
+                        //         Ext.getCmp('formit-migrate-panel').fireEvent('render');
+                        //     }
+                        //     Ext.getCmp('formit-migrate-panel-status').update(message);
+                        // }
                     },
                     scope: this
                 }
