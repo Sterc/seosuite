@@ -15,6 +15,12 @@ class Migrate extends Processor
 
     private $domains = [];
 
+    private $limit;
+
+    private $offset;
+
+    private $total = 0;
+
     /**
      * @access public.
      * @return Mixed.
@@ -22,6 +28,8 @@ class Migrate extends Processor
     public function initialize()
     {
         $this->modx->seosuite = $this->modx->services->get('seosuite');
+        $this->limit = $this->getProperty('limit', 1000);
+        $this->offset = $this->getProperty('offset', 0);
 
         return parent::initialize();
     }
@@ -32,120 +40,157 @@ class Migrate extends Processor
      */
     public function process()
     {
+        set_time_limit(300);
+
         $source = $this->getProperty('source');
 
         switch ($source) {
-            case 'seosuitev1':
-                $this->migrateSeoSuite();
+            case 'seosuitev1-redirects':
+                $this->migrateSeoSuiteRedirects();
+                break;
+            case 'seosuitev1-urls':
+                $this->migrateSeoSuiteUrls();
                 break;
             case 'seopro':
                 $this->migrateSeoPro();
                 break;
-            case 'seotab':
-                $this->migrateSeoTab();
+            case 'seotab-redirects':
+                $this->migrateSeoTabRedirects();
+                break;
+            case 'seotab-urls':
+                $this->migrateSeoTabUrls();
                 break;
         }
 
         $output = [
-            'message' => implode('<br>', $this->logMessage)
+            'message'       => implode('<br>', $this->logMessage),
+            'totalCount'    => $this->total,
+            'offset'        => $this->total > ($this->limit + $this->offset) ? $this->limit + $this->offset : 0
         ];
 
         return $this->outputArray($output);
     }
 
+    private function getTotal($baseQuery)
+    {
+        $query = $this->modx->query('SELECT COUNT(*) FROM ' . $baseQuery);
+        $results = $query->fetch();
+
+        return $results[0] ? (int) $results[0] : 0;
+    }
+
     /**
-     * Migrate SEO Suite data.
+     * Migrate SEO Suite redirects.
      */
-    protected function migrateSeoSuite()
+    protected function migrateSeoSuiteRedirects()
     {
         $new = 0;
         $updated = 0;
         $failed = 0;
 
         /* Migrate redirects. */
-        $results = $this->modx->query('SELECT * FROM ' . $this->modx->getOption('table_prefix') . 'seosuite_urls WHERE solved = 1');
-        while ($record = $results->fetch(\PDO::FETCH_ASSOC)) {
-            if (!$context = $this->getContextByUrl($record['url'])) {
-                $this->logToFile('Could not import redirect. Failed to find context for url: ' . $record['url'], 'error');
-                $failed++;
+        $query = $this->modx->getOption('table_prefix') . 'seosuite_urls WHERE solved = 1';
 
-                continue;
+        $this->total = $this->getTotal($query);
+
+        $results = $this->modx->query('SELECT * FROM ' . $query .' LIMIT ' . $this->limit . ' OFFSET ' . $this->offset);
+        if ($results) {
+            while ($record = $results->fetch(\PDO::FETCH_ASSOC)) {
+                if (!$context = $this->getContextByUrl($record['url'])) {
+                    $this->logToFile('Could not import redirect. Failed to find context for url: ' . $record['url'], 'error');
+                    $failed++;
+
+                    continue;
+                }
+
+                $formattedUrl = $this->formatUrl($record['url']);
+                if (!$ssRedirect = $this->modx->getObject(SeoSuiteRedirect::class, ['context_key' => $context, 'old_url' => $formattedUrl, 'resource_id' => $record['redirect_to']])) {
+                    $ssRedirect = $this->modx->newObject(SeoSuiteRedirect::class);
+
+                    $new++;
+                } else {
+                    $updated++;
+                }
+
+                $ssRedirect->fromArray([
+                    'context_key'   => $context,
+                    'resource_id'   => $record['redirect_to'],
+                    'old_url'       => $formattedUrl,
+                    'new_url'       => $record['redirect_to'],
+                    'suggestions'   => $record['suggestions'],
+                    'redirect_type' => 'HTTP/1.1 301 Moved Permanently',
+                    'active'        => 1,
+                    'visits'        => $record['triggered'],
+                    'last_visit'    => $record['last_triggered']
+                ]);
+
+                $ssRedirect->save();
             }
-
-            $formattedUrl = $this->formatUrl($record['url']);
-            if (!$ssRedirect = $this->modx->getObject(SeoSuiteRedirect::class, ['context_key' => $context, 'old_url' => $formattedUrl, 'resource_id' => $record['redirect_to']])) {
-                $ssRedirect = $this->modx->newObject(SeoSuiteRedirect::class);
-
-                $new++;
-            } else {
-                $updated++;
-            }
-
-            $ssRedirect->fromArray([
-                'context_key'   => $context,
-                'resource_id'   => $record['redirect_to'],
-                'old_url'       => $formattedUrl,
-                'new_url'       => $record['redirect_to'],
-                'suggestions'   => $record['suggestions'],
-                'redirect_type' => 'HTTP/1.1 301 Moved Permanently',
-                'active'        => 1,
-                'visits'        => $record['triggered'],
-                'last_visit'    => $record['last_triggered']
-            ]);
-
-            $ssRedirect->save();
         }
 
-        $this->log('Finished migrating SEO Suite V1 redirects.');
+        $this->log('Finished migrating SEO Suite V1 redirects. (Offset: ' . $this->offset . ', Limit: ' . $this->limit);
         $this->log('Created: <b> ' . $new . '</b>, Updated: <b>' . $updated . '</b>');
 
         if ($failed > 0) {
             $this->log('Warning: <b>' . $failed . '</b> redirects have failed to migrate. Please check the MODX error log for more information, and re-run the migration if needed.');
         }
 
-        $this->log('---------------------------------------');
+        $this->log('<br>');
+    }
 
-         /* Migrate 404 urls. */
+    /**
+     * Migrate SEO Suite urls.
+     */
+    protected function migrateSeoSuiteUrls()
+    {
         $new = 0;
         $updated = 0;
         $failed = 0;
 
-        $results = $this->modx->query('SELECT * FROM ' . $this->modx->getOption('table_prefix') . 'seosuite_urls WHERE solved = 0');
-        while ($record = $results->fetch(\PDO::FETCH_ASSOC)) {
-            if (!$context = $this->getContextByUrl($record['url'])) {
-                $this->logToFile('Could not import url. Failed to find context for url: ' . $record['url'], 'error');
-                $failed++;
+        $query = $this->modx->getOption('table_prefix') . 'seosuite_urls WHERE solved = 0';
 
-                continue;
+        $this->total = $this->getTotal($query);
+
+        $results = $this->modx->query('SELECT * FROM ' . $query . ' LIMIT ' . $this->limit . ' OFFSET ' . $this->offset);
+        if ($results) {
+            while ($record = $results->fetch(\PDO::FETCH_ASSOC)) {
+                if (!$context = $this->getContextByUrl($record['url'])) {
+                    $this->logToFile('Could not import url. Failed to find context for url: ' . $record['url'], 'error');
+                    $failed++;
+
+                    continue;
+                }
+
+                $formattedUrl = $this->formatUrl($record['url']);
+                if (!$ssUrl = $this->modx->getObject(SeoSuiteUrl::class, ['context_key' => $context, 'url' => $formattedUrl])) {
+                    $ssUrl = $this->modx->newObject(SeoSuiteUrl::class);
+
+                    $new++;
+                } else {
+                    $updated++;
+                }
+
+                $ssUrl->fromArray([
+                    'context_key' => $context,
+                    'url'         => $formattedUrl,
+                    'suggestions' => $record['suggestions'],
+                    'visits'      => $record['triggered'],
+                    'last_visit'  => $record['last_triggered'],
+                    'createdon'   => $record['createdon']
+                ]);
+
+                $ssUrl->save();
             }
-
-            $formattedUrl = $this->formatUrl($record['url']);
-            if (!$ssUrl = $this->modx->getObject(SeoSuiteUrl::class, ['context_key' => $context, 'url' => $formattedUrl])) {
-                $ssUrl = $this->modx->newObject(SeoSuiteUrl::class);
-
-                $new++;
-            } else {
-                $updated++;
-            }
-
-            $ssUrl->fromArray([
-                'context_key' => $context,
-                'url'         => $formattedUrl,
-                'suggestions' => $record['suggestions'],
-                'visits'      => $record['triggered'],
-                'last_visit'  => $record['last_triggered'],
-                'createdon'   => $record['createdon']
-            ]);
-
-            $ssUrl->save();
         }
 
-        $this->log('Finished migrating SEO Suite V1 404 urls.');
+        $this->log('Finished migrating SEO Suite V1 404 urls. (Offset: ' . $this->offset . ', Limit: ' . $this->limit);
         $this->log('Created: <b> ' . $new . '</b>, Updated: <b>' . $updated . '</b>');
 
         if ($failed > 0) {
             $this->log('Warning: <b>' . $failed . '</b> urls have failed to migrate. Please check the MODX error log for more information, and re-run the migration if needed.');
         }
+
+        $this->log('<br>');
     }
 
     /**
@@ -153,87 +198,108 @@ class Migrate extends Processor
      */
     protected function migrateSeoPro()
     {
-        $results = $this->modx->query('SELECT * FROM ' . $this->modx->getOption('table_prefix') . 'seopro_keywords WHERE keywords IS NOT NULL AND keywords != ""');
+        $query = $this->modx->getOption('table_prefix') . 'seopro_keywords WHERE keywords IS NOT NULL AND keywords != ""';
+
+        $this->total = $this->getTotal($query);
+
+        $results = $this->modx->query('SELECT * FROM ' . $query . ' LIMIT ' . $this->limit . ' OFFSET ' . $this->offset);
 
         $new = 0;
         $updated = 0;
 
-        while ($record = $results->fetch(\PDO::FETCH_ASSOC)) {
-            if (!$seoSuiteResource = $this->modx->getObject(SeoSuiteResource::class, ['resource_id' => $record['resource']])) {
-                $seoSuiteResource = $this->modx->newObject(SeoSuiteResource::class);
-                $seoSuiteResource->set('resource_id', $record['resource']);
+        if ($results) {
+            while ($record = $results->fetch(\PDO::FETCH_ASSOC)) {
+                if (!$seoSuiteResource = $this->modx->getObject(SeoSuiteResource::class, ['resource_id' => $record['resource']])) {
+                    $seoSuiteResource = $this->modx->newObject(SeoSuiteResource::class);
+                    $seoSuiteResource->set('resource_id', $record['resource']);
 
-                $new++;
-            } else {
-                $updated++;
+                    $new++;
+                } else {
+                    $updated++;
+                }
+
+                $keywords = [];
+                if (!empty($seoSuiteResource->get('keywords'))) {
+                    $keywords = explode(',', $seoSuiteResource->get('keywords'));
+                }
+
+                $keywords = array_unique(array_merge($keywords, explode(',', $record['keywords'])));
+
+                $seoSuiteResource->set('keywords', implode(',', $keywords));
+                $seoSuiteResource->save();
             }
-
-            $keywords = [];
-            if (!empty($seoSuiteResource->get('keywords'))) {
-                $keywords = explode(',', $seoSuiteResource->get('keywords'));
-            }
-
-            $keywords = array_unique(array_merge($keywords, explode(',', $record['keywords'])));
-
-            $seoSuiteResource->set('keywords', implode(',', $keywords));
-            $seoSuiteResource->save();
         }
 
-        $this->log('Finished migrating SEO Pro data.');
+        $this->log('Finished migrating SEO Pro keyword resources. (Offset: ' . $this->offset . ', Limit: ' . $this->limit);
         $this->log('Created: <b> ' . $new . '</b>, Updated: <b>' . $updated . '</b>');
+        $this->log('<br>');
     }
 
     /**
-     * Migrate SEO Tab data.
+     * Migrate SEO Tab redirects.
      */
-    protected function migrateSeoTab()
+    protected function migrateSeoTabRedirects()
     {
-        /* Migrate redirects. */
-        $results = $this->modx->query('SELECT * FROM ' . $this->modx->getOption('table_prefix') . 'seo_urls');
+        $query = $this->modx->getOption('table_prefix') . 'seo_urls';
+
+        $this->total = $this->getTotal($query);
+
+        $results = $this->modx->query('SELECT * FROM ' . $query . ' LIMIT ' . $this->limit . ' OFFSET ' . $this->offset);
 
         $new = 0;
         $skipped = 0;
 
-        while ($record = $results->fetch(\PDO::FETCH_ASSOC)) {
-            /* Create redirect if not exists. */
-            $oldUrlArray = parse_url(urldecode($record['url']));
-            if (!isset($oldUrlArray['path'])) {
-                continue;
-            }
+        if ($results) {
+            while ($record = $results->fetch(\PDO::FETCH_ASSOC)) {
+                /* Create redirect if not exists. */
+                $oldUrlArray = parse_url(urldecode($record['url']));
+                if (!isset($oldUrlArray['path'])) {
+                    continue;
+                }
 
-            $oldUrl = trim($oldUrlArray['path'], '/');
-            if (!$this->modx->getObject(SeoSuiteRedirect::class, [
-                'resource_id' => $record['resource'],
-                'context_key' => $record['context_key'],
-                'old_url'     => $oldUrl
-            ])) {
-                $redirect = $this->modx->newObject(SeoSuiteRedirect::class);
-                $redirect->fromArray([
-                    'context_key'   => $record['context_key'],
-                    'resource_id'   => $record['resource'],
-                    'old_url'       => $oldUrl,
-                    'new_url'       => $record['resource'],
-                    'redirect_type' => 'HTTP/1.1 301 Moved Permanently',
-                    'active'        => true
-                ]);
+                $oldUrl = trim($oldUrlArray['path'], '/');
+                if (!$this->modx->getObject(SeoSuiteRedirect::class, [
+                    'resource_id' => $record['resource'],
+                    'context_key' => $record['context_key'],
+                    'old_url'     => $oldUrl
+                ])) {
+                    $redirect = $this->modx->newObject(SeoSuiteRedirect::class);
+                    $redirect->fromArray([
+                        'context_key'   => $record['context_key'],
+                        'resource_id'   => $record['resource'],
+                        'old_url'       => $oldUrl,
+                        'new_url'       => $record['resource'],
+                        'redirect_type' => 'HTTP/1.1 301 Moved Permanently',
+                        'active'        => true
+                    ]);
 
-                $redirect->save();
+                    $redirect->save();
 
-                $new++;
-            } else {
-                $skipped++;
+                    $new++;
+                } else {
+                    $skipped++;
+                }
             }
         }
 
-        $this->log('Finished migrating SEO Tab redirects.');
+        $this->log('Finished migrating SEO Tab redirects. (Offset: ' . $this->offset . ', Limit: ' . $this->limit);
         $this->log('Created: <b> ' . $new . '</b>, Skipped (existing redirects): <b>' . $skipped . '</b>');
-        $this->log('---------------------------------------');
+        $this->log('<br>');
+    }
 
-        /* Migrate properties. */
+    /**
+     * Migrate SEO Tab urls.
+     */
+    protected function migrateSeoTabUrls()
+    {
         $query = $this->modx->newQuery(modResource::class);
         $query->where([
             'properties:LIKE' => '%stercseo%'
         ]);
+
+        $this->total = $this->modx->getCount(modResource::class, $query);
+
+        $query->limit($this->limit, $this->offset);
 
         $new = 0;
         $updated = 0;
@@ -265,17 +331,18 @@ class Migrate extends Processor
             }
         }
 
-        if ($plugin = $this->modx->getObject('modPlugin', ['name' => 'StercSEO'])) {
-            if (!$plugin->disabled) {
-                $plugin->set('disabled', true);
-                $plugin->save();
+        // if ($plugin = $this->modx->getObject('modPlugin', ['name' => 'StercSEO'])) {
+        //     if (!$plugin->disabled) {
+        //         $plugin->set('disabled', true);
+        //         $plugin->save();
 
-                $this->log('Plugin StercSEO disabled');
-            }
-        }
+        //         $this->log('Plugin StercSEO disabled');
+        //     }
+        // }
 
         $this->log('Finished migrating SEO Tab properties to SeoSuiteResource objects.');
         $this->log('Created: <b> ' . $new . '</b>, Updated: <b>' . $updated . '</b>');
+        $this->log('<br>');
     }
 
     /**

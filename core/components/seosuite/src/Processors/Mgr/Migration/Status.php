@@ -23,6 +23,8 @@ class Status extends Processor
      */
     public function process()
     {
+        set_time_limit(300);
+
         $v1Redirects = $this->seoSuiteV1RedirectCount();
         $v1Urls = $this->seoSuiteV1UrlCount();
 
@@ -42,10 +44,10 @@ class Status extends Processor
 
     private function seoSuiteV1RedirectCount ()
     {
-        if ($query = $this->modx->query('SELECT * FROM ' . $this->modx->getOption('table_prefix') . 'seosuite_urls WHERE solved = 1')) {
-            $results = $query->fetchAll(\PDO::FETCH_OBJ);
+        if ($query = $this->modx->query('SELECT COUNT(*) FROM ' . $this->modx->getOption('table_prefix') . 'seosuite_urls WHERE solved = 1')) {
+            $results = $query->fetch();
 
-            return $results ? count($results) : 0;
+            return $results[0] ? (int) $results[0] : 0;
         }
 
         return 0;
@@ -53,10 +55,10 @@ class Status extends Processor
 
     private function seoSuiteV1UrlCount ()
     {
-        if ($query = $this->modx->query('SELECT * FROM ' . $this->modx->getOption('table_prefix') . 'seosuite_urls WHERE solved = 0')) {
-            $results = $query->fetchAll(\PDO::FETCH_OBJ);
+        if ($query = $this->modx->query('SELECT COUNT(*) FROM ' . $this->modx->getOption('table_prefix') . 'seosuite_urls WHERE solved = 0')) {
+            $results = $query->fetch();
 
-            return $results ? count($results) : 0;
+            return $results[0] ? (int) $results[0] : 0;
         }
 
         return 0;
@@ -64,10 +66,10 @@ class Status extends Processor
 
     private function seoProCount ()
     {
-        if ($query = $this->modx->query('SELECT * FROM ' . $this->modx->getOption('table_prefix') . 'seopro_keywords WHERE keywords IS NOT NULL AND keywords != ""')) {
-            $results = $query->fetchAll(\PDO::FETCH_OBJ);
+        if ($query = $this->modx->query('SELECT COUNT(*) FROM ' . $this->modx->getOption('table_prefix') . 'seopro_keywords WHERE keywords IS NOT NULL AND keywords != ""')) {
+            $results = $query->fetch();
 
-            return $results ? count($results) : 0;
+            return $results[0] ? (int) $results[0] : 0;
         }
 
         return 0;
@@ -75,10 +77,10 @@ class Status extends Processor
 
     private function seoTabUrlCount ()
     {
-        if ($query = $this->modx->query('SELECT * FROM ' . $this->modx->getOption('table_prefix') . 'seo_urls')) {
-            $results = $query->fetchAll(\PDO::FETCH_OBJ);
+        if ($query = $this->modx->query('SELECT COUNT(*) FROM ' . $this->modx->getOption('table_prefix') . 'seo_urls')) {
+            $results = $query->fetch();
 
-            return $results ? count($results) : 0;
+            return $results[0] ? (int) $results[0] : 0;
         }
 
         return 0;

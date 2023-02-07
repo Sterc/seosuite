@@ -1,8 +1,11 @@
 SeoSuite.panel.Migration = function(config) {
     config = config || {};
 
+    Ext.Ajax.timeout = 0;
+
     Ext.apply(config, {
         id          : 'seosuite-panel-migration',
+        style       : 'min-height: 100px;',
         items       : [{
             xtype: 'modx-panel',
             defaults: { border: false ,autoHeight: true, style: 'margin: 8px 0;' },
@@ -14,7 +17,11 @@ SeoSuite.panel.Migration = function(config) {
             },{
                 id: 'seosuite-migration-seosuitev1'
             },{
-                id: 'seosuite-migration-status-seosuitev1',
+                id: 'seosuite-migration-status-seosuitev1-redirects',
+                cls: 'seosuite-migration-status',
+                hidden: true
+            },{
+                id: 'seosuite-migration-status-seosuitev1-urls',
                 cls: 'seosuite-migration-status',
                 hidden: true
             },{
@@ -23,7 +30,8 @@ SeoSuite.panel.Migration = function(config) {
                 cls: 'primary-button',
                 minWidth: 75,
                 handler: function () {
-                    this.runMigration('seosuitev1');
+                    this.runMigration('seosuitev1-redirects');
+                    this.runMigration('seosuitev1-urls');
                 },
                 scope: this
             },{
@@ -50,7 +58,11 @@ SeoSuite.panel.Migration = function(config) {
             },{
                 id: 'seosuite-migration-seotab'
             },{
-                id: 'seosuite-migration-status-seotab',
+                id: 'seosuite-migration-status-seotab-redirects',
+                cls: 'seosuite-migration-status',
+                hidden: true
+            },{
+                id: 'seosuite-migration-status-seotab-urls',
                 cls: 'seosuite-migration-status',
                 hidden: true
             },{
@@ -59,7 +71,8 @@ SeoSuite.panel.Migration = function(config) {
                 cls: 'primary-button',
                 minWidth: 75,
                 handler: function () {
-                    this.runMigration('seotab');
+                    this.runMigration('seotab-redirects', 5000);
+                    this.runMigration('seotab-urls', 5000);
                 },
                 scope: this
             }]
@@ -74,6 +87,9 @@ SeoSuite.panel.Migration = function(config) {
 
 Ext.extend(SeoSuite.panel.Migration, MODx.Panel, {
     checkStatus: function() {
+        this.mask = new Ext.LoadMask(Ext.get('seosuite-panel-migration'), {msg:_('loading')});
+        this.mask.show();
+
         MODx.Ajax.request({
             url         : SeoSuite.config.connector_url,
             params      : {
@@ -82,6 +98,8 @@ Ext.extend(SeoSuite.panel.Migration, MODx.Panel, {
             listeners   : {
                 'success' : {
                     fn  : function (response) {
+                        this.mask.hide();
+
                         var seosuiteV1Status    = _('seosuite.migration.seosuitev1.empty');
                         var seoproStatus        = _('seosuite.migration.seopro.empty');
                         var seotabStatus        = _('seosuite.migration.seotab.empty');
@@ -109,24 +127,35 @@ Ext.extend(SeoSuite.panel.Migration, MODx.Panel, {
             }
         });
     },
-    runMigration: function(source) {
-        this.mask = new Ext.LoadMask(Ext.get('seosuite-panel-migration'), {msg:_('loading')});
-        this.mask.show();
+    runMigration: function(source, limit = 1000, offset = 0) {
+        Ext.getCmp('seosuite-migration-status-' + source).show();
+
+        var mask = new Ext.LoadMask(Ext.get('seosuite-migration-status-' + source), {msg:_('loading')});
+        mask.show();
 
         MODx.Ajax.request({
-            url         : SeoSuite.config.connector_url,
-            params      : {
-                action  : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Migration\\Migrate',
-                source  : source
+            url             : SeoSuite.config.connector_url,
+            params          : {
+                action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Migration\\Migrate',
+                source      : source,
+                limit       : limit,
+                offset      : offset
             },
             listeners   : {
                 'success': {
                     fn: function (response) {
-                        this.mask.hide();
+                        mask.hide();
 
                         if (response.results && response.results.message) {
-                            Ext.getCmp('seosuite-migration-status-' + source).show();
-                            Ext.getCmp('seosuite-migration-status-' + source).update(response.results.message);
+                            Ext.getCmp('seosuite-migration-status-' + source).add({
+                                html: response.results.message
+                            });
+
+                            Ext.getCmp('seosuite-migration-status-' + source).doLayout();
+
+                            if (response.results.offset && response.results.offset > 0) {
+                                this.runMigration(source, limit, response.results.offset);
+                            }
                         }
                     },
                     scope: this
