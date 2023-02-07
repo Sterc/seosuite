@@ -97,9 +97,13 @@ class Resource extends Base
             }
         }
 
-        foreach (['sitemap', 'searchable', 'searchable', 'canonical'] as $key) {
+        foreach (['sitemap', 'searchable', 'canonical'] as $key) {
             if (!isset($fields[$key])) {
-                $fields[$key] = 0;
+                $fields[$key] = 1;
+
+                if ($key === 'canonical') {
+                    $fields[$key] = 0;
+                }
             }
         }
 

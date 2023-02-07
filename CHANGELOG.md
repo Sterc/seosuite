@@ -10,6 +10,7 @@ SEO Suite 3.1.1-rc6
 - Add migration tools to CMP for migrating V1, SEO Pro and SEO Tab.
 - Fix table indexes
 - Add listener for 'OnBabelDuplicate'
+- Fix default values for sitemap, searchable and canonical
 
 SEO Suite 3.1.0
 ==============
