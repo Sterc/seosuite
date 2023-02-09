@@ -5,6 +5,10 @@ use MODX\Revolution\modAccessPermission;
 use MODX\Revolution\modAccessPolicy;
 
 $permissions = [[
+    'name'          => 'seosuite',
+    'description'   => 'To access SeoSuite CMP.',
+    'templates'     => ['AdministratorTemplate']
+],[
     'name'          => 'seosuite_tab_meta',
     'description'   => 'To view the SeoSuite keywords/character counters and search engine meta data.',
     'templates'     => ['AdministratorTemplate']
