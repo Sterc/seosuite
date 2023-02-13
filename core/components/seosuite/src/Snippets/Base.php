@@ -60,7 +60,7 @@ class Base extends SeoSuite
                     'locale'     => $this->config['meta']['default_alternate_context'] === $ctx->get('key') ? 'x-default' : $ctx->getOption('locale')
                 ];
 
-                if (isset($options['alternateTpl']) && !empty($options['alternateTpl'])) {
+                if (isset($options['alternateTpl']) && !empty($options['alternateTpl']) && !empty($alternate['url'])) {
                     $html[] = $this->getChunk($options['alternateTpl'], $alternate);
                 }
 
