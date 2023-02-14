@@ -1,5 +1,9 @@
 Changelog for SeoSuite.
 
+SEO Suite 3.1.1-rc8
+==============
+- Improved search for redirects for urls with language prefixes, like "en/", "nl/", etc.
+
 SEO Suite 3.1.1-rc6
 ==============
 - Fix resolvers for install on MODX3

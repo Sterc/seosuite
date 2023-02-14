@@ -29,12 +29,9 @@ class Redirects extends Base
     protected function redirect($request)
     {
         $criteria = $this->modx->newQuery(SeoSuiteRedirect::class, [
-            'old_url'       => $request,
-            'active'        => 1,
-            [
-                'context_key'       => '',
-                'OR:context_key:='  => $this->modx->context->get('key')
-            ]
+            'active' => 1,
+            ['old_url' => $request, 'OR:old_url:=' => preg_replace('#^\w{2}/#', '', $request)],
+            ['context_key' => '', 'OR:context_key:=' => $this->modx->context->get('key')],
         ]);
 
         $criteria->sortby('context_key', 'DESC');
