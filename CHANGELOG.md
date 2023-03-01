@@ -1,5 +1,10 @@
 Changelog for SeoSuite.
 
+SEO Suite 3.1.1
+==============
+- Fix default permissions (PR#86)
+- Fix bootstrap file to prevent FrozenServiceException (fixes #87)
+
 SEO Suite 3.1.1-rc8
 ==============
 - Improved search for redirects for urls with language prefixes, like "en/", "nl/", etc.
