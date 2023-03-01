@@ -137,10 +137,24 @@ class Resource extends Base
     {
         $resource =& $event->params['resource'];
 
-        if ($resource) {
+        if ($resource && $resource instanceof modResource) {
             $this->seosuite->setResourceProperties($resource->get('id'), $this->getSeoSuiteFields());
             $this->seosuite->setSocialProperties($resource->get('id'), $this->getSeoSuiteFields());
             $this->seosuite->setRedirectProperties($resource);
+
+            if ($resource->hasChildren()) {
+                $childIds = $this->modx->getChildIds($resource->get('id'), 99, ['context' => $resource->get('context_key')]);
+
+                $childResources = $this->modx->getIterator(modResource::class, [
+                    'id:IN'         => $childIds,
+                    'uri_override'  => false,
+                    'deleted'       => false
+                ]);
+
+                foreach ($childResources as $childResource) {
+                    $this->saveChildResourceRedirect($childResource, $resource->get('context_key'));
+                }
+            }
         }
     }
 
@@ -326,23 +340,33 @@ class Resource extends Base
                 ]);
 
                 $childResources = $this->modx->getIterator(modResource::class, $query);
-                foreach ($childResources as $childResource) {
-                    if (!$this->modx->getCount(SeoSuiteRedirect::class, ['old_url' => $childResource->get('uri'), 'context_key' => $childResource->get('context_key')])) {
-                        $data = [
-                            'old_url'       => $childResource->get('uri'),
-                            'resource_id'   => $childResource->get('id'),
-                            'context_key'   => $sourceCtx,
-                            'new_url'       => $childResource->get('id'),
-                            'redirect_type' => 'HTTP/1.1 301 Moved Permanently'
-                        ];
 
-                        $redirect = $this->modx->newObject(SeoSuiteRedirect::class);
-                        $redirect->fromArray($data);
-                        $redirect->save();
-                    }
+                foreach ($childResources as $childResource) {
+                    $this->saveChildResourceRedirect($childResource, $sourceCtx);
                 }
             }
         }
+    }
+
+    public function saveChildResourceRedirect(modResource $modResource, string $contextKey)
+    {
+        if ($this->modx->getCount(SeoSuiteRedirect::class, ['old_url' => $modResource->get('uri'), 'context_key' => $modResource->get('context_key')])) {
+            // Redirect already exists
+            return false;
+        }
+
+        $data = [
+            'old_url'       => $modResource->get('uri'),
+            'resource_id'   => $modResource->get('id'),
+            'context_key'   => $contextKey,
+            'new_url'       => $modResource->get('id'),
+            'redirect_type' => 'HTTP/1.1 301 Moved Permanently'
+        ];
+
+        $redirect = $this->modx->newObject(SeoSuiteRedirect::class);
+        $redirect->fromArray($data);
+        $redirect->save();
+
     }
 
     public function onManagerPageBeforeRender()
