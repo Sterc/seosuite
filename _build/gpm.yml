@@ -3,7 +3,7 @@ lowCaseName: seosuite
 namespace: Sterc\SeoSuite
 description: Toolset for optimising your websites online presence.
 author: Sterc
-version: 3.1.1
+version: 3.1.2
 
 build:
   setupOptions: "setup.options.php"
@@ -110,7 +110,7 @@ plugins:
   - name: SEO Suite
     description: Plugin to handle the SEO Suite redirects.
     file: seosuite.plugin.php
-    events: ["OnDocFormPrerender", "OnDocFormRender", "OnDocFormSave", "onEmptyTrash", "OnLoadWebDocument", "OnMODXInit", "OnPageNotFound", "OnResourceBeforeSort", "OnResourceDuplicate", "OnBabelDuplicate"]
+    events: ["OnDocFormPrerender", "OnDocFormRender", "onBeforeDocFormSave", "OnDocFormSave", "onEmptyTrash", "OnLoadWebDocument", "OnMODXInit", "OnPageNotFound", "OnResourceBeforeSort", "OnResourceDuplicate", "OnBabelDuplicate"]
 
 snippets:
   - name: SeoSuiteMeta

@@ -133,16 +133,12 @@ class Resource extends Base
      * @param Object $event.
      * @return void.
      */
-    public function onDocFormSave($event)
+    public function onBeforeDocFormSave($event)
     {
         $resource =& $event->params['resource'];
 
         if ($resource && $resource instanceof modResource) {
-            $this->seosuite->setResourceProperties($resource->get('id'), $this->getSeoSuiteFields());
-            $this->seosuite->setSocialProperties($resource->get('id'), $this->getSeoSuiteFields());
-            $this->seosuite->setRedirectProperties($resource);
-
-            if ($resource->hasChildren()) {
+            if ($resource->hasChildren() && (int) $this->modx->getOption('use_alias_path') === 1) {
                 $childIds = $this->modx->getChildIds($resource->get('id'), 99, ['context' => $resource->get('context_key')]);
 
                 $childResources = $this->modx->getIterator(modResource::class, [
@@ -155,6 +151,22 @@ class Resource extends Base
                     $this->saveChildResourceRedirect($childResource, $resource->get('context_key'));
                 }
             }
+        }
+    }
+
+    /**
+     * @access public.
+     * @param Object $event.
+     * @return void.
+     */
+    public function onDocFormSave($event)
+    {
+        $resource =& $event->params['resource'];
+
+        if ($resource && $resource instanceof modResource) {
+            $this->seosuite->setResourceProperties($resource->get('id'), $this->getSeoSuiteFields());
+            $this->seosuite->setSocialProperties($resource->get('id'), $this->getSeoSuiteFields());
+            $this->seosuite->setRedirectProperties($resource);
         }
     }
 
@@ -280,11 +292,6 @@ class Resource extends Base
         }
     }
 
-    public function onBeforeDocFormSave()
-    {
-
-    }
-
     public function onPageNotFound()
     {
 
@@ -348,6 +355,11 @@ class Resource extends Base
         }
     }
 
+    public function onManagerPageBeforeRender()
+    {
+
+    }
+
     public function saveChildResourceRedirect(modResource $modResource, string $contextKey)
     {
         if ($this->modx->getCount(SeoSuiteRedirect::class, ['old_url' => $modResource->get('uri'), 'context_key' => $modResource->get('context_key')])) {
@@ -366,11 +378,6 @@ class Resource extends Base
         $redirect = $this->modx->newObject(SeoSuiteRedirect::class);
         $redirect->fromArray($data);
         $redirect->save();
-
-    }
-
-    public function onManagerPageBeforeRender()
-    {
 
     }
 

@@ -1,9 +1,10 @@
 Changelog for SeoSuite.
 
-SEO Suite 3.1.1
+SEO Suite 3.1.2
 ==============
 - Fix default permissions (PR#86)
 - Fix bootstrap file to prevent FrozenServiceException (fixes #87)
+- Add redirects for child resources when changing parent uri and use_alias_path is set to true
 
 SEO Suite 3.1.1-rc8
 ==============
