@@ -65,6 +65,7 @@ class SeoSuite
             'disabled_templates'         => array_filter(explode(',', $this->modx->getOption('seosuite.disabled_templates'))),
             'default_redirect_type'      => $this->modx->getOption('seosuite.default_redirect_type', null, 'HTTP/1.1 301 Moved Permanently'),
             'placeholder_plugin_enabled' => (bool) $this->modx->getOption('seosuite.placeholder_plugin_enabled', null, true),
+            'debug'                      => false,
             'tab_seo'                    => [
                 'permission'                => (bool) $this->modx->hasPermission('seosuite_tab_seo'),
                 'default_index_type'        => (bool) $this->modx->getOption('seosuite.tab_seo_default_index_type', null, 1),
