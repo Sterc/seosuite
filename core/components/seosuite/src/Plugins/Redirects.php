@@ -9,11 +9,10 @@ class Redirects extends Base
 {
     /**
      * @access public.
-     * @return Mixed.
      */
     public function onPageNotFound()
     {
-        $request = urldecode(trim($_GET[$this->modx->getOption('request_param_alias', null, 'q')], '/'));
+        $request = urldecode(trim($_REQUEST[$this->modx->getOption('request_param_alias', null, 'q')], '/'));
 
         if (!empty($request)) {
             $this->redirect($request);
