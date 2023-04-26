@@ -65,7 +65,7 @@ class Base extends SeoSuite
                     'locale'     => $locale
                 ];
 
-                if (isset($options['alternateTpl']) && !empty($options['alternateTpl'])) {
+                if (isset($options['alternateTpl']) && !empty($options['alternateTpl']) && !empty($alternate['url'])) {
                     $html[] = $this->getChunk($options['alternateTpl'], $alternate);
                 }
 
