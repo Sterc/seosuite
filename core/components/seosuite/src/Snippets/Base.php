@@ -54,13 +54,18 @@ class Base extends SeoSuite
         $translations = $this->getBabel()->getLinkedResources($resource->get('id'));
         foreach ($translations as $contextKey => $resourceId) {
             if ($ctx = $this->modx->getContext($contextKey)) {
+                $locale = strtolower(str_replace('_', '-', $ctx->getOption('locale')));
+                if ($this->config['meta']['default_alternate_context'] === $ctx->get('key')) {
+                    $locale = 'x-default';
+                }
+
                 $alternate = [
                     'cultureKey' => $ctx->getOption('cultureKey', ['context_key' => $contextKey], 'en'),
                     'url'        => $this->modx->makeUrl($resourceId, '', '', 'full'),
-                    'locale'     => $this->config['meta']['default_alternate_context'] === $ctx->get('key') ? 'x-default' : strtolower($ctx->getOption('locale'))
+                    'locale'     => $locale
                 ];
 
-                if (isset($options['alternateTpl']) && !empty($options['alternateTpl']) && !empty($alternate['url'])) {
+                if (isset($options['alternateTpl']) && !empty($options['alternateTpl'])) {
                     $html[] = $this->getChunk($options['alternateTpl'], $alternate);
                 }
 
