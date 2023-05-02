@@ -804,8 +804,8 @@ class SeoSuite
         }
 
         return [
-            'processed'     => htmlentities($processedValue),
-            'unprocessed'   => htmlentities($unProcessedValue)
+            'processed'     => htmlspecialchars($processedValue),
+            'unprocessed'   => htmlspecialchars($unProcessedValue)
         ];
     }
 
