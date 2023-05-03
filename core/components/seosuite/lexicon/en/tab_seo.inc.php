@@ -6,10 +6,10 @@
  * Copyright 2019 by Sterc <modx@sterc.com>
  */
 
-$_lang['seosuite.tab_seo']                                  = 'Search engine';
+$_lang['seosuite.tab_seo']                                  = 'Search Engine';
 $_lang['seosuite.tab_seo.tab_searchable']                   = 'Findability';
 $_lang['seosuite.tab_seo.tab_sitemap']                      = 'Sitemap';
-$_lang['seosuite.tab_seo.tab_urls']                         = 'URL\'s';
+$_lang['seosuite.tab_seo.tab_urls']                         = 'URLs';
 
 $_lang['seosuite.tab_seo.label_index']                      = 'Index page';
 $_lang['seosuite.tab_seo.label_index_desc']                 = 'If "Yes" is selected then all search engines will be able to index the page. It is better to prevent irrelevant pages from being index by search engines. Example of these pages are: disclaimer, general conditions and the privacy policy.';
