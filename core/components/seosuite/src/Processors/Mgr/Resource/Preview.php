@@ -33,7 +33,7 @@ class Preview extends Processor
             $protocol   = $protocol[0];
             $siteUrl    = str_replace(['http://', 'https://'], '', $siteUrl);
         } else {
-            $protocol   = $this->modx->getOption('server_protocol', null, 'http');
+            $protocol   = $this->modx->seosuite->serverProtocol();
         }
 
         if ((int) $this->modx->getOption('friendly_urls') === 1) {

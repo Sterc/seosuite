@@ -829,4 +829,16 @@ class SeoSuite
 
         return urldecode(trim($request, '/'));
     }
+
+    /**
+     * Get the server protocol (http or https).
+     *
+     * @return string
+     */
+    public function serverProtocol()
+    {
+        $isSecure = ((isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') || $_SERVER['SERVER_PORT'] == 443);
+
+        return $isSecure ? 'https' : 'http';
+    }
 }

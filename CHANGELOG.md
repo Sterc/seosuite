@@ -1,5 +1,11 @@
 Changelog for SeoSuite.
 
+SEO Suite 3.1.3
+==============
+- Refactor/fix translations for Facebook/Open Graph (issue#79, PR#99)
+- Move SeoSuite panel under TVs when tvs_below_content is used (#79)
+- Refactor server_protocol system setting usage (#90)
+
 SEO Suite 3.1.2
 ==============
 - Fix default permissions (PR#86)
