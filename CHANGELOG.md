@@ -2,6 +2,7 @@ Changelog for SeoSuite.
 
 SEO Suite 3.1.3
 ==============
+- Replace htmlentities htmlspecialchars for unicode characters (PR#98)
 - Refactor/fix translations for Facebook/Open Graph (issue#79, PR#99)
 - Move SeoSuite panel under TVs when tvs_below_content is used (#79)
 - Refactor server_protocol system setting usage (#90)
