@@ -2,10 +2,11 @@ Changelog for SeoSuite.
 
 SEO Suite 3.1.3
 ==============
+- Fix alternate links (PR#95)
 - Replace htmlentities htmlspecialchars for unicode characters (PR#98)
 - Refactor/fix translations for Facebook/Open Graph (issue#79, PR#99)
-- Move SeoSuite panel under TVs when tvs_below_content is used (#79)
-- Refactor server_protocol system setting usage (#90)
+- Move SeoSuite panel under TVs when tvs_below_content is used (issue #79)
+- Change server_protocol system setting to local method (issue #90)
 
 SEO Suite 3.1.2
 ==============
