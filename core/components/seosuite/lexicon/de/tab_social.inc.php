@@ -7,19 +7,19 @@
  */
 
 $_lang['seosuite.tab_social']                                   = 'Soziale Netzwerke';
-$_lang['seosuite.tab_social.tab_facebook']                      = 'Facebook';
+$_lang['seosuite.tab_social.tab_facebook']                      = 'Open Graph';
 $_lang['seosuite.tab_social.tab_twitter']                       = 'Twitter';
 
-$_lang['seosuite.tab_social.label_og_title']                    = 'Facebook Titel';
-$_lang['seosuite.tab_social.label_og_title_desc']               = 'Der Seitentitel auf Facebook.';
-$_lang['seosuite.tab_social.label_og_description']              = 'Facebook Beschreibung';
-$_lang['seosuite.tab_social.label_og_description_desc']         = 'Die Seitenbeschreibung auf Facebook.';
-$_lang['seosuite.tab_social.label_og_image']                    = 'Facebook Grafik';
-$_lang['seosuite.tab_social.label_og_image_desc']               = 'Das Seitenbild auf Facebook. Empfohlenes Format ist: 1200 x 630 Pixel.';
-$_lang['seosuite.tab_social.label_og_image_alt']                = 'Facebook-Bildtitel';
-$_lang['seosuite.tab_social.label_og_image_alt_desc']           = 'Der Bildtitel der Seite auf Facebook.';
-$_lang['seosuite.tab_social.label_og_type']                     = 'Facebook Typ';
-$_lang['seosuite.tab_social.label_og_type_desc']                = 'Der Seitentyp auf Facebook.';
+$_lang['seosuite.tab_social.label_og_title']                    = 'Titel (og:title)';
+$_lang['seosuite.tab_social.label_og_title_desc']               = 'Der Open Graph Seitentitel';
+$_lang['seosuite.tab_social.label_og_description']              = 'Beschreibung (og:description)';
+$_lang['seosuite.tab_social.label_og_description_desc']         = 'Die Open Graph Seitenbeschreibung';
+$_lang['seosuite.tab_social.label_og_image']                    = 'Bild (og:image)';
+$_lang['seosuite.tab_social.label_og_image_desc']               = 'Das Open Graph Seitenbild. Empfohlenes Format ist: 1200 x 630 Pixel.';
+$_lang['seosuite.tab_social.label_og_image_alt']                = 'Bildtitel (og:image:alt)';
+$_lang['seosuite.tab_social.label_og_image_alt_desc']           = 'Der Open Graph Bildtitel';
+$_lang['seosuite.tab_social.label_og_type']                     = 'Typ (og:type)';
+$_lang['seosuite.tab_social.label_og_type_desc']                = 'Der Open Graph Seitentyp, z.B. "website"';
 
 $_lang['seosuite.tab_social.label_twitter_title']               = 'Twitter Titel';
 $_lang['seosuite.tab_social.label_twitter_title_desc']          = 'Der Titel der Seite auf Twitter.';

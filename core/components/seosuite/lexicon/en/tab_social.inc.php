@@ -6,7 +6,7 @@
  * Copyright 2019 by Sterc <modx@sterc.com>
  */
 
-$_lang['seosuite.tab_social']                                   = 'Sharing';
+$_lang['seosuite.tab_social']                                   = 'Social';
 $_lang['seosuite.tab_social.tab_facebook']                      = 'Open Graph';
 $_lang['seosuite.tab_social.tab_twitter']                       = 'Twitter';
 
