@@ -7,6 +7,7 @@ SEO Suite 3.1.3
 - Refactor/fix translations for Facebook/Open Graph (issue#79, PR#99)
 - Move SeoSuite panel under TVs when tvs_below_content is used (issue #79)
 - Change server_protocol system setting to local method (issue #90)
+- Fix redirect create processor to match logic from update processor.
 
 SEO Suite 3.1.2
 ==============
