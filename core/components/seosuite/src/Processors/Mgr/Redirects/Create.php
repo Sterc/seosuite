@@ -45,6 +45,8 @@ class Create extends CreateProcessor
     {
         $seosuite = $this->modx->services->get('seosuite');
 
+        $this->object->set('old_url', $seosuite->formatUrl($this->getProperty('old_url')));
+
         $criteria = [
             'id:!='       => $this->object->get('id'),
             'context_key' => $this->object->get('context_key'),
