@@ -26,7 +26,7 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
             'redirect_type' => '',
             'active' => 1,
             'visits' => 0,
-            'last_visit' => '0000-00-00 00:00:00',
+            'last_visit' => NULL,
             'editedon' => NULL,
         ),
         'fieldMeta' =>
@@ -97,7 +97,7 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 'dbtype' => 'timestamp',
                 'phptype' => 'timestamp',
                 'null' => true,
-                'default' => '0000-00-00 00:00:00',
+                'default' => NULL,
             ),
             'editedon' =>
             array (

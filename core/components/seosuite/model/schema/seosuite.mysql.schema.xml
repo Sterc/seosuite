@@ -28,13 +28,13 @@
         <field key="url" dbtype="varchar" precision="2000" phptype="string" null="false" default="" index="index"/>
         <field key="suggestions" dbtype="text" phptype="json" null="true" />
         <field key="visits" dbtype="integer" precision="11" phptype="int" null="false" default=""/>
-        <field key="last_visit" dbtype="timestamp" phptype="timestamp" null="true" default="0000-00-00 00:00:00"/>
+        <field key="last_visit" dbtype="timestamp" phptype="timestamp" null="true" default="NULL"/>
         <field key="createdon" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP"/>
 
         <aggregate alias="Context" class="modContext" local="bundle" foreign="id" cardinality="one" owner="foreign" />
 
         <index alias="context_key" name="context_key" primary="false" unique="false" type="BTREE">
-            <column key="context_key" length="" collation="A" null="false"></column>
+            <column key="context_key" length="" collation="A" null="false" />
         </index>
         <index alias="url" name="url" primary="false" unique="false" type="BTREE">
             <column key="url" length="" collation="A" null="false" />
@@ -80,7 +80,7 @@
         <field key="redirect_type" dbtype="varchar" precision="75" phptype="string" null="false" default="" />
         <field key="active" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" index="index"/>
         <field key="visits" dbtype="integer" precision="11" phptype="int" null="false" default=""/>
-        <field key="last_visit" dbtype="timestamp" phptype="timestamp" null="true" default="0000-00-00 00:00:00"/>
+        <field key="last_visit" dbtype="timestamp" phptype="timestamp" null="true" default="NULL"/>
         <field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" default="NULL" attributes="ON UPDATE CURRENT_TIMESTAMP" />
 
         <aggregate alias="Context" class="modContext" local="bundle" foreign="id" cardinality="one" owner="foreign" />

@@ -22,7 +22,7 @@ class SeoSuiteUrl extends \Sterc\SeoSuite\Model\SeoSuiteUrl
             'url' => '',
             'suggestions' => NULL,
             'visits' => 0,
-            'last_visit' => '0000-00-00 00:00:00',
+            'last_visit' => NULL,
             'createdon' => 'CURRENT_TIMESTAMP',
         ),
         'fieldMeta' =>
@@ -64,7 +64,7 @@ class SeoSuiteUrl extends \Sterc\SeoSuite\Model\SeoSuiteUrl
                 'dbtype' => 'timestamp',
                 'phptype' => 'timestamp',
                 'null' => true,
-                'default' => '0000-00-00 00:00:00',
+                'default' => NULL,
             ),
             'createdon' =>
             array (
