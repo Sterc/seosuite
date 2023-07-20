@@ -23,7 +23,7 @@ use xPDO\xPDO;
  *
  * @package Sterc\SeoSuite\Model
  */
-class SeoSuiteSocial extends \xPDOSimpleObject
+class SeoSuiteSocial extends \xPDO\Om\xPDOSimpleObject
 {
     const INHERIT_FIELD = [
         'twitter_title'         => 'og_title',
