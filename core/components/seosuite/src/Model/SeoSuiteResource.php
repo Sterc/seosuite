@@ -22,6 +22,6 @@ use xPDO\xPDO;
  *
  * @package Sterc\SeoSuite\Model
  */
-class SeoSuiteResource extends \xPDOSimpleObject
+class SeoSuiteResource extends \xPDO\Om\xPDOSimpleObject
 {
 }

@@ -2,21 +2,20 @@
 namespace Sterc\SeoSuite\Model\mysql;
 
 use xPDO\xPDO;
-use MODX\Revolution\modResource;
 
 class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
 {
 
     public static $metaMap = array (
         'package' => 'Sterc\\SeoSuite\\Model\\',
-        'version' => '0.2',
+        'version' => '3.0',
         'table' => 'seosuite_resource',
-        'extends' => 'xPDOSimpleObject',
-        'tableMeta' =>
+        'extends' => 'xPDO\\Om\\xPDOSimpleObject',
+        'tableMeta' => 
         array (
             'engine' => 'InnoDB',
         ),
-        'fields' =>
+        'fields' => 
         array (
             'keywords' => '',
             'resource_id' => 0,
@@ -32,16 +31,16 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
             'canonical_uri' => '',
             'editedon' => NULL,
         ),
-        'fieldMeta' =>
+        'fieldMeta' => 
         array (
-            'keywords' =>
+            'keywords' => 
             array (
                 'dbtype' => 'text',
                 'phptype' => 'string',
                 'null' => true,
                 'default' => '',
             ),
-            'resource_id' =>
+            'resource_id' => 
             array (
                 'dbtype' => 'integer',
                 'precision' => '10',
@@ -50,7 +49,7 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 'default' => 0,
                 'index' => 'index',
             ),
-            'use_default_meta' =>
+            'use_default_meta' => 
             array (
                 'dbtype' => 'tinyint',
                 'precision' => '1',
@@ -59,19 +58,19 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 'null' => false,
                 'default' => 1,
             ),
-            'meta_title' =>
+            'meta_title' => 
             array (
                 'dbtype' => 'mediumtext',
                 'phptype' => 'json',
                 'null' => true,
             ),
-            'meta_description' =>
+            'meta_description' => 
             array (
                 'dbtype' => 'mediumtext',
                 'phptype' => 'json',
                 'null' => true,
             ),
-            'index_type' =>
+            'index_type' => 
             array (
                 'dbtype' => 'tinyint',
                 'precision' => '1',
@@ -81,7 +80,7 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 'default' => 1,
                 'index' => 'index',
             ),
-            'follow_type' =>
+            'follow_type' => 
             array (
                 'dbtype' => 'tinyint',
                 'precision' => '1',
@@ -91,7 +90,7 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 'default' => 1,
                 'index' => 'index',
             ),
-            'sitemap' =>
+            'sitemap' => 
             array (
                 'dbtype' => 'tinyint',
                 'precision' => '1',
@@ -101,7 +100,7 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 'default' => 1,
                 'index' => 'index',
             ),
-            'sitemap_prio' =>
+            'sitemap_prio' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '10',
@@ -109,7 +108,7 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 'null' => false,
                 'default' => '',
             ),
-            'sitemap_changefreq' =>
+            'sitemap_changefreq' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '10',
@@ -117,7 +116,7 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 'null' => false,
                 'default' => '',
             ),
-            'canonical' =>
+            'canonical' => 
             array (
                 'dbtype' => 'tinyint',
                 'precision' => '1',
@@ -126,7 +125,7 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 'null' => false,
                 'default' => 0,
             ),
-            'canonical_uri' =>
+            'canonical_uri' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '255',
@@ -134,7 +133,7 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 'null' => false,
                 'default' => '',
             ),
-            'editedon' =>
+            'editedon' => 
             array (
                 'dbtype' => 'timestamp',
                 'phptype' => 'timestamp',
@@ -143,17 +142,17 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 'attributes' => 'ON UPDATE CURRENT_TIMESTAMP',
             ),
         ),
-        'indexes' =>
+        'indexes' => 
         array (
-            'resource_id' =>
+            'resource_id' => 
             array (
                 'alias' => 'resource_id',
                 'primary' => false,
                 'unique' => false,
                 'type' => 'BTREE',
-                'columns' =>
+                'columns' => 
                 array (
-                    'resource_id' =>
+                    'resource_id' => 
                     array (
                         'length' => '',
                         'collation' => 'A',
@@ -161,15 +160,15 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                     ),
                 ),
             ),
-            'index_type' =>
+            'index_type' => 
             array (
                 'alias' => 'index_type',
                 'primary' => false,
                 'unique' => false,
                 'type' => 'BTREE',
-                'columns' =>
+                'columns' => 
                 array (
-                    'index_type' =>
+                    'index_type' => 
                     array (
                         'length' => '',
                         'collation' => 'A',
@@ -177,15 +176,15 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                     ),
                 ),
             ),
-            'follow_type' =>
+            'follow_type' => 
             array (
                 'alias' => 'follow_type',
                 'primary' => false,
                 'unique' => false,
                 'type' => 'BTREE',
-                'columns' =>
+                'columns' => 
                 array (
-                    'follow_type' =>
+                    'follow_type' => 
                     array (
                         'length' => '',
                         'collation' => 'A',
@@ -193,15 +192,15 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                     ),
                 ),
             ),
-            'sitemap' =>
+            'sitemap' => 
             array (
                 'alias' => 'sitemap',
                 'primary' => false,
                 'unique' => false,
                 'type' => 'BTREE',
-                'columns' =>
+                'columns' => 
                 array (
-                    'sitemap' =>
+                    'sitemap' => 
                     array (
                         'length' => '',
                         'collation' => 'A',
@@ -210,11 +209,11 @@ class SeoSuiteResource extends \Sterc\SeoSuite\Model\SeoSuiteResource
                 ),
             ),
         ),
-        'aggregates' =>
+        'aggregates' => 
         array (
-            'Resource' =>
+            'Resource' => 
             array (
-                'class' => modResource::class,
+                'class' => 'MODX\\Revolution\\modResource',
                 'local' => 'bundle',
                 'foreign' => 'id',
                 'cardinality' => 'one',

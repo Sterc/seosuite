@@ -2,22 +2,20 @@
 namespace Sterc\SeoSuite\Model\mysql;
 
 use xPDO\xPDO;
-use MODX\Revolution\modContext;
-use MODX\Revolution\modResource;
 
 class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
 {
 
     public static $metaMap = array (
         'package' => 'Sterc\\SeoSuite\\Model\\',
-        'version' => '0.2',
+        'version' => '3.0',
         'table' => 'seosuite_redirect',
-        'extends' => 'xPDOSimpleObject',
-        'tableMeta' =>
+        'extends' => 'xPDO\\Om\\xPDOSimpleObject',
+        'tableMeta' => 
         array (
             'engine' => 'InnoDB',
         ),
-        'fields' =>
+        'fields' => 
         array (
             'context_key' => '',
             'resource_id' => 0,
@@ -26,12 +24,12 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
             'redirect_type' => '',
             'active' => 1,
             'visits' => 0,
-            'last_visit' => '0000-00-00 00:00:00',
+            'last_visit' => NULL,
             'editedon' => NULL,
         ),
-        'fieldMeta' =>
+        'fieldMeta' => 
         array (
-            'context_key' =>
+            'context_key' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '100',
@@ -40,7 +38,7 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 'default' => '',
                 'index' => 'index',
             ),
-            'resource_id' =>
+            'resource_id' => 
             array (
                 'dbtype' => 'integer',
                 'precision' => '10',
@@ -49,7 +47,7 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 'default' => 0,
                 'index' => 'index',
             ),
-            'old_url' =>
+            'old_url' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '255',
@@ -58,7 +56,7 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 'default' => '',
                 'index' => 'index',
             ),
-            'new_url' =>
+            'new_url' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '255',
@@ -66,7 +64,7 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 'null' => false,
                 'default' => '',
             ),
-            'redirect_type' =>
+            'redirect_type' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '75',
@@ -74,7 +72,7 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 'null' => false,
                 'default' => '',
             ),
-            'active' =>
+            'active' => 
             array (
                 'dbtype' => 'tinyint',
                 'precision' => '1',
@@ -84,7 +82,7 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 'default' => 1,
                 'index' => 'index',
             ),
-            'visits' =>
+            'visits' => 
             array (
                 'dbtype' => 'integer',
                 'precision' => '11',
@@ -92,14 +90,13 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 'null' => false,
                 'default' => 0,
             ),
-            'last_visit' =>
+            'last_visit' => 
             array (
                 'dbtype' => 'timestamp',
                 'phptype' => 'timestamp',
                 'null' => true,
-                'default' => '0000-00-00 00:00:00',
             ),
-            'editedon' =>
+            'editedon' => 
             array (
                 'dbtype' => 'timestamp',
                 'phptype' => 'timestamp',
@@ -108,17 +105,17 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 'attributes' => 'ON UPDATE CURRENT_TIMESTAMP',
             ),
         ),
-        'indexes' =>
+        'indexes' => 
         array (
-            'context_key' =>
+            'context_key' => 
             array (
                 'alias' => 'context_key',
                 'primary' => false,
                 'unique' => false,
                 'type' => 'BTREE',
-                'columns' =>
+                'columns' => 
                 array (
-                    'context_key' =>
+                    'context_key' => 
                     array (
                         'length' => '',
                         'collation' => 'A',
@@ -126,15 +123,15 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                     ),
                 ),
             ),
-            'resource_id' =>
+            'resource_id' => 
             array (
                 'alias' => 'resource_id',
                 'primary' => false,
                 'unique' => false,
                 'type' => 'BTREE',
-                'columns' =>
+                'columns' => 
                 array (
-                    'resource_id' =>
+                    'resource_id' => 
                     array (
                         'length' => '',
                         'collation' => 'A',
@@ -142,31 +139,31 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                     ),
                 ),
             ),
-            'old_url' =>
+            'old_url' => 
             array (
                 'alias' => 'old_url',
                 'primary' => false,
                 'unique' => false,
                 'type' => 'BTREE',
-                'columns' =>
+                'columns' => 
                 array (
-                    'old_url' =>
+                    'old_url' => 
                     array (
-                        'length' => '',
+                        'length' => '255',
                         'collation' => 'A',
                         'null' => false,
                     ),
                 ),
             ),
-            'active' =>
+            'active' => 
             array (
                 'alias' => 'active',
                 'primary' => false,
                 'unique' => false,
                 'type' => 'BTREE',
-                'columns' =>
+                'columns' => 
                 array (
-                    'active' =>
+                    'active' => 
                     array (
                         'length' => '',
                         'collation' => 'A',
@@ -175,19 +172,19 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 ),
             ),
         ),
-        'aggregates' =>
+        'aggregates' => 
         array (
-            'Context' =>
+            'Context' => 
             array (
-                'class' => modContext::class,
+                'class' => 'MODX\\Revolution\\modContext',
                 'local' => 'bundle',
                 'foreign' => 'id',
                 'cardinality' => 'one',
                 'owner' => 'foreign',
             ),
-            'Resource' =>
+            'Resource' => 
             array (
-                'class' => modResource::class,
+                'class' => 'MODX\\Revolution\\modResource',
                 'local' => 'bundle',
                 'foreign' => 'id',
                 'cardinality' => 'one',

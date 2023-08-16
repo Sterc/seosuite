@@ -2,21 +2,20 @@
 namespace Sterc\SeoSuite\Model\mysql;
 
 use xPDO\xPDO;
-use MODX\Revolution\modResource;
 
 class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
 {
 
     public static $metaMap = array (
         'package' => 'Sterc\\SeoSuite\\Model\\',
-        'version' => '0.2',
+        'version' => '3.0',
         'table' => 'seosuite_social',
-        'extends' => 'xPDOSimpleObject',
-        'tableMeta' =>
+        'extends' => 'xPDO\\Om\\xPDOSimpleObject',
+        'tableMeta' => 
         array (
             'engine' => 'InnoDB',
         ),
-        'fields' =>
+        'fields' => 
         array (
             'resource_id' => 0,
             'og_title' => '',
@@ -33,9 +32,9 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
             'inherit_facebook' => 1,
             'editedon' => NULL,
         ),
-        'fieldMeta' =>
+        'fieldMeta' => 
         array (
-            'resource_id' =>
+            'resource_id' => 
             array (
                 'dbtype' => 'integer',
                 'precision' => '11',
@@ -44,7 +43,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 'default' => 0,
                 'index' => 'index',
             ),
-            'og_title' =>
+            'og_title' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '255',
@@ -52,7 +51,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 'null' => false,
                 'default' => '',
             ),
-            'og_description' =>
+            'og_description' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '255',
@@ -60,7 +59,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 'null' => false,
                 'default' => '',
             ),
-            'og_image' =>
+            'og_image' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '255',
@@ -68,7 +67,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 'null' => false,
                 'default' => '',
             ),
-            'og_image_alt' =>
+            'og_image_alt' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '255',
@@ -76,7 +75,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 'null' => false,
                 'default' => '',
             ),
-            'og_type' =>
+            'og_type' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '40',
@@ -84,7 +83,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 'null' => false,
                 'default' => '',
             ),
-            'twitter_title' =>
+            'twitter_title' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '255',
@@ -92,7 +91,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 'null' => false,
                 'default' => '',
             ),
-            'twitter_description' =>
+            'twitter_description' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '255',
@@ -100,7 +99,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 'null' => false,
                 'default' => '',
             ),
-            'twitter_image' =>
+            'twitter_image' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '255',
@@ -108,7 +107,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 'null' => false,
                 'default' => '',
             ),
-            'twitter_image_alt' =>
+            'twitter_image_alt' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '255',
@@ -116,7 +115,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 'null' => false,
                 'default' => '',
             ),
-            'twitter_creator_id' =>
+            'twitter_creator_id' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '255',
@@ -124,7 +123,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 'null' => false,
                 'default' => '',
             ),
-            'twitter_card' =>
+            'twitter_card' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '40',
@@ -132,7 +131,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 'null' => false,
                 'default' => '',
             ),
-            'inherit_facebook' =>
+            'inherit_facebook' => 
             array (
                 'dbtype' => 'int',
                 'precision' => '1',
@@ -140,7 +139,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 'null' => true,
                 'default' => 1,
             ),
-            'editedon' =>
+            'editedon' => 
             array (
                 'dbtype' => 'timestamp',
                 'phptype' => 'timestamp',
@@ -149,17 +148,17 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 'attributes' => 'ON UPDATE CURRENT_TIMESTAMP',
             ),
         ),
-        'indexes' =>
+        'indexes' => 
         array (
-            'resource_id' =>
+            'resource_id' => 
             array (
                 'alias' => 'resource_id',
                 'primary' => false,
                 'unique' => false,
                 'type' => 'BTREE',
-                'columns' =>
+                'columns' => 
                 array (
-                    'resource_id' =>
+                    'resource_id' => 
                     array (
                         'length' => '',
                         'collation' => 'A',
@@ -168,11 +167,11 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
                 ),
             ),
         ),
-        'aggregates' =>
+        'aggregates' => 
         array (
-            'Resource' =>
+            'Resource' => 
             array (
-                'class' => modResource::class,
+                'class' => 'MODX\\Revolution\\modResource',
                 'local' => 'bundle',
                 'foreign' => 'id',
                 'cardinality' => 'one',

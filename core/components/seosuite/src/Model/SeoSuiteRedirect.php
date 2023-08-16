@@ -19,7 +19,7 @@ use MODX\Revolution\modResource;
  *
  * @package Sterc\SeoSuite\Model
  */
-class SeoSuiteRedirect extends \xPDOSimpleObject
+class SeoSuiteRedirect extends \xPDO\Om\xPDOSimpleObject
 {
     /**
      * @access public.

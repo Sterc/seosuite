@@ -3,7 +3,7 @@ lowCaseName: seosuite
 namespace: Sterc\SeoSuite
 description: Toolset for optimising your websites online presence.
 author: Sterc
-version: 3.1.3
+version: 3.1.4
 
 build:
   setupOptions: "setup.options.php"
@@ -36,6 +36,10 @@ systemSettings:
     value:
   - key: user_email
     type: textfield
+    area: seosuite
+    value:
+  - key: default_media_source
+    type: modx-combo-source
     area: seosuite
     value:
   - key: meta.field_counters

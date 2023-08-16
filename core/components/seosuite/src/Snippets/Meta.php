@@ -100,6 +100,12 @@ class Meta extends Base
             ];
         }
 
+        $meta['twitter_site'] = [
+            'name'  => 'twitter:site',
+            'value' => $this->modx->getOption('site_url'),
+            'tpl'   => $tplLink
+        ];
+
         $ssSocial = $this->modx->getObject(SeoSuiteSocial::class, ['resource_id' => $id]);
         if ($ssSocial) {
             foreach ((array) $ssSocial->getValues() as $key => $value) {

@@ -1,7 +1,7 @@
 # SeoSuite
-![SEO Suite version](https://img.shields.io/badge/version-2.0.6-brightgreen.svg)
+![SEO Suite version](https://img.shields.io/badge/version-3.1.4-brightgreen.svg)
 ![MODX Extra by Sterc](https://img.shields.io/badge/extra%20by-sterc-ff69b4.svg)
-![MODX version requirements](https://img.shields.io/badge/modx%20version%20requirement-2.5%2B-blue.svg)
+![MODX version requirements](https://img.shields.io/badge/modx%20version%20requirement-3.0%2B-blue.svg)
 
 [SEO Suite][1] was introduced by [Sterc][3] as a MODX Extra that automatically redirects your 404 URLs to relevant pages on your website. 404 errors are a fairly common issue for anyone who’s transitioning from an old website to a new website. SEO Suite makes sure your visitors are redirected to a relevant page when they’re looking for an old URL.
 

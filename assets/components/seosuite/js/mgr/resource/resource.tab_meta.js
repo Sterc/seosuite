@@ -44,7 +44,7 @@ Ext.extend(SeoSuite, Ext.Component, {
         var panel = Ext.getCmp('modx-panel-resource');
 
         if (panel) {
-            panel.insert(3, {
+            panel.insert(panel.items.length, {
                 xtype        : 'panel',
                 border       : false,
                 layout       : 'form',
@@ -213,7 +213,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                             baseCls     : 'seosuite-seo-preview',
                             id          : 'seosuite-seo-preview',
                             cls         : 'seosuite-seo-preview-' + SeoSuite.config.meta.preview.mode + ' seosuite-seo-preview-' + SeoSuite.config.meta.preview.engine,
-                            html        : '<img src="https://www.google.com/s2/favicons?domain=test" class="favicon" id="seosuite-seo-preview-favicon" />' +
+                            html        : '<img src="' + SeoSuite.config.assets_url + 'img/favicon.png" class="favicon" id="seosuite-seo-preview-favicon" />' +
                                 '<div id="seosuite-seo-preview-title"></div>' +
                                 '<div id="seosuite-seo-preview-url"></div>' +
                                 '<div id="seosuite-seo-preview-description"></div>' +
@@ -458,13 +458,9 @@ Ext.extend(SeoSuite, Ext.Component, {
                                     preview.removeClass('disabled');
                                 }
 
-                                preview.select('.favicon').elements.forEach(function(favicon) {
-                                    favicon.setAttribute('src', 'https://www.google.com/s2/favicons?domain=' + response.results.output.domain);
-                                });
-
                                 var url = [];
 
-                                url.push('<img src="https://www.google.com/s2/favicons?domain=test" class="favicon" />');
+                                url.push('<img src="' + SeoSuite.config.assets_url + 'img/favicon.png" class="favicon" />');
 
                                 if (response.results.output.protocol === 'https') {
                                     url.push('<i class="icon icon-lock"></i>');

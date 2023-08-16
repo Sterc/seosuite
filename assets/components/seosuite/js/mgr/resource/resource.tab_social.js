@@ -297,13 +297,13 @@ Ext.reg('seosuite-combo-image', SeoSuite.combo.Image);
 Ext.ux.Image = function(config) {
     config = config || {};
 
-    var image = this.getImage(config.src, config.width || 150, config.height || 150);
+    var image = this.getImage(config.src, config.width || 285, config.height || 150);
 
     Ext.applyIf(config, {
         hidden  : image === Ext.BLANK_IMAGE_URL,
         autoEl  : {
             tag     : 'img',
-            width   : config.width || 150,
+            width   : config.width || 285,
             height  : config.height || 150,
             src     : image,
             cls     : 'x-field-image'

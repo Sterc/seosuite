@@ -99,6 +99,8 @@ class SeoSuiteSetupOptionsResolver
             $migrationSetting->set('value', true);
             $migrationSetting->save();
         }
+
+        return true;
     }
 
     /**
