@@ -3,7 +3,7 @@
     "lowCaseName": "seosuite",
     "description": "Fix 404 pages on your site.",
     "author": "Sterc",
-    "version": "3.0.5-beta",
+    "version": "3.1.4-pl",
     "package":{
         "menus": [{
             "text": "seosuite.menu.seosuite",

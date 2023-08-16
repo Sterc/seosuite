@@ -1,5 +1,17 @@
 Changelog for SeoSuite.
 
+SEO Suite 3.1.4
+==============
+- Fix bug with tags in longtitle (issue#11)
+- Fix link in the widget (issue#30)
+- Fix favicon display (issue#53)
+- Fix social image ratio in manager (issue#61)
+- Place SEO section always to the bottom (issue#70)
+- Fix empty twitter_site placeholder (issue#82)
+- Fix excluding resource from sitemap (issue#97)
+- Fix failed setupoptions resolver (PR#105)
+- Fix mysql8 compatibility issues (PR#104, issue#69)
+
 SEO Suite 3.1.3
 ==============
 - Fix alternate links (PR#95)
