@@ -85,15 +85,20 @@ class Resource extends Base
 
     /**
      * @access protected.
+     * @param Null|modResource $resource.
      * @return Array.
      */
-    protected function getSeoSuiteFields()
+    protected function getSeoSuiteFields($resource)
     {
         $fields = [];
 
         foreach ($_POST as $key => $value) {
             if (preg_match('/^seosuite_(.*)/', $key, $matches)) {
                 $fields[$matches[1]] = $value;
+
+                if (isset($resource->_fields[$key])) {
+                    unset($resource->_fields[$key]);
+                }
             }
         }
 
@@ -164,8 +169,10 @@ class Resource extends Base
         $resource =& $event->params['resource'];
 
         if ($resource && $resource instanceof modResource) {
-            $this->seosuite->setResourceProperties($resource->get('id'), $this->getSeoSuiteFields());
-            $this->seosuite->setSocialProperties($resource->get('id'), $this->getSeoSuiteFields());
+            $values = $this->getSeoSuiteFields($resource);
+
+            $this->seosuite->setResourceProperties($resource->get('id'), $values);
+            $this->seosuite->setSocialProperties($resource->get('id'), $values);
             $this->seosuite->setRedirectProperties($resource);
         }
     }
