@@ -44,7 +44,7 @@ Ext.extend(SeoSuite, Ext.Component, {
         var panel = Ext.getCmp('modx-panel-resource');
 
         if (panel) {
-            panel.insert(3, {
+            panel.insert(panel.items.length, {
                 xtype        : 'panel',
                 border       : false,
                 layout       : 'form',
