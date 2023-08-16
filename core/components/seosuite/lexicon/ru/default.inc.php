@@ -108,4 +108,4 @@ $_lang['seosuite.time_month']                                   = '1 месяц 
 $_lang['seosuite.time_months']                                  = '[[+months]] месяцев назад';
 $_lang['seosuite.time_to_long']                                 = 'Более полугода назад';
 
-$_lang['seosuite.widget_desc']                                  = 'Здесь вы можете просмотреть 10 последних добавленных URL 404. Для просмотра и управления всеми вашими 404 URL-адресами посетите страницу <a href="[[++manager_url visible ]?a=home&amp;namespace=seosuite">SEO Suite</a> ';
+$_lang['seosuite.widget_desc']                                  = 'Здесь вы можете просмотреть 10 последних добавленных URL 404. Для просмотра и управления всеми вашими 404 URL-адресами посетите страницу <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite</a> ';
