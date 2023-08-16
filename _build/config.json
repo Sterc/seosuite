@@ -88,20 +88,25 @@
             "value": true,
             "area": "seosuite"
         },{
-          "key": "migration_finished",
-          "type": "combo-boolean",
-          "value": false,
-          "area": "seosuite"
+            "key": "migration_finished",
+            "type": "combo-boolean",
+            "value": false,
+            "area": "seosuite"
         },{
-          "key": "user_name",
-          "type": "textfield",
-          "area": "seosuite",
-          "value": ""
-        }, {
-          "key": "user_email",
-          "type": "textfield",
-          "area": "seosuite",
-          "value": ""
+            "key": "user_name",
+            "type": "textfield",
+            "area": "seosuite",
+            "value": ""
+        },{
+            "key": "user_email",
+            "type": "textfield",
+            "area": "seosuite",
+            "value": ""
+        },{
+            "key": "default_media_source",
+            "type": "modx-combo-source",
+            "area": "seosuite",
+            "value": ""
         },{
             "key": "meta.field_counters",
             "value": "longtitle:30|70,description:70|155",

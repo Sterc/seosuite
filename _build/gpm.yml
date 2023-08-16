@@ -38,6 +38,10 @@ systemSettings:
     type: textfield
     area: seosuite
     value:
+  - key: default_media_source
+    type: modx-combo-source
+    area: seosuite
+    value:
   - key: meta.field_counters
     value: longtitle:30|70,description:70|155
     area: seosuite_tab_meta
