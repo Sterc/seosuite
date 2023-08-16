@@ -106,7 +106,7 @@ class Resource extends Base
             if (!isset($fields[$key])) {
                 $fields[$key] = 1;
 
-                if ($key === 'canonical') {
+                if (in_array($key, ['sitemap', 'canonical'])) {
                     $fields[$key] = 0;
                 }
             }
