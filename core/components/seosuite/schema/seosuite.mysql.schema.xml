@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model package="Sterc\SeoSuite\Model\" baseClass="xPDO\Om\xPDOSimpleObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="seosuite" version="0.2">
-    <object class="SeoSuiteSocial" table="seosuite_social" extends="xPDOSimpleObject">
+<model package="Sterc\SeoSuite\Model\" baseClass="xPDO\Om\xPDOSimpleObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="seosuite" version="3.0">
+    <object class="SeoSuiteSocial" table="seosuite_social" extends="xPDO\Om\xPDOSimpleObject">
         <field key="resource_id" dbtype="integer" precision="11" phptype="int" null="false" default="" index="index"/>
         <field key="og_title" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
         <field key="og_description" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
@@ -16,32 +16,32 @@
         <field key="inherit_facebook" dbtype="int" precision="1" phptype="integer" null="true" default="1"/>
         <field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" default="NULL" attributes="ON UPDATE CURRENT_TIMESTAMP" />
 
-        <aggregate alias="Resource" class="modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Resource" class="MODX\Revolution\modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
 
         <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
             <column key="resource_id" length="" collation="A" null="false" />
         </index>
     </object>
 
-    <object class="SeoSuiteUrl" table="seosuite_url" extends="xPDOSimpleObject">
+    <object class="SeoSuiteUrl" table="seosuite_url" extends="xPDO\Om\xPDOSimpleObject">
         <field key="context_key" dbtype="varchar" precision="100" phptype="string" null="false" default="" index="index"/>
         <field key="url" dbtype="varchar" precision="2000" phptype="string" null="false" default="" index="index"/>
         <field key="suggestions" dbtype="text" phptype="json" null="true" />
         <field key="visits" dbtype="integer" precision="11" phptype="int" null="false" default=""/>
-        <field key="last_visit" dbtype="timestamp" phptype="timestamp" null="true" default="0000-00-00 00:00:00"/>
+        <field key="last_visit" dbtype="timestamp" phptype="timestamp" null="true" />
         <field key="createdon" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP"/>
 
-        <aggregate alias="Context" class="modContext" local="bundle" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Context" class="MODX\Revolution\modContext" local="bundle" foreign="id" cardinality="one" owner="foreign" />
 
         <index alias="context_key" name="context_key" primary="false" unique="false" type="BTREE">
-            <column key="context_key" length="" collation="A" null="false"></column>
+            <column key="context_key" length="" collation="A" null="false" />
         </index>
         <index alias="url" name="url" primary="false" unique="false" type="BTREE">
-            <column key="url" length="" collation="A" null="false" />
+            <column key="url" length="191" collation="A" null="false" />
         </index>
     </object>
 
-    <object class="SeoSuiteResource" table="seosuite_resource" extends="xPDOSimpleObject">
+    <object class="SeoSuiteResource" table="seosuite_resource" extends="xPDO\Om\xPDOSimpleObject">
         <field key="keywords" dbtype="text" phptype="string" null="true" default="" />
         <field key="resource_id" dbtype="integer" precision="10" phptype="int" null="false" default="" index="index"/>
         <field key="use_default_meta" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
@@ -56,7 +56,7 @@
         <field key="canonical_uri" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
         <field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" default="NULL" attributes="ON UPDATE CURRENT_TIMESTAMP" />
 
-        <aggregate alias="Resource" class="modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Resource" class="MODX\Revolution\modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
 
         <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
             <column key="resource_id" length="" collation="A" null="false" />
@@ -72,7 +72,7 @@
         </index>
     </object>
 
-    <object class="SeoSuiteRedirect" table="seosuite_redirect" extends="xPDOSimpleObject">
+    <object class="SeoSuiteRedirect" table="seosuite_redirect" extends="xPDO\Om\xPDOSimpleObject">
         <field key="context_key" dbtype="varchar" precision="100" phptype="string" null="false" default="" index="index"/>
         <field key="resource_id" dbtype="integer" precision="10" phptype="int" null="false" default="" index="index"/>
         <field key="old_url" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="index"/>
@@ -80,11 +80,11 @@
         <field key="redirect_type" dbtype="varchar" precision="75" phptype="string" null="false" default="" />
         <field key="active" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" index="index"/>
         <field key="visits" dbtype="integer" precision="11" phptype="int" null="false" default=""/>
-        <field key="last_visit" dbtype="timestamp" phptype="timestamp" null="true" default="0000-00-00 00:00:00"/>
+        <field key="last_visit" dbtype="timestamp" phptype="timestamp" null="true" />
         <field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" default="NULL" attributes="ON UPDATE CURRENT_TIMESTAMP" />
 
-        <aggregate alias="Context" class="modContext" local="bundle" foreign="id" cardinality="one" owner="foreign" />
-        <aggregate alias="Resource" class="modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Context" class="MODX\Revolution\modContext" local="bundle" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Resource" class="MODX\Revolution\modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
 
         <index alias="context_key" name="context_key" primary="false" unique="false" type="BTREE">
             <column key="context_key" length="" collation="A" null="false"/>
@@ -93,7 +93,7 @@
             <column key="resource_id" length="" collation="A" null="false" />
         </index>
         <index alias="old_url" name="old_url" primary="false" unique="false" type="BTREE">
-            <column key="old_url" length="" collation="A" null="false"/>
+            <column key="old_url" length="191" collation="A" null="false"/>
         </index>
         <index alias="active" name="active" primary="false" unique="false" type="BTREE">
             <column key="active" length="" collation="A" null="false" />

@@ -17,7 +17,7 @@ use xPDO\Om\xPDOQuery;
  *
  * @package Sterc\SeoSuite\Model
  */
-class SeoSuiteUrl extends \xPDOSimpleObject
+class SeoSuiteUrl extends \xPDO\Om\xPDOSimpleObject
 {
     /**
      * @access public.

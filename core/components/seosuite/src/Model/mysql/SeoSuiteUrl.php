@@ -2,32 +2,31 @@
 namespace Sterc\SeoSuite\Model\mysql;
 
 use xPDO\xPDO;
-use MODX\Revolution\modContext;
 
 class SeoSuiteUrl extends \Sterc\SeoSuite\Model\SeoSuiteUrl
 {
 
     public static $metaMap = array (
         'package' => 'Sterc\\SeoSuite\\Model\\',
-        'version' => '0.2',
+        'version' => '3.0',
         'table' => 'seosuite_url',
-        'extends' => 'xPDOSimpleObject',
-        'tableMeta' =>
+        'extends' => 'xPDO\\Om\\xPDOSimpleObject',
+        'tableMeta' => 
         array (
             'engine' => 'InnoDB',
         ),
-        'fields' =>
+        'fields' => 
         array (
             'context_key' => '',
             'url' => '',
             'suggestions' => NULL,
             'visits' => 0,
-            'last_visit' => '0000-00-00 00:00:00',
+            'last_visit' => NULL,
             'createdon' => 'CURRENT_TIMESTAMP',
         ),
-        'fieldMeta' =>
+        'fieldMeta' => 
         array (
-            'context_key' =>
+            'context_key' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '100',
@@ -36,7 +35,7 @@ class SeoSuiteUrl extends \Sterc\SeoSuite\Model\SeoSuiteUrl
                 'default' => '',
                 'index' => 'index',
             ),
-            'url' =>
+            'url' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '2000',
@@ -45,13 +44,13 @@ class SeoSuiteUrl extends \Sterc\SeoSuite\Model\SeoSuiteUrl
                 'default' => '',
                 'index' => 'index',
             ),
-            'suggestions' =>
+            'suggestions' => 
             array (
                 'dbtype' => 'text',
                 'phptype' => 'json',
                 'null' => true,
             ),
-            'visits' =>
+            'visits' => 
             array (
                 'dbtype' => 'integer',
                 'precision' => '11',
@@ -59,14 +58,13 @@ class SeoSuiteUrl extends \Sterc\SeoSuite\Model\SeoSuiteUrl
                 'null' => false,
                 'default' => 0,
             ),
-            'last_visit' =>
+            'last_visit' => 
             array (
                 'dbtype' => 'timestamp',
                 'phptype' => 'timestamp',
                 'null' => true,
-                'default' => '0000-00-00 00:00:00',
             ),
-            'createdon' =>
+            'createdon' => 
             array (
                 'dbtype' => 'timestamp',
                 'phptype' => 'timestamp',
@@ -74,17 +72,17 @@ class SeoSuiteUrl extends \Sterc\SeoSuite\Model\SeoSuiteUrl
                 'default' => 'CURRENT_TIMESTAMP',
             ),
         ),
-        'indexes' =>
+        'indexes' => 
         array (
-            'context_key' =>
+            'context_key' => 
             array (
                 'alias' => 'context_key',
                 'primary' => false,
                 'unique' => false,
                 'type' => 'BTREE',
-                'columns' =>
+                'columns' => 
                 array (
-                    'context_key' =>
+                    'context_key' => 
                     array (
                         'length' => '',
                         'collation' => 'A',
@@ -92,28 +90,28 @@ class SeoSuiteUrl extends \Sterc\SeoSuite\Model\SeoSuiteUrl
                     ),
                 ),
             ),
-            'url' =>
+            'url' => 
             array (
                 'alias' => 'url',
                 'primary' => false,
                 'unique' => false,
                 'type' => 'BTREE',
-                'columns' =>
+                'columns' => 
                 array (
-                    'url' =>
+                    'url' => 
                     array (
-                        'length' => '',
+                        'length' => '191',
                         'collation' => 'A',
                         'null' => false,
                     ),
                 ),
             ),
         ),
-        'aggregates' =>
+        'aggregates' => 
         array (
-            'Context' =>
+            'Context' => 
             array (
-                'class' => modContext::class,
+                'class' => 'MODX\\Revolution\\modContext',
                 'local' => 'bundle',
                 'foreign' => 'id',
                 'cardinality' => 'one',
