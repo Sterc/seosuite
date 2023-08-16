@@ -149,7 +149,7 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
                 array (
                     'old_url' => 
                     array (
-                        'length' => '191',
+                        'length' => '255',
                         'collation' => 'A',
                         'null' => false,
                     ),

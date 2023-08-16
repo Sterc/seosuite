@@ -38,7 +38,7 @@ class SeoSuiteUrl extends \Sterc\SeoSuite\Model\SeoSuiteUrl
             'url' => 
             array (
                 'dbtype' => 'varchar',
-                'precision' => '2000',
+                'precision' => '1000',
                 'phptype' => 'string',
                 'null' => false,
                 'default' => '',
@@ -100,7 +100,7 @@ class SeoSuiteUrl extends \Sterc\SeoSuite\Model\SeoSuiteUrl
                 array (
                     'url' => 
                     array (
-                        'length' => '191',
+                        'length' => '255',
                         'collation' => 'A',
                         'null' => false,
                     ),

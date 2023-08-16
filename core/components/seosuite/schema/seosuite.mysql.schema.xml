@@ -25,7 +25,7 @@
 
     <object class="SeoSuiteUrl" table="seosuite_url" extends="xPDO\Om\xPDOSimpleObject">
         <field key="context_key" dbtype="varchar" precision="100" phptype="string" null="false" default="" index="index"/>
-        <field key="url" dbtype="varchar" precision="2000" phptype="string" null="false" default="" index="index"/>
+        <field key="url" dbtype="varchar" precision="1000" phptype="string" null="false" default="" index="index"/>
         <field key="suggestions" dbtype="text" phptype="json" null="true" />
         <field key="visits" dbtype="integer" precision="11" phptype="int" null="false" default=""/>
         <field key="last_visit" dbtype="timestamp" phptype="timestamp" null="true" />
@@ -37,7 +37,7 @@
             <column key="context_key" length="" collation="A" null="false" />
         </index>
         <index alias="url" name="url" primary="false" unique="false" type="BTREE">
-            <column key="url" length="191" collation="A" null="false" />
+            <column key="url" length="255" collation="A" null="false" />
         </index>
     </object>
 
@@ -93,7 +93,7 @@
             <column key="resource_id" length="" collation="A" null="false" />
         </index>
         <index alias="old_url" name="old_url" primary="false" unique="false" type="BTREE">
-            <column key="old_url" length="191" collation="A" null="false"/>
+            <column key="old_url" length="255" collation="A" null="false"/>
         </index>
         <index alias="active" name="active" primary="false" unique="false" type="BTREE">
             <column key="active" length="" collation="A" null="false" />
