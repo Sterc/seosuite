@@ -2,6 +2,7 @@
 namespace Sterc\SeoSuite\Processors\Mgr\Redirects;
 
 use MODX\Revolution\Processors\Model\GetListProcessor;
+use Sterc\SeoSuite\SeoSuite;
 use Sterc\SeoSuite\Model\SeoSuiteRedirect;
 use xPDO\Om\xPDOQuery;
 use xPDO\Om\xPDOObject;
@@ -81,8 +82,9 @@ class GetList extends GetListProcessor
 
         $resource = $this->getProperty('resource');
         if (!empty($resource)) {
-            $criteria->where([
-                'Redirect.resource_id' => $resource
+            $criteria->orCondition([
+                'Redirect.resource_id'  => (int) $resource,
+                'Redirect.new_url'      => $resource
             ]);
         }
 
@@ -104,10 +106,14 @@ class GetList extends GetListProcessor
      */
     public function prepareRow(xPDOObject $object)
     {
+        /** @var SeoSuite $seosuite */
+        $seosuite = $this->modx->services->get('seosuite');
+
+        /** @var SeoSuiteRedirect $object */
         $array = array_merge($object->toArray(), [
-            'old_site_url'      => $object->getOldSiteUrl(),
-            'new_site_url'      => $object->getNewSiteUrl(),
-            'new_url_formatted' => $object->getRedirectUrl()
+            'old_site_url'      => $seosuite->getOldSiteUrl($object),
+            'new_site_url'      => $seosuite->getNewSiteUrl($object),
+            'new_url_formatted' => $seosuite->getRedirectUrl($object)
         ]);
 
         if (in_array($object->get('editedon'), ['-001-11-30 00:00:00', '-1-11-30 00:00:00', '0000-00-00 00:00:00', null], true)) {

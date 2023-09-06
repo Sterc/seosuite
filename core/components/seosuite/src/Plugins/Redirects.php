@@ -29,7 +29,7 @@ class Redirects extends Base
     {
         $criteria = $this->modx->newQuery(SeoSuiteRedirect::class, [
             'active' => 1,
-            ['old_url' => $request, 'OR:old_url:=' => preg_replace('#^\w{2}/#', '', $request)],
+            ['old_url' => $request, 'OR:old_url:=' => preg_replace('#^\w{2}/#', '', $request), 'OR:old_url:=' => $this->getFullUrl()],
             ['context_key' => '', 'OR:context_key:=' => $this->modx->context->get('key')],
         ]);
 
@@ -109,5 +109,14 @@ class Redirects extends Base
         }
 
         return true;
+    }
+
+    protected function getFullUrl()
+    {
+        $protocol = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://';
+        $host     = $_SERVER['HTTP_HOST'];
+        $request  = $_SERVER['REQUEST_URI'];
+
+        return $protocol . $host . $request;
     }
 }

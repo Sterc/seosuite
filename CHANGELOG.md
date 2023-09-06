@@ -1,4 +1,11 @@
-Changelog for SeoSuite.
+Changelog for SEO Suite.
+
+SEO Suite 3.1.5
+==============
+- Add button to redirects grid for testing redirect
+- Remove automatic context prefix when creating/updating redirect
+- Allow adding redirects with full url
+- Add check for full url redirect match when OnPageNotFound is triggered
 
 SEO Suite 3.1.4
 ==============

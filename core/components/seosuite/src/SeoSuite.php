@@ -841,4 +841,66 @@ class SeoSuite
 
         return $isSecure ? 'https' : 'http';
     }
+
+    private function getSiteUrl(string $contextKey)
+    {
+        if (!empty($contextKey)) {
+            $object = $this->modx->getContext($contextKey);
+
+            if ($object) {
+                return $object->getOption('site_url');
+            }
+        }
+
+        return $this->modx->getOption('site_url');;
+    }
+
+    /**
+     * @param SeoSuiteRedirect $object
+     */
+    public function getRedirectUrl(SeoSuiteRedirect $object)
+    {
+        if (is_numeric($object->get('new_url'))) {
+            $resource = $this->modx->getObject(modResource::class, ['id' => (int) $object->get('new_url')]);
+            if ($resource) {
+                if ($resource->get('context_key')) {
+                    $this->modx->switchContext($resource->get('context_key'));
+                }
+
+                return $this->modx->makeUrl($object->get('new_url'), '', '', 'full');
+            }
+        }
+
+        return $object->get('new_url');
+    }
+
+    /**
+     * @param SeoSuiteRedirect $object
+     */
+    public function getOldSiteUrl(SeoSuiteRedirect $object)
+    {
+        if (!empty($object->get('resource_id'))) {
+            $resource = $this->modx->getObject(modResource::class, ['id' => $object->get('resource_id')]);
+            if ($resource) {
+                return $this->getSiteUrl($resource->get('context_key'));
+            }
+        }
+
+        return $this->getSiteUrl($object->get('context_key'));
+    }
+
+    /**
+     * @param SeoSuiteRedirect $object
+     */
+    public function getNewSiteUrl(SeoSuiteRedirect $object)
+    {
+        if (is_numeric($object->get('new_url'))) {
+            $resource = $this->modx->getObject(modResource::class, ['id' => $object->get('new_url')]);
+            if ($resource) {
+                return $this->getSiteUrl($resource->get('context_key'));
+            }
+        }
+
+        return $this->getOldSiteUrl($object);
+    }
 }

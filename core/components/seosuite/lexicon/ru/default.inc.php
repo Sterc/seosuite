@@ -75,10 +75,11 @@ $_lang['seosuite.redirect_remove_confirm']                      = 'Вы увер
 $_lang['seosuite.redirects_remove']                             = 'Удалить перенаправление (я) URL';
 $_lang['seosuite.redirects_remove_confirm']                     = 'Вы действительно хотите удалить выбранные перенаправления URL-адресов?';
 $_lang['seosuite.use_redirect_across_domains']                  = 'Использовать перенаправление для всех доменов';
+$_lang['seosuite.redirect_test']                                = 'Тест перенаправления';
 
 $_lang['seosuite.label_redirect_old_url']                       = 'Старый URL';
 $_lang['seosuite.label_redirect_old_url_desc']                  = 'Старый URL-адрес перенаправления URL-адреса без имени домена. Например: «/example». ';
-$_lang['seosuite.label_redirect_new_url']                       = 'Новый URL';
+$_lang['seosuite.label_redirect_new_url']                       = 'Новый URL / ID';
 $_lang['seosuite.label_redirect_new_url_desc']                  = 'Новый URL-адрес перенаправления URL-адреса. Он может быть с доменом или без него, но также может содержать идентификатор ресурса. ';
 $_lang['seosuite.label_redirect_active']                        = 'Активный';
 $_lang['seosuite.label_redirect_active_desc']                   = '';

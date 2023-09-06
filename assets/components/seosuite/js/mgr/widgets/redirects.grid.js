@@ -145,6 +145,10 @@ Ext.extend(SeoSuite.grid.Redirects, MODx.grid.Grid, {
             text    : '<i class="x-menu-item-icon icon icon-times"></i>' + _('seosuite.redirect_remove'),
             handler : this.removeRedirect,
             scope   : this
+        }, '-', {
+            text    : '<i class="x-menu-item-icon icon icon-caret-right"></i>' + _('seosuite.redirect_test'),
+            handler : this.testRedirect,
+            scope   : this
         }];
     },
     createRedirect: function(btn, e) {
@@ -233,33 +237,26 @@ Ext.extend(SeoSuite.grid.Redirects, MODx.grid.Grid, {
             }
         });
     },
+    testRedirect: function() {
+        var url = '';
+        var oldUrl = this.menu.record.old_url;
+
+        // Check if the old url is a full url
+        // If not, prepend the site url so the url can be properly opened.
+        if (/^(((http|https|ftp):\/\/)|www\.)/.test(oldUrl)) {
+            url = oldUrl;
+        } else {
+            url = this.menu.record.old_site_url + oldUrl;
+        }
+
+        window.open(url, '_blank');
+    },
+
     renderOldUrl: function(d, c, e) {
-        if (/^(((http|https|ftp):\/\/)|www\.)/.test(d)) {
-            return d;
-        }
-
-        var url = '*/';
-
-        if (!Ext.isEmpty(e.json.old_site_url)) {
-            url = e.json.old_site_url;
-        }
-
-        return '<span class="x-grid-span">' + url + '</span>' + d;
+        return d;
     },
     renderNewUrl: function(d, c, e) {
-        if (/^(((http|https|ftp):\/\/)|www\.)/.test(d)) {
-            return d;
-        }
-
-        var url = '*/';
-
-        if (!Ext.isEmpty(e.json.new_site_url)) {
-            if (!/^(((http|https|ftp):\/\/)|www\.)/.test(d)) {
-                url = e.json.new_site_url;
-            }
-        }
-
-        return '<span class="x-grid-span">' + url + '</span>' + d;
+        return d;
     },
     renderBoolean: function(d, c) {
         c.css = parseInt(d) === 1 || d ? 'green' : 'red';

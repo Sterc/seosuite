@@ -43,9 +43,7 @@ class Update extends UpdateProcessor
      */
     public function beforeSave()
     {
-        $seosuite = $this->modx->services->get('seosuite');
-
-        $this->object->set('old_url', $seosuite->formatUrl($this->getProperty('old_url')));
+        $this->object->set('old_url', trim($this->getProperty('old_url')));
 
         $criteria = [
             'id:!='       => $this->object->get('id'),
@@ -57,7 +55,7 @@ class Update extends UpdateProcessor
             $this->addFieldError('old_url', $this->modx->lexicon('seosuite.redirect_error_exists'));
         }
 
-        $this->object->set('new_url', $seosuite->formatUrl($this->getProperty('new_url')));
+        $this->object->set('new_url', trim($this->getProperty('new_url')));
 
         return parent::beforeSave();
     }

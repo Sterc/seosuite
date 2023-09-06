@@ -43,21 +43,19 @@ class Create extends CreateProcessor
      */
     public function beforeSave()
     {
-        $seosuite = $this->modx->services->get('seosuite');
-
-        $this->object->set('old_url', $seosuite->formatUrl($this->getProperty('old_url')));
+        $this->object->set('old_url', trim($this->getProperty('old_url')));
 
         $criteria = [
             'id:!='       => $this->object->get('id'),
             'context_key' => $this->object->get('context_key'),
-            'old_url'     => $seosuite->formatUrl($this->object->get('old_url'))
+            'old_url'     => trim($this->object->get('old_url'))
         ];
 
         if ($this->doesAlreadyExist($criteria)) {
             $this->addFieldError('old_url', $this->modx->lexicon('seosuite.redirect_error_exists'));
         }
 
-        $this->object->set('new_url', $seosuite->formatUrl($this->getProperty('new_url')));
+        $this->object->set('new_url', trim($this->getProperty('new_url')));
         $this->object->set('last_visit', null);
 
         return parent::beforeSave();

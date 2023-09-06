@@ -331,15 +331,6 @@ class Migrate extends Processor
             }
         }
 
-        // if ($plugin = $this->modx->getObject('modPlugin', ['name' => 'StercSEO'])) {
-        //     if (!$plugin->disabled) {
-        //         $plugin->set('disabled', true);
-        //         $plugin->save();
-
-        //         $this->log('Plugin StercSEO disabled');
-        //     }
-        // }
-
         $this->log('Finished migrating SEO Tab properties to SeoSuiteResource objects.');
         $this->log('Created: <b> ' . $new . '</b>, Updated: <b>' . $updated . '</b>');
         $this->log('<br>');
