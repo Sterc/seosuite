@@ -72,7 +72,7 @@ $_lang['seosuite.redirect_test']                                = 'Redirect test
 
 $_lang['seosuite.label_redirect_old_url']                       = 'Oude URL';
 $_lang['seosuite.label_redirect_old_url_desc']                  = 'De oude URL van de URL verwijzing zonder domain naam. Bijvoorbeeld: "/voorbeeld".';
-$_lang['seosuite.label_redirect_new_url']                       = 'Nieuwe URL';
+$_lang['seosuite.label_redirect_new_url']                       = 'Nieuwe URL / ID';
 $_lang['seosuite.label_redirect_new_url_desc']                  = 'De nieuwe URL van de URL verwijzing. Dit kan met of zonder domein, maar kan ook een ID van een pagina zijn.';
 $_lang['seosuite.label_redirect_active']                        = 'Actief';
 $_lang['seosuite.label_redirect_active_desc']                   = '';

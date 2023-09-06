@@ -67,7 +67,7 @@ $_lang['seosuite.import.instructions']                          = 'Use a .csv, .
 
 $_lang['seosuite.redirect']                                     = 'URL redirect';
 $_lang['seosuite.redirects']                                    = 'URL redirects';
-$_lang['seosuite.redirects_desc']                               = 'Manage all your URL redirects here. A URL redirect is used to redirect a non existing page to the new page. A URL redirect can be made for a specific context or for all contexts at once and will displayed below as "* /". URL redirects with a specific context takes precedence over a URL redirect for all contexts.';
+$_lang['seosuite.redirects_desc']                               = 'Manage all your URL redirects here. A URL redirect is used to redirect a non existing page to the new page. A URL redirect can be made for a specific context or for all contexts at once and will displayed below as "* /". URL redirects with a specific context takes precedence over a URL redirect for all contexts. When using a full URL, make sure that the domain points to the same server as the current MODX installation.';
 $_lang['seosuite.redirect_create']                              = 'New URL redirect';
 $_lang['seosuite.redirect_update']                              = 'Update URL redirect';
 $_lang['seosuite.redirect_remove']                              = 'Remove URL redirect';
@@ -79,7 +79,7 @@ $_lang['seosuite.redirect_test']                                = 'Test redirect
 
 $_lang['seosuite.label_redirect_old_url']                       = 'Old URL';
 $_lang['seosuite.label_redirect_old_url_desc']                  = 'The old URL of the URL redirect without the domain name. For example: "/example".';
-$_lang['seosuite.label_redirect_new_url']                       = 'New URL';
+$_lang['seosuite.label_redirect_new_url']                       = 'New URL / ID';
 $_lang['seosuite.label_redirect_new_url_desc']                  = 'The new URL of the URL redirection. This can be with or without a domain, but can also contain the ID of the resource.';
 $_lang['seosuite.label_redirect_active']                        = 'Active';
 $_lang['seosuite.label_redirect_active_desc']                   = '';

@@ -79,7 +79,7 @@ $_lang['seosuite.redirect_test']                                = 'Test redirect
 
 $_lang['seosuite.label_redirect_old_url']                       = 'Alte URL';
 $_lang['seosuite.label_redirect_old_url_desc']                  = 'Die alte URL der Weiterleitung ohne den Domainnamen. Zum Beispiel: "/example".';
-$_lang['seosuite.label_redirect_new_url']                       = 'Neue URL';
+$_lang['seosuite.label_redirect_new_url']                       = 'Neue URL / ID';
 $_lang['seosuite.label_redirect_new_url_desc']                  = 'Die neue URL der Weiterleitung. Sie kann mit oder ohne Domain angegeben werden, kann aber auch die Ressourcen-ID enthalten.';
 $_lang['seosuite.label_redirect_active']                        = 'Aktiv';
 $_lang['seosuite.label_redirect_active_desc']                   = '';

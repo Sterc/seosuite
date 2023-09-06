@@ -297,7 +297,7 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
     },
     renderUrl: function(d, c, e) {
         if (!Ext.isEmpty(e.json.site_url)) {
-            return '<span class="x-grid-span">' + e.json.site_url + '</span>' + d;
+            return e.json.site_url + d;
         }
 
         return d;
