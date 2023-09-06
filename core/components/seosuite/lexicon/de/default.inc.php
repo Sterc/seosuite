@@ -73,9 +73,9 @@ $_lang['seosuite.redirect_update']                              = 'URL Weiterlei
 $_lang['seosuite.redirect_remove']                              = 'URL Weiterleitung löschen';
 $_lang['seosuite.redirect_remove_confirm']                      = 'Sind Sie sicher, dass Sie diese URL-Umleitung entfernen möchten?';
 $_lang['seosuite.redirects_remove']                             = 'URL-Weiterleitung(en) entfernen';
-$_lang['seosuite.redirects_remove_confirm']                     = 'Sind Sie sicher, dass Sie die ausgewählte(n) URL-Umleitung(en) entfernen möchten?
-';
+$_lang['seosuite.redirects_remove_confirm']                     = 'Sind Sie sicher, dass Sie die ausgewählte(n) URL-Umleitung(en) entfernen möchten?';
 $_lang['seosuite.use_redirect_across_domains']                  = 'Weiterleitung für alle Domains verwenden';
+$_lang['seosuite.redirect_test']                                = 'Test redirect';
 
 $_lang['seosuite.label_redirect_old_url']                       = 'Alte URL';
 $_lang['seosuite.label_redirect_old_url_desc']                  = 'Die alte URL der Weiterleitung ohne den Domainnamen. Zum Beispiel: "/example".';

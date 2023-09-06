@@ -145,6 +145,10 @@ Ext.extend(SeoSuite.grid.Redirects, MODx.grid.Grid, {
             text    : '<i class="x-menu-item-icon icon icon-times"></i>' + _('seosuite.redirect_remove'),
             handler : this.removeRedirect,
             scope   : this
+        }, '-', {
+            text    : '<i class="x-menu-item-icon icon icon-caret-right"></i>' + _('seosuite.redirect_test'),
+            handler : this.testRedirect,
+            scope   : this
         }];
     },
     createRedirect: function(btn, e) {
@@ -233,6 +237,11 @@ Ext.extend(SeoSuite.grid.Redirects, MODx.grid.Grid, {
             }
         });
     },
+    testRedirect: function() {
+        console.log(this.menu.record);
+        window.open(this.menu.record.old_url, '_blank');
+    },
+
     renderOldUrl: function(d, c, e) {
         if (/^(((http|https|ftp):\/\/)|www\.)/.test(d)) {
             return d;

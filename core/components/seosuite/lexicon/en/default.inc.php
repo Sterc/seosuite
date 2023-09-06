@@ -75,6 +75,7 @@ $_lang['seosuite.redirect_remove_confirm']                      = 'Are you sure 
 $_lang['seosuite.redirects_remove']                             = 'Remove URL redirect(s)';
 $_lang['seosuite.redirects_remove_confirm']                     = 'Are you sure you want to remove the selected URL redirect(s)?';
 $_lang['seosuite.use_redirect_across_domains']                  = 'Use redirect for all domains';
+$_lang['seosuite.redirect_test']                                = 'Test redirect';
 
 $_lang['seosuite.label_redirect_old_url']                       = 'Old URL';
 $_lang['seosuite.label_redirect_old_url_desc']                  = 'The old URL of the URL redirect without the domain name. For example: "/example".';

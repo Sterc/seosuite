@@ -68,6 +68,7 @@ $_lang['seosuite.redirect_remove_confirm']                      = 'Weet je zeker
 $_lang['seosuite.redirects_remove']                             = 'URL verwijzing(en) verwijderen';
 $_lang['seosuite.redirects_remove_confirm']                     = 'Weet je zeker dat je de geselecteerde URL verwijzing(en) wilt verwijderen?';
 $_lang['seosuite.use_redirect_across_domains']                  = 'Gebruik redirect voor alle domeinen';
+$_lang['seosuite.redirect_test']                                = 'Redirect testen';
 
 $_lang['seosuite.label_redirect_old_url']                       = 'Oude URL';
 $_lang['seosuite.label_redirect_old_url_desc']                  = 'De oude URL van de URL verwijzing zonder domain naam. Bijvoorbeeld: "/voorbeeld".';
