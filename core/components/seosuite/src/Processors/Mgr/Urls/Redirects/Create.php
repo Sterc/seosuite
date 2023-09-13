@@ -4,7 +4,7 @@ namespace Sterc\SeoSuite\Processors\Mgr\Urls\Redirects;
 
 use MODX\Revolution\Processors\Model\CreateProcessor;
 use Sterc\SeoSuite\Model\SeoSuiteRedirect;
-use Sterc\SeoSuite\Model\mysql\SeoSuiteUrl;
+use Sterc\SeoSuite\Model\SeoSuiteUrl;
 
 class Create extends CreateProcessor
 {
