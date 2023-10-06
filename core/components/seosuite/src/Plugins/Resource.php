@@ -39,11 +39,11 @@ class Resource extends Base
      * Check if the SEO Suite is enabled for the current template.
      *
      * @access protected.
-     * @param Object $resource.
+     * @param modResource $resource.
      * @param String $mode.
      * @return Boolean.
      */
-    protected function isEnabled($resource, $mode = 'create')
+    protected function isEnabled(modResource $resource, $mode = 'create')
     {
         $template   = (string) $resource->get('template');
         $templates  = $this->seosuite->config['disabled_templates'];
@@ -309,6 +309,14 @@ class Resource extends Base
         list($sourceCtx, $resource) = explode('_', $this->modx->getOption('source', $_POST));
         list($targetCtx, $target) = explode('_', $this->modx->getOption('target', $_POST));
 
+        $oldResource = $this->modx->getObject(modResource::class, $resource);
+        $modResource = $this->modx->getObject(modResource::class, $resource);
+
+        // When SeoSuite is not enabled for the resource, we don't need to do anything.
+        if (!$this->isEnabled($oldResource)) {
+            return;
+        }
+
         switch ($this->modx->getOption('point', $_POST)) {
             case 'above':
             case 'below':
@@ -320,8 +328,6 @@ class Resource extends Base
                 break;
         }
 
-        $oldResource = $this->modx->getObject(modResource::class, $resource);
-        $modResource = $this->modx->getObject(modResource::class, $resource);
         if ($oldResource && $modResource && $target !== $oldResource->get('parent')) {
             $modResource->set('parent', $target);
             $modResource->set('uri', '');
