@@ -59,9 +59,11 @@ class GetList extends GetListProcessor
     {
         $suggestions = json_decode($this->getProperty('suggestions'), true);
 
-        arsort($suggestions);
+        if ($suggestions && is_array($suggestions)) {
+            arsort($suggestions);
 
-        $this->suggestions = $suggestions;
+            $this->suggestions = $suggestions;
+        }
 
         return parent::initialize();
     }

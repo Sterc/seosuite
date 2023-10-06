@@ -421,11 +421,16 @@ SeoSuite.window.UrlCreateRedirect = function(config) {
             xtype       : 'hidden',
             name        : 'id'
         }, {
-            xtype       : 'statictextfield',
+            xtype       : 'hidden',
+            name        : 'old_url',
+            value       : config.record.url
+        }, {
+            xtype       : 'textfield',
             fieldLabel  : _('seosuite.label_redirect_old_url'),
             description : MODx.expandHelp ? '' : _('seosuite.label_redirect_old_url_desc'),
             name        : 'url',
-            anchor      : '100%'
+            anchor      : '100%',
+            readOnly    : true,
         }, {
             xtype       : MODx.expandHelp ? 'label' : 'hidden',
             html        : _('seosuite.label_redirect_old_url_desc'),
