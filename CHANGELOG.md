@@ -6,6 +6,10 @@ SEO Suite 3.1.5
 - Remove automatic context prefix when creating/updating redirect
 - Allow adding redirects with full url
 - Add check for full url redirect match when OnPageNotFound is triggered
+- Better fix for excluding resource from sitemap (issue#97)
+- Do not create redirect on resource drag/drop when resource does not have SeoSuite activated (issue#100)
+- Replace deprecated PHPExcel with PhpSpreadsheet
+- Fix saving redirect old url when created from 404 urls tab
 
 SEO Suite 3.1.4
 ==============
