@@ -7,6 +7,7 @@ use MODX\Revolution\Processors\Processor;
 use Sterc\SeoSuite\Model\SeoSuiteUrl;
 use Sterc\SeoSuite\Model\SeoSuiteRedirect;
 use PHPExcel_IOFactory;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Exception;
 use SplFileObject;
 
@@ -37,6 +38,8 @@ class Import extends Processor
     {
         $this->modx->log(modX::LOG_LEVEL_INFO, $this->modx->lexicon('seosuite.import.start'));
         $this->modx->setLogLevel(modX::LOG_LEVEL_DEBUG);
+
+        $this->modx->seosuite = $this->modx->services->get('seosuite');
 
         $file     = $this->getProperty('file');
         $siteUrls = false;
@@ -178,8 +181,8 @@ class Import extends Processor
     }
 
     /**
-     * Read an excel file with the PHPExcel library
-     * https://github.com/PHPOffice/PHPExcel
+     * Read an excel file with the PhpSpreadsheet library
+     * https://github.com/PHPOffice/PhpSpreadsheet
      *
      * @param array     $file           The file object
      * @param int       $sheetIndex     Index number of the sheet from the excel file; 0 = 1st sheet, 1 = 2nd sheet etc.
@@ -187,7 +190,7 @@ class Import extends Processor
      */
     public function parseExcelFile($file, $sheetIndex = 0)
     {
-        /* Check if the ZipArchive extension is installed (needed for PHPExcel). */
+        /* Check if the ZipArchive extension is installed (needed for PhpSpreadsheet). */
         if (!class_exists('ZipArchive')) {
             $this->modx->log(modX::LOG_LEVEL_ERROR, $this->modx->lexicon('seosuite.error.ziparchive_notinstalled'));
 
@@ -196,8 +199,8 @@ class Import extends Processor
 
         $data = [];
         try {
-            $filetype    = PHPExcel_IOFactory::identify($file['tmp_name']);
-            $objReader   = PHPExcel_IOFactory::createReader($filetype);
+            $filetype    = IOFactory::identify($file['tmp_name']);
+            $objReader   = IOFactory::createReader($filetype);
             $objPHPExcel = $objReader->load($file['tmp_name']);
         } catch (Exception $e) {
             $message = 'Error loading file "' . pathinfo($file['tmp_name'], PATHINFO_BASENAME) . '": ' . $e->getMessage();
