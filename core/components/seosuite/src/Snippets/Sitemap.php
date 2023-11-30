@@ -343,7 +343,7 @@ class Sitemap extends Base
                     SeoSuiteResource::class,
                     'SeoSuiteResource',
                     'SeoSuiteResource.',
-                    array_keys($this->modx->getFields('SeoSuiteResource'))
+                    array_keys($this->modx->getFields(SeoSuiteResource::class))
                 )
             ]
         );
