@@ -41,10 +41,12 @@ Ext.extend(SeoSuite, Ext.Component, {
         });
     },
     addPanel: function() {
-        var panel = Ext.getCmp('modx-panel-resource');
+        var panelPositionTop = parseInt(MODx.config['seosuite.panel_position_top']) ? parseInt(MODx.config['seosuite.panel_position_top']) : 0;
+        var panel = panelPositionTop ? Ext.getCmp('modx-resource-content') : Ext.getCmp('modx-panel-resource');
+        var insertPosition = panelPositionTop ? 1 : 2;
 
         if (panel) {
-            panel.insert(panel.items.length, {
+            panel.insert(insertPosition, {
                 xtype        : 'panel',
                 border       : false,
                 layout       : 'form',
