@@ -263,7 +263,7 @@ SeoSuite.combo.Image = function(config) {
                 },
                 'select'    : {
                     fn          : function(tf) {
-                        this.setImage(tf.fullRelativeUrl);
+                        this.setImage(tf.relativeUrl);
                     },
                     scope       : this
                 }
@@ -331,7 +331,7 @@ Ext.extend(Ext.ux.Image, Ext.Component, {
     },
     getImage: function(src, width, height) {
         if (src) {
-            return MODx.config.connectors_url + 'system/phpthumb.php?h=' + height + '&w=' + width + '&zc=1&src=' + src;
+            return MODx.config.connectors_url + 'system/phpthumb.php?h=' + height + '&w=' + width + '&zc=1&source=' + MODx.config.default_media_source + '&src=' + src;
         }
 
         return Ext.BLANK_IMAGE_URL;
