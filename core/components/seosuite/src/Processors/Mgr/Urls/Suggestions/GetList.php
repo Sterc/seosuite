@@ -57,7 +57,7 @@ class GetList extends GetListProcessor
      */
     public function initialize()
     {
-        $suggestions = json_decode($this->getProperty('suggestions'), true);
+        $suggestions = json_decode($this->getProperty('suggestions'), true) ? json_decode($this->getProperty('suggestions'), true) : [];
 
         if ($suggestions && is_array($suggestions)) {
             arsort($suggestions);
