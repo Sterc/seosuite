@@ -32,7 +32,7 @@
     border-radius: 3px;
 }
 
-#resource-seosuite-panel .modx-config-error {
+.seosuite-panel-main .modx-config-error {
     padding: 0 0 15px !important;
 }
 
@@ -65,36 +65,43 @@
     margin: 15px 0 0;
 }
 
-#resource-seosuite-panel {
+.seosuite-panel-main {
     margin: 1rem;
 }
 
-#resource-seosuite-panel .x-panel-header {
+.seosuite-panel-main-top {
+    margin: .5rem 0 1rem;
+}
+.seosuite-panel-main-top .seosuite-meta-preview {
+    margin-top: 35px;
+}
+
+.seosuite-panel-main .x-panel-header {
     margin: 0;
     padding: 15px;
 }
 
 /* Meta SEO preview */
 
-#resource-seosuite-panel .x-toolbar {
+.seosuite-panel-main .x-toolbar {
     margin: 0 0 10px;
     border: 0;
     background-color: transparent;
 }
 
-#resource-seosuite-panel .x-toolbar .x-btn-no-text .icon {
+.seosuite-panel-main .x-toolbar .x-btn-no-text .icon {
     margin-right: 0;
 }
 
-#resource-seosuite-panel .x-toolbar .x-btn {
+.seosuite-panel-main .x-toolbar .x-btn {
     position: relative;
 }
 
-#resource-seosuite-panel .x-toolbar .x-btn .icon {
+.seosuite-panel-main .x-toolbar .x-btn .icon {
     font-size: 16px;
 }
 
-#resource-seosuite-panel .x-toolbar .x-btn.x-btn-active:after {
+.seosuite-panel-main .x-toolbar .x-btn.x-btn-active:after {
     position: absolute;
     left: 0;
     bottom: 0;
@@ -106,7 +113,7 @@
     border-radius: 0 0 3px 3px;
 }
 
-#resource-seosuite-panel .x-toolbar label {
+.seosuite-panel-main .x-toolbar label {
     color: #555555;
     font-size: 13px;
     font-weight: 600;

@@ -43,6 +43,7 @@ Ext.extend(SeoSuite, Ext.Component, {
     addPanel: function() {
         var panelPositionTop = parseInt(MODx.config['seosuite.panel_position_top']) ? parseInt(MODx.config['seosuite.panel_position_top']) : 0;
         var panel = panelPositionTop ? Ext.getCmp('modx-resource-content') : Ext.getCmp('modx-panel-resource');
+        var panelClass = panelPositionTop ? 'seosuite-panel-main-top' : 'seosuite-panel-main-bottom';
         var insertPosition = panelPositionTop ? 1 : 2;
 
         if (panel) {
@@ -51,9 +52,10 @@ Ext.extend(SeoSuite, Ext.Component, {
                 border       : false,
                 layout       : 'form',
                 bodyCssClass : 'main-wrapper',
+                cls          : 'seosuite-panel-main ' + panelClass,
                 id           : 'resource-seosuite-panel',
                 autoHeight   : true,
-                collapsible  : true,
+                collapsible  : panelPositionTop ? false : true,
                 animCollapse : false,
                 hideMode     : 'offsets',
                 title        : _('seosuite.tab_meta.seo'),
@@ -69,6 +71,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                     },
                     items   : [{
                         columnWidth : .5,
+                        cls         : 'seosuite-meta-fields',
                         items       : [{
                             xtype       : 'textfield',
                             fieldLabel  : _('seosuite.tab_meta.keywords'),
@@ -141,6 +144,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                         }]
                     }, {
                         columnWidth : .5,
+                        cls         : 'seosuite-meta-preview',
                         items       : [{
                             xtype       : 'toolbar',
                             items       : [{
