@@ -3,7 +3,7 @@ lowCaseName: seosuite
 namespace: Sterc\SeoSuite
 description: Toolset for optimising your websites online presence.
 author: Sterc
-version: 3.1.6
+version: 3.1.5
 
 build:
   setupOptions: "setup.options.php"
@@ -107,6 +107,7 @@ systemSettings:
   - key: panel_position_top
     type: combo-boolean
     value: "0"
+    area: seosuite_tab_meta
 
 menus:
   - text: seosuite.menu.seosuite

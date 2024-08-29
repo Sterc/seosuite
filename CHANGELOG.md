@@ -10,6 +10,7 @@ SEO Suite 3.1.5
 - Do not create redirect on resource drag/drop when resource does not have SeoSuite activated (issue#100)
 - Replace deprecated PHPExcel with PhpSpreadsheet
 - Fix saving redirect old url when created from 404 urls tab
+- Add system setting to control the position of the SEO Suite panel (top or bottom)
 
 SEO Suite 3.1.4
 ==============

@@ -35,6 +35,8 @@ $_lang['setting_seosuite.meta.preview.length_mobile_description']       = 'Previ
 $_lang['setting_seosuite.meta.preview.length_mobile_description_desc']  = 'Determines the maximum length as shown in the preview.';
 $_lang['setting_seosuite.meta.default_alternate_context']               = 'Default alternate context';
 $_lang['setting_seosuite.meta.default_alternate_context_desc']          = 'Specify the context to be marked as default alternate link (x-default).';
+$_lang['setting_seosuite.panel_position_top']                           = 'Show SEO Suite panel at top of resource page';
+$_lang['setting_seosuite.panel_position_top_desc']                      = 'Specify if the SEO Suite panel should be shown at the top or bottom of the resource page. Default is bottom.';
 
 /* Sitemap settings. */
 $_lang['setting_seosuite.sitemap.default_changefreq']                   = 'Default resource setting: update frequency';
