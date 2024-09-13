@@ -11,6 +11,7 @@ SEO Suite 3.1.5
 - Replace deprecated PHPExcel with PhpSpreadsheet
 - Fix saving redirect old url when created from 404 urls tab
 - Add system setting to control the position of the SEO Suite panel (top or bottom)
+- Fix date display in redirects grid when date is empty/zero
 
 SEO Suite 3.1.4
 ==============

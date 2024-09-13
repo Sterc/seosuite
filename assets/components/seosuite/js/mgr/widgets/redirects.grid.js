@@ -253,17 +253,8 @@ Ext.extend(SeoSuite.grid.Redirects, MODx.grid.Grid, {
     },
 
     renderOldUrl: function(d, c, e) {
-        if (/^(((http|https|ftp):\/\/)|www\.)/.test(d)) {
-            return d;
-        }
+        return d;
 
-        var url = '*/';
-
-        if (!Ext.isEmpty(e.json.old_site_url)) {
-            url = e.json.old_site_url;
-        }
-
-        return '<span class="x-grid-span">' + url + '</span>' + d;
     },
     renderNewUrl: function(d, c, e) {
         return d;
@@ -274,7 +265,7 @@ Ext.extend(SeoSuite.grid.Redirects, MODx.grid.Grid, {
         return parseInt(d) === 1 || d ? _('yes') : _('no');
     },
     renderDate: function(a) {
-        if (Ext.isEmpty(a)) {
+        if (Ext.isEmpty(a) || parseInt(a) <= 0) {
             return '—';
         }
 
