@@ -16,7 +16,7 @@
         <field key="inherit_facebook" dbtype="int" precision="1" phptype="integer" null="true" default="1"/>
         <field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" default="NULL" attributes="ON UPDATE CURRENT_TIMESTAMP" />
 
-        <aggregate alias="Resource" class="MODX\Revolution\modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Resource" class="MODX\Revolution\modResource" local="resource_id" foreign="id" cardinality="one" owner="foreign" />
 
         <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
             <column key="resource_id" length="" collation="A" null="false" />
@@ -31,7 +31,7 @@
         <field key="last_visit" dbtype="timestamp" phptype="timestamp" null="true" />
         <field key="createdon" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP"/>
 
-        <aggregate alias="Context" class="MODX\Revolution\modContext" local="bundle" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Context" class="MODX\Revolution\modContext" local="context_key" foreign="key" cardinality="one" owner="foreign" />
 
         <index alias="context_key" name="context_key" primary="false" unique="false" type="BTREE">
             <column key="context_key" length="" collation="A" null="false" />
@@ -56,7 +56,7 @@
         <field key="canonical_uri" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
         <field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" default="NULL" attributes="ON UPDATE CURRENT_TIMESTAMP" />
 
-        <aggregate alias="Resource" class="MODX\Revolution\modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Resource" class="MODX\Revolution\modResource" local="resource_id" foreign="id" cardinality="one" owner="foreign" />
 
         <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
             <column key="resource_id" length="" collation="A" null="false" />
@@ -83,8 +83,8 @@
         <field key="last_visit" dbtype="timestamp" phptype="timestamp" null="true" />
         <field key="editedon" dbtype="timestamp" phptype="timestamp" null="true" default="NULL" attributes="ON UPDATE CURRENT_TIMESTAMP" />
 
-        <aggregate alias="Context" class="MODX\Revolution\modContext" local="bundle" foreign="id" cardinality="one" owner="foreign" />
-        <aggregate alias="Resource" class="MODX\Revolution\modResource" local="bundle" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Context" class="MODX\Revolution\modContext" local="context_key" foreign="key" cardinality="one" owner="foreign" />
+        <aggregate alias="Resource" class="MODX\Revolution\modResource" local="resource_id" foreign="id" cardinality="one" owner="foreign" />
 
         <index alias="context_key" name="context_key" primary="false" unique="false" type="BTREE">
             <column key="context_key" length="" collation="A" null="false"/>
