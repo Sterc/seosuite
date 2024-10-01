@@ -186,15 +186,15 @@ class Resource extends Base
         $mode     =& $event->params['mode'];
 
         if ($this->isEnabled($resource, $mode)) {
-            if ($this->hasPermission('seosuite_tab_meta')) {
+            if ($this->hasPermission('meta')) {
                 $this->loadMeta($resource);
             }
 
-            if ($this->hasPermission('seosuite_tab_seo')) {
+            if ($this->hasPermission('tab_seo')) {
                 $this->loadTabSeo($resource);
             }
 
-            if ($this->hasPermission('seosuite_tab_social')) {
+            if ($this->hasPermission('tab_social')) {
                 $this->loadTabSocial($resource);
             }
 

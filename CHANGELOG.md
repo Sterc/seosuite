@@ -12,6 +12,9 @@ SEO Suite 3.1.5
 - Fix saving redirect old url when created from 404 urls tab
 - Add system setting to control the position of the SEO Suite panel (top or bottom)
 - Fix date display in redirects grid when date is empty/zero
+- Fix sitemap error message (PR#115) thanks to @halftrainedharry
+- Fix preview image (PR#117) thanks to @Boshnik
+- Bump dependencies
 
 SEO Suite 3.1.4
 ==============
