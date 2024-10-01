@@ -253,7 +253,17 @@ Ext.extend(SeoSuite.grid.Redirects, MODx.grid.Grid, {
     },
 
     renderOldUrl: function(d, c, e) {
-        return d;
+        if (/^(((http|https|ftp):\/\/)|www\.)/.test(d)) {
+            return d;
+        }
+
+        var url = '';
+
+        if (e.json.old_site_url && e.json.context_key) {
+            url = e.json.old_site_url;
+        }
+
+        return url + d;
 
     },
     renderNewUrl: function(d, c, e) {
