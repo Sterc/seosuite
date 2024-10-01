@@ -69,7 +69,6 @@ class Redirects extends Base
 
             if ($url) {
                 $url->fromArray([
-                    'context_key' => $this->modx->context->get('key'),
                     'url'         => $request,
                     'visits'      => (int) $url->get('visits') + 1,
                     'last_visit'  => date('Y-m-d H:i:s')
