@@ -306,30 +306,28 @@ class Resource extends Base
 
     public function onResourceBeforeSort()
     {
-        list($sourceCtx, $resource) = explode('_', $this->modx->getOption('source', $_POST)); //web_26
-        list($targetCtx, $target) = explode('_', $this->modx->getOption('target', $_POST)); //web_45
-
-        $oldResource = $this->modx->getObject(modResource::class, $resource); //26
-        $modResource = $this->modx->getObject(modResource::class, $resource); //26
+        list($sourceCtx, $resource) = explode('_', $this->modx->getOption('source', $_POST));
+        list($targetCtx, $target) = explode('_', $this->modx->getOption('target', $_POST));
+        $oldResource = $this->modx->getObject(modResource::class, $resource);
+        $modResource = $this->modx->getObject(modResource::class, $resource);
+        $sourceCtx = $oldResource->get('context_key');
 
         // When SeoSuite is not enabled for the resource, we don't need to do anything.
         if (!$this->isEnabled($oldResource)) {
             return;
         }
 
-        switch ($this->modx->getOption('point', $_POST)) { // above
+        switch ($this->modx->getOption('point', $_POST)) {
             case 'above':
             case 'below':
-                $tmpRes = $this->modx->getObject(modResource::class, $target); //45
+                $tmpRes = $this->modx->getObject(modResource::class, $target);
                 if ($tmpRes) {
-                    $target = $tmpRes->get('parent'); //38
+                    $target = $tmpRes->get('parent');
                     unset($tmpRes);
                 }
                 break;
         }
 
-        $this->modx->log(1, 'Resource: ' . $resource . ' Source: ' . $sourceCtx . ' >> Target: ' . $target . ' TargetCtx: ' . $targetCtx);
-        $this->modx->log(1, 'OldResource: ' . $oldResource->get('parent') . ' ModResource: ' . $modResource->get('parent'));
         if ($oldResource && $modResource && ($target !== $oldResource->get('parent') || $sourceCtx !== $targetCtx )) { //38 !== 0
             $modResource->set('parent', $target);
             $modResource->set('uri', '');
