@@ -20,6 +20,12 @@ use xPDO\Om\xPDOQuery;
 class SeoSuiteUrl extends \xPDO\Om\xPDOSimpleObject
 {
     /**
+     * @deprecated 4.0.0 No longer used by internal code and not recommended. The url field should contain full url.
+     * @var string $context_key
+     */
+    private string $context_key;
+
+    /**
      * @access public.
      * @return String.
      */

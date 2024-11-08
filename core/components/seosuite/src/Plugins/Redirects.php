@@ -12,8 +12,8 @@ class Redirects extends Base
      */
     public function onPageNotFound()
     {
-        $request = urldecode(trim($_REQUEST[$this->modx->getOption('request_param_alias', null, 'q')], '/'));
-
+        //$request = urldecode(trim($_REQUEST[$this->modx->getOption('request_param_alias', null, 'q')], '/'));
+        $request = $this->getFullUrl();
         if (!empty($request)) {
             $this->redirect($request);
         }
@@ -29,8 +29,17 @@ class Redirects extends Base
     {
         $criteria = $this->modx->newQuery(SeoSuiteRedirect::class, [
             'active' => 1,
-            ['old_url' => $request, 'OR:old_url:=' => preg_replace('#^\w{2}/#', '', $request), 'OR:old_url:=' => $this->getFullUrl()],
-            ['context_key' => '', 'OR:context_key:=' => $this->modx->context->get('key')],
+            [
+                'old_url' => $request,
+                // 'OR:old_url:=' => preg_replace('#^\w{2}/#', '', $request),
+                // 'OR:old_url:=' => $this->getFullUrl()
+            ],
+            /*
+            [
+                'context_key' => '',
+                'OR:context_key:=' => $this->modx->context->get('key')
+            ],
+            */
         ]);
 
         $criteria->sortby('context_key', 'DESC');

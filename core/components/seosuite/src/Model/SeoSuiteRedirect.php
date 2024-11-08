@@ -22,6 +22,12 @@ use MODX\Revolution\modResource;
 class SeoSuiteRedirect extends \xPDO\Om\xPDOSimpleObject
 {
     /**
+     * @deprecated 4.0.0 No longer used by internal code and not recommended. The old_url and new_url fields should contain full urls.
+     * @var string $context_key
+     */
+    private string $context_key;
+
+    /**
      * @access public.
      * @return String.
      */
