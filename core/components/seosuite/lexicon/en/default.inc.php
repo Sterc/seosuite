@@ -78,9 +78,9 @@ $_lang['seosuite.use_redirect_across_domains']                  = 'Use redirect 
 $_lang['seosuite.redirect_test']                                = 'Test redirect';
 
 $_lang['seosuite.label_redirect_old_url']                       = 'Old URL';
-$_lang['seosuite.label_redirect_old_url_desc']                  = 'The old URL of the URL redirect without the domain name. For example: "/example".';
+$_lang['seosuite.label_redirect_old_url_desc']                  = 'The full old URL of the URL redirect with the domain name. For example: "https://my-website.com/example".';
 $_lang['seosuite.label_redirect_new_url']                       = 'New URL / ID';
-$_lang['seosuite.label_redirect_new_url_desc']                  = 'The new URL of the URL redirection. This can be with or without a domain, but can also contain the ID of the resource.';
+$_lang['seosuite.label_redirect_new_url_desc']                  = 'The new URL of the URL redirection. This can be full URL with domain, or the ID of the resource. For example: "https://my-website.com/example" or "123".';
 $_lang['seosuite.label_redirect_active']                        = 'Active';
 $_lang['seosuite.label_redirect_active_desc']                   = '';
 $_lang['seosuite.label_redirect_match_context']                 = 'Context';

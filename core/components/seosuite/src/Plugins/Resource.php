@@ -308,9 +308,9 @@ class Resource extends Base
     {
         list($sourceCtx, $resource) = explode('_', $this->modx->getOption('source', $_POST));
         list($targetCtx, $target) = explode('_', $this->modx->getOption('target', $_POST));
-
         $oldResource = $this->modx->getObject(modResource::class, $resource);
         $modResource = $this->modx->getObject(modResource::class, $resource);
+        $sourceCtx = $oldResource->get('context_key');
 
         // When SeoSuite is not enabled for the resource, we don't need to do anything.
         if (!$this->isEnabled($oldResource)) {
@@ -328,20 +328,22 @@ class Resource extends Base
                 break;
         }
 
-        if ($oldResource && $modResource && $target !== $oldResource->get('parent')) {
+        if ($oldResource && $modResource && ($target !== $oldResource->get('parent') || $sourceCtx !== $targetCtx )) { //38 !== 0
             $modResource->set('parent', $target);
             $modResource->set('uri', '');
 
             $uriChanged = false;
             if ($oldResource->get('uri') != $modResource->get('uri') && $oldResource->get('uri') != '') {
+                $this->modx->log(1, 'Old URI: ' . $oldResource->get('uri') . ' New URI: ' . $modResource->get('uri'));
                 $uriChanged = true;
             }
 
             if ($oldResource->get('alias') != $modResource->get('alias') && $oldResource->get('alias') != '') {
+                $this->modx->log(1, 'Old Alias: ' . $oldResource->get('alias') . ' New Alias: ' . $modResource->get('alias'));
                 $newProperties['urls'][] = ['url' => $oldResource->get('uri')];
                 $uriChanged              = true;
             }
-
+            $this->modx->log(1, 'URI Changed: ' . $uriChanged);
             /* Recursive set redirects for drag/dropped resource, and its children (where uri_override is not set) . */
             if ($uriChanged && (int) $this->modx->getOption('use_alias_path') === 1) {
                 $oldResource->set('isfolder', true);
@@ -364,6 +366,7 @@ class Resource extends Base
                 foreach ($childResources as $childResource) {
                     $this->saveChildResourceRedirect($childResource, $sourceCtx);
                 }
+                $this->modx->cacheManager->clearCache();
             }
         }
     }
@@ -375,15 +378,23 @@ class Resource extends Base
 
     public function saveChildResourceRedirect(modResource $modResource, string $contextKey)
     {
-        if ($this->modx->getCount(SeoSuiteRedirect::class, ['old_url' => $modResource->get('uri'), 'context_key' => $modResource->get('context_key')])) {
+        $context  = $this->modx->getContext($contextKey);
+        $oldUrl = $context->getOption('site_url') . $modResource->get('uri');
+
+        if ($this->modx->getCount(
+            SeoSuiteRedirect::class,
+            [
+                'old_url' => $oldUrl,
+                //'context_key' => $modResource->get('context_key')
+            ])) {
             // Redirect already exists
             return false;
         }
 
         $data = [
-            'old_url'       => $modResource->get('uri'),
+            'old_url'       => $oldUrl,
             'resource_id'   => $modResource->get('id'),
-            'context_key'   => $contextKey,
+            // 'context_key'   => $contextKey,
             'new_url'       => $modResource->get('id'),
             'redirect_type' => 'HTTP/1.1 301 Moved Permanently'
         ];
@@ -391,7 +402,6 @@ class Resource extends Base
         $redirect = $this->modx->newObject(SeoSuiteRedirect::class);
         $redirect->fromArray($data);
         $redirect->save();
-
     }
 
     /**

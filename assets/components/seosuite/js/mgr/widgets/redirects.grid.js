@@ -356,7 +356,9 @@ SeoSuite.window.CreateRedirect = function(config) {
                 html        : _('seosuite.label_redirect_new_url_desc'),
                 cls         : 'desc-under'
             }]
-        }, {
+        },
+        /*
+        {
             xtype       : 'seosuite-combo-contexts',
             fieldLabel  : _('seosuite.label_redirect_match_context'),
             description : MODx.expandHelp ? '' : _('seosuite.label_redirect_match_context_desc'),
@@ -370,7 +372,9 @@ SeoSuite.window.CreateRedirect = function(config) {
             html        : _('seosuite.label_redirect_match_context_desc'),
             hidden      : config.mode === 'resource',
             cls         : 'desc-under'
-        }, {
+        },
+        */
+        {
             xtype       : 'seosuite-combo-redirect-type',
             fieldLabel  : _('seosuite.label_redirect_type'),
             description : MODx.expandHelp ? '' : _('seosuite.label_redirect_type_desc'),
@@ -459,7 +463,9 @@ SeoSuite.window.UpdateRedirect = function(config) {
                 html        : _('seosuite.label_redirect_new_url_desc'),
                 cls         : 'desc-under'
             }]
-        }, {
+        },
+        /*
+            {
             xtype       : 'seosuite-combo-contexts',
             fieldLabel  : _('seosuite.label_redirect_match_context'),
             description : MODx.expandHelp ? '' : _('seosuite.label_redirect_match_context_desc'),
@@ -470,7 +476,9 @@ SeoSuite.window.UpdateRedirect = function(config) {
             xtype       : MODx.expandHelp ? 'label' : 'hidden',
             html        : _('seosuite.label_redirect_match_context_desc'),
             cls         : 'desc-under'
-        }, {
+        },
+        */
+            {
             xtype       : 'seosuite-combo-redirect-type',
             fieldLabel  : _('seosuite.label_redirect_type'),
             description : MODx.expandHelp ? '' : _('seosuite.label_redirect_type_desc'),
