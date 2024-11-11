@@ -693,13 +693,14 @@ class SeoSuite
 
                 if ($oldUrl !== $newUrl && $oldUrl !== '' && $newUrl !== '') {
                     if ($this->handleRedirect($oldUrl, $newUrl)) {
+                        $context  = $this->modx->getContext($resource->get('context_key'));
                         $object = $this->modx->newObject(SeoSuiteRedirect::class);
 
                         if ($object) {
                             $object->fromArray([
                                 'resource_id'   => $resource->get('id'),
-                                'old_url'       => $oldUrl,
-                                'new_url'       => $newUrl,
+                                'old_url'       => $context->getOption('site_url') . $oldUrl, // $oldUrl,
+                                'new_url'       => $resource->get('id'), // $newUrl,
                                 'redirect_type' => $this->config['default_redirect_type'],
                                 'active'        => 1,
                             ]);
