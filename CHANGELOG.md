@@ -1,20 +1,41 @@
 Changelog for SEO Suite.
 
-SEO Suite 3.1.5
+SEO Suite 3.1.7
 ==============
+- Fixing issue when there is redirect to itself (when resource is moved)
+- Updating log level from error to info.
+- Remove Context-dropdown from all dialog windows, not from the redirect logic.
+- Stop using the context_key logic when adding 404's from the frontend.
+- Always add the full URL as the value for seosuite_url.url. We are aware that this will result in manual changes in the database, whenever we hange a context's domain.
+- Show full URL's everywhere in the manager. When old URL's are missing a context_key or the full URL, then just leave it like that and have the user add the full URL themselves.
+- Add clear-cache after drag/drop redirect creation in SEO Suite.
+- When moving a resource from root-en to root-nl (both root) then no redirect will be made. Root-en to folder-nl does work. Folder-en to root-nl also works.
+- When moving resource from Context1 to Context2, the original context_key will be set to Context2, while it should be Context1.
+- Deprecate context field(s) for next major version in mapping file.
+- Bump phpoffice/phpspreadsheet from 1.29.0 to 1.29.1 in /core/components/seosuite #122
+- Fix Sitemap error message #115
+- Add site_url as prefix only when redirect has context_key
+- Prevent storing 404 url with context_key
+- URLs where saved without old url from suggestions tab
+- Fix saving redirect old url when created from 404 urls tab
+- Better fix for excluding resource from sitemap (issue#97)
+- Replace deprecated PHPExcel with PHPSpreadsheet
+- Do not create redirect on resource drag/drop when resource does not have SeoSuite activated (issue#100)
+- Several lexicon updates (all languages)
+- Allow full URL matching when finding redirect
+- Clean up setup process
 - Add button to redirects grid for testing redirect
 - Remove automatic context prefix when creating/updating redirect
 - Allow adding redirects with full url
 - Add check for full url redirect match when OnPageNotFound is triggered
-- Better fix for excluding resource from sitemap (issue#97)
-- Do not create redirect on resource drag/drop when resource does not have SeoSuite activated (issue#100)
+- Remove automatic context prefix when creating/updating redirect
 - Replace deprecated PHPExcel with PhpSpreadsheet
-- Fix saving redirect old url when created from 404 urls tab
 - Add system setting to control the position of the SEO Suite panel (top or bottom)
 - Fix date display in redirects grid when date is empty/zero
 - Fix sitemap error message (PR#115) thanks to @halftrainedharry
 - Fix preview image (PR#117) thanks to @Boshnik
-- Bump dependencies
+- Bumped dependencies
+- Please note: 3.1.5 and 3.1.6 were interal releases which were never publicly released.
 
 SEO Suite 3.1.4
 ==============
