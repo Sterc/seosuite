@@ -128,7 +128,7 @@ class Resource extends Base
                 'dbtype'   => 'text',
                 'phptype'  => 'string',
                 'index'    => 'fulltext',
-                'indexgrp' => 'content_ft_idx'
+                'indexgrp' => 'content_ft_idx',
             ];
         }
     }
@@ -149,7 +149,7 @@ class Resource extends Base
                 $childResources = $this->modx->getIterator(modResource::class, [
                     'id:IN'         => $childIds,
                     'uri_override'  => false,
-                    'deleted'       => false
+                    'deleted'       => false,
                 ]);
 
                 foreach ($childResources as $childResource) {
@@ -294,7 +294,7 @@ class Resource extends Base
     {
         if ($this->isEnabled($this->modx->resource) && $this->seosuite->config['placeholder_plugin_enabled']) {
             $this->modx->runSnippet('seosuiteMeta', [
-                'toPlaceholders' => true
+                'toPlaceholders' => true,
             ]);
         }
     }
@@ -328,22 +328,22 @@ class Resource extends Base
                 break;
         }
 
-        if ($oldResource && $modResource && ($target !== $oldResource->get('parent') || $sourceCtx !== $targetCtx )) { //38 !== 0
+        if ($oldResource && $modResource && ($target !== $oldResource->get('parent') || $sourceCtx !== $targetCtx )) {
             $modResource->set('parent', $target);
             $modResource->set('uri', '');
 
             $uriChanged = false;
             if ($oldResource->get('uri') != $modResource->get('uri') && $oldResource->get('uri') != '') {
-                $this->modx->log(1, 'Old URI: ' . $oldResource->get('uri') . ' New URI: ' . $modResource->get('uri'));
+                $this->modx->log(MODX_LOG_LEVEL_INFO, '[SEOSuite onResourceBeforeSave] Old URI: ' . $oldResource->get('uri') . ' New URI: ' . $modResource->get('uri'));
                 $uriChanged = true;
             }
 
             if ($oldResource->get('alias') != $modResource->get('alias') && $oldResource->get('alias') != '') {
-                $this->modx->log(1, 'Old Alias: ' . $oldResource->get('alias') . ' New Alias: ' . $modResource->get('alias'));
+                $this->modx->log(MODX_LOG_LEVEL_INFO, '[SEOSuite onResourceBeforeSave] Old Alias: ' . $oldResource->get('alias') . ' New Alias: ' . $modResource->get('alias'));
                 $newProperties['urls'][] = ['url' => $oldResource->get('uri')];
                 $uriChanged              = true;
             }
-            $this->modx->log(1, 'URI Changed: ' . $uriChanged);
+            $this->modx->log(MODX_LOG_LEVEL_INFO, '[SEOSuite onResourceBeforeSave] URI Changed: ' . $uriChanged);
             /* Recursive set redirects for drag/dropped resource, and its children (where uri_override is not set) . */
             if ($uriChanged && (int) $this->modx->getOption('use_alias_path') === 1) {
                 $oldResource->set('isfolder', true);
@@ -353,14 +353,15 @@ class Resource extends Base
                 $query->where([
                     [
                         'uri:LIKE'  => $resourceOldBasePath . '%',
-                        'OR:id:='   => $oldResource->id
+                        'OR:id:='   => $oldResource->id,
                     ],
                     'uri_override'  => false,
                     'published'     => true,
                     'deleted'       => false,
-                    'context_key'   => $modResource->get('context_key')
+                    'context_key'   => $modResource->get('context_key'),
                 ]);
-
+                $query->prepare();
+                $this->modx->log(MODX_LOG_LEVEL_INFO, '[SEOSuite onResourceBeforeSave] SQL for children: ' . $query->toSQL());
                 $childResources = $this->modx->getIterator(modResource::class, $query);
 
                 foreach ($childResources as $childResource) {
@@ -369,6 +370,29 @@ class Resource extends Base
                 $this->modx->cacheManager->clearCache();
             }
         }
+    }
+
+    public function onResourceSort($event)
+    {
+        $this->modx->cacheManager->clearCache();
+        $resourceId = explode('_', $this->modx->getOption('source', $_POST))[1];
+        $modResource = $this->modx->getObject(modResource::class, $resourceId);
+        $context  = $this->modx->getContext($modResource->get('context_key'));
+        $newUrl = $context->getOption('site_url') . $modResource->get('uri');
+
+        $this->modx->log(MODX_LOG_LEVEL_INFO, '[SEOSuite onResourceSort] Resource: ' . $resourceId .', New URL: ' . $newUrl);
+        $redirects = $this->modx->getIterator(SeoSuiteRedirect::class, [
+            'new_url' => $resourceId,
+        ]);
+
+        foreach ($redirects as $redirect) {
+            $this->modx->log(MODX_LOG_LEVEL_INFO, '[SEOSuite onResourceSort] Old URL: ' . $redirect->get('old_url'));
+            if ($redirect->get('old_url') == $newUrl) {
+                $this->modx->log(MODX_LOG_LEVEL_INFO, '[SEOSuite onResourceSort] Removing redirect: ' . $redirect->get('old_url'));
+                $redirect->remove();
+            }
+        }
+
     }
 
     public function onManagerPageBeforeRender()
@@ -396,7 +420,7 @@ class Resource extends Base
             'resource_id'   => $modResource->get('id'),
             // 'context_key'   => $contextKey,
             'new_url'       => $modResource->get('id'),
-            'redirect_type' => 'HTTP/1.1 301 Moved Permanently'
+            'redirect_type' => 'HTTP/1.1 301 Moved Permanently',
         ];
 
         $redirect = $this->modx->newObject(SeoSuiteRedirect::class);

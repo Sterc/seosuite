@@ -187,7 +187,7 @@ class SeoSuite
      */
     public function findRedirectSuggestions($url, $contextSiteUrls = [])
     {
-        $this->modx->log(xPDO::LOG_LEVEL_ERROR,'SeoSuite->findRedirectSuggestions deprecated, use SeoSuiteUrl->findRedirectSuggestions method.');
+        $this->modx->log(MODX_LOG_LEVEL_INFO,'SeoSuite->findRedirectSuggestions deprecated, use SeoSuiteUrl->findRedirectSuggestions method.');
 
         return [];
     }
@@ -200,7 +200,7 @@ class SeoSuite
      */
     public function splitUrl($input)
     {
-        $this->modx->log(xPDO::LOG_LEVEL_ERROR,'SeoSuite->splitUrl deprecated');
+        $this->modx->log(MODX_LOG_LEVEL_INFO,'SeoSuite->splitUrl deprecated');
 
         return [];
     }
@@ -693,13 +693,14 @@ class SeoSuite
 
                 if ($oldUrl !== $newUrl && $oldUrl !== '' && $newUrl !== '') {
                     if ($this->handleRedirect($oldUrl, $newUrl)) {
+                        $context  = $this->modx->getContext($resource->get('context_key'));
                         $object = $this->modx->newObject(SeoSuiteRedirect::class);
 
                         if ($object) {
                             $object->fromArray([
                                 'resource_id'   => $resource->get('id'),
-                                'old_url'       => $oldUrl,
-                                'new_url'       => $newUrl,
+                                'old_url'       => $context->getOption('site_url') . $oldUrl, // $oldUrl,
+                                'new_url'       => $resource->get('id'), // $newUrl,
                                 'redirect_type' => $this->config['default_redirect_type'],
                                 'active'        => 1,
                             ]);
