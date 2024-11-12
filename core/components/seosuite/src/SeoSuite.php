@@ -187,7 +187,7 @@ class SeoSuite
      */
     public function findRedirectSuggestions($url, $contextSiteUrls = [])
     {
-        $this->modx->log(xPDO::LOG_LEVEL_ERROR,'SeoSuite->findRedirectSuggestions deprecated, use SeoSuiteUrl->findRedirectSuggestions method.');
+        $this->modx->log(MODX_LOG_LEVEL_INFO,'SeoSuite->findRedirectSuggestions deprecated, use SeoSuiteUrl->findRedirectSuggestions method.');
 
         return [];
     }
@@ -200,7 +200,7 @@ class SeoSuite
      */
     public function splitUrl($input)
     {
-        $this->modx->log(xPDO::LOG_LEVEL_ERROR,'SeoSuite->splitUrl deprecated');
+        $this->modx->log(MODX_LOG_LEVEL_INFO,'SeoSuite->splitUrl deprecated');
 
         return [];
     }
