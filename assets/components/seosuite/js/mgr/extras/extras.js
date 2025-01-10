@@ -27,9 +27,9 @@ SeoSuite.combo.SitemapPrio = function(config) {
             mode        : 'local',
             fields      : ['type', 'label', 'index'],
             data        : [
-                ['high', _('seosuite.tab_seo.sitemap_prio_high'), '1.0'],
-                ['normal', _('seosuite.tab_seo.sitemap_prio_normal'), '0.5'],
-                ['low', _('seosuite.tab_seo.sitemap_prio_low'), '0.25']
+                ['1.0',  _('seosuite.tab_seo.sitemap_prio_high'), '1.0'],
+                ['0.5',  _('seosuite.tab_seo.sitemap_prio_normal'), '0.5'],
+                ['0.25', _('seosuite.tab_seo.sitemap_prio_low'), '0.25']
             ]
         }),
         remoteSort  : ['label', 'asc'],
@@ -59,8 +59,8 @@ SeoSuite.combo.SitemapChangeFreq = function(config) {
             mode        : 'local',
             fields      : ['type', 'label'],
             data        : [
-                ['high', _('seosuite.tab_seo.sitemap_changefreq_always')],
-                ['normal', _('seosuite.tab_seo.sitemap_changefreq_hourly')],
+                ['always', _('seosuite.tab_seo.sitemap_changefreq_always')],
+                ['hourly', _('seosuite.tab_seo.sitemap_changefreq_hourly')],
                 ['daily', _('seosuite.tab_seo.sitemap_changefreq_daily')],
                 ['weekly', _('seosuite.tab_seo.sitemap_changefreq_weekly')],
                 ['monthly', _('seosuite.tab_seo.sitemap_changefreq_monthly')],
@@ -177,7 +177,7 @@ SeoSuite.combo.Suggestions = function(config) {
     Ext.applyIf(config, {
         url         : SeoSuite.config.connector_url,
         baseParams  : {
-            action      : 'mgr/urls/suggestions/getlist',
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\Suggestions\\GetList',
             combo       : true,
             suggestions : Ext.encode(config.suggestions)
         },
@@ -207,7 +207,7 @@ SeoSuite.combo.Contexts = function(config) {
     Ext.applyIf(config, {
         url          : SeoSuite.config.connector_url,
         baseParams : {
-            action  : 'mgr/context/getlist',
+            action  : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Context\\GetList',
             exclude : config.exclude || 'mgr'
         },
         name         : 'context_key',

@@ -41,17 +41,21 @@ Ext.extend(SeoSuite, Ext.Component, {
         });
     },
     addPanel: function() {
-        var panel = Ext.getCmp('modx-panel-resource');
+        var panelPositionTop = parseInt(MODx.config['seosuite.panel_position_top']) ? parseInt(MODx.config['seosuite.panel_position_top']) : 0;
+        var panel = panelPositionTop ? Ext.getCmp('modx-resource-content') : Ext.getCmp('modx-panel-resource');
+        var panelClass = panelPositionTop ? 'seosuite-panel-main-top' : 'seosuite-panel-main-bottom';
+        var insertPosition = panelPositionTop ? 1 : 2;
 
         if (panel) {
-            panel.insert(2, {
+            panel.insert(insertPosition, {
                 xtype        : 'panel',
                 border       : false,
                 layout       : 'form',
                 bodyCssClass : 'main-wrapper',
+                cls          : 'seosuite-panel-main ' + panelClass,
                 id           : 'resource-seosuite-panel',
                 autoHeight   : true,
-                collapsible  : true,
+                collapsible  : panelPositionTop ? false : true,
                 animCollapse : false,
                 hideMode     : 'offsets',
                 title        : _('seosuite.tab_meta.seo'),
@@ -67,6 +71,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                     },
                     items   : [{
                         columnWidth : .5,
+                        cls         : 'seosuite-meta-fields',
                         items       : [{
                             xtype       : 'textfield',
                             fieldLabel  : _('seosuite.tab_meta.keywords'),
@@ -139,6 +144,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                         }]
                     }, {
                         columnWidth : .5,
+                        cls         : 'seosuite-meta-preview',
                         items       : [{
                             xtype       : 'toolbar',
                             items       : [{
@@ -213,7 +219,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                             baseCls     : 'seosuite-seo-preview',
                             id          : 'seosuite-seo-preview',
                             cls         : 'seosuite-seo-preview-' + SeoSuite.config.meta.preview.mode + ' seosuite-seo-preview-' + SeoSuite.config.meta.preview.engine,
-                            html        : '<img src="https://www.google.com/s2/favicons?domain=test" class="favicon" id="seosuite-seo-preview-favicon" />' +
+                            html        : '<img src="' + SeoSuite.config.assets_url + 'img/favicon.png" class="favicon" id="seosuite-seo-preview-favicon" />' +
                                 '<div id="seosuite-seo-preview-title"></div>' +
                                 '<div id="seosuite-seo-preview-url"></div>' +
                                 '<div id="seosuite-seo-preview-description"></div>' +
@@ -423,7 +429,7 @@ Ext.extend(SeoSuite, Ext.Component, {
             MODx.Ajax.request({
                 url         : SeoSuite.config.connector_url,
                 params      : {
-                    action          : 'mgr/resource/preview',
+                    action          : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Resource\\Preview',
                     id              : Ext.getCmp('modx-resource-id').getValue(),
                     fields          : Ext.encode({
                         pagetitle       : Ext.getCmp('modx-resource-pagetitle').getValue(),
@@ -458,13 +464,9 @@ Ext.extend(SeoSuite, Ext.Component, {
                                     preview.removeClass('disabled');
                                 }
 
-                                preview.select('.favicon').elements.forEach(function(favicon) {
-                                    favicon.setAttribute('src', 'https://www.google.com/s2/favicons?domain=' + response.results.output.domain);
-                                });
-
                                 var url = [];
 
-                                url.push('<img src="https://www.google.com/s2/favicons?domain=test" class="favicon" />');
+                                url.push('<img src="' + SeoSuite.config.assets_url + 'img/favicon.png" class="favicon" />');
 
                                 if (response.results.output.protocol === 'https') {
                                     url.push('<i class="icon icon-lock"></i>');

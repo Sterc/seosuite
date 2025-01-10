@@ -1,13 +1,8 @@
 <?php
+use MODX\Revolution\modDashboardWidgetInterface;
+
 /**
- * @package modx
- * @subpackage dashboard
- */
-/**
- * Renders a grid of recently edited resources by the active user
- *
- * @package modx
- * @subpackage dashboard
+ * @package seosuite
  */
 class modDashboardWidgetSeoSuiteUrls extends modDashboardWidgetInterface
 {
@@ -16,6 +11,8 @@ class modDashboardWidgetSeoSuiteUrls extends modDashboardWidgetInterface
      */
     public function render()
     {
+        $this->modx->seosuite = $this->modx->services->get('seosuite');
+
         $langs = $this->modx->seosuite->getLangs();
         $jsUrl = $this->modx->seosuite->config['js_url'];
 

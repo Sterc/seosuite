@@ -85,7 +85,7 @@ SeoSuite.panel.SeoTab = function(config) {
                 }]
             }]
         }, {
-            xtype       : 'checkbox',
+            xtype       : 'xcheckbox',
             boxLabel    : _('seosuite.tab_seo.label_searchable'),
             name        : 'seosuite_searchable',
             anchor      : '100%',
@@ -108,7 +108,7 @@ SeoSuite.panel.SeoTab = function(config) {
             html        : _('seosuite.tab_seo.label_searchable_desc'),
             cls         : 'desc-under'
         }, {
-            xtype       : 'checkbox',
+            xtype       : 'xcheckbox',
             boxLabel    : _('seosuite.tab_seo.label_override_uri', {
                 site_url    : MODx.config.site_url
             }),
@@ -167,7 +167,7 @@ SeoSuite.panel.SeoTab = function(config) {
                 cls         : 'desc-under'
             }]
         }, {
-            xtype       : 'checkbox',
+            xtype       : 'xcheckbox',
             boxLabel    : _('seosuite.tab_seo.label_canonical'),
             name        : 'seosuite_canonical',
             anchor      : '100%',
@@ -212,13 +212,15 @@ SeoSuite.panel.SeoTab = function(config) {
     tabs.push({
         title       : _('seosuite.tab_seo.tab_sitemap'),
         layout      : 'form',
+        hideMode: 'offsets',
         labelAlign  : 'top',
         labelSeparator : '',
         items       : [{
-            xtype       : 'checkbox',
+            xtype       : 'xcheckbox',
             hideLabel   : true,
             boxLabel    : _('seosuite.tab_seo.label_sitemap'),
             name        : 'seosuite_sitemap',
+            deferredRender : false,
             anchor      : '100%',
             inputValue  : 1,
             checked     : SeoSuite.record.seosuite_sitemap,
@@ -302,6 +304,7 @@ SeoSuite.panel.SeoTab = function(config) {
         title       : _('seosuite.tab_seo'),
         items       : [{
             xtype       : 'modx-vtabs',
+            deferredRender : false,
             items       : tabs
         }],
         listeners   : {

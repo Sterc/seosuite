@@ -14,8 +14,12 @@ SeoSuite.grid.Urls = function(config) {
             scope       : this
         }]
     }, {
-        text        : '<i class="icon icon-eye-slash"></i>' + _('seosuite.exclude_words'),
+        text        : '<i class="icon icon-search-minus"></i>' + _('seosuite.exclude_words'),
         handler     : this.excludeWords,
+        scope       : this
+    }, {
+        text        : '<i class="icon icon-eye-slash"></i>' + _('seosuite.blocked_words'),
+        handler     : this.blockedWords,
         scope       : this
     }, '->', {
         xtype       : 'textfield',
@@ -72,14 +76,14 @@ SeoSuite.grid.Urls = function(config) {
         }, {
             header      : _('seosuite.label_url_visits'),
             dataIndex   : 'visits',
-            sortable    : false,
+            sortable    : true,
             editable    : false,
             width       : 100,
             fixed       : true
         }, {
             header      : _('seosuite.label_url_last_visit'),
             dataIndex   : 'time_ago',
-            sortable    : false,
+            sortable    : true,
             editable    : false,
             width       : 200,
             fixed       : true
@@ -100,12 +104,13 @@ SeoSuite.grid.Urls = function(config) {
         id          : 'seosuite-grid-urls',
         url         : SeoSuite.config.connector_url,
         baseParams  : {
-            action      : 'mgr/urls/getlist'
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\GetList'
         },
         fields      : ['id', 'context_key', 'url', 'suggestions', 'visits', 'last_visit', 'createdon', 'time_ago', 'site_url'],
         paging      : true,
         pageSize    : MODx.config.default_per_page > 30 ? MODx.config.default_per_page : 30,
-        refreshGrid : []
+        refreshGrid : [],
+        remoteSort  : true
     });
 
     SeoSuite.grid.Urls.superclass.constructor.call(this, config);
@@ -193,6 +198,18 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
 
         this.excludeWordsWindow.show(e.target);
     },
+    blockedWords: function(btn, e) {
+        if (this.blockedWordsWindow) {
+            this.blockedWordsWindow.destroy();
+        }
+
+        this.blockedWordsWindow = MODx.load({
+            xtype       : 'seosuite-window-blocked-words',
+            closeAction : 'close'
+        });
+
+        this.blockedWordsWindow.show(e.target);
+    },
     createUrlRedirect: function(btn, e) {
         if (this.createUrlRedirectWindow) {
             this.createUrlRedirectWindow.destroy();
@@ -222,7 +239,7 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
             text        : _('seosuite.url_remove_confirm'),
             url         : SeoSuite.config.connector_url,
             params      : {
-                action      : 'mgr/urls/remove',
+                action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\Remove',
                 id          : this.menu.record.id
             },
             listeners   : {
@@ -239,7 +256,7 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
             text        : _('seosuite.urls_remove_confirm'),
             url         : SeoSuite.config.connector_url,
             params      : {
-                action      : 'mgr/urls/removemultiple',
+                action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\RemoveMultiple',
                 id          : this.getSelectedAsList()
             },
             listeners   : {
@@ -280,7 +297,7 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
     },
     renderUrl: function(d, c, e) {
         if (!Ext.isEmpty(e.json.site_url)) {
-            return '<span class="x-grid-span">' + e.json.site_url + '</span>' + d;
+            return e.json.site_url + d;
         }
 
         return d;
@@ -326,7 +343,7 @@ SeoSuite.window.ExcludeWords = function(config) {
         title       : _('seosuite.exclude_words'),
         url         : SeoSuite.config.connector_url,
         baseParams  : {
-            action      : 'mgr/exclude_words/save'
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\ExcludeWords\\Save'
         },
         fields      : [{
             xtype       : 'textarea',
@@ -354,6 +371,42 @@ Ext.extend(SeoSuite.window.ExcludeWords, MODx.Window);
 
 Ext.reg('seosuite-window-exclude-words', SeoSuite.window.ExcludeWords);
 
+SeoSuite.window.BlockedWords = function(config) {
+    config = config || {};
+
+    Ext.applyIf(config, {
+        autoHeight  : true,
+        title       : _('seosuite.blocked_words'),
+        url         : SeoSuite.config.connector_url,
+        baseParams  : {
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\BlockedWords\\Save'
+        },
+        fields      : [{
+            xtype       : 'textarea',
+            fieldLabel  : _('seosuite.label_blocked_words'),
+            description : MODx.expandHelp ? '' : _('seosuite.label_blocked_words_desc'),
+            name        : 'blocked_words',
+            anchor      : '100%',
+            value       : SeoSuite.config['blocked_words'].join(', ')
+        }, {
+            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+            html        : _('seosuite.label_blocked_words_desc'),
+            cls         : 'desc-under'
+        }],
+        listeners: {
+            success: function (response) {
+                SeoSuite.config['blocked_words'] = response.a.result.object.blocked_words.split(',');
+            }
+        }
+    });
+
+    SeoSuite.window.BlockedWords.superclass.constructor.call(this, config);
+};
+
+Ext.extend(SeoSuite.window.BlockedWords, MODx.Window);
+
+Ext.reg('seosuite-window-blocked-words', SeoSuite.window.BlockedWords);
+
 SeoSuite.window.UrlCreateRedirect = function(config) {
     config = config || {};
 
@@ -362,17 +415,22 @@ SeoSuite.window.UrlCreateRedirect = function(config) {
         title       : _('seosuite.redirect_create'),
         url         : SeoSuite.config.connector_url,
         baseParams  : {
-            action      : 'mgr/urls/redirects/create'
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\Redirects\\Create'
         },
         fields      : [{
             xtype       : 'hidden',
             name        : 'id'
         }, {
-            xtype       : 'statictextfield',
+            xtype       : 'hidden',
+            name        : 'old_url',
+            value       : config.record.url
+        }, {
+            xtype       : 'textfield',
             fieldLabel  : _('seosuite.label_redirect_old_url'),
             description : MODx.expandHelp ? '' : _('seosuite.label_redirect_old_url_desc'),
             name        : 'url',
-            anchor      : '100%'
+            anchor      : '100%',
+            readOnly    : true,
         }, {
             xtype       : MODx.expandHelp ? 'label' : 'hidden',
             html        : _('seosuite.label_redirect_old_url_desc'),
@@ -444,7 +502,7 @@ SeoSuite.window.UrlSuggestions = function(config) {
         title       : _('seosuite.url_suggesstions'),
         url         : SeoSuite.config.connector_url,
         baseParams  : {
-            action      : 'mgr/urls/suggestions/find'
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\Suggestions\\Find'
         },
         fields      : [{
             xtype       : 'hidden',
@@ -495,7 +553,7 @@ SeoSuite.window.ImportUrls = function(config) {
         fileUpload  : true,
         url         : SeoSuite.config.connector_url,
         baseParams  : {
-            action      : 'mgr/url/import',
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Url\\Import',
             register    : 'mgr',
             topic       : '/seosuiteimport/'
         },

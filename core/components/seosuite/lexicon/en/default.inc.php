@@ -38,11 +38,12 @@ $_lang['seosuite.url_remove_confirm']                           = 'Are you sure 
 $_lang['seosuite.url.redirect_to_selected']                     = 'Selected redirect';
 $_lang['seosuite.suggestions_found']                            = '[[+suggestions]] page suggestions have been found.';
 $_lang['seosuite.suggestion_boost']                             = 'pts';
-$_lang['seosuite.exclude_words']                                = 'Exclude words';
-
-$_lang['seosuite.label_exclude_words']                          = 'Exclude words';
+$_lang['seosuite.exclude_words']                                = 'Suggestions excludes';
+$_lang['seosuite.label_exclude_words']                          = 'Exclude words from URL suggestions';
 $_lang['seosuite.label_exclude_words_desc']                     = 'A comma delimited list of words to exclude from 404 URL suggestions.';
-
+$_lang['seosuite.blocked_words']                                = 'Logging excludes';
+$_lang['seosuite.label_blocked_words']                          = 'Exclude words from 404 page logging';
+$_lang['seosuite.label_blocked_words_desc']                     = 'A comma delimited list of words to exclude from 404 page logging.';
 $_lang['seosuite.label_url_url']                                = 'Url';
 $_lang['seosuite.label_url_url_desc']                           = '';
 $_lang['seosuite.label_url_visits']                             = 'Hits';
@@ -66,7 +67,7 @@ $_lang['seosuite.import.instructions']                          = 'Use a .csv, .
 
 $_lang['seosuite.redirect']                                     = 'URL redirect';
 $_lang['seosuite.redirects']                                    = 'URL redirects';
-$_lang['seosuite.redirects_desc']                               = 'Manage all your URL redirects here. A URL redirect is used to redirect a non existing page to the new page. A URL redirect can be made for a specific context or for all contexts at once and will displayed below as "* /". URL redirects with a specific context takes precedence over a URL redirect for all contexts.';
+$_lang['seosuite.redirects_desc']                               = 'Manage all your URL redirects here. A URL redirect is used to redirect a non existing page to the new page. A URL redirect can be made for a specific context or for all contexts at once and will displayed below as "* /". URL redirects with a specific context takes precedence over a URL redirect for all contexts. When using a full URL, make sure that the domain points to the same server as the current MODX installation.';
 $_lang['seosuite.redirect_create']                              = 'New URL redirect';
 $_lang['seosuite.redirect_update']                              = 'Update URL redirect';
 $_lang['seosuite.redirect_remove']                              = 'Remove URL redirect';
@@ -74,11 +75,12 @@ $_lang['seosuite.redirect_remove_confirm']                      = 'Are you sure 
 $_lang['seosuite.redirects_remove']                             = 'Remove URL redirect(s)';
 $_lang['seosuite.redirects_remove_confirm']                     = 'Are you sure you want to remove the selected URL redirect(s)?';
 $_lang['seosuite.use_redirect_across_domains']                  = 'Use redirect for all domains';
+$_lang['seosuite.redirect_test']                                = 'Test redirect';
 
 $_lang['seosuite.label_redirect_old_url']                       = 'Old URL';
-$_lang['seosuite.label_redirect_old_url_desc']                  = 'The old URL of the URL redirect without the domain name. For example: "/example".';
-$_lang['seosuite.label_redirect_new_url']                       = 'New URL';
-$_lang['seosuite.label_redirect_new_url_desc']                  = 'The new URL of the URL redirection. This can be with or without a domain, but can also contain the ID of the resource.';
+$_lang['seosuite.label_redirect_old_url_desc']                  = 'The full old URL of the URL redirect with the domain name. For example: "https://my-website.com/example".';
+$_lang['seosuite.label_redirect_new_url']                       = 'New URL / ID';
+$_lang['seosuite.label_redirect_new_url_desc']                  = 'The new URL of the URL redirection. This can be full URL with domain, or the ID of the resource. For example: "https://my-website.com/example" or "123".';
 $_lang['seosuite.label_redirect_active']                        = 'Active';
 $_lang['seosuite.label_redirect_active_desc']                   = '';
 $_lang['seosuite.label_redirect_match_context']                 = 'Context';
@@ -108,3 +110,13 @@ $_lang['seosuite.time_months']                                  = '[[+months]] m
 $_lang['seosuite.time_to_long']                                 = 'More then a half year ago';
 
 $_lang['seosuite.widget_desc']                                  = 'Here you can view the 10 most recently added 404 urls. To view and manage all your 404 urls, please visit the <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager page.</a>';
+
+$_lang['seosuite.migration']                                    = 'Migration';
+$_lang['seosuite.migration_desc']                               = 'Upgrading from SEO Suite V1, SEO Pro or SEO Tab requires a data migration. Here you can run the migrations for these extras.';
+$_lang['seosuite.migration.seosuitev1.results']                 = '<b>[[+redirects]]</b> Redirects and <b>[[+urls]]</b> urls for SEO Suite V1 found.';
+$_lang['seosuite.migration.seosuitev1.empty']                   = '<i>No data found for SEO Suite V1 migration.</i>';
+$_lang['seosuite.migration.seopro.results']                     = '<b>[[+count]]</b> SEO Pro keyword resources found.';
+$_lang['seosuite.migration.seopro.empty']                       = '<i>No data found for SEO Pro migration.</i>';
+$_lang['seosuite.migration.seotab.results']                     = '<b>[[+urls]]</b> Redirects and <b>[[+resources]]</b> resources for SEO Tab found.';
+$_lang['seosuite.migration.seotab.empty']                       = '<i>No data found for SEO Tab migration.</i>';
+$_lang['seosuite.migration.migrate']                            = 'Migrate';

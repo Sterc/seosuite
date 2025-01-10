@@ -263,7 +263,7 @@ SeoSuite.combo.Image = function(config) {
                 },
                 'select'    : {
                     fn          : function(tf) {
-                        this.setImage(tf.fullRelativeUrl);
+                        this.setImage(tf.relativeUrl);
                     },
                     scope       : this
                 }
@@ -297,13 +297,13 @@ Ext.reg('seosuite-combo-image', SeoSuite.combo.Image);
 Ext.ux.Image = function(config) {
     config = config || {};
 
-    var image = this.getImage(config.src, config.width || 150, config.height || 150);
+    var image = this.getImage(config.src, config.width || 285, config.height || 150);
 
     Ext.applyIf(config, {
         hidden  : image === Ext.BLANK_IMAGE_URL,
         autoEl  : {
             tag     : 'img',
-            width   : config.width || 150,
+            width   : config.width || 285,
             height  : config.height || 150,
             src     : image,
             cls     : 'x-field-image'
@@ -331,7 +331,7 @@ Ext.extend(Ext.ux.Image, Ext.Component, {
     },
     getImage: function(src, width, height) {
         if (src) {
-            return MODx.config.connectors_url + 'system/phpthumb.php?h=' + height + '&w=' + width + '&zc=1&src=' + src;
+            return MODx.config.connectors_url + 'system/phpthumb.php?h=' + height + '&w=' + width + '&zc=1&source=' + MODx.config.default_media_source + '&src=' + src;
         }
 
         return Ext.BLANK_IMAGE_URL;

@@ -15,6 +15,7 @@ _packages/*.*
 .settings
 nbproject
 .project
+.vscode
 
 # OS generated files #
 ######################

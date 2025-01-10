@@ -31,11 +31,12 @@ $_lang['seosuite.url_remove_confirm']                           = 'Weet je zeker
 $_lang['seosuite.url.redirect_to_selected']                     = 'Geselecteerde redirect';
 $_lang['seosuite.suggestions_found']                            = 'Er zijn [[+suggestions]] pagina suggesties gevonden.';
 $_lang['seosuite.suggestion_boost']                             = 'pnt';
-$_lang['seosuite.exclude_words']                                = 'Woorden uitsluiten';
-
-$_lang['seosuite.label_exclude_words']                          = 'Woorden uitsluiten';
+$_lang['seosuite.exclude_words']                                = 'Suggestions uitsluiten';
+$_lang['seosuite.label_exclude_words']                          = 'Woorden uitsluiten van URL suggesties';
 $_lang['seosuite.label_exclude_words_desc']                     = 'Een komma gescheiden lijst van woorden om uit te sluiten van de 404 URL suggesties.';
-
+$_lang['seosuite.blocked_words']                                = 'Logging uitsluiten';
+$_lang['seosuite.label_blocked_words']                          = 'Exclude words from 404 page logging';
+$_lang['seosuite.label_blocked_words_desc']                     = 'Een komma gescheiden lijst van woorden om uit te sluiten van de 404 pagina logging.';
 $_lang['seosuite.label_url_url']                                = 'Url';
 $_lang['seosuite.label_url_url_desc']                           = '';
 $_lang['seosuite.label_url_visits']                             = 'Hits';
@@ -67,10 +68,11 @@ $_lang['seosuite.redirect_remove_confirm']                      = 'Weet je zeker
 $_lang['seosuite.redirects_remove']                             = 'URL verwijzing(en) verwijderen';
 $_lang['seosuite.redirects_remove_confirm']                     = 'Weet je zeker dat je de geselecteerde URL verwijzing(en) wilt verwijderen?';
 $_lang['seosuite.use_redirect_across_domains']                  = 'Gebruik redirect voor alle domeinen';
+$_lang['seosuite.redirect_test']                                = 'Redirect testen';
 
 $_lang['seosuite.label_redirect_old_url']                       = 'Oude URL';
 $_lang['seosuite.label_redirect_old_url_desc']                  = 'De oude URL van de URL verwijzing zonder domain naam. Bijvoorbeeld: "/voorbeeld".';
-$_lang['seosuite.label_redirect_new_url']                       = 'Nieuwe URL';
+$_lang['seosuite.label_redirect_new_url']                       = 'Nieuwe URL / ID';
 $_lang['seosuite.label_redirect_new_url_desc']                  = 'De nieuwe URL van de URL verwijzing. Dit kan met of zonder domein, maar kan ook een ID van een pagina zijn.';
 $_lang['seosuite.label_redirect_active']                        = 'Actief';
 $_lang['seosuite.label_redirect_active_desc']                   = '';

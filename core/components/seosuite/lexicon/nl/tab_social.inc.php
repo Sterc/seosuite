@@ -7,19 +7,19 @@
  */
 
 $_lang['seosuite.tab_social']                                   = 'Social';
-$_lang['seosuite.tab_social.tab_facebook']                      = 'Facebook';
+$_lang['seosuite.tab_social.tab_facebook']                      = 'Open Graph';
 $_lang['seosuite.tab_social.tab_twitter']                       = 'Twitter';
 
-$_lang['seosuite.tab_social.label_og_title']                    = 'Facebook titel';
-$_lang['seosuite.tab_social.label_og_title_desc']               = 'De titel van de pagina op Facebook.';
-$_lang['seosuite.tab_social.label_og_description']              = 'Facebook omschrijving';
-$_lang['seosuite.tab_social.label_og_description_desc']         = 'De omschrijving van de pagina op Facebook.';
-$_lang['seosuite.tab_social.label_og_image']                    = 'Facebook afbeelding';
-$_lang['seosuite.tab_social.label_og_image_desc']               = 'De afbeelding van de pagina op Facebook, het beste formaat is 1200 x 630 pixels.';
-$_lang['seosuite.tab_social.label_og_image_alt']                = 'Facebook afbeelding titel';
-$_lang['seosuite.tab_social.label_og_image_alt_desc']           = 'De afbeelding titel van de pagina op Facebook.';
-$_lang['seosuite.tab_social.label_og_type']                     = 'Facebook type';
-$_lang['seosuite.tab_social.label_og_type_desc']                = 'De pagina type op Facebook.';
+$_lang['seosuite.tab_social.label_og_title']                    = 'Titel (og:title)';
+$_lang['seosuite.tab_social.label_og_title_desc']               = 'De Open Graph titel van de pagina';
+$_lang['seosuite.tab_social.label_og_description']              = 'Omschrijving';
+$_lang['seosuite.tab_social.label_og_description_desc']         = 'De Open Graph omschrijving van de pagina';
+$_lang['seosuite.tab_social.label_og_image']                    = 'Afbeelding';
+$_lang['seosuite.tab_social.label_og_image_desc']               = 'De Open Graph afbeelding van de pagina, het beste formaat is 1200 x 630 pixels.';
+$_lang['seosuite.tab_social.label_og_image_alt']                = 'Afbeelding titel';
+$_lang['seosuite.tab_social.label_og_image_alt_desc']           = 'De Open Graph titel van de pagina op Facebook.';
+$_lang['seosuite.tab_social.label_og_type']                     = 'Type';
+$_lang['seosuite.tab_social.label_og_type_desc']                = 'De Open Graph pagina type (bv. "website").';
 
 $_lang['seosuite.tab_social.label_twitter_title']               = 'Twitter titel';
 $_lang['seosuite.tab_social.label_twitter_title_desc']          = 'De titel van de pagina op Twitter.';
