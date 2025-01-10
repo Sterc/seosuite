@@ -1,5 +1,9 @@
 Changelog for SEO Suite.
 
+SEO Suite 3.1.8
+- Fixing invalid date in sitemap for crawling when resources are created outside of the manager through imports/api's.
+
+
 SEO Suite 3.1.7
 ==============
 - Fixing issue when there is redirect to itself (when resource is moved)

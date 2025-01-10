@@ -178,7 +178,7 @@ class Sitemap extends Base
             }
         } else {
             $editedon  = $resource->get('editedon');
-            $createdon = $resource->get('createdon');
+            $createdon = $resource->get('createdon') ?: 'today';
             $lastmod   = strtotime((($editedon > 0) ? $editedon : $createdon));
         }
 
