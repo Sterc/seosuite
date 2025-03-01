@@ -34,3 +34,22 @@ $_lang['seosuite.tab_meta.keywords']                        = 'Keywords';
 $_lang['seosuite.tab_meta.characters.allowed']              = 'Allowed characters';
 $_lang['seosuite.tab_meta.keywords']                        = 'Focus keywords';
 $_lang['seosuite.tab_meta.keywords_desc']                   = 'Enter your keywords comma-separated, for example: table, chair.';
+
+/* AI Generation. */
+$_lang['seosuite.tab_meta.ai_generate']                     = 'Generate with AI';
+$_lang['seosuite.tab_meta.ai_generating']                   = 'Generating...';
+$_lang['seosuite.tab_meta.ai_generate_desc']                = 'Generate SEO content using AI based on the page content.';
+$_lang['seosuite.tab_meta.ai_generate_all']                 = 'Generate SEO Content AI*';
+$_lang['seosuite.tab_meta.ai_generate_all_desc']            = 'Generate both meta description and focus keywords using AI based on the page content.';
+$_lang['seosuite.ai_error_no_content']                      = 'No content available to generate AI content.';
+$_lang['seosuite.ai_error_no_api_key']                      = 'OpenAI API key is not configured. Please add it in the system settings.';
+$_lang['seosuite.ai_error_api_request']                     = 'Error while requesting OpenAI API: [[+error]]';
+$_lang['seosuite.ai_success']                               = 'Content generated successfully.';
+$_lang['seosuite.ai_success_free']                          = 'Content generated successfully using the free model.';
+$_lang['seosuite.ai_success_openai']                        = 'Content generated successfully using OpenAI.';
+$_lang['seosuite.ai_keywords_success']                      = 'Keywords generated successfully.';
+$_lang['seosuite.ai_keywords_success_free']                 = 'Keywords generated successfully using the free model.';
+$_lang['seosuite.ai_keywords_success_openai']               = 'Keywords generated successfully using OpenAI.';
+$_lang['seosuite.ai_description_success']                   = 'Meta description generated successfully.';
+$_lang['seosuite.ai_description_success_free']              = 'Meta description generated successfully using the free model.';
+$_lang['seosuite.ai_description_success_openai']            = 'Meta description generated successfully using OpenAI.';

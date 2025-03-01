@@ -120,3 +120,9 @@ $_lang['seosuite.migration.seopro.empty']                       = '<i>No data fo
 $_lang['seosuite.migration.seotab.results']                     = '<b>[[+urls]]</b> Redirects and <b>[[+resources]]</b> resources for SEO Tab found.';
 $_lang['seosuite.migration.seotab.empty']                       = '<i>No data found for SEO Tab migration.</i>';
 $_lang['seosuite.migration.migrate']                            = 'Migrate';
+
+/* AI Integration */
+$_lang['setting_seosuite.ai_model']                             = 'AI Model';
+$_lang['setting_seosuite.ai_model_desc']                        = 'Choose which AI model to use for generating meta descriptions. The free option uses a built-in algorithm, while OpenAI provides more advanced results but requires an API key.';
+$_lang['setting_seosuite.openai_api_key']                       = 'OpenAI API Key';
+$_lang['setting_seosuite.openai_api_key_desc']                  = 'Enter your OpenAI API key to enable AI-powered meta description generation. Only required if using the OpenAI model.';

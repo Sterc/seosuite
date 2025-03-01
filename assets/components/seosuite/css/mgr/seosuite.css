@@ -396,3 +396,30 @@
     min-height: 30px;
     background-color: #f1f1f1;
 }
+
+/* AI Button Styles */
+#seosuite-description-ai-button {
+    background-color: #3697cd;
+    border-color: #3697cd;
+    color: #fff;
+}
+
+#seosuite-description-ai-button:hover {
+    background-color: #2b7ba9;
+    border-color: #2b7ba9;
+}
+
+#seosuite-description-ai-button.x-btn-disabled {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+#seosuite-description-ai-button .x-btn-text {
+    background-image: none;
+    padding-left: 5px;
+}
+
+/* Add some spacing for the container layout */
+.seosuite-meta-fields .x-form-item {
+    margin-bottom: 15px;
+}

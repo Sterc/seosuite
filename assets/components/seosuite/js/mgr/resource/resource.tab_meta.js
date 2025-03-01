@@ -122,7 +122,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                             cls         : 'desc-under'
                         }, {
                             xtype       : 'textarea',
-                            fieldLabel  :_('seosuite.tab_meta.description'),
+                            fieldLabel  : _('seosuite.tab_meta.description'),
                             description : MODx.expandHelp ? '' : _('seosuite.tab_meta.description_desc'),
                             anchor      : '100%',
                             name        : 'seosuite_description',
@@ -141,6 +141,15 @@ Ext.extend(SeoSuite, Ext.Component, {
                             xtype       : MODx.expandHelp ? 'label' : 'hidden',
                             html        : _('seosuite.tab_meta.description_desc'),
                             cls         : 'desc-under'
+                        }, {
+                            xtype       : 'button',
+                            text        : _('seosuite.tab_meta.ai_generate_all'),
+                            tooltip     : _('seosuite.tab_meta.ai_generate_all_desc'),
+                            cls         : 'primary-button',
+                            style       : 'margin-top: 10px;',
+                            id          : 'seosuite-ai-button',
+                            handler     : this.onGenerateAISeoContent,
+                            scope       : this
                         }]
                     }, {
                         columnWidth : .5,
@@ -553,6 +562,235 @@ Ext.extend(SeoSuite, Ext.Component, {
         }
 
         this.onRenderPreview();
+    },
+    onGenerateAIDescription: function() {
+        var resourceId = Ext.getCmp('modx-resource-id').getValue();
+        var content = Ext.getCmp('ta') ? Ext.getCmp('ta').getValue() : '';
+        var pagetitle = Ext.getCmp('modx-resource-pagetitle').getValue();
+        var longtitle = Ext.getCmp('modx-resource-longtitle').getValue();
+        var descriptionField = Ext.getCmp('seosuite-description');
+        var button = Ext.getCmp('seosuite-description-ai-button');
+        
+        // Save original button text
+        var originalButtonText = button.getText();
+        
+        // Show loading state
+        button.setText(_('seosuite.tab_meta.ai_generating'));
+        button.disable();
+        
+        MODx.Ajax.request({
+            url: SeoSuite.config.connector_url,
+            params: {
+                action: '\\Sterc\\SeoSuite\\Processors\\Mgr\\Resource\\AI\\GenerateMetaDescription',
+                id: resourceId,
+                content: content,
+                pagetitle: pagetitle,
+                longtitle: longtitle
+            },
+            listeners: {
+                'success': {
+                    fn: function(response) {
+                        if (response.object && response.object.meta_description) {
+                            // Update the description field
+                            descriptionField.setValue(response.object.meta_description);
+                            
+                            // Update the hidden MODX field
+                            Ext.getCmp('modx-resource-description').setValue(response.object.meta_description);
+                            
+                            // Update the preview
+                            this.onRenderPreview();
+                            
+                            // Show success message based on AI model
+                            var aiModel = MODx.config['seosuite.ai_model'] || 'free';
+                            var successMessage = aiModel === 'openai' 
+                                ? _('seosuite.ai_description_success_openai') 
+                                : _('seosuite.ai_description_success_free');
+                                
+                            MODx.msg.status({
+                                title: _('success'),
+                                message: successMessage,
+                                delay: 3
+                            });
+                        }
+                        
+                        // Restore button state
+                        button.setText(originalButtonText);
+                        button.enable();
+                    },
+                    scope: this
+                },
+                'failure': {
+                    fn: function(response) {
+                        // Restore button state
+                        button.setText(originalButtonText);
+                        button.enable();
+                        
+                        // Show error message
+                        MODx.msg.alert(_('error'), response.message || _('seosuite.ai_error_no_content'));
+                    },
+                    scope: this
+                }
+            }
+        });
+    },
+    onGenerateAISeoContent: function() {
+        var resourceId = Ext.getCmp('modx-resource-id').getValue();
+        var content = Ext.getCmp('ta') ? Ext.getCmp('ta').getValue() : '';
+        var pagetitle = Ext.getCmp('modx-resource-pagetitle').getValue();
+        var longtitle = Ext.getCmp('modx-resource-longtitle').getValue();
+        var keywordsField = Ext.getCmp('seosuite-keywords');
+        var descriptionField = Ext.getCmp('seosuite-description');
+        var button = Ext.getCmp('seosuite-ai-button');
+        
+        // Save original button text
+        var originalButtonText = button.getText();
+        
+        // Show loading state
+        button.setText(_('seosuite.tab_meta.ai_generating'));
+        button.disable();
+        
+        MODx.Ajax.request({
+            url: SeoSuite.config.connector_url,
+            params: {
+                action: '\\Sterc\\SeoSuite\\Processors\\Mgr\\Resource\\AI\\GenerateSeoContent',
+                id: resourceId,
+                content: content,
+                pagetitle: pagetitle,
+                longtitle: longtitle
+            },
+            listeners: {
+                'success': {
+                    fn: function(response) {
+                        if (response.object) {
+                            // Update the keywords field if available
+                            if (response.object.keywords) {
+                                keywordsField.setValue(response.object.keywords);
+                                
+                                // Update keyword counters
+                                Ext.iterate(this.getFieldKeywordCounters(), (function(key) {
+                                    var tf = Ext.getCmp(key);
+                                    if (tf) {
+                                        this.onUpdateKeywordCounter.call(tf, tf);
+                                    }
+                                }).bind(this));
+                            }
+                            
+                            // Update the description field if available
+                            if (response.object.meta_description) {
+                                descriptionField.setValue(response.object.meta_description);
+                                
+                                // Update the hidden MODX field
+                                Ext.getCmp('modx-resource-description').setValue(response.object.meta_description);
+                            }
+                            
+                            // Update the preview
+                            this.onRenderPreview();
+                            
+                            // Show success message based on AI model
+                            var aiModel = MODx.config['seosuite.ai_model'] || 'free';
+                            var successMessage = aiModel === 'openai' 
+                                ? _('seosuite.ai_success_openai') 
+                                : _('seosuite.ai_success_free');
+                                
+                            MODx.msg.status({
+                                title: _('success'),
+                                message: successMessage,
+                                delay: 3
+                            });
+                        }
+                        
+                        // Restore button state
+                        button.setText(originalButtonText);
+                        button.enable();
+                    },
+                    scope: this
+                },
+                'failure': {
+                    fn: function(response) {
+                        // Restore button state
+                        button.setText(originalButtonText);
+                        button.enable();
+                        
+                        // Show error message
+                        MODx.msg.alert(_('error'), response.message || _('seosuite.ai_error_no_content'));
+                    },
+                    scope: this
+                }
+            }
+        });
+    },
+    
+    onGenerateAIKeywords: function() {
+        var resourceId = Ext.getCmp('modx-resource-id').getValue();
+        var content = Ext.getCmp('ta') ? Ext.getCmp('ta').getValue() : '';
+        var pagetitle = Ext.getCmp('modx-resource-pagetitle').getValue();
+        var longtitle = Ext.getCmp('modx-resource-longtitle').getValue();
+        var keywordsField = Ext.getCmp('seosuite-keywords');
+        var button = Ext.getCmp('seosuite-keywords-ai-button');
+        
+        // Save original button text
+        var originalButtonText = button.getText();
+        
+        // Show loading state
+        button.setText(_('seosuite.tab_meta.ai_generating'));
+        button.disable();
+        
+        MODx.Ajax.request({
+            url: SeoSuite.config.connector_url,
+            params: {
+                action: '\\Sterc\\SeoSuite\\Processors\\Mgr\\Resource\\AI\\GenerateKeywords',
+                id: resourceId,
+                content: content,
+                pagetitle: pagetitle,
+                longtitle: longtitle
+            },
+            listeners: {
+                'success': {
+                    fn: function(response) {
+                        if (response.object && response.object.keywords) {
+                            // Update the keywords field
+                            keywordsField.setValue(response.object.keywords);
+                            
+                            // Update keyword counters
+                            Ext.iterate(this.getFieldKeywordCounters(), (function(key) {
+                                var tf = Ext.getCmp(key);
+                                if (tf) {
+                                    this.onUpdateKeywordCounter.call(tf, tf);
+                                }
+                            }).bind(this));
+                            
+                            // Show success message based on AI model
+                            var aiModel = MODx.config['seosuite.ai_model'] || 'free';
+                            var successMessage = aiModel === 'openai' 
+                                ? _('seosuite.ai_keywords_success_openai') 
+                                : _('seosuite.ai_keywords_success_free');
+                                
+                            MODx.msg.status({
+                                title: _('success'),
+                                message: successMessage,
+                                delay: 3
+                            });
+                        }
+                        
+                        // Restore button state
+                        button.setText(originalButtonText);
+                        button.enable();
+                    },
+                    scope: this
+                },
+                'failure': {
+                    fn: function(response) {
+                        // Restore button state
+                        button.setText(originalButtonText);
+                        button.enable();
+                        
+                        // Show error message
+                        MODx.msg.alert(_('error'), response.message || _('seosuite.ai_error_no_content'));
+                    },
+                    scope: this
+                }
+            }
+        });
     }
 });
 

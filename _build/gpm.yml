@@ -3,7 +3,7 @@ lowCaseName: seosuite
 namespace: Sterc\SeoSuite
 description: Toolset for optimising your websites online presence.
 author: Sterc
-version: 3.1.9
+version: 3.2.0
 
 build:
   setupOptions: "setup.options.php"
@@ -75,6 +75,15 @@ systemSettings:
   - key: meta.searchmode
     value: desktop
     area: seosuite_tab_meta
+  - key: ai_model
+    value: free
+    area: seosuite_tab_meta
+    description: Choose which AI model to use for generating meta descriptions
+  - key: openai_api_key
+    value: 
+    area: seosuite_tab_meta
+    type: text-password
+    description: API key for OpenAI integration to generate meta descriptions
   - key: sitemap.default_changefreq
     value: weekly
     area: seosuite_sitemap

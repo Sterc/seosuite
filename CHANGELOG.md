@@ -1,5 +1,9 @@
 Changelog for SEO Suite.
 
+SEO Suite 3.2.0
+==============
+- Add AI support for generating meta content.
+
 SEO Suite 3.1.9
 ==============
 - Fixing broken redirects after update because of missing full url.
