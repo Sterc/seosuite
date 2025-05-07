@@ -3,53 +3,30 @@ namespace Sterc\SeoSuite\Processors\Mgr\Urls\Suggestions;
 
 use MODX\Revolution\Processors\Model\GetListProcessor;
 use MODX\Revolution\modResource;
-use xPDO\Om\xPDOQuery;
-use xPDO\Om\xPDOObject;
-use MODX\Revolution\modContext;
+use Sterc\SeoSuite\Model\SeoSuiteSuggestion;
 
+/**
+ * Processor to get a list of suggestions for a URL.
+ */
 class GetList extends GetListProcessor
 {
     /**
      * @access public.
-     * @var String.
+     * @var string The class key.
      */
-    public $classKey = modResource::class;
+    public $classKey = SeoSuiteSuggestion::class;
 
     /**
      * @access public.
-     * @var Array.
+     * @var string The default sort field.
      */
-    public $languageTopics = ['seosuite:default'];
+    public $defaultSortField = 'score';
 
     /**
      * @access public.
-     * @var String.
+     * @var string The default sort direction.
      */
-    public $defaultSortField = null;
-
-    /**
-     * @access public.
-     * @var String.
-     */
-    public $defaultSortDirection = 'ASC';
-
-    /**
-     * @access public.
-     * @var String.
-     */
-    public $objectType = 'seosuite.suggestion';
-
-    /**
-     * @access public.
-     * @var Array.
-     */
-    public $suggestions = [];
-
-    /**
-     * @access public.
-     * @var Array.
-     */
-    public $contexts = [];
+    public $defaultSortDirection = 'DESC';
 
     /**
      * @access public.
@@ -57,40 +34,33 @@ class GetList extends GetListProcessor
      */
     public function initialize()
     {
-        $suggestions = json_decode($this->getProperty('suggestions'), true);
-
-        if ($suggestions && is_array($suggestions)) {
-            arsort($suggestions);
-
-            $this->suggestions = $suggestions;
-        }
+        $this->setDefaultProperties([
+            'start' => 0,
+            'limit' => 20,
+            'sort'  => $this->defaultSortField,
+            'dir'   => $this->defaultSortDirection,
+            'url_id' => 0
+        ]);
 
         return parent::initialize();
     }
 
     /**
      * @access public.
-     * @param xPDOQuery $criteria.
+     * @param xPDOQuery $c.
      * @return xPDOQuery.
      */
-    public function prepareQueryBeforeCount(xPDOQuery $criteria)
+    public function prepareQueryBeforeCount($c)
     {
-        $criteria->where([
-            'id:IN' => array_keys($this->suggestions)
-        ]);
+        $urlId = (int) $this->getProperty('url_id');
+        
+        if ($urlId > 0) {
+            $c->where([
+                'url_id' => $urlId
+            ]);
+        }
 
-        return $criteria;
-    }
-
-    /**
-     * @access public.
-     * @param xPDOQuery $criteria.
-     * @return xPDOQuery.
-     */
-    public function prepareQueryAfterCount(xPDOQuery $criteria) {
-        $criteria->sortby('FIELD(id, ' . implode(', ', array_keys($this->suggestions)) . ')');
-
-        return $criteria;
+        return $c;
     }
 
     /**
@@ -98,35 +68,36 @@ class GetList extends GetListProcessor
      * @param xPDOObject $object.
      * @return Array.
      */
-    public function prepareRow(xPDOObject $object)
+    public function prepareRow($object)
     {
-        return [
-            'id'                    => $object->get('id'),
-            'pagetitle'             => $object->get('pagetitle'),
-            'pagetitle_formatted'   => $object->get('pagetitle') . ($this->modx->hasPermission('tree_show_resource_ids') ? ' (' . $object->get('id') . ')' : ''),
-            'uri'                   => $object->get('uri'),
-            'site_url'              => $this->getSiteUrl($object->get('context_key')),
-            'boost'                 => $this->suggestions[$object->get('id')]
-        ];
-    }
-
-    /**
-     * @access private.
-     * @param String $key.
-     * @return String.
-     */
-    private function getSiteUrl($key)
-    {
-        if (!isset($this->contexts[$key])) {
-            $object = $this->modx->getObject(modContext::class, ['key' => $key]);
-
-            if ($object && $object->prepare()) {
-                $this->contexts[$key] = $object->getOption('site_url');
-            } else {
-                $this->contexts[$key] = '';
-            }
+        $array = $object->toArray();
+        
+        // Get resource data
+        $resource = $this->modx->getObject(modResource::class, $array['resource_id']);
+        
+        if ($resource) {
+            $array['pagetitle'] = $resource->get('pagetitle');
+            $array['uri'] = $resource->get('uri');
+            $array['context_key'] = $resource->get('context_key');
+        } else {
+            $array['pagetitle'] = 'Resource not found';
+            $array['uri'] = '';
+            $array['context_key'] = '';
         }
-
-        return $this->contexts[$key];
+        
+        // Get URL data
+        $url = $this->modx->getObject('Sterc\\SeoSuite\\Model\\SeoSuiteUrl', $array['url_id']);
+        if ($url) {
+            $array['url'] = $url->get('url') . ' (' . $array['url_id'] . ')';
+        } else {
+            $array['url'] = 'URL not found';
+        }
+        
+        // Format pagetitle with resource ID
+        if ($resource) {
+            $array['pagetitle'] = $resource->get('pagetitle') . ' (' . $array['resource_id'] . ')';
+        }
+        
+        return $array;
     }
 }

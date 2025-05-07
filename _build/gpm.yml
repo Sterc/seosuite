@@ -3,7 +3,7 @@ lowCaseName: seosuite
 namespace: Sterc\SeoSuite
 description: Toolset for optimising your websites online presence.
 author: Sterc
-version: 3.2.0
+version: 3.2.1
 
 build:
   setupOptions: "setup.options.php"
@@ -117,7 +117,12 @@ systemSettings:
     type: combo-boolean
     value: "0"
     area: seosuite_tab_meta
-
+  - key: seosuite.ai_prompt_meta_keywords
+    value: "Extract 3-5 relevant SEO focus keywords or short phrases in the language from the following webpage content. Return only the keywords as a comma-separated list without numbering or additional text."
+    area: seosuite_tab_meta
+  - key: seosuite.ai_prompt_meta_description
+    value: "Generate a concise and engaging meta description in the language for a webpage with the following title and content. The meta description should be under 160 characters and accurately summarize the page content."
+    area: seosuite_tab_meta
 menus:
   - text: seosuite.menu.seosuite
     description: seosuite.menu.seosuite_desc
@@ -163,4 +168,4 @@ widgets:
     size: half
 
 database:
-  tables: ['\Sterc\SeoSuite\Model\SeoSuiteRedirect', '\Sterc\SeoSuite\Model\SeoSuiteResource', '\Sterc\SeoSuite\Model\SeoSuiteSocial', '\Sterc\SeoSuite\Model\SeoSuiteUrl']
+  tables: ['\Sterc\SeoSuite\Model\SeoSuiteRedirect', '\Sterc\SeoSuite\Model\SeoSuiteResource', '\Sterc\SeoSuite\Model\SeoSuiteSocial', '\Sterc\SeoSuite\Model\SeoSuiteUrl', '\Sterc\SeoSuite\Model\SeoSuiteSuggestion']

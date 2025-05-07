@@ -46,7 +46,7 @@ class SeoSuite
 
         $this->config = array_merge([
             'namespace'                  => 'seosuite',
-            'lexicons'                   => ['seosuite:mgr', 'seosuite:default', 'seosuite:tab_meta', 'seosuite:tab_seo', 'seosuite:tab_social'],
+            'lexicons'                   => ['seosuite:mgr', 'seosuite:default', 'seosuite:tab_meta', 'seosuite:tab_seo', 'seosuite:tab_social', 'seosuite:suggestions'],
             'base_path'                  => $corePath,
             'core_path'                  => $corePath,
             'processors_path'            => $corePath . 'processors/',

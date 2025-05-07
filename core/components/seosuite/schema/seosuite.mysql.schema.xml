@@ -32,12 +32,34 @@
         <field key="createdon" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP"/>
 
         <aggregate alias="Context" class="MODX\Revolution\modContext" local="bundle" foreign="id" cardinality="one" owner="foreign" />
+        <composite alias="Suggestions" class="Sterc\SeoSuite\Model\SeoSuiteSuggestion" local="id" foreign="url_id" cardinality="many" owner="local" />
 
         <index alias="context_key" name="context_key" primary="false" unique="false" type="BTREE">
             <column key="context_key" length="" collation="A" null="false" />
         </index>
         <index alias="url" name="url" primary="false" unique="false" type="BTREE">
             <column key="url" length="255" collation="A" null="false" />
+        </index>
+    </object>
+
+    <object class="SeoSuiteSuggestion" table="seosuite_suggestion" extends="xPDO\Om\xPDOSimpleObject">
+        <field key="url_id" dbtype="integer" precision="10" phptype="int" null="false" default="0" index="index"/>
+        <field key="resource_id" dbtype="integer" precision="10" phptype="int" null="false" default="0" index="index"/>
+        <field key="score" dbtype="integer" precision="10" phptype="int" null="false" default="0"/>
+        <field key="createdon" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP"/>
+
+        <aggregate alias="Url" class="Sterc\SeoSuite\Model\SeoSuiteUrl" local="url_id" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Resource" class="MODX\Revolution\modResource" local="resource_id" foreign="id" cardinality="one" owner="foreign" />
+
+        <index alias="url_id" name="url_id" primary="false" unique="false" type="BTREE">
+            <column key="url_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="resource_id" name="resource_id" primary="false" unique="false" type="BTREE">
+            <column key="resource_id" length="" collation="A" null="false" />
+        </index>
+        <index alias="url_resource" name="url_resource" primary="false" unique="true" type="BTREE">
+            <column key="url_id" length="" collation="A" null="false" />
+            <column key="resource_id" length="" collation="A" null="false" />
         </index>
     </object>
 

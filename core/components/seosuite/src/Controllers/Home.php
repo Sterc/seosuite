@@ -12,6 +12,8 @@ class Home extends Base
         $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/home.panel.js');
         $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/migration.panel.js');
         $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/urls.grid.js');
+        $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/suggestions.grid.js');
+        $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/suggestions.list.js');
         $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/redirects.grid.js');
         $this->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/sections/home.js');
     }

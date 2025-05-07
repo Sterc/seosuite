@@ -38,6 +38,16 @@ SeoSuite.panel.Home = function(config) {
                     preventRender : true
                 }]
             }, {
+                title       : _('seosuite.suggestions'),
+                items       : [{
+                    html        : '<p>' + _('seosuite.suggestions_desc') + '</p>',
+                    bodyCssClass : 'panel-desc'
+                }, {
+                    xtype       : 'seosuite-grid-suggestions-list',
+                    cls         : 'main-wrapper',
+                    preventRender : true
+                }]
+            }, {
                 title       : _('seosuite.migration'),
                 items       : [{
                     html        : '<p>' + _('seosuite.migration_desc') + '</p>',

@@ -12,6 +12,10 @@ SeoSuite.grid.Urls = function(config) {
             text        : '<i class="x-menu-item-icon icon icon-times"></i>' + _('seosuite.urls_remove'),
             handler     : this.removeSelectedUrls,
             scope       : this
+        }, {
+            text        : '<i class="x-menu-item-icon icon icon-magic"></i>' + _('seosuite.urls_generate_suggestions'),
+            handler     : this.generateAISuggestions,
+            scope       : this
         }]
     }, {
         text        : '<i class="icon icon-search-minus"></i>' + _('seosuite.exclude_words'),
@@ -20,6 +24,14 @@ SeoSuite.grid.Urls = function(config) {
     }, {
         text        : '<i class="icon icon-eye-slash"></i>' + _('seosuite.blocked_words'),
         handler     : this.blockedWords,
+        scope       : this
+    }, {
+        text        : '<i class="icon icon-broom"></i>' + _('seosuite.urls_clean_invalid'),
+        handler     : this.cleanInvalidUrls,
+        scope       : this
+    }, {
+        text        : '<i class="icon icon-magic"></i>' + _('seosuite.urls_generate_suggestions_selected'),
+        handler     : this.generateSelectedAISuggestions,
         scope       : this
     }, '->', {
         xtype       : 'textfield',
@@ -65,14 +77,6 @@ SeoSuite.grid.Urls = function(config) {
             editable    : false,
             width       : 250,
             renderer    : this.renderUrl
-        }, {
-            header      : _('seosuite.label_url_suggestions'),
-            dataIndex   : 'suggestions',
-            sortable    : false,
-            editable    : false,
-            width       : 100,
-            fixed       : true,
-            renderer    : this.renderSuggestions
         }, {
             header      : _('seosuite.label_url_visits'),
             dataIndex   : 'visits',
@@ -268,32 +272,74 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
         });
     },
     findUrlSuggestions: function(btn,e) {
-        if (this.urlSuggestionsWindow) {
-            this.urlSuggestionsWindow.destroy();
-        }
-
-        this.urlSuggestionsWindow = MODx.load({
-            xtype       : 'seosuite-window-url-suggestions',
-            closeAction : 'close',
-            record      : this.menu.record,
-            listeners   : {
-                'success'   : {
-                    fn          : function(record) {
-                        MODx.msg.status({
-                            title   : _('success'),
-                            message : record.a.result.message,
-                            delay   : 4
-                        });
-
-                        this.refresh();
+        // Check if the URL already has suggestions in the database
+        MODx.Ajax.request({
+            url: SeoSuite.config.connector_url,
+            params: {
+                action: '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\Suggestions\\GetList',
+                url_id: this.menu.record.id,
+                limit: 1
+            },
+            listeners: {
+                'success': {
+                    fn: function(response) {
+                        if (response.results && response.results.length > 0) {
+                            // Show the suggestions in the modal
+                            this.showSuggestionsModal(this.menu.record);
+                        } else {
+                            // Generate suggestions first
+                            if (this.urlSuggestionsWindow) {
+                                this.urlSuggestionsWindow.destroy();
+                            }
+                    
+                            this.urlSuggestionsWindow = MODx.load({
+                                xtype       : 'seosuite-window-url-suggestions',
+                                closeAction : 'close',
+                                record      : this.menu.record,
+                                listeners   : {
+                                    'success'   : {
+                                        fn          : function(record) {
+                                            MODx.msg.status({
+                                                title   : _('success'),
+                                                message : record.a.result.message,
+                                                delay   : 4
+                                            });
+                    
+                                            // Refresh the grid
+                                            this.refresh();
+                                            
+                                            // Show the suggestions modal
+                                            this.showSuggestionsModal(this.menu.record);
+                                        },
+                                        scope       : this
+                                    }
+                                }
+                            });
+                    
+                            this.urlSuggestionsWindow.setValues(this.menu.record);
+                            this.urlSuggestionsWindow.show(e.target);
+                        }
                     },
-                    scope       : this
+                    scope: this
                 }
             }
         });
-
-        this.urlSuggestionsWindow.setValues(this.menu.record);
-        this.urlSuggestionsWindow.show(e.target);
+    },
+    
+    showSuggestionsModal: function(record) {
+        if (this.viewSuggestionsWindow) {
+            this.viewSuggestionsWindow.destroy();
+        }
+        
+        this.viewSuggestionsWindow = MODx.load({
+            xtype       : 'seosuite-window-view-ai-suggestions',
+            closeAction : 'close',
+            urlId       : record.id,
+            urlString   : record.url,
+            contextKey  : record.context_key
+        });
+        
+        this.viewSuggestionsWindow.show();
     },
     renderUrl: function(d, c, e) {
         if (!Ext.isEmpty(e.json.site_url)) {
@@ -301,23 +347,6 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
         }
 
         return d;
-    },
-    renderSuggestions: function(d, c) {
-        if (d) {
-            var count = Object.keys(d).length;
-
-            if (count >= 1) {
-                c.css = 'green';
-
-                return _('yes') + ' (' + count + ')';
-            } else {
-                c.css = 'red';
-
-                return _('no');
-            }
-        }
-
-        return '-';
     },
     renderBoolean: function(d, c) {
         c.css = parseInt(d) === 1 || d ? 'green' : 'red';
@@ -330,6 +359,112 @@ Ext.extend(SeoSuite.grid.Urls, MODx.grid.Grid, {
         }
 
         return a;
+    },
+    cleanInvalidUrls: function(btn, e) {
+        MODx.msg.confirm({
+            title       : _('seosuite.urls_clean_invalid'),
+            text        : _('seosuite.urls_clean_invalid_confirm'),
+            url         : SeoSuite.config.connector_url,
+            params      : {
+                action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\CleanInvalid'
+            },
+            listeners   : {
+                'success'   : {
+                    fn          : function(response) {
+                        MODx.msg.status({
+                            title   : _('success'),
+                            message : response.message,
+                            delay   : 4
+                        });
+                        
+                        this.refresh();
+                    },
+                    scope       : this
+                }
+            }
+        });
+    },
+    generateAISuggestions: function(btn, e) {
+        var selectedIds = this.getSelectedAsList();
+        
+        if (!selectedIds) {
+            MODx.msg.alert(_('error'), _('seosuite.ai_error_no_urls'));
+            return;
+        }
+        
+        if (this.generateAISuggestionsWindow) {
+            this.generateAISuggestionsWindow.destroy();
+        }
+        
+        this.generateAISuggestionsWindow = MODx.load({
+            xtype       : 'seosuite-window-generate-ai-suggestions',
+            closeAction : 'close',
+            ids         : selectedIds,
+            listeners   : {
+                'success'   : {
+                    fn          : function(response) {
+                        MODx.msg.status({
+                            title   : _('success'),
+                            message : response.a.result.message,
+                            delay   : 4
+                        });
+                        
+                        this.refresh();
+                        
+                        // If there's only one URL selected, show the suggestions modal
+                        if (selectedIds.indexOf(',') === -1) {
+                            var record = {
+                                id: selectedIds,
+                                url: this.menu.record.url,
+                                context_key: this.menu.record.context_key
+                            };
+                            this.showSuggestionsModal(record);
+                        }
+                    },
+                    scope       : this
+                }
+            }
+        });
+        
+        this.generateAISuggestionsWindow.show(e.target);
+    },
+    generateSelectedAISuggestions: function(btn, e) {
+        var selectedIds = this.getSelectedAsList();
+        var params = {
+            action: '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\Suggestions\\GenerateAI'
+        };
+        
+        // If URLs are selected, use those IDs
+        // Otherwise, use the current filter to process all URLs in the current grid view
+        if (selectedIds) {
+            params.ids = selectedIds;
+        } else {
+            // Pass the current filter parameters to process only the URLs in the current grid view
+            if (this.getStore().baseParams.query) {
+                params.query = this.getStore().baseParams.query;
+            }
+        }
+        
+        MODx.msg.confirm({
+            title       : selectedIds ? _('seosuite.urls_generate_suggestions_selected') : _('seosuite.urls_generate_suggestions_filtered'),
+            text        : selectedIds ? _('seosuite.urls_generate_suggestions_selected_confirm') : _('seosuite.urls_generate_suggestions_filtered_confirm'),
+            url         : SeoSuite.config.connector_url,
+            params      : params,
+            listeners   : {
+                'success'   : {
+                    fn          : function(response) {
+                        MODx.msg.status({
+                            title   : _('success'),
+                            message : response.message,
+                            delay   : 4
+                        });
+                        
+                        this.refresh();
+                    },
+                    scope       : this
+                }
+            }
+        });
     }
 });
 
@@ -596,3 +731,49 @@ SeoSuite.window.ImportUrls = function(config) {
 Ext.extend(SeoSuite.window.ImportUrls, MODx.Window);
 
 Ext.reg('seosuite-window-import-urls', SeoSuite.window.ImportUrls);
+
+SeoSuite.window.GenerateAISuggestions = function(config) {
+    config = config || {};
+
+    Ext.applyIf(config, {
+        autoHeight  : true,
+        width       : 500,
+        title       : _('seosuite.urls_generate_suggestions'),
+        url         : SeoSuite.config.connector_url,
+        baseParams  : {
+            action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\Suggestions\\GenerateAI',
+            ids         : config.ids
+        },
+        fields      : [{
+            xtype       : 'checkbox',
+            hideLabel   : true,
+            boxLabel    : _('seosuite.label_url_match_create_redirect'),
+            name        : 'create_redirects',
+            inputValue  : 1,
+            checked     : false
+        }, {
+            xtype       : 'label',
+            html        : _('seosuite.label_url_match_create_redirect_desc'),
+            cls         : 'desc-under'
+        }, {
+            xtype       : 'seosuite-combo-redirect-type',
+            fieldLabel  : _('seosuite.label_url_redirect_type'),
+            description : MODx.expandHelp ? '' : _('seosuite.label_url_redirect_type_desc'),
+            name        : 'redirect_type',
+            anchor      : '100%',
+            allowBlank  : false,
+            value       : '301'
+        }, {
+            xtype       : MODx.expandHelp ? 'label' : 'hidden',
+            html        : _('seosuite.label_url_redirect_type_desc'),
+            cls         : 'desc-under'
+        }],
+        saveBtnText: _('seosuite.urls_generate_suggestions'),
+    });
+
+    SeoSuite.window.GenerateAISuggestions.superclass.constructor.call(this, config);
+};
+
+Ext.extend(SeoSuite.window.GenerateAISuggestions, MODx.Window);
+
+Ext.reg('seosuite-window-generate-ai-suggestions', SeoSuite.window.GenerateAISuggestions);

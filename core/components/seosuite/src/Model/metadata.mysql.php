@@ -9,8 +9,9 @@ $xpdo_meta_map = array (
         array (
             0 => 'Sterc\\SeoSuite\\Model\\SeoSuiteSocial',
             1 => 'Sterc\\SeoSuite\\Model\\SeoSuiteUrl',
-            2 => 'Sterc\\SeoSuite\\Model\\SeoSuiteResource',
-            3 => 'Sterc\\SeoSuite\\Model\\SeoSuiteRedirect',
+            2 => 'Sterc\\SeoSuite\\Model\\SeoSuiteSuggestion',
+            3 => 'Sterc\\SeoSuite\\Model\\SeoSuiteResource',
+            4 => 'Sterc\\SeoSuite\\Model\\SeoSuiteRedirect',
         ),
     ),
 );

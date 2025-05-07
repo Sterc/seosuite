@@ -3,6 +3,7 @@ namespace Sterc\SeoSuite\Processors\Mgr\Resource\AI;
 
 use MODX\Revolution\Processors\Processor;
 use MODX\Revolution\modResource;
+use MODX\Revolution\modContextSetting;
 
 class GenerateSeoContent extends Processor
 {
@@ -27,6 +28,7 @@ class GenerateSeoContent extends Processor
         $content = $this->getProperty('content', '');
         $pagetitle = $this->getProperty('pagetitle', '');
         $longtitle = $this->getProperty('longtitle', '');
+        $language = 'en'; // Default language
         
         // If we have a resource ID, try to get the content from the resource
         if ($resourceId > 0) {
@@ -35,6 +37,26 @@ class GenerateSeoContent extends Processor
                 $content = $resource->get('content');
                 $pagetitle = $resource->get('pagetitle');
                 $longtitle = $resource->get('longtitle');
+                
+                // Get the context of the resource to determine its language
+                $contextKey = $resource->get('context_key');
+                if ($contextKey) {
+                    // Get the cultureKey setting for this context
+                    $cultureKey = $this->modx->getOption('cultureKey', null, 'en', ['context' => $contextKey]);
+
+                    $ctx = $this->modx->getObject(modContextSetting::class, [
+                        'key' => 'cultureKey',
+                        'context_key' => $contextKey
+                    ]);
+
+                    if ($ctx) {
+                        $cultureKey = $ctx->get('value');
+                    }
+            
+                    if (!empty($cultureKey)) {
+                        $language = $cultureKey;
+                    }
+                }
             }
         }
         
@@ -49,7 +71,8 @@ class GenerateSeoContent extends Processor
         // Initialize results array
         $results = [
             'meta_description' => '',
-            'keywords' => ''
+            'keywords' => '',
+            'language' => $language // Store the detected language for reference
         ];
         
         // If using OpenAI, check for API key
@@ -64,24 +87,24 @@ class GenerateSeoContent extends Processor
             // Generate content using OpenAI
             try {
                 // Generate meta description
-                $results['meta_description'] = $this->generateMetaDescriptionWithOpenAI($content, $pagetitle, $longtitle, $apiKey);
+                $results['meta_description'] = $this->generateMetaDescriptionWithOpenAI($content, $pagetitle, $longtitle, $apiKey, $language);
                 
                 // Generate keywords
-                $results['keywords'] = $this->generateKeywordsWithOpenAI($content, $pagetitle, $longtitle, $apiKey);
+                $results['keywords'] = $this->generateKeywordsWithOpenAI($content, $pagetitle, $longtitle, $apiKey, $language);
                 
                 // Return the generated content
                 return $this->success('', $results);
             } catch (\Exception $e) {
                 // If OpenAI fails, fall back to the free model
                 $this->modx->log(3, 'OpenAI API error: ' . $e->getMessage() . '. Falling back to free model.');
-                $results['meta_description'] = $this->generateMetaDescriptionFree($content, $pagetitle, $longtitle);
-                $results['keywords'] = $this->generateKeywordsFree($content, $pagetitle, $longtitle);
+                $results['meta_description'] = $this->generateMetaDescriptionFree($content, $pagetitle, $longtitle, $language);
+                $results['keywords'] = $this->generateKeywordsFree($content, $pagetitle, $longtitle, $language);
                 return $this->success('', $results);
             }
         } else {
             // Use the free model
-            $results['meta_description'] = $this->generateMetaDescriptionFree($content, $pagetitle, $longtitle);
-            $results['keywords'] = $this->generateKeywordsFree($content, $pagetitle, $longtitle);
+            $results['meta_description'] = $this->generateMetaDescriptionFree($content, $pagetitle, $longtitle, $language);
+            $results['keywords'] = $this->generateKeywordsFree($content, $pagetitle, $longtitle, $language);
             return $this->success('', $results);
         }
     }
@@ -97,7 +120,7 @@ class GenerateSeoContent extends Processor
      * @return string The generated meta description
      * @throws \Exception If there's an error with the API request
      */
-    protected function generateMetaDescriptionWithOpenAI($content, $pagetitle, $longtitle, $apiKey)
+    protected function generateMetaDescriptionWithOpenAI($content, $pagetitle, $longtitle, $apiKey, $language = 'en')
     {
         // Strip HTML tags and trim the content
         $cleanContent = strip_tags($content);
@@ -113,9 +136,10 @@ class GenerateSeoContent extends Processor
         // Use the title as context
         $title = !empty($longtitle) ? $longtitle : $pagetitle;
         
-        // Prepare the prompt for OpenAI
-        $prompt = "Generate a concise and engaging meta description for a webpage with the following title and content. The meta description should be under 160 characters and accurately summarize the page content.\n\nTitle: $title\n\nContent: $cleanContent\n\nMeta Description:";
-        
+        // Prepare the prompt for OpenAI with language specification
+        $prompt = $this->modx->getOption('seosuite.ai_prompt_meta_description', null, 'Generate a concise and engaging meta description in the language for a webpage with the following title and content. The meta description should be under 160 characters and accurately summarize the page content.');
+        $prompt.= "The response MUST be in the $language language.\n\nTitle: $title\n\nContent: $cleanContent\n\nMeta Description in $language:";
+
         // Make the API request to OpenAI
         $response = $this->callOpenAI($prompt, $apiKey);
         
@@ -142,7 +166,7 @@ class GenerateSeoContent extends Processor
      * @return string The generated keywords as a comma-separated string
      * @throws \Exception If there's an error with the API request
      */
-    protected function generateKeywordsWithOpenAI($content, $pagetitle, $longtitle, $apiKey)
+    protected function generateKeywordsWithOpenAI($content, $pagetitle, $longtitle, $apiKey, $language = 'en')
     {
         // Strip HTML tags and trim the content
         $cleanContent = strip_tags($content);
@@ -158,9 +182,9 @@ class GenerateSeoContent extends Processor
         // Use the title as context
         $title = !empty($longtitle) ? $longtitle : $pagetitle;
         
-        // Prepare the prompt for OpenAI
-        $prompt = "Extract 3-5 relevant SEO focus keywords or short phrases from the following webpage content. Return only the keywords as a comma-separated list without numbering or additional text.\n\nTitle: $title\n\nContent: $cleanContent\n\nKeywords:";
-        
+        // Prepare the prompt for OpenAI with language specification
+        $prompt = $this->modx->getOption('seosuite.ai_prompt_meta_keywords', null, 'Extract 3-5 relevant SEO focus keywords or short phrases in the language from the following webpage content. Return only the keywords as a comma-separated list without numbering or additional text.');
+        $prompt.= "The keywords MUST be in the $language language.\n\nTitle: $title\n\nContent: $cleanContent\n\nKeywords in $language:";         
         // Make the API request to OpenAI
         $response = $this->callOpenAI($prompt, $apiKey);
         
@@ -171,7 +195,7 @@ class GenerateSeoContent extends Processor
         $keywords = preg_replace('/^\d+\.\s*/', '', $keywords);
         $keywords = preg_replace('/^-\s*/', '', $keywords);
         
-        return $keywords;
+        return html_entity_decode($keywords);
     }
     
     /**
@@ -256,7 +280,7 @@ class GenerateSeoContent extends Processor
      * @param string $longtitle The long title
      * @return string The generated meta description
      */
-    protected function generateMetaDescriptionFree($content, $pagetitle, $longtitle)
+    protected function generateMetaDescriptionFree($content, $pagetitle, $longtitle, $language = 'en')
     {
         // Strip HTML tags and trim the content
         $cleanContent = strip_tags($content);
@@ -339,7 +363,7 @@ class GenerateSeoContent extends Processor
      * @param string $longtitle The long title
      * @return string The generated keywords as a comma-separated string
      */
-    protected function generateKeywordsFree($content, $pagetitle, $longtitle)
+    protected function generateKeywordsFree($content, $pagetitle, $longtitle, $language = 'en')
     {
         // Strip HTML tags and trim the content
         $cleanContent = strip_tags($content);
@@ -352,9 +376,38 @@ class GenerateSeoContent extends Processor
         // Get stop words from SeoSuite
         $stopWords = $this->modx->seosuite->getExcludeWords();
         
-        // Add common English stop words if the exclude words are empty
+        // Add language-specific stop words if the exclude words are empty
         if (empty($stopWords)) {
+            // Default to English stop words
             $stopWords = ['a', 'an', 'the', 'and', 'or', 'but', 'if', 'then', 'else', 'when', 'at', 'from', 'by', 'for', 'with', 'about', 'to', 'in', 'on', 'of', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'shall', 'should', 'can', 'could', 'may', 'might', 'must', 'this', 'that', 'these', 'those', 'i', 'you', 'he', 'she', 'it', 'we', 'they', 'me', 'him', 'her', 'us', 'them', 'my', 'your', 'his', 'its', 'our', 'their', 'mine', 'yours', 'hers', 'ours', 'theirs'];
+            
+            // Add language-specific stop words based on the detected language
+            switch ($language) {
+                case 'nl':
+                    // Dutch stop words
+                    $stopWords = array_merge($stopWords, ['de', 'het', 'een', 'en', 'van', 'ik', 'te', 'dat', 'die', 'in', 'is', 'het', 'op', 'zijn', 'met', 'voor', 'als', 'er', 'door', 'ze', 'naar', 'maar', 'dan', 'ons', 'nog', 'over', 'tot', 'bij', 'ook', 'mijn', 'uit', 'wel', 'nu', 'om', 'zo', 'deze', 'aan']);
+                    break;
+                case 'de':
+                    // German stop words
+                    $stopWords = array_merge($stopWords, ['der', 'die', 'das', 'und', 'in', 'zu', 'den', 'mit', 'auf', 'für', 'von', 'im', 'nicht', 'ein', 'eine', 'dem', 'sich', 'ist', 'des', 'sie', 'ich', 'dass', 'es', 'wie', 'auch', 'als', 'bei', 'wird', 'oder', 'aus', 'an', 'nach', 'so', 'zum', 'kann', 'nur', 'einen', 'über']);
+                    break;
+                case 'fr':
+                    // French stop words
+                    $stopWords = array_merge($stopWords, ['le', 'la', 'les', 'un', 'une', 'des', 'et', 'en', 'de', 'à', 'que', 'qui', 'dans', 'par', 'sur', 'pour', 'avec', 'ce', 'il', 'elle', 'je', 'tu', 'nous', 'vous', 'ils', 'elles', 'mon', 'ton', 'son', 'ma', 'ta', 'sa', 'mes', 'tes', 'ses', 'notre', 'votre', 'leur']);
+                    break;
+                case 'es':
+                    // Spanish stop words
+                    $stopWords = array_merge($stopWords, ['el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'y', 'o', 'pero', 'si', 'de', 'del', 'a', 'al', 'en', 'para', 'por', 'con', 'mi', 'tu', 'su', 'nuestro', 'vuestro', 'este', 'ese', 'aquel', 'yo', 'tu', 'él', 'ella', 'nosotros', 'vosotros', 'ellos', 'ellas']);
+                    break;
+                case 'ru':
+                    // Russian stop words
+                    $stopWords = array_merge($stopWords, ['и', 'в', 'во', 'не', 'что', 'он', 'на', 'я', 'с', 'со', 'как', 'а', 'то', 'все', 'она', 'так', 'его', 'но', 'да', 'ты', 'к', 'у', 'же', 'вы', 'за', 'бы', 'по', 'только', 'ее', 'мне', 'было', 'вот', 'от', 'меня', 'еще', 'нет', 'о', 'из', 'ему']);
+                    break;
+                // Add more languages as needed
+            }
+            
+            // Remove duplicates
+            $stopWords = array_unique($stopWords);
         }
         
         // Extract all words from content

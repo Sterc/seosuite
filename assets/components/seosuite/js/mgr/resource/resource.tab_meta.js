@@ -141,7 +141,7 @@ Ext.extend(SeoSuite, Ext.Component, {
                             xtype       : MODx.expandHelp ? 'label' : 'hidden',
                             html        : _('seosuite.tab_meta.description_desc'),
                             cls         : 'desc-under'
-                        }, {
+                        },{
                             xtype       : 'button',
                             text        : _('seosuite.tab_meta.ai_generate_all'),
                             tooltip     : _('seosuite.tab_meta.ai_generate_all_desc'),

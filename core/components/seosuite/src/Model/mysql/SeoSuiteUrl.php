@@ -107,6 +107,17 @@ class SeoSuiteUrl extends \Sterc\SeoSuite\Model\SeoSuiteUrl
                 ),
             ),
         ),
+        'composites' => 
+        array (
+            'Suggestions' => 
+            array (
+                'class' => 'Sterc\\SeoSuite\\Model\\SeoSuiteSuggestion',
+                'local' => 'id',
+                'foreign' => 'url_id',
+                'cardinality' => 'many',
+                'owner' => 'local',
+            ),
+        ),
         'aggregates' => 
         array (
             'Context' => 

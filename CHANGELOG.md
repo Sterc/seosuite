@@ -1,5 +1,11 @@
 Changelog for SEO Suite.
 
+SEO Suite 3.2.1
+==============
+- Add dedicated AI button for meta description field
+- Add functionality to clean invalid 404 URLs (hack/break attempts)
+- Add AI-based redirect suggestions for 404 URLs
+
 SEO Suite 3.2.0
 ==============
 - Add AI support for generating meta content.
