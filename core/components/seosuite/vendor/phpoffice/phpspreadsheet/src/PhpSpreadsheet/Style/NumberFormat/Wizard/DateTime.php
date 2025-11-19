@@ -22,21 +22,17 @@ class DateTime extends DateTimeWizard
     public function __construct($separators, ...$formatBlocks)
     {
         $this->separators = $this->padSeparatorArray(
-            is_array($separators) ? $separators : [$separators],
+            is_array($separators) ? $separators : [$separators], //* @phpstan-ignore-line
             count($formatBlocks) - 1
         );
         $this->formatBlocks = array_map([$this, 'mapFormatBlocks'], $formatBlocks);
     }
 
-    /**
-     * @param DateTimeWizard|string $value
-     */
-    private function mapFormatBlocks($value): string
+    private function mapFormatBlocks(DateTimeWizard|string $value): string
     {
         // Any date masking codes are returned as lower case values
-        if (is_object($value)) {
-            // We can't explicitly test for Stringable until PHP >= 8.0
-            return $value;
+        if ($value instanceof DateTimeWizard) {
+            return $value->__toString();
         }
 
         // Wrap any string literals in quotes, so that they're clearly defined as string literals

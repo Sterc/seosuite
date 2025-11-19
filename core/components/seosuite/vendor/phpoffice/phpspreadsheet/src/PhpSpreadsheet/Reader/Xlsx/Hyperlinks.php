@@ -9,11 +9,10 @@ use SimpleXMLElement;
 
 class Hyperlinks
 {
-    /** @var Worksheet */
-    private $worksheet;
+    private Worksheet $worksheet;
 
-    /** @var array */
-    private $hyperlinks = [];
+    /** @var string[] */
+    private array $hyperlinks = [];
 
     public function __construct(Worksheet $workSheet)
     {
@@ -33,9 +32,7 @@ class Hyperlinks
     public function setHyperlinks(SimpleXMLElement $worksheetXml): void
     {
         foreach ($worksheetXml->children(Namespaces::MAIN)->hyperlink as $hyperlink) {
-            if ($hyperlink !== null) {
-                $this->setHyperlink($hyperlink, $this->worksheet);
-            }
+            $this->setHyperlink($hyperlink, $this->worksheet);
         }
     }
 
@@ -48,7 +45,7 @@ class Hyperlinks
         foreach (Coordinate::extractAllCellReferencesInRange($attributes->ref) as $cellReference) {
             $cell = $worksheet->getCell($cellReference);
             if (isset($linkRel['id'])) {
-                $hyperlinkUrl = $this->hyperlinks[(string) $linkRel['id']] ?? null;
+                $hyperlinkUrl = $this->hyperlinks[(string) $linkRel['id']] ?? '';
                 if (isset($attributes['location'])) {
                     $hyperlinkUrl .= '#' . (string) $attributes['location'];
                 }
