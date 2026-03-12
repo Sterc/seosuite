@@ -33,10 +33,10 @@ class Base extends modExtraManagerController
             Ext.onReady(function() {
                 MODx.config.help_url = "' . $this->seosuite->getHelpUrl() . '";
 
-                SeoSuite.config = ' . $this->modx->toJSON(array_merge($this->seosuite->config, [
+                SeoSuite.config = ' . json_encode(array_merge($this->seosuite->config, [
                     'branding_url'          => $this->seosuite->getBrandingUrl(),
                     'branding_url_help'     => $this->seosuite->getHelpUrl()
-                ])) . ';
+                ]), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . ';
             });
         </script>');
 

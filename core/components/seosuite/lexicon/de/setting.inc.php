@@ -1,16 +1,33 @@
 <?php
+/* Setting areas. */
+$_lang['area_seosuite']                                         = 'SEO Suite';
+$_lang['area_seosuite_tab_meta']                                = 'SEO Suite - Meta';
+$_lang['area_seosuite_tab_social']                              = 'SEO Suite - Soziale Netzwerke';
+$_lang['area_seosuite_sitemap']                                 = 'SEO Suite - Sitemap';
 
 /* General settings. */
-$_lang['setting_seosuite.exclude_words']                                = 'Wörter ausschließen';
-$_lang['setting_seosuite.exclude_words_desc']                           = 'Kommagetrennte Liste von Wörtern, die von Vorschlägen ausgeschlossen werden sollen.';
+$_lang['setting_seosuite.blocked_words']                                = 'Blockierte Wörter';
+$_lang['setting_seosuite.blocked_words_desc']                           = 'Durch Kommas getrennte Liste von Wörtern, die aus der 404-Seitenprotokollierung ausgeschlossen werden sollen.';
+$_lang['setting_seosuite.default_media_source']                         = 'Medienquelle';
+$_lang['setting_seosuite.default_media_source_desc']                    = 'Medienquelle, die zum Auffinden der Bilder für die Meta-Tags og_image und twitter_image verwendet wird.';
 $_lang['setting_seosuite.default_redirect_type']                        = 'Standard-Weiterleitungsart';
 $_lang['setting_seosuite.default_redirect_type_desc']                   = '';
 $_lang['setting_seosuite.disabled_templates']                           = 'Deaktivierte Vorlagen';
 $_lang['setting_seosuite.disabled_templates_desc']                      = 'Kommagetrennte Liste mit deaktivierten Template-ID\'s.';
+$_lang['setting_seosuite.exclude_words']                                = 'Wörter ausschließen';
+$_lang['setting_seosuite.exclude_words_desc']                           = 'Kommagetrennte Liste von Wörtern, die von Vorschlägen ausgeschlossen werden sollen.';
+$_lang['setting_seosuite.log_404']                                      = '404 Nicht gefunden protokollieren';
+$_lang['setting_seosuite.log_404_desc']                                 = '404 Nicht gefundene URLs in der Datenbank protokollieren.';
+$_lang['setting_seosuite.placeholder_plugin_enabled']                   = 'SEO Suite Placeholder Plugin aktivieren';
+$_lang['setting_seosuite.placeholder_plugin_enabled_desc']              = 'SEO Suite-Platzhalter im Seiteninhalt festlegen.';
 $_lang['setting_seosuite.migration_finished']                           = 'Beendete Migration während der Einrichtung';
 $_lang['setting_seosuite.migration_finished_desc']                      = 'Diese Einstellung wird verwendet, um festzustellen, ob alle erforderlichen Migrationen während der Installation/Update-Einrichtung abgeschlossen wurden.';
-$_lang['setting_seosuite.user_name']                                    = 'Update-E-Mail: Absender-Name';
 $_lang['setting_seosuite.user_email']                                   = 'Update-E-Mail: E-Mail-Adresse';
+$_lang['setting_seosuite.user_email_desc']                              = 'Die E-Mail-Adresse, die für E-Mails mit wichtigen Updates verwendet wird.';
+$_lang['setting_seosuite.user_name']                                    = 'Update-E-Mail: Absender-Name';
+$_lang['setting_seosuite.user_name_desc']                               = 'Der Name, der für E-Mails mit vorrangigen Updates verwendet wird.';
+$_lang['setting_seosuite.panel_position_top']                           = 'SEO Suite-Panel oben auf der Ressourcenseite anzeigen';
+$_lang['setting_seosuite.panel_position_top_desc']                      = 'Geben Sie an, ob das SEO Suite-Panel oben oder unten auf der Ressourcenseite angezeigt werden soll. Die Standardeinstellung ist unten.';
 
 /* Meta settings. */
 $_lang['setting_seosuite.meta.field_counters']                          = 'Felder, in denen der Zeichenzähler arbeiten soll';
