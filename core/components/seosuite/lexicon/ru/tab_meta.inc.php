@@ -13,11 +13,6 @@ $_lang['seosuite.tab_meta.label_variable_desc']             = 'Выберите 
 $_lang['seosuite.tab_meta.submit']                          = 'Вставить';
 $_lang['seosuite.tab_meta.no_preview']                      = 'Поисковым системам не разрешено индексировать эту страницу, поэтому предварительный просмотр невозможен.';
 
-$_lang['seosuite.tab_meta.use_default']                     = 'Использовать настройки по умолчанию для заголовка SEO и описания SEO.';
-$_lang['seosuite.tab_meta.meta_title']                      = 'SEO-заголовок';
-$_lang['seosuite.tab_meta.meta_title_desc']                 = 'Составьте шаблон, который будет использоваться для сгенерированного заголовка SEO.';
-$_lang['seosuite.tab_meta.meta_description']                = 'SEO-описание';
-$_lang['seosuite.tab_meta.meta_description_desc']           = 'Составьте шаблон, который будет использоваться для сгенерированного описания SEO.';
 $_lang['seosuite.tab_meta.preview']                         = 'Поисковая система';
 $_lang['seosuite.tab_meta.preview_google']                  = 'Google';
 $_lang['seosuite.tab_meta.preview_yandex']                  = 'Яндекс';
@@ -30,7 +25,5 @@ $_lang['seosuite.tab_meta.seo']                             = 'SEO';
 $_lang['seosuite.tab_meta.delimiter']                       = 'Разделитель';
 
 /* Keywords. */
-$_lang['seosuite.tab_meta.keywords']                        = 'Ключевые слова';
-$_lang['seosuite.tab_meta.characters.allowed']              = 'Разрешенные символы';
 $_lang['seosuite.tab_meta.keywords']                        = 'Ключевые слова в фокусе';
 $_lang['seosuite.tab_meta.keywords_desc']                   = 'Введите ключевые слова через запятую, например: стол, стул.';

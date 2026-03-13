@@ -67,7 +67,7 @@ class Redirects extends Base
             }
         }
 
-        if ($this->shouldLog404($request)) {
+        if ($this->seosuite->getOption('log_404') && $this->shouldLog404($request)) {
             $url = $this->modx->getObject(SeoSuiteUrl::class, [
                 'url' => $request
             ]);

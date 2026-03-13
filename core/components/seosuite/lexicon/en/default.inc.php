@@ -10,32 +10,22 @@ $_lang['seosuite']                                              = 'SEO Suite';
 $_lang['seosuite.menu.seosuite']                                = 'SEO Suite';
 $_lang['seosuite.menu.seosuite_desc']                           = 'Manage 404 URLs and redirects.';
 
-$_lang['area_seosuite']                                         = 'SEO Suite';
-$_lang['area_seosuite_tab_meta']                                = 'SEO Suite meta tab';
-$_lang['area_seosuite_tab_seo']                                 = 'SEO Suite search engine tab';
-$_lang['area_seosuite_tab_social']                              = 'SEO Suite social tab';
-$_lang['area_seosuite_sitemap']                                 = 'SEO Suite sitemap';
-
 $_lang['seosuite.urls']                                         = '404 URLs';
 $_lang['seosuite.urls_desc']                                    = 'Fixing your 404 URLs is easy. Simply upload a one-column CSV-file.
  SEO Suite will make sure the URLs are redirected to a proper page on your website.
   They will be matched with existing pages on your website, based on the bold part of the example URL: https://example.tld/folder1/folder1/<strong>page-alias</strong>.
-   SEO Suite will perform one of these actions:<br /><br />
-   1. When there’s exactly one match, it will be automatically converted to a 301 redirect in SEO Tab, or, when SEO Tab is not installed, SEO Suite will handle the redirect;<br />
-   2. When there are several matches, you can choose the desired redirect manually;<br />
+   SEO Suite will perform one of these actions:<br/><br/>
+   1. When there’s exactly one match, it will be automatically converted to a 301 redirect in SEO Tab, or, when SEO Tab is not installed, SEO Suite will handle the redirect;<br/>
+   2. When there are several matches, you can choose the desired redirect manually;<br/>
    3. When there are no matches, you can enter a URL to redirect to yourself.';
 $_lang['seosuite.urls_import']                                  = 'Import 404 url(s)';
 $_lang['seosuite.urls_remove']                                  = 'Remove 404 URL(s)';
 $_lang['seosuite.urls_remove_confirm']                          = 'Are you sure you want to remove the selected 404 URL(s)?';
-$_lang['seosuite.url_update']                                   = 'Update 404 URL';
 $_lang['seosuite.url_suggestions']                              = '404 URL suggestions';
 $_lang['seosuite.url.found_suggestions']                        = 'A suggestion has been found! The suggestion is now connected to this URL.';
-$_lang['seosuite.url.found_suggestions_multiple']               = 'More then 1 suggestion has been found. Please add a redirect manually.';
-$_lang['seosuite.url.notfound_suggestions']                     = 'No suggestions have been found for this URL.';
 $_lang['seosuite.url.found_suggestions.redirect_exists']        = 'A redirect already exists for this 404 page. The 404 URL has been removed.';
 $_lang['seosuite.url_remove']                                   = 'Remove URL';
 $_lang['seosuite.url_remove_confirm']                           = 'Are you sure you want to delete this URL?';
-$_lang['seosuite.url.redirect_to_selected']                     = 'Selected redirect';
 $_lang['seosuite.suggestions_found']                            = '[[+suggestions]] page suggestions have been found.';
 $_lang['seosuite.suggestion_boost']                             = 'pts';
 $_lang['seosuite.exclude_words']                                = 'Suggestions excludes';
@@ -45,17 +35,12 @@ $_lang['seosuite.blocked_words']                                = 'Logging exclu
 $_lang['seosuite.label_blocked_words']                          = 'Exclude words from 404 page logging';
 $_lang['seosuite.label_blocked_words_desc']                     = 'A comma delimited list of words to exclude from 404 page logging.';
 $_lang['seosuite.label_url_url']                                = 'Url';
-$_lang['seosuite.label_url_url_desc']                           = '';
 $_lang['seosuite.label_url_visits']                             = 'Hits';
-$_lang['seosuite.label_url_visits_desc']                        = '';
 $_lang['seosuite.label_url_last_visit']                         = 'Last hit';
-$_lang['seosuite.label_url_last_visit_desc']                    = '';
 $_lang['seosuite.label_url_suggestion']                         = 'Suggestion';
 $_lang['seosuite.label_url_suggestion_desc']                    = 'The suggestion to redirect the URL to.';
 $_lang['seosuite.label_url_suggestions']                        = 'Suggestions';
-$_lang['seosuite.label_url_suggestions_desc']                   = '';
 $_lang['seosuite.label_url_createdon']                          = 'Created on';
-$_lang['seosuite.label_url_createdon_desc']                     = '';
 $_lang['seosuite.label_url_match_context']                      = 'Match on domain [[+domain]]';
 $_lang['seosuite.label_url_match_context_desc']                 = 'If checked, matching will occur within domain [[+domain]]. This is particularly useful when having multiple websites where multiple contexts contain a lot of the same pages.';
 $_lang['seosuite.label_url_match_create_redirect']              = 'Automatically create a URL redirect';
@@ -64,8 +49,8 @@ $_lang['seosuite.label_url_match_create_redirect_desc']         = 'Will automati
 $_lang['seosuite.label_import_file']                            = 'File';
 $_lang['seosuite.label_import_file_desc']                       = 'Select a valid file to import the 404 URL(s).';
 $_lang['seosuite.import.instructions']                          = 'Use a .csv, .xls or .xlsx file. Make sure you’ve entered full URLs, including the domain. Example: https://www.seosuite.com instead of seosuite.com. You can also view this <a href="[[+path]]">example import file (XLS)</a>.';
+$_lang['seosuite.import.start']                                 = 'Import started!';
 
-$_lang['seosuite.redirect']                                     = 'URL redirect';
 $_lang['seosuite.redirects']                                    = 'URL redirects';
 $_lang['seosuite.redirects_desc']                               = 'Manage all your URL redirects here. A URL redirect is used to redirect a non existing page to the new page. A URL redirect can be made for a specific context or for all contexts at once and will displayed below as "* /". URL redirects with a specific context takes precedence over a URL redirect for all contexts. When using a full URL, make sure that the domain points to the same server as the current MODX installation.';
 $_lang['seosuite.redirect_create']                              = 'New URL redirect';
@@ -109,8 +94,6 @@ $_lang['seosuite.time_month']                                   = '1 month ago';
 $_lang['seosuite.time_months']                                  = '[[+months]] months ago';
 $_lang['seosuite.time_to_long']                                 = 'More then a half year ago';
 
-$_lang['seosuite.widget_desc']                                  = 'Here you can view the 10 most recently added 404 urls. To view and manage all your 404 urls, please visit the <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager page.</a>';
-
 $_lang['seosuite.migration']                                    = 'Migration';
 $_lang['seosuite.migration_desc']                               = 'Upgrading from SEO Suite V1, SEO Pro or SEO Tab requires a data migration. Here you can run the migrations for these extras.';
 $_lang['seosuite.migration.seosuitev1.results']                 = '<b>[[+redirects]]</b> Redirects and <b>[[+urls]]</b> urls for SEO Suite V1 found.';
@@ -120,3 +103,7 @@ $_lang['seosuite.migration.seopro.empty']                       = '<i>No data fo
 $_lang['seosuite.migration.seotab.results']                     = '<b>[[+urls]]</b> Redirects and <b>[[+resources]]</b> resources for SEO Tab found.';
 $_lang['seosuite.migration.seotab.empty']                       = '<i>No data found for SEO Tab migration.</i>';
 $_lang['seosuite.migration.migrate']                            = 'Migrate';
+
+$_lang['seosuite.widget']                                       = 'SEO Suite';
+$_lang['seosuite.widget_desc']                                  = 'SEO Suite dashboard widget';
+$_lang['seosuite.widget_intro']                                  = 'Here you can view the 10 most recently added 404 urls. To view and manage all your 404 urls, please visit the <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite manager page.</a>';

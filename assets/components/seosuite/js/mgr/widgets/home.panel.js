@@ -10,7 +10,7 @@ SeoSuite.panel.Home = function(config) {
         }, {
             xtype       : 'modx-tabs',
             deferredRender : false,
-            items       : [{
+            items       : [(SeoSuite.config.log_404) ? {
                 title       : _('seosuite.urls'),
                 items       : [{
                     html        : '<p>' + _('seosuite.urls_desc') + '</p>',
@@ -23,8 +23,8 @@ SeoSuite.panel.Home = function(config) {
                     cls         : 'main-wrapper',
                     preventRender : true,
                     refreshGrid : 'seosuite-grid-redirects'
-                }]
-            }, {
+                }],
+            } : undefined, {
                 title       : _('seosuite.redirects'),
                 items       : [{
                     html        : '<p>' + _('seosuite.redirects_desc') + '</p>',
@@ -37,7 +37,7 @@ SeoSuite.panel.Home = function(config) {
                     cls         : 'main-wrapper',
                     preventRender : true
                 }]
-            }, {
+            }, (!SeoSuite.config.migration_finished) ? {
                 title       : _('seosuite.migration'),
                 items       : [{
                     html        : '<p>' + _('seosuite.migration_desc') + '</p>',
@@ -45,7 +45,7 @@ SeoSuite.panel.Home = function(config) {
                 }, {
                     xtype: 'seosuite-panel-migration'
                 }]
-            }]
+            } : undefined].filter(x => x !== undefined),
         }]
     });
 
