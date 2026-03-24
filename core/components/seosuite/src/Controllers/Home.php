@@ -8,12 +8,12 @@ class Home extends Base
      */
     public function loadCustomCssJs()
     {
-        $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/extras/extras.js');
-        $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/home.panel.js');
-        $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/migration.panel.js');
-        $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/urls.grid.js');
-        $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/redirects.grid.js');
-        $this->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/sections/home.js');
+        $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/extras/extras.js?v=v' . $this->seosuite->getOption('version'));
+        $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/home.panel.js?v=v' . $this->seosuite->getOption('version'));
+        $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/migration.panel.js?v=v' . $this->seosuite->getOption('version'));
+        $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/urls.grid.js?v=v' . $this->seosuite->getOption('version'));
+        $this->addJavascript($this->seosuite->config['js_url'] . 'mgr/widgets/redirects.grid.js?v=v' . $this->seosuite->getOption('version'));
+        $this->addLastJavascript($this->seosuite->config['js_url'] . 'mgr/sections/home.js?v=v' . $this->seosuite->getOption('version'));
     }
 
     /**
