@@ -120,16 +120,18 @@ class Resource extends Base
      */
     public function onMODXInit()
     {
-        $version = $this->modx->getVersionData();
-        $version = (int) ($version['version'] . $version['major_version']);
-        if ($version < 27) {
-            $this->modx->loadClass('modResource');
-            $this->modx->map['modResource']['fieldMeta']['description'] = [
-                'dbtype'   => 'text',
-                'phptype'  => 'string',
-                'index'    => 'fulltext',
-                'indexgrp' => 'content_ft_idx',
-            ];
+        $versionData = $this->modx->getVersionData();
+        if (is_array($versionData) && isset($versionData['version']) && isset($versionData['major_version'])) {
+            $version = (int) ($versionData['version'] . $versionData['major_version']);
+            if ($version < 27) {
+                $this->modx->loadClass('modResource');
+                $this->modx->map['modResource']['fieldMeta']['description'] = [
+                    'dbtype'   => 'text',
+                    'phptype'  => 'string',
+                    'index'    => 'fulltext',
+                    'indexgrp' => 'content_ft_idx'
+                ];
+            }
         }
     }
 
