@@ -172,7 +172,7 @@ class SeoSuiteSocial extends \Sterc\SeoSuite\Model\SeoSuiteSocial
             'Resource' => 
             array (
                 'class' => 'MODX\\Revolution\\modResource',
-                'local' => 'bundle',
+                'local' => 'resource_id',
                 'foreign' => 'id',
                 'cardinality' => 'one',
                 'owner' => 'foreign',

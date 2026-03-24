@@ -177,15 +177,15 @@ class SeoSuiteRedirect extends \Sterc\SeoSuite\Model\SeoSuiteRedirect
             'Context' => 
             array (
                 'class' => 'MODX\\Revolution\\modContext',
-                'local' => 'bundle',
-                'foreign' => 'id',
+                'local' => 'context_key',
+                'foreign' => 'key',
                 'cardinality' => 'one',
                 'owner' => 'foreign',
             ),
             'Resource' => 
             array (
                 'class' => 'MODX\\Revolution\\modResource',
-                'local' => 'bundle',
+                'local' => 'resource_id',
                 'foreign' => 'id',
                 'cardinality' => 'one',
                 'owner' => 'foreign',
