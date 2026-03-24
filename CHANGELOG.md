@@ -1,5 +1,13 @@
 Changelog for SEO Suite.
 
+SEO Suite 3.1.8
+==============
+- Fix relation definitions in schema/models (PR#124)
+- Fix URL redirect handling (PR#132)
+- Fix trying to access array offset on true error (PR#139)
+- Fix incorrect saving of access permissions (PR#142)
+- Add cache busting for JS assets (PR#147)
+
 SEO Suite 3.1.7
 ==============
 - Fixing issue when there is redirect to itself (when resource is moved)
