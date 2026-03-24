@@ -12,10 +12,10 @@ class Redirects extends Base
      */
     public function onPageNotFound()
     {
-        //$request = urldecode(trim($_REQUEST[$this->modx->getOption('request_param_alias', null, 'q')], '/'));
-        $request = $this->getFullUrl();
-        if (!empty($request)) {
-            $this->redirect($request);
+        $fullUrl = $this->getFullUrl();
+        $alias = $this->getPageAlias();
+        if (!empty($fullUrl)) {
+            $this->redirect($fullUrl, $alias);
         }
     }
 
@@ -25,21 +25,14 @@ class Redirects extends Base
      * @access protected.
      * @param String $request.
      */
-    protected function redirect($request)
+    protected function redirect(string $request, $alias = '')
     {
         $criteria = $this->modx->newQuery(SeoSuiteRedirect::class, [
             'active' => 1,
             [
-                'old_url' => $request,
-                // 'OR:old_url:=' => preg_replace('#^\w{2}/#', '', $request),
-                // 'OR:old_url:=' => $this->getFullUrl()
+                'old_url'      => $request,
+                'OR:old_url:=' => $alias,
             ],
-            /*
-            [
-                'context_key' => '',
-                'OR:context_key:=' => $this->modx->context->get('key')
-            ],
-            */
         ]);
 
         $criteria->sortby('context_key', 'DESC');
@@ -47,6 +40,7 @@ class Redirects extends Base
         foreach ($this->modx->getIterator(SeoSuiteRedirect::class, $criteria) as $redirect) {
             $redirect->set('visits', (int) $redirect->get('visits') + 1);
             $redirect->set('last_visit', date('Y-m-d H:i:s'));
+            $redirect->set('old_url', $request);
 
             if ($redirect->save()) {
                 if (is_numeric($redirect->get('new_url'))) {
@@ -55,8 +49,8 @@ class Redirects extends Base
                     $url = $redirect->get('new_url');
                 }
 
-                if (strpos($url, 'www') === 0) {
-                    $url = 'http://' . $url;
+                if (str_starts_with($url, 'www')) {
+                    $url = 'https://' . $url;
                 }
 
                 if (!empty($url)) {
@@ -119,12 +113,18 @@ class Redirects extends Base
         return true;
     }
 
-    protected function getFullUrl()
+    protected function getFullUrl(): string
     {
         $protocol = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://';
         $host     = $_SERVER['HTTP_HOST'];
-        $request  = $_SERVER['REQUEST_URI'];
+        $resource  = $_SERVER['REQUEST_URI'];
 
-        return $protocol . $host . $request;
+        return $protocol . $host . $resource;
+    }
+
+    private function getPageAlias(): string
+    {
+        $aliasParam = $this->modx->getOption('request_param_alias', null, 'q');
+        return urldecode(trim($_REQUEST[$aliasParam], '/'));
     }
 }
