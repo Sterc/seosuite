@@ -499,7 +499,7 @@ SeoSuite.window.UrlSuggestions = function(config) {
     Ext.applyIf(config,{
         autoHeight  : true,
         width       : 500,
-        title       : _('seosuite.url_suggesstions'),
+        title       : _('seosuite.url_suggestions'),
         url         : SeoSuite.config.connector_url,
         baseParams  : {
             action      : '\\Sterc\\SeoSuite\\Processors\\Mgr\\Urls\\Suggestions\\Find'

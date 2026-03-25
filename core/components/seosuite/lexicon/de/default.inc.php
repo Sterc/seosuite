@@ -10,12 +10,6 @@ $_lang['seosuite']                                              = 'SEO Suite';
 $_lang['seosuite.menu.seosuite']                                = 'SEO Suite';
 $_lang['seosuite.menu.seosuite_desc']                           = 'Verwalte 404 URLs und Weiterleitungen.';
 
-$_lang['area_seosuite']                                         = 'SEO Suite';
-$_lang['area_seosuite_tab_meta']                                = 'SEO Suite - Meta';
-$_lang['area_seosuite_tab_seo']                                 = 'SEO Suite - SEO';
-$_lang['area_seosuite_tab_social']                              = 'SEO Suite - Soziale Netzwerke';
-$_lang['area_seosuite_sitemap']                                 = 'SEO Suite - Sitemap';
-
 $_lang['seosuite.urls']                                         = '404 URLs';
 $_lang['seosuite.urls_desc']                                    = 'Das Korrigieren Ihrer 404-URLs ist einfach. Laden Sie einfach eine einspaltige CSV-Datei hoch.
  SEO Suite sorgt dafür, dass die URLs auf die richtigne Seiten Ihrer Website umgeleitet werden.
@@ -27,15 +21,11 @@ $_lang['seosuite.urls_desc']                                    = 'Das Korrigier
 $_lang['seosuite.urls_import']                                  = '404 URL(s) importieren';
 $_lang['seosuite.urls_remove']                                  = '404 URL(s) löschen';
 $_lang['seosuite.urls_remove_confirm']                          = 'Sind Sie sicher, dass Sie die ausgewählte(n) 404-URL(s) entfernen möchten?';
-$_lang['seosuite.url_update']                                   = '404 URL aktualisieren';
 $_lang['seosuite.url_suggestions']                              = '404 URL Vorschläge';
 $_lang['seosuite.url.found_suggestions']                        = 'Ein Vorschlag wurde gefunden! Der Vorschlag ist jetzt mit dieser URL verbunden.';
-$_lang['seosuite.url.found_suggestions_multiple']               = 'Es wurde mehr als ein Vorschlag gefunden. Bitte fügen Sie die Weiterleitung manuell hinzu.';
-$_lang['seosuite.url.notfound_suggestions']                     = 'Es wurden keine Vorschläge für diese URL gefunden.';
 $_lang['seosuite.url.found_suggestions.redirect_exists']        = 'Für diese 404-Seite existiert bereits eine Weiterleitung. Die 404-URL wurde entfernt.';
 $_lang['seosuite.url_remove']                                   = 'URL entfernen';
 $_lang['seosuite.url_remove_confirm']                           = 'Sind Sie sicher, dass Sie diese URL löschen wollen?';
-$_lang['seosuite.url.redirect_to_selected']                     = 'Ausgewählte Umleitung';
 $_lang['seosuite.suggestions_found']                            = '[[+suggestions]] Seitenvorschläge wurden gefunden.';
 $_lang['seosuite.suggestion_boost']                             = 'pts';
 $_lang['seosuite.exclude_words']                                = 'Vorschläge ausschließen';
@@ -45,17 +35,12 @@ $_lang['seosuite.blocked_words']                                = 'Aus Protokoll
 $_lang['seosuite.label_blocked_words']                          = 'Wörter aus der 404-Seitenprotokollierung ausschließen';
 $_lang['seosuite.label_blocked_words_desc']                     = 'Eine durch Komma getrennte Liste von Wörtern, die von der 404-Seiten-Protokollierung ausgeschlossen werden sollen.';
 $_lang['seosuite.label_url_url']                                = 'URL';
-$_lang['seosuite.label_url_url_desc']                           = '';
 $_lang['seosuite.label_url_visits']                             = 'Aufrufe';
-$_lang['seosuite.label_url_visits_desc']                        = '';
 $_lang['seosuite.label_url_last_visit']                         = 'Letzter Aufruf';
-$_lang['seosuite.label_url_last_visit_desc']                    = '';
 $_lang['seosuite.label_url_suggestion']                         = 'Vorschlag';
 $_lang['seosuite.label_url_suggestion_desc']                    = 'Der Vorschlag, die URL umzuleiten';
 $_lang['seosuite.label_url_suggestions']                        = 'Vorschläge';
-$_lang['seosuite.label_url_suggestions_desc']                   = '';
 $_lang['seosuite.label_url_createdon']                          = 'Erstellt am';
-$_lang['seosuite.label_url_createdon_desc']                     = '';
 $_lang['seosuite.label_url_match_context']                      = 'Übereinstimmung mit der Domain [[+domain]]';
 $_lang['seosuite.label_url_match_context_desc']                 = 'Wenn diese Option aktiviert ist, erfolgt der Abgleich innerhalb der Domain [[+domain]]. Dies ist besonders nützlich, wenn Sie mehrere Websites betreiben, bei denen mehrere Kontexte viele gleiche Seiten enthalten.';
 $_lang['seosuite.label_url_match_create_redirect']              = 'Automatisch eine URL-Umleitung erstellen';
@@ -64,8 +49,8 @@ $_lang['seosuite.label_url_match_create_redirect_desc']         = 'Erstellt auto
 $_lang['seosuite.label_import_file']                            = 'Datei';
 $_lang['seosuite.label_import_file_desc']                       = 'Wählen Sie eine gültige Datei aus, um die 404-URL(s) zu importieren.';
 $_lang['seosuite.import.instructions']                          = 'Verwenden Sie eine .csv, .xls, oder .xlsx-Datei. Vergewissern Sie sich, dass Sie die vollständigen URLs einschließlich der Domain eingegeben haben. Beispiel: https://www.seosuite.com anstelle von seosuite.com. Sie können auch diese <a href="[[+path]]">Beispielimportdatei (XLS)</a> ansehen.';
+$_lang['seosuite.import.start']                                 = 'Import gestartet!';
 
-$_lang['seosuite.redirect']                                     = 'URL Weiterleitung';
 $_lang['seosuite.redirects']                                    = 'URL Weiterleitungen';
 $_lang['seosuite.redirects_desc']                               = 'Verwalten Sie hier alle Ihre URL-Weiterleitungen. Eine URL-Weiterleitung wird verwendet, um eine nicht vorhandene Seite auf eine neue Seite weiterzuleiten. Eine URL-Weiterleitung kann für einen bestimmten Kontext oder für alle Kontexte auf einmal erfolgen und wird unten als "* /" angezeigt. URL-Weiterleitungen mit einem bestimmten Kontext haben Vorrang vor einer URL-Weiterleitung für alle Kontexte.';
 $_lang['seosuite.redirect_create']                              = 'Neue URL Weiterleitung';
@@ -109,4 +94,16 @@ $_lang['seosuite.time_month']                                   = 'Vor einem Mon
 $_lang['seosuite.time_months']                                  = 'Vor [[+months]] Monaten';
 $_lang['seosuite.time_to_long']                                 = 'Vor mehr als einem halben Jahr';
 
-$_lang['seosuite.widget_desc']                                  = 'Hier können Sie die 10 zuletzt hinzugefügten 404-URLs sehen. Um alle Ihre 404-URLs anzuzeigen und zu verwalten, gehen Sie bitte auf folgende Seite: <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite</a>.';
+$_lang['seosuite.migration']                                    = 'Migration';
+$_lang['seosuite.migration_desc']                               = 'Für ein Upgrade von SEO Suite V1, SEO Pro oder SEO Tab ist eine Datenmigration erforderlich. Hier können Sie die Migrationen für diese Extras durchführen.';
+$_lang['seosuite.migration.seosuitev1.results']                 = '<b>[[+redirects]]</b> Weiterleitungen und <b>[[+urls]]</b> URLs für SEO Suite V1 gefunden.';
+$_lang['seosuite.migration.seosuitev1.empty']                   = '<i>Keine Daten für die Migration von SEO Suite V1 gefunden.</i>';
+$_lang['seosuite.migration.seopro.results']                     = '<b>[[+count]]</b> SEO Pro-Keyword-Ressourcen gefunden.';
+$_lang['seosuite.migration.seopro.empty']                       = '<i>Keine Daten für die SEO Pro-Migration gefunden.</i>';
+$_lang['seosuite.migration.seotab.results']                     = '<b>[[+urls]]</b> Weiterleitungen und <b>[[+resources]]</b> Ressourcen für SEO-Tab gefunden.';
+$_lang['seosuite.migration.seotab.empty']                       = '<i>Keine Daten für die Migration der Registerkarte „SEO” gefunden.</i>';
+$_lang['seosuite.migration.migrate']                            = 'Migrieren';
+
+$_lang['seosuite.widget']                                       = 'SEO Suite';
+$_lang['seosuite.widget_desc']                                  = 'SEO Suite-Dashboard-Widget';
+$_lang['seosuite.widget_intro']                                  = 'Hier können Sie die 10 zuletzt hinzugefügten 404-URLs sehen. Um alle Ihre 404-URLs anzuzeigen und zu verwalten, gehen Sie bitte auf folgende Seite: <a href="[[++manager_url]]?a=home&amp;namespace=seosuite">SEO Suite</a>.';
