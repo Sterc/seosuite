@@ -1,16 +1,33 @@
 <?php
+/* Setting areas. */
+$_lang['area_seosuite']                                         = 'SEO Suite';
+$_lang['area_seosuite_tab_meta']                                = 'Мета-вкладка SEO Suite';
+$_lang['area_seosuite_tab_social']                              = 'Социальная вкладка SEO Suite';
+$_lang['area_seosuite_sitemap']                                 = 'Карта сайта SEO Suite';
 
 /* General settings. */
-$_lang['setting_seosuite.exclude_words']                                = 'Исключить слова';
-$_lang['setting_seosuite.exclude_words_desc']                           = 'Разделенный запятыми список слов, которые будут исключены из системы сопоставления предложений.';
+$_lang['setting_seosuite.blocked_words']                                = 'Заблокированные слова';
+$_lang['setting_seosuite.blocked_words_desc']                           = 'Разделенный запятыми список слов, которые необходимо заблокировать от регистрации на странице 404.';
+$_lang['setting_seosuite.default_media_source']                         = 'Источник медиа';
+$_lang['setting_seosuite.default_media_source_desc']                    = 'Источник медиа, используемый для поиска изображений для метатегов og_image и twitter_image.';
 $_lang['setting_seosuite.default_redirect_type']                        = 'Тип перенаправления по умолчанию';
 $_lang['setting_seosuite.default_redirect_type_desc']                   = '';
 $_lang['setting_seosuite.disabled_templates']                           = 'Отключенные шаблоны';
 $_lang['setting_seosuite.disabled_templates_desc']                      = 'Список отключенных идентификаторов шаблонов, разделенных запятыми.';
+$_lang['setting_seosuite.exclude_words']                                = 'Исключить слова';
+$_lang['setting_seosuite.exclude_words_desc']                           = 'Разделенный запятыми список слов, которые будут исключены из системы сопоставления предложений.';
+$_lang['setting_seosuite.log_404']                                      = 'Log 404 Not Found';
+$_lang['setting_seosuite.log_404_desc']                                 = 'Log 404 not found URLs in the database.';
+$_lang['setting_seosuite.placeholder_plugin_enabled']                   = 'Enable SEO Suite Placeholder Plugin';
+$_lang['setting_seosuite.placeholder_plugin_enabled_desc']              = 'Set the SEO Suite placeholders in the page content.';
 $_lang['setting_seosuite.migration_finished']                           = 'Перенос завершен во время установки';
 $_lang['setting_seosuite.migration_finished_desc']                      = 'Этот параметр используется, чтобы определить, все ли необходимые миграции завершены во время установки / установки обновления.';
-$_lang['setting_seosuite.user_name']                                    = 'Имя пользователя для получения приоритетных обновлений';
 $_lang['setting_seosuite.user_email']                                   = 'Электронная почта для получения приоритетных обновлений';
+$_lang['setting_seosuite.user_email_desc']                              = 'Адрес электронной почты, используемый для отправки приоритетных обновлений.';
+$_lang['setting_seosuite.user_name']                                    = 'Имя пользователя для получения приоритетных обновлений';
+$_lang['setting_seosuite.user_name_desc']                               = 'Имя, используемое для писем с приоритетными обновлениями.';
+$_lang['setting_seosuite.panel_position_top']                           = 'Показать панель SEO Suite в верхней части страницы ресурса';
+$_lang['setting_seosuite.panel_position_top_desc']                      = 'Укажите, должна ли панель SEO Suite отображаться в верхней или нижней части страницы ресурса. По умолчанию — в нижней части.';
 
 /* Meta settings. */
 $_lang['setting_seosuite.meta.field_counters']                          = 'Поля, в которых будет работать инструмент счетчика символов';

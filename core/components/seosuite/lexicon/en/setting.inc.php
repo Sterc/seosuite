@@ -1,16 +1,33 @@
 <?php
+/* Setting areas. */
+$_lang['area_seosuite']                                         = 'SEO Suite';
+$_lang['area_seosuite_tab_meta']                                = 'SEO Suite meta tab';
+$_lang['area_seosuite_tab_social']                              = 'SEO Suite social tab';
+$_lang['area_seosuite_sitemap']                                 = 'SEO Suite sitemap';
 
 /* General settings. */
-$_lang['setting_seosuite.exclude_words']                                = 'Exclude words';
-$_lang['setting_seosuite.exclude_words_desc']                           = 'Comma separated list of words which will be excluded from the suggestions matching system.';
-$_lang['setting_seosuite.default_redirect_type']                        = 'Default redirect type';
-$_lang['setting_seosuite.default_redirect_type_desc']                   = '';
+$_lang['setting_seosuite.blocked_words']                                = 'Blocked Words';
+$_lang['setting_seosuite.blocked_words_desc']                           = 'Comma delimited list of words to block from 404 page logging.';
+$_lang['setting_seosuite.default_media_source']                         = 'Media Source';
+$_lang['setting_seosuite.default_media_source_desc']                    = 'Media source used to locate the images for the og_image and twitter_image meta tags.';
+$_lang['setting_seosuite.default_redirect_type']                        = 'Default Redirect Type';
+$_lang['setting_seosuite.default_redirect_type_desc']                   = 'The default redirect type.';
 $_lang['setting_seosuite.disabled_templates']                           = 'Disabled Templates';
 $_lang['setting_seosuite.disabled_templates_desc']                      = 'Comma separated list of disabled template IDs.';
-$_lang['setting_seosuite.migration_finished']                           = 'Finished migration during setup';
+$_lang['setting_seosuite.exclude_words']                                = 'Exclude Words';
+$_lang['setting_seosuite.exclude_words_desc']                           = 'Comma delimited list of words which will be excluded from the suggestions matching system.';
+$_lang['setting_seosuite.log_404']                                      = 'Log 404 Not Found';
+$_lang['setting_seosuite.log_404_desc']                                 = 'Log 404 not found URLs in the database.';
+$_lang['setting_seosuite.placeholder_plugin_enabled']                   = 'Enable SEO Suite Placeholder Plugin';
+$_lang['setting_seosuite.placeholder_plugin_enabled_desc']              = 'Set the SEO Suite placeholders in the page content.';
+$_lang['setting_seosuite.migration_finished']                           = 'Finished Migration';
 $_lang['setting_seosuite.migration_finished_desc']                      = 'This setting is used to determine if all required migrations have finished during the installation/update setup.';
-$_lang['setting_seosuite.user_name']                                    = 'Priority updates name';
-$_lang['setting_seosuite.user_email']                                   = 'Priority updates email';
+$_lang['setting_seosuite.user_email']                                   = 'Priority Updates Email';
+$_lang['setting_seosuite.user_email_desc']                              = 'The Email address used for priority updates emails.';
+$_lang['setting_seosuite.user_name']                                    = 'Priority Updates Name';
+$_lang['setting_seosuite.user_name_desc']                               = 'The name used for priority updates emails.';
+$_lang['setting_seosuite.panel_position_top']                           = 'Show SEO Suite panel at top of resource page';
+$_lang['setting_seosuite.panel_position_top_desc']                      = 'Specify if the SEO Suite panel should be shown at the top or bottom of the resource page. Default is bottom.';
 
 /* Meta settings. */
 $_lang['setting_seosuite.meta.field_counters']                          = 'Fields where the chars counter tool will work on';
@@ -35,8 +52,6 @@ $_lang['setting_seosuite.meta.preview.length_mobile_description']       = 'Previ
 $_lang['setting_seosuite.meta.preview.length_mobile_description_desc']  = 'Determines the maximum length as shown in the preview.';
 $_lang['setting_seosuite.meta.default_alternate_context']               = 'Default alternate context';
 $_lang['setting_seosuite.meta.default_alternate_context_desc']          = 'Specify the context to be marked as default alternate link (x-default).';
-$_lang['setting_seosuite.panel_position_top']                           = 'Show SEO Suite panel at top of resource page';
-$_lang['setting_seosuite.panel_position_top_desc']                      = 'Specify if the SEO Suite panel should be shown at the top or bottom of the resource page. Default is bottom.';
 
 /* Sitemap settings. */
 $_lang['setting_seosuite.sitemap.default_changefreq']                   = 'Default resource setting: update frequency';

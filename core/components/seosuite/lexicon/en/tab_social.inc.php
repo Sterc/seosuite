@@ -19,8 +19,7 @@ $_lang['seosuite.tab_social.label_og_image_desc']               = 'REQUIRED: An 
 $_lang['seosuite.tab_social.label_og_image_alt']                = 'Image alt title (og:image:alt)';
 $_lang['seosuite.tab_social.label_og_image_alt_desc']           = 'A description of what is in the image (not a caption).';
 $_lang['seosuite.tab_social.label_og_type']                     = 'Type (og:type)';
-$_lang['seosuite.tab_social.label_og_type_desc']                = 'REQUIRED: The type of your object, e.g., “website”. Depending on the type you specify, other properties may also be required.
-.';
+$_lang['seosuite.tab_social.label_og_type_desc']                = 'REQUIRED: The type of your object, e.g., “website”. Depending on the type you specify, other properties may also be required.';
 
 $_lang['seosuite.tab_social.label_twitter_title']               = 'Twitter title';
 $_lang['seosuite.tab_social.label_twitter_title_desc']          = 'The title of the page on Twitter.';

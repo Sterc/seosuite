@@ -24,11 +24,11 @@ systemSettings:
     area: seosuite
   - key: placeholder_plugin_enabled
     type: combo-boolean
-    value: true,
+    value: "1"
     area: seosuite
   - key: migration_finished
     type: combo-boolean
-    value: false
+    value: "0"
     area: seosuite
   - key: user_name
     type: textfield
@@ -42,6 +42,26 @@ systemSettings:
     type: modx-combo-source
     area: seosuite
     value:
+  - key: default_redirect_type
+    type: textfield
+    area: seosuite
+    value: "HTTP/1.1 301 Moved Permanently"
+  - key: tab_seo_default_index_type
+    type: combo-boolean
+    area: seosuite
+    value: "1"
+  - key: tab_seo_default_follow_type
+    type: combo-boolean
+    area: seosuite
+    value: "1"
+  - key: tab_seo_default_sitemap
+    type: combo-boolean
+    area: seosuite
+    value: "1"
+  - key: log_404
+    type: combo-boolean
+    area: seosuite
+    value: "1"
   - key: meta.field_counters
     value: longtitle:30|70,description:70|155
     area: seosuite_tab_meta
@@ -146,8 +166,8 @@ chunks:
     description: The default chunk used for wrapping alternate links
 
 widgets:
-  - name: seosuite
-    description: SEO Suite dashboard widget
+  - name: seosuite.widget
+    description: seosuite.widget_desc
     type: file
     content: seosuite.widget.php
     lexicon: seosuite:default

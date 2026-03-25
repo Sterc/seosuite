@@ -30,7 +30,7 @@ class modDashboardWidgetSeoSuiteUrls extends modDashboardWidgetInterface
             });</script>'
         );
         return '
-            <p>[[%seosuite.widget_desc]]</p><br />
+            <p>[[%seosuite.widget_intro]]</p><br />
             <div id="seosuite-grid-urls"></div>
         ';
     }
