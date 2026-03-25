@@ -7,6 +7,9 @@ SEO Suite 3.1.8
 - Fix trying to access array offset on true error (PR#139)
 - Fix incorrect saving of access permissions (PR#142)
 - Add cache busting for JS assets (PR#147)
+- Add system setting for enable/disable 404 logging (PR#146)
+- Hide tabs that are not needed when system setting is disabled (PR#146)
+- Fix some lexicons (PR#146)
 
 SEO Suite 3.1.7
 ==============
