@@ -60,7 +60,7 @@ class SeoSuite
             'css_url'                    => $assetsUrl . 'css/',
             'assets_url'                 => $assetsUrl,
             'connector_url'              => $assetsUrl . 'connector.php',
-            'version'                    => '3.1.8',
+            'version'                    => '3.2.1',
             'branding_url'               => $this->modx->getOption('seosuite.branding_url', null, ''),
             'branding_help_url'          => $this->modx->getOption('seosuite.branding_url_help', null, ''),
             'blocked_words'              => array_filter(explode(',', $this->modx->getOption('seosuite.blocked_words', null, ''))),
