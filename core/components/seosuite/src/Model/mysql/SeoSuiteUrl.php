@@ -112,8 +112,8 @@ class SeoSuiteUrl extends \Sterc\SeoSuite\Model\SeoSuiteUrl
             'Context' => 
             array (
                 'class' => 'MODX\\Revolution\\modContext',
-                'local' => 'bundle',
-                'foreign' => 'id',
+                'local' => 'context_key',
+                'foreign' => 'key',
                 'cardinality' => 'one',
                 'owner' => 'foreign',
             ),

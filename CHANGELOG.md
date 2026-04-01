@@ -1,6 +1,18 @@
 Changelog for SEO Suite.
 
+SEO Suite 3.2.1
+==============
+- Fix relation definitions in schema/models (PR#124)
+- Fix URL redirect handling (PR#132)
+- Fix trying to access array offset on true error (PR#139)
+- Fix incorrect saving of access permissions (PR#142)
+- Add cache busting for JS assets (PR#147)
+- Add system setting for enable/disable 404 logging (PR#146)
+- Hide tabs that are not needed when system setting is disabled (PR#146)
+- Fix some lexicons (PR#146)
+
 SEO Suite 3.2.0
+==============
 - Update PHPspreadsheet lib to latest version.
 
 SEO Suite 3.1.9
@@ -12,6 +24,7 @@ SEO Suite 3.1.8
 ==============
 - Fixing invalid date in sitemap for crawling when resources are created outside of the manager through imports/api's.
 
+=======
 
 SEO Suite 3.1.7
 ==============
