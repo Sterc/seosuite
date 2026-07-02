@@ -62,6 +62,14 @@ systemSettings:
     type: combo-boolean
     area: seosuite
     value: "1"
+  - key: log_404_limit
+    type: textfield
+    area: seosuite
+    value: "10"
+  - key: log_404_limit_time
+    type: textfield
+    area: seosuite
+    value: "60"
   - key: meta.field_counters
     value: longtitle:30|70,description:70|155
     area: seosuite_tab_meta

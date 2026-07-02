@@ -1,5 +1,8 @@
 Changelog for SEO Suite.
 
+- Add 404 log limit setting to prevent spamming the log.
+- Add 404 log verification to the installer.
+
 SEO Suite 3.2.1
 ==============
 - Fix relation definitions in schema/models (PR#124)

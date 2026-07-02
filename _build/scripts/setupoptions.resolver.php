@@ -74,7 +74,7 @@ class SeoSuiteSetupOptionsResolver
      */
     protected function savePriorityUpdateValues()
     {
-        foreach (['user_name', 'user_email'] as $key) {
+        foreach (['log_404', 'user_name', 'user_email'] as $key) {
             if (isset($this->options[$key])) {
                 $settingObject = $this->modx->getObject(modSystemSetting::class, ['key' => 'seosuite.' . $key]);
 
