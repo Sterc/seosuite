@@ -94,12 +94,37 @@ class Redirects extends Base
      */
     protected function shouldLog404($request)
     {
+        // Check if the limit is reached.
+        $logLimit = (int) $this->seosuite->getOption('log_404_limit');
+        $logLimitTime = (int) $this->seosuite->getOption('log_404_limit_time');
+        if ($logLimit > 0 && $logLimitTime > 0) {
+            if (empty($_SESSION['ss_LogStart'])) {
+                $_SESSION['ss_LogStart'] = time();
+            }
+            if (time() - $_SESSION['ss_LogStart'] >= $logLimitTime) {
+                $_SESSION['ss_LogStart'] = time();
+                $_SESSION['ss_LogCount'] = 0;
+            }
+            if (empty($_SESSION['ss_LogCount'])) {
+                $_SESSION['ss_LogCount'] = 0;
+            }
+            if (time() - $_SESSION['ss_LogStart'] < $logLimitTime) {
+                $_SESSION['ss_LogCount']++;
+                $_SESSION['ss_LogStart'] = time();
+                if ($_SESSION['ss_LogCount'] > $logLimit) {
+                    return false;
+                }
+            }
+        }
+
+        // Check if the url is valid.
         $url = $this->seosuite->serverProtocol() . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
         if (!preg_match('/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+$/', $url)) {
             return false;
         }
 
+        // Check if the url contains blocked words.
         $blockedWords = $this->seosuite->config['blocked_words'];
 
         if (count($blockedWords) > 0) {
