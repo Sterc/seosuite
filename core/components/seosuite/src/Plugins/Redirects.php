@@ -97,19 +97,23 @@ class Redirects extends Base
         // Check if the limit is reached.
         $logLimit = (int) $this->seosuite->getOption('log_404_limit');
         $logLimitTime = (int) $this->seosuite->getOption('log_404_limit_time');
-        if (empty($_SESSION['ss_LogStart'])) {
-            $_SESSION['ss_LogStart'] = time();
-        }
-        if (time() - $_SESSION['ss_LogStart'] >= $logLimitTime) {
-            $_SESSION['ss_LogStart'] = time();
-        }
-        if (empty($_SESSION['ss_LogCount'])) {
-            $_SESSION['ss_LogCount'] = 0;
-        }
-        if (time() - $_SESSION['ss_LogStart'] < $logLimitTime) {
-            $_SESSION['ss_LogCount']++;
-            if ($_SESSION['ss_LogCount'] > $logLimit) {
-                return false;
+        if ($logLimit > 0 && $logLimitTime > 0) {
+            if (empty($_SESSION['ss_LogStart'])) {
+                $_SESSION['ss_LogStart'] = time();
+            }
+            if (time() - $_SESSION['ss_LogStart'] >= $logLimitTime) {
+                $_SESSION['ss_LogStart'] = time();
+                $_SESSION['ss_LogCount'] = 0;
+            }
+            if (empty($_SESSION['ss_LogCount'])) {
+                $_SESSION['ss_LogCount'] = 0;
+            }
+            if (time() - $_SESSION['ss_LogStart'] < $logLimitTime) {
+                $_SESSION['ss_LogCount']++;
+                $_SESSION['ss_LogStart'] = time();
+                if ($_SESSION['ss_LogCount'] > $logLimit) {
+                    return false;
+                }
             }
         }
 
