@@ -1,11 +1,15 @@
 <?php
 namespace Sterc\SeoSuite\Snippets;
 
+use MODX\Revolution\modResource;
 use Sterc\SeoSuite\SeoSuite;
 
 class Base extends SeoSuite
 {
     protected $babel;
+
+    /** @var array */
+    protected $publishedResources = [];
 
     /**
      * Get Babel.
@@ -37,6 +41,26 @@ class Base extends SeoSuite
     }
 
     /**
+     * Is the resource live and crawlable?
+     *
+     * Cached per request because the sitemap resolves the same ids once per row.
+     *
+     * @param int $resourceId
+     * @return bool
+     */
+    protected function isPublishedResource($resourceId)
+    {
+        if (!array_key_exists($resourceId, $this->publishedResources)) {
+            $this->publishedResources[$resourceId] = (bool) $this->modx->getObject(
+                modResource::class,
+                ['id' => (int) $resourceId, 'published' => 1, 'deleted' => 0]
+            );
+        }
+
+        return $this->publishedResources[$resourceId];
+    }
+
+    /**
      * Adds alternative language links to sitemap XML.
      *
      * @param $resource
@@ -52,6 +76,12 @@ class Base extends SeoSuite
         $alternates   = [];
         $translations = $this->getBabel()->getLinkedResources($resource->get('id'));
         foreach ($translations as $contextKey => $resourceId) {
+            /* Babel returns linked resources regardless of state; advertising an
+               unpublished one makes search engines crawl the 404 handler. */
+            if (!$this->isPublishedResource($resourceId)) {
+                continue;
+            }
+
             if ($ctx = $this->modx->getContext($contextKey)) {
                 $locale = strtolower(str_replace('_', '-', $ctx->getOption('locale')));
 
@@ -64,7 +94,11 @@ class Base extends SeoSuite
                 $alternates[] = $alternate;
 
                 if ($this->config['meta']['default_alternate_context'] === $ctx->get('key')) {
-                    $alternate['locale'] = 'x-default';
+                    /* Set both keys, otherwise a cultureKey based tpl (such as the
+                       packaged sitemap/alternatetpl) renders a duplicate of the
+                       entry above instead of x-default. */
+                    $alternate['locale']     = 'x-default';
+                    $alternate['cultureKey'] = 'x-default';
                     $alternates[] = $alternate;
                 }
             }
