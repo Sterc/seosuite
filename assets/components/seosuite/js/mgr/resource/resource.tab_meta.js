@@ -20,6 +20,10 @@ Ext.extend(SeoSuite, Ext.Component, {
                 } else {
                     field.on('keyup', this.onRenderPreview, this);
                     field.on('change', this.onRenderPreview, this);
+
+                    if (field.el) {
+                        field.el.on('input', this.onRenderPreview, this);
+                    }
                 }
             }
         }).bind(this));
@@ -82,14 +86,16 @@ Ext.extend(SeoSuite, Ext.Component, {
                             value       : SeoSuite.record.keywords,
                             enableKeyEvents : true,
                             listeners   : {
-                                keyup       : {
+                                render      : {
                                     fn          : function(tf) {
-                                        Ext.iterate(this.getFieldKeywordCounters(), (function(key) {
-                                            var tf = Ext.getCmp(key);
+                                        tf.el.on('input', (function() {
+                                            Ext.iterate(this.getFieldKeywordCounters(), (function(key) {
+                                                var tf = Ext.getCmp(key);
 
-                                            if (tf) {
-                                                this.onUpdateKeywordCounter.call(tf, tf);
-                                            }
+                                                if (tf) {
+                                                    this.onUpdateKeywordCounter.call(tf, tf);
+                                                }
+                                            }).bind(this));
                                         }).bind(this));
                                     },
                                     scope       : this
@@ -109,9 +115,11 @@ Ext.extend(SeoSuite, Ext.Component, {
                             value       : MODx.activePage.record.longtitle,
                             enableKeyEvents : true,
                             listeners   : {
-                                keyup       : {
+                                render      : {
                                     fn          : function (tf) {
-                                        Ext.getCmp('modx-resource-longtitle').setValue(tf.getValue());
+                                        tf.el.on('input', function () {
+                                            Ext.getCmp('modx-resource-longtitle').setValue(tf.getValue());
+                                        });
                                     },
                                     scope       : this
                                 }
@@ -130,9 +138,11 @@ Ext.extend(SeoSuite, Ext.Component, {
                             value       : MODx.activePage.record.description,
                             enableKeyEvents : true,
                             listeners   : {
-                                keyup       : {
+                                render      : {
                                     fn          : function (tf) {
-                                        Ext.getCmp('modx-resource-description').setValue(tf.getValue());
+                                        tf.el.on('input', function () {
+                                            Ext.getCmp('modx-resource-description').setValue(tf.getValue());
+                                        });
                                     },
                                     scope       : this
                                 }
@@ -295,6 +305,12 @@ Ext.extend(SeoSuite, Ext.Component, {
                 tf.on('keyup', this.onUpdateCounter);
                 tf.on('change', this.onUpdateCounter);
 
+                if (tf.el) {
+                    tf.el.on('input', (function() {
+                        this.onUpdateCounter(tf);
+                    }).bind(this));
+                }
+
                 this.onUpdateCounter(tf);
             }
         }
@@ -379,6 +395,12 @@ Ext.extend(SeoSuite, Ext.Component, {
 
             tf.on('keyup', this.onUpdateKeywordCounter, tf);
             tf.on('change', this.onUpdateKeywordCounter, tf);
+
+            if (tf.el) {
+                tf.el.on('input', function() {
+                    this.onUpdateKeywordCounter(this);
+                }, tf);
+            }
 
             this.onUpdateKeywordCounter.call(tf, tf);
         }
