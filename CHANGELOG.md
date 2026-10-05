@@ -1,5 +1,9 @@
 Changelog for SEO Suite.
 
+SEO Suite 3.2.2
+==============
+- Fix meta fields not syncing on mouse paste/drag in SEO tab (PR#158)
+
 SEO Suite 3.2.1
 ==============
 - Fix relation definitions in schema/models (PR#124)
