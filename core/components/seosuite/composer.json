@@ -12,5 +12,10 @@
     },
     "require": {
         "phpoffice/phpspreadsheet": "^5.2"
+    },
+    "config": {
+        "platform": {
+            "php": "8.1"
+        }
     }
 }

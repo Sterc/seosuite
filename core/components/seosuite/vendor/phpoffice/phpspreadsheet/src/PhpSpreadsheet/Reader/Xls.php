@@ -2,6 +2,8 @@
 
 namespace PhpOffice\PhpSpreadsheet\Reader;
 
+use Composer\Pcre\Preg;
+use PhpOffice\PhpSpreadsheet\Cell\AddressRange;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
@@ -154,7 +156,7 @@ class Xls extends XlsBase
     /**
      * Defined names.
      *
-     * @var array{isBuiltInName: int, name: string, formula: string, scope: int}
+     * @var array<int, array{isBuiltInName: int, name: string, formula: string, scope: int}>
      */
     protected array $definedname;
 
@@ -709,7 +711,7 @@ class Xls extends XlsBase
             ];
         } else {
             $extension = false;
-            if ($cellAddress == '$B$65536') {
+            if ($cellAddress === '$B$' . AddressRange::MAX_ROW_XLS) {
                 //    If the address row is -1 and the column is 0, (which translates as $B$65536) then this is a continuation
                 //        note from the previous cell annotation. We're not yet handling this, so annotations longer than the
                 //        max 2048 bytes will probably throw a wobbly.
@@ -2055,7 +2057,7 @@ class Xls extends XlsBase
                         $retstr .= substr($recordData, $pos, $len);
                         $charsLeft -= $len / 2;
                         $isCompressed = false;
-                    } elseif (!$isCompressed && ($option == 0)) {
+                    } elseif (!$isCompressed /*&& ($option == 0)*/) {
                         // 1st fragment uncompressed
                         // this fragment compressed
                         $len = min($charsLeft, $limitpos - $pos);
@@ -2608,7 +2610,7 @@ class Xls extends XlsBase
             // offset: 10; size: 2; not used
 
             for ($i = $firstColumnIndex + 1; $i <= $lastColumnIndex + 1; ++$i) {
-                if ($lastColumnIndex == 255 || $lastColumnIndex == 256) {
+                if ($lastColumnIndex == AddressRange::MAX_COLUMN_INT_XLS - 1 || $lastColumnIndex == AddressRange::MAX_COLUMN_INT) {
                     $this->phpSheet->getDefaultColumnDimension()->setWidth($width / 256);
 
                     break;
@@ -2726,7 +2728,7 @@ class Xls extends XlsBase
         $columnString = Coordinate::stringFromColumnIndex($column + 1);
 
         // Read cell?
-        if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+        if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
             // offset: 4; size: 2; index to XF record
             $xfIndex = self::getUInt2d($recordData, 4);
 
@@ -2771,7 +2773,7 @@ class Xls extends XlsBase
 
         $cell = null;
         // Read cell?
-        if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+        if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
             // offset: 4; size: 2; index to XF record
             $xfIndex = self::getUInt2d($recordData, 4);
 
@@ -2872,7 +2874,7 @@ class Xls extends XlsBase
             $columnString = Coordinate::stringFromColumnIndex($colFirst + $i);
 
             // Read cell?
-            if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+            if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
                 // offset: var; size: 2; index to XF record
                 $xfIndex = self::getUInt2d($recordData, $offset);
 
@@ -2916,7 +2918,7 @@ class Xls extends XlsBase
         $columnString = Coordinate::stringFromColumnIndex($column + 1);
 
         // Read cell?
-        if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+        if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
             // offset 4; size: 2; index to XF record
             $xfIndex = self::getUInt2d($recordData, 4);
 
@@ -2982,7 +2984,7 @@ class Xls extends XlsBase
         }
 
         // Read cell?
-        if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+        if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
             if ($isPartOfSharedFormula) {
                 // formula is added to this cell after the sheet has been read
                 $this->sharedFormulaParts[$columnString . ($row + 1)] = $this->baseCell;
@@ -3148,7 +3150,7 @@ class Xls extends XlsBase
         $columnString = Coordinate::stringFromColumnIndex($column + 1);
 
         // Read cell?
-        if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+        if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
             // offset: 4; size: 2; index to XF record
             $xfIndex = self::getUInt2d($recordData, 4);
 
@@ -3212,7 +3214,7 @@ class Xls extends XlsBase
                 $columnString = Coordinate::stringFromColumnIndex($fc + $i + 1);
 
                 // Read cell?
-                if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+                if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
                     $xfIndex = self::getUInt2d($recordData, 4 + 2 * $i);
                     if (isset($this->mapCellXfIndex[$xfIndex])) {
                         $this->phpSheet->getCell($columnString . ($row + 1))->setXfIndex($this->mapCellXfIndex[$xfIndex]);
@@ -3250,7 +3252,7 @@ class Xls extends XlsBase
         $columnString = Coordinate::stringFromColumnIndex($column + 1);
 
         // Read cell?
-        if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+        if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
             // offset: 4; size: 2; XF index
             $xfIndex = self::getUInt2d($recordData, 4);
 
@@ -3295,7 +3297,7 @@ class Xls extends XlsBase
         $columnString = Coordinate::stringFromColumnIndex($col + 1);
 
         // Read cell?
-        if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+        if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
             // offset: 4; size: 2; XF index
             $xfIndex = self::getUInt2d($recordData, 4);
 
@@ -3537,6 +3539,17 @@ class Xls extends XlsBase
         }
     }
 
+    private const REGEX_WHOLE_COLUMN = '/^([A-Z]+1\:[A-Z]+)'
+        . '(' . AddressRange::MAX_ROW_XLS_OLD . '|' . AddressRange::MAX_ROW_XLS . ')'
+        . '$/';
+    private const REGEX_WHOLE_COLUMN_REPLACE = '${1}' . AddressRange::MAX_ROW;
+    private const REGEX_WHOLE_ROW = '/^(A\d+\:)'
+        . AddressRange::MAX_COLUMN_XLS
+        . '(\d+)$/';
+    private const REGEX_WHOLE_ROW_REPLACE = '${1}'
+        . AddressRange::MAX_COLUMN
+        . '${2}';
+
     /**
      * Read SELECTION record. There is one such record for each pane in the sheet.
      */
@@ -3569,19 +3582,14 @@ class Xls extends XlsBase
 
             $selectedCells = $cellRangeAddressList['cellRangeAddresses'][0];
 
-            // first row '1' + last row '16384' indicates that full column is selected (apparently also in BIFF8!)
-            if (preg_match('/^([A-Z]+1\:[A-Z]+)16384$/', $selectedCells)) {
-                $selectedCells = (string) preg_replace('/^([A-Z]+1\:[A-Z]+)16384$/', '${1}1048576', $selectedCells);
-            }
-
-            // first row '1' + last row '65536' indicates that full column is selected
-            if (preg_match('/^([A-Z]+1\:[A-Z]+)65536$/', $selectedCells)) {
-                $selectedCells = (string) preg_replace('/^([A-Z]+1\:[A-Z]+)65536$/', '${1}1048576', $selectedCells);
+            // first row '1' + last row '16384' or '65536' indicates that full column is selected (apparently also in BIFF8!)
+            if (Preg::isMatch(self::REGEX_WHOLE_COLUMN, $selectedCells)) {
+                $selectedCells = Preg::replace(self::REGEX_WHOLE_COLUMN, self::REGEX_WHOLE_COLUMN_REPLACE, $selectedCells);
             }
 
             // first column 'A' + last column 'IV' indicates that full row is selected
-            if (preg_match('/^(A\d+\:)IV(\d+)$/', $selectedCells)) {
-                $selectedCells = (string) preg_replace('/^(A\d+\:)IV(\d+)$/', '${1}XFD${2}', $selectedCells);
+            if (Preg::isMatch(self::REGEX_WHOLE_ROW, $selectedCells)) {
+                $selectedCells = Preg::replace(self::REGEX_WHOLE_ROW, self::REGEX_WHOLE_ROW_REPLACE, $selectedCells);
             }
 
             $this->phpSheet->setSelectedCells($selectedCells);
@@ -3597,7 +3605,7 @@ class Xls extends XlsBase
         StringHelper::stringIncrement($rangeBoundaries[1][0]);
         for ($row = $rangeBoundaries[0][1]; $row <= $rangeBoundaries[1][1]; ++$row) {
             for ($column = $rangeBoundaries[0][0]; $column != $rangeBoundaries[1][0]; StringHelper::stringIncrement($column)) {
-                if ($this->getReadFilter()->readCell($column, $row, $this->phpSheet->getTitle())) {
+                if ($this->readFilter->readCell($column, $row, $this->phpSheet->getTitle())) {
                     $includeCellRange = true;
 
                     break 2;
@@ -4633,7 +4641,7 @@ class Xls extends XlsBase
                 $definedNameIndex = self::getUInt2d($formulaData, 1) - 1;
                 // offset: 2; size: 2; not used
                 /** @var string[] */
-                $data = $this->definedname[$definedNameIndex]['name'] ?? ''; //* @phpstan-ignore-line
+                $data = $this->definedname[$definedNameIndex]['name'] ?? '';
 
                 break;
             case 0x24:    //    single cell reference e.g. A5
@@ -4800,6 +4808,7 @@ class Xls extends XlsBase
                     // todo: check if we have identified the whole set of special characters
                     // it seems that the following characters are not accepted for sheet names
                     // and we may assume that they are not present: []*/:\?
+                    // 'u' qualifier makes it risky to use Preg::isMatch here
                     if (preg_match("/[ !\"@#£$%&{()}<>=+'|^,;-]/u", $sheetRange)) {
                         $sheetRange = "'$sheetRange'";
                     }

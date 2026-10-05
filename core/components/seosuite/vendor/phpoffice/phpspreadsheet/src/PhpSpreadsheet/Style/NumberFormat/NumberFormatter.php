@@ -55,10 +55,8 @@ class NumberFormatter extends BaseFormatter
                 $number = floor($numberFloat / $divisor);
                 $mask = substr_replace($mask, $blockValue, $offset, $size);
             }
-            /** @var string $numberString */
-            $numberString = $number;
             if ($number > 0) {
-                $mask = substr_replace($mask, $numberString, $offset, 0);
+                $mask = substr_replace($mask, "$number", $offset, 0);
             }
             $result = $mask;
         }
@@ -148,7 +146,7 @@ class NumberFormatter extends BaseFormatter
         $dec = $matches[2];
         $right = $matches[3];
 
-        // minimun width of formatted number (including dot)
+        // minimum width of formatted number (including dot)
         $minWidth = strlen($left) + strlen($dec) + strlen($right);
         if ($useThousands) {
             $value = number_format(
