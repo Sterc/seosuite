@@ -18,12 +18,13 @@ Ext.extend(SeoSuite, Ext.Component, {
                 if (field.xtype === 'xcheckbox') {
                     field.on('check', this.onRenderPreview, this);
                 } else {
-                    field.on('keyup', this.onRenderPreview, this);
-                    field.on('change', this.onRenderPreview, this);
-
                     if (field.el) {
                         field.el.on('input', this.onRenderPreview, this);
+                    } else {
+                        field.on('keyup', this.onRenderPreview, this);
                     }
+
+                    field.on('change', this.onRenderPreview, this);
                 }
             }
         }).bind(this));
@@ -302,14 +303,15 @@ Ext.extend(SeoSuite, Ext.Component, {
                     html    : '<span style="width: 0;"></span>'
                 });
 
-                tf.on('keyup', this.onUpdateCounter);
-                tf.on('change', this.onUpdateCounter);
-
                 if (tf.el) {
                     tf.el.on('input', (function() {
                         this.onUpdateCounter(tf);
                     }).bind(this));
+                } else {
+                    tf.on('keyup', this.onUpdateCounter);
                 }
+
+                tf.on('change', this.onUpdateCounter);
 
                 this.onUpdateCounter(tf);
             }
@@ -393,14 +395,15 @@ Ext.extend(SeoSuite, Ext.Component, {
                 html    : _('seosuite.tab_meta.keywords') + ': <span>0</span>'
             });
 
-            tf.on('keyup', this.onUpdateKeywordCounter, tf);
-            tf.on('change', this.onUpdateKeywordCounter, tf);
-
             if (tf.el) {
                 tf.el.on('input', function() {
-                    this.onUpdateKeywordCounter(this);
-                }, tf);
+                    this.onUpdateKeywordCounter.call(tf, tf);
+                }, this);
+            } else {
+                tf.on('keyup', this.onUpdateKeywordCounter, tf);
             }
+
+            tf.on('change', this.onUpdateKeywordCounter, tf);
 
             this.onUpdateKeywordCounter.call(tf, tf);
         }
