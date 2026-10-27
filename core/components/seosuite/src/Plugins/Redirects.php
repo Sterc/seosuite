@@ -94,7 +94,7 @@ class Redirects extends Base
      */
     protected function shouldLog404($request)
     {
-        $url = $this->seosuite->serverProtocol() . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $url = $this->seosuite->serverProtocol() . '://' . ($_SERVER['HTTP_HOST'] ?? '') . ($_SERVER['REQUEST_URI'] ?? '');
 
         if (!preg_match('/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&\'\(\)\*\+,;=.]+$/', $url)) {
             return false;
@@ -116,8 +116,8 @@ class Redirects extends Base
     protected function getFullUrl(): string
     {
         $protocol = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://';
-        $host     = $_SERVER['HTTP_HOST'];
-        $resource  = $_SERVER['REQUEST_URI'];
+        $host     = $_SERVER['HTTP_HOST'] ?? '';
+        $resource  = $_SERVER['REQUEST_URI'] ?? '';
 
         return $protocol . $host . $resource;
     }
@@ -125,6 +125,6 @@ class Redirects extends Base
     private function getPageAlias(): string
     {
         $aliasParam = $this->modx->getOption('request_param_alias', null, 'q');
-        return urldecode(trim($_REQUEST[$aliasParam], '/'));
+        return urldecode(trim($_REQUEST[$aliasParam] ?? '', '/'));
     }
 }
