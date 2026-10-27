@@ -33,14 +33,19 @@ class Redirects extends Base
                 'old_url'      => $request,
                 'OR:old_url:=' => $alias,
             ],
+            [
+                'context_key'      => '',
+                'OR:context_key:=' => $this->modx->context->get('key'),
+            ],
         ]);
 
+        /* A rule for the full URL goes before a rule for the path, a rule of the context before a global rule. */
+        $criteria->sortby('old_url = ' . $this->modx->quote($request), 'DESC');
         $criteria->sortby('context_key', 'DESC');
 
         foreach ($this->modx->getIterator(SeoSuiteRedirect::class, $criteria) as $redirect) {
             $redirect->set('visits', (int) $redirect->get('visits') + 1);
             $redirect->set('last_visit', date('Y-m-d H:i:s'));
-            $redirect->set('old_url', $request);
 
             if ($redirect->save()) {
                 if (is_numeric($redirect->get('new_url'))) {
