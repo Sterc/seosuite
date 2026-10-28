@@ -41,7 +41,12 @@ class Preview extends Processor
                 $resource = $this->modx->newObject(modResource::class);
 
                 if ($resource) {
-                    $alias = $resource->getAliasPath($this->getProperty('alias'), $this->getProperties());
+                    /* getAliasPath() reads pagetitle for an automatic alias; the form sends it inside "fields". */
+                    $previewFields = (array) json_decode((string) $this->getProperty('fields'), true);
+
+                    $alias = $resource->getAliasPath($this->getProperty('alias'), array_merge($this->getProperties(), [
+                        'pagetitle' => (string) ($previewFields['pagetitle'] ?? '')
+                    ]));
                 }
             }
         } else {
