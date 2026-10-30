@@ -1,5 +1,10 @@
 Changelog for SEO Suite.
 
+SEO Suite 3.2.3
+==============
+- Fix redirects being applied across contexts; redirects with a context are only applied within that context again, redirects without a context still apply to all contexts
+  - Note: on multi-context sites, redirects created before 3.1.7 that are linked to the wrong context will no longer work. Recreate these redirects to fix them.
+
 SEO Suite 3.2.2
 ==============
 - Fix meta fields not syncing on mouse paste/drag in SEO tab (PR#158)

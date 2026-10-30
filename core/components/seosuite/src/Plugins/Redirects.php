@@ -33,6 +33,10 @@ class Redirects extends Base
                 'old_url'      => $request,
                 'OR:old_url:=' => $alias,
             ],
+            [
+                'context_key'      => '',
+                'OR:context_key:=' => $this->modx->context->get('key'),
+            ],
         ]);
 
         $criteria->sortby('context_key', 'DESC');
